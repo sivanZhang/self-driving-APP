@@ -11,8 +11,9 @@ export default class Request {
   config = {
     baseUrl: '',
     header: {
-      'content-type': 'application/x-www-form-urlencoded',
-	  //'Content-Type':'application/json;charset=UTF-8',
+      //'content-type': 'application/x-www-form-urlencoded', 传formdata格式
+	  //'Content-Type':'application/json;charset=UTF-8',传json格式
+	  //'Content-Type': 'multipart/form-data'传文件
     },
     method: 'GET',
     dataType: 'json',
