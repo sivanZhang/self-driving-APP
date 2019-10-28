@@ -1,7 +1,5 @@
 export default {
     estateToken: '',
-    user_name: '',
-    portrait: '',
-    userId: '',
+    UserInfo: {},
 	BaseUrl: 'https://tl.chidict.com',
 }

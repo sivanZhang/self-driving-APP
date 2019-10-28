@@ -17,7 +17,7 @@ Ajax.interceptors.response.use(
   },
   err => {
 	uni.showToast({
-		title: err,
+		title: err.errMsg,
 		duration: 2000,
 		icon: "none"
 	})

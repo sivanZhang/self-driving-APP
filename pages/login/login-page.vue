@@ -58,14 +58,27 @@
 						icon: "none",
 					});
 					if (res.data.status === 0) {
+						const {
+							username,
+							sex,
+							portrait,
+							phone,
+							email
+						} = res.data
 						this.$store.commit("setToken", `JWT ${res.data.token}`);
-						this.$store.commit("setUserId", res.data.id);
+						this.$store.commit("setUserInfo", {
+							username,
+							sex,
+							portrait,
+							phone,
+							email
+						});
 						uni.switchTab({
 							url: "/pages/home/home-page",
 							animationType: 'pop-in',
 							animationDuration: 200
 						})
-						
+
 					} else {
 						this.isLoding = false;
 						uni.showToast({

@@ -1,13 +1,12 @@
 <template>
 	<view id="sign-up">
 		<text>注册</text>
-		{{formData}}
 		<input class="signup-inp" type="text" v-model="formData.phone" placeholder="手机号" />
 		<view class="code-warp">
 			<input class="signup-inp" type="number" v-model.number="formData.code" placeholder="验证码" />
 			<button type="default" :disabled="codeButtonType" @click="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
 		</view>
-		<input class="signup-inp" type="text" v-model="formData.userName" placeholder="用户名" />
+		<input class="signup-inp" type="text" v-model="formData.username" placeholder="用户名" />
 		<input type="text" class="signup-inp" v-model="formData.password" placeholder="密码" />
 		<button type="primary" @tap="signup">注册</button>
 	</view>
@@ -71,7 +70,7 @@
 				const rule = [{
 						name: "password",
 						checkType: "string",
-						checkRule: "6,6",
+						checkRule: "6,16",
 						errorMsg: "密码最少输入6位"
 					},
 					{
@@ -90,7 +89,7 @@
 				let checkRes =graceChecker.check(this.formData, rule)
 				if(checkRes){
 					Post_Signup(this.formData).then(res=>{
-						uni.showToast({ title: res.data.msg, icon: "none" });
+						uni.showToast({ title: res.msg, icon: "none" });
 					})
 				}else{
 					uni.showToast({ title: graceChecker.error, icon: "none" });

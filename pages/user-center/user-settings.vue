@@ -14,7 +14,7 @@
 			LogOut() {
 				let self = this;
 				this.$store.commit("setToken");
-				this.$store.commit("setUserId");
+				this.$store.commit("setUserInfo");
 				uni.showToast({
 					title: 'Logged out',
 					mask: false,
@@ -22,8 +22,8 @@
 					success() {
 						setTimeout(() => {
 							uni.navigateTo({
-        url:"/pages/login/login-page"
-    })
+								url: "/pages/login/login-page"
+							})
 						}, 1000);
 					}
 				});
@@ -32,7 +32,7 @@
 		},
 		onNavigationBarButtonTap() {
 			uni.reLaunch({
-				url:"/pages/home/home-page"
+				url: "/pages/home/home-page"
 			})
 		}
 	};
@@ -41,7 +41,7 @@
 <style lang="scss">
 	#setting {
 		.section {
-			padding:31.25upx 41.666upx;
+			padding: 31.25upx 41.666upx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;

@@ -6,7 +6,7 @@
 		<view class="content">
 			
 			<view class="profile">
-				<image src="/static/image/touxiang.png"></image> www
+				<image src="/static/image/touxiang.png"></image> {{UserInfo.username||'用户'+UserInfo.phone}}
 			</view>
 			<view class="section" @tap="target('/pages/notifications/notification-list')">
 				<view>
@@ -56,6 +56,11 @@
 			return {
 				noticeData: [],
 			};
+		},
+		computed:{
+			UserInfo(){
+				return this.$store.state.UserInfo
+			}
 		},
 		methods:{
 			target(url){
