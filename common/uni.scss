@@ -101,9 +101,33 @@ switch {
     box-sizing: border-box;
 }
 
-
+.bg-img {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
 /* 更改UNI默认 */
 
 uni-button:after {
     border: none!important;
+}
+.shadow-blur {
+	position: relative;
+}
+
+.shadow-blur::before {
+	content: "";
+	display: block;
+	background: inherit;
+	filter: blur(10upx);
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 10upx;
+	left: 10upx;
+	z-index: -1;
+	opacity: 0.4;
+	transform-origin: 0 0;
+	border-radius: inherit;
+	transform: scale(1, 1);
 }

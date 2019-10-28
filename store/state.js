@@ -3,5 +3,5 @@ export default {
     user_name: '',
     portrait: '',
     userId: '',
-	BaseUrl: 'https://levy.chidict.com',
+	BaseUrl: 'https://tl.chidict.com',
 }

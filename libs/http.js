@@ -16,6 +16,11 @@ Ajax.interceptors.response.use(
     return response;
   },
   err => {
+	uni.showToast({
+		title: err,
+		duration: 2000,
+		icon: "none"
+	})
     return Promise.reject(err) // 返回接口返回的错误信息
   });
 	

@@ -10,6 +10,7 @@ const http = new Request()
 http.validateStatus = (statusCode) => {
 	return statusCode === 200
 }
+http.defult.baseUrl = store.state.BaseUrl
 let token = uni.getStorageSync('estateToken') || store.state.estateToken;
 http.interceptor.request((config, cancel) => {
 	/* 请求之前拦截器 */

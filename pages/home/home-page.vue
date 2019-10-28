@@ -31,9 +31,6 @@
 				</view>
 				<view v-else class="right">No news</view>
 			</view>
-			<view class="user">
-				<image @tap="target('/pages/user-center/my-account')" src="/static/icons/user.png"></image>
-			</view>
 		</view>
 	</view>
 </template>
@@ -89,17 +86,6 @@
 
 		.main {
 			padding: 41.666upx 31.25upx 0;
-
-			.user {
-				text-align: center;
-				margin-top: 31.25upx;
-
-				image {
-					width: 150upx;
-					height: 150upx;
-					text-align: center;
-				}
-			}
 
 			.mask {
 				display: flex;

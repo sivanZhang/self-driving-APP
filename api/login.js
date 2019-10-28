@@ -21,3 +21,12 @@ export function User_Address(payload) {
 export function Get_UserMsg(payload) {
     return Ajax.get('/users/org_user_list/?json&myinfo', payload);
 }
+//-------------xin
+//发送手机验证码（注册或者密码找回时使用）
+export function Get_PhoneCode(phone,params) {
+    return Ajax.get('/users/phonecode/'+phone,{params});
+}
+//注册
+export function Post_Signup(payload) {
+    return Ajax.post('/users/register/',payload);
+}

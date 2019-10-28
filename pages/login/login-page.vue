@@ -8,15 +8,18 @@
 			<input :password="true" v-model="Password" placeholder="Password" placeholder-style="color:#fab701;">
 		</view>
 		<view class="links">
-			<navigator url="/pages/login/forgot-password">Reset My Password</navigator>
+			<navigator url="/pages/login/forgot-password">重置密码</navigator>
+			<navigator url="/pages/login/sign-up">注册</navigator>
 		</view>
 		<button class="sunbmit common-btn" :loading="isLoding" @tap="submit">Log In</button>
-		
+
 	</view>
 </template>
 
 <script>
-import {POST_LOGIN} from '@/api/login'
+	import {
+		POST_LOGIN
+	} from '@/api/login'
 	export default {
 		data() {
 			return {
@@ -25,22 +28,21 @@ import {POST_LOGIN} from '@/api/login'
 				isLoding: false,
 			};
 		},
-		onLoad() {
-		},
+		onLoad() {},
 		methods: {
 			submit() {
 				this.isLoding = true;
-				let reg = /^\d+$/;
-				if (false == reg.test(this.PhoneNumber)) {
+				let reg = /^1(3|4|5|7|8)\d{9}$/
+				if (!reg.test(this.PhoneNumber)) {
 					uni.showToast({
-						title: "Wrong format of phone number!",
+						title: "手机号格式错误",
 						icon: "none",
 					});
 					return;
 				}
 				if (!this.Password) {
 					uni.showToast({
-						title: "Enter your password!",
+						title: "请输入密码",
 						icon: "none"
 					});
 					return;
@@ -50,31 +52,28 @@ import {POST_LOGIN} from '@/api/login'
 					password: this.Password,
 				};
 				POST_LOGIN(data).then(res => {
+					this.isLoding = false;
+					uni.showToast({
+						title: res.data.msg,
+						icon: "none",
+					});
+					if (res.data.status === 0) {
+						this.$store.commit("setToken", `JWT ${res.data.token}`);
+						this.$store.commit("setUserId", res.data.id);
+						uni.switchTab({
+							url: "/pages/home/home-page",
+							animationType: 'pop-in',
+							animationDuration: 200
+						})
+						
+					} else {
 						this.isLoding = false;
-						if (res.data.status == "ok") {
-							this.$store.commit("setToken", `JWT ${res.data.token}`);
-							this.$store.commit("setUserId", res.data.id);
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none",
-								success() {
-									setTimeout(() => {
-										uni.redirectTo({
-											url: "/pages/home/home-page",
-											animationType: 'pop-in',
-											animationDuration: 200
-										})
-									}, 1000)
-								}
-							});
-						}else{
-							this.isLoding = false;
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none",
-							})
-						}
-					})
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none",
+						})
+					}
+				})
 			}
 		}
 	};
@@ -128,14 +127,12 @@ import {POST_LOGIN} from '@/api/login'
 		}
 
 		.links {
+			display: flex;
+			justify-content: space-between;
 			margin-top: 35.416upx;
-			text-align: center;
+			padding: 0 66.666rpx;
 			color: #fab701;
 			font-size: 29.166upx;
-
-			span {
-				padding: 0 12.5upx;
-			}
 		}
 	}
 </style>

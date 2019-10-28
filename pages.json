@@ -43,8 +43,11 @@
         {
             "path" : "pages/user-center/my-account",
             "style" : {
-                "navigationBarTitleText" : "My Account"
-            }
+				"navigationStyle" : "custom"
+            },
+			"app-plus" : {
+			    "titleNView" : false
+			}
         },
         {
             "path" : "pages/notifications/new-list",
@@ -94,6 +97,22 @@
                 }
             }
         }
+        ,{
+            "path" : "pages/team/from-team",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/circle/hi-circle",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/offer-reward/offer-reward",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/login/sign-up",
+            "style" : {}
+        }
     ],
     "globalStyle" : {
         "navigationBarTextStyle" : "white",
@@ -110,5 +129,44 @@
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
-	}
+	},
+	"tabBar" : {
+	        "color" : "#cdcdcd",
+	        "selectedColor" : "#009cd3",
+			"borderStyle": "white",
+	        "backgroundColor" : "#ffffff",
+	        "list" : [
+	            {
+	                "pagePath" : "pages/home/home-page",
+	                "iconPath" : "static/icons/zhuye.svg",
+	                "selectedIconPath" : "static/icons/azhuye.svg",
+	                "text" : "行程"
+	            },
+	            {
+	                "pagePath" : "pages/team/from-team",
+	                "iconPath" : "static/icons/qizhi.svg",
+	                "selectedIconPath" : "static/icons/aqizhi.svg",
+	                "text" : "组队"
+	            },
+				{
+				    "pagePath" : "pages/offer-reward/offer-reward",
+				    "iconPath" : "static/icons/xuanshang.svg",
+				    "selectedIconPath" : "static/icons/axuanshang.svg",
+				    "text" : "悬赏"
+				},
+	            {
+	                "pagePath" : "pages/circle/hi-circle",
+	                "iconPath" : "static/icons/quan.svg",
+	                "selectedIconPath" : "static/icons/aquan.svg",
+	                "text" : "嗨圈"
+	            },
+	            {
+	                "pagePath" : "pages/user-center/my-account",
+	                "iconPath" : "static/icons/wode.svg",
+	                "selectedIconPath" : "static/icons/awode.svg",
+	                "text" : "我的"
+	            }
+	        ]
+	    }
+
 }
