@@ -11,3 +11,7 @@ export function Get_PhoneCode(phone,params) {
 export function Post_Signup(payload) {
     return Ajax.post('/users/register/',payload);
 }
+//修改密码
+export function Put_Password(payload) {
+    return Ajax.post('/users/list/?put',payload);
+}

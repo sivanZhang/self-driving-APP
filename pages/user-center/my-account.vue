@@ -1,7 +1,7 @@
 <template>
 	<view id="MyAccount">
 		<view class="wall">
-			
+			<image @tap="changeImage" :src="wallImageSrc" mode="aspectFill"></image>
 		</view>
 		<view class="content">
 			
@@ -55,6 +55,7 @@
 		data() {
 			return {
 				noticeData: [],
+				wallImageSrc:'static/image/test.png',
 			};
 		},
 		computed:{
@@ -67,6 +68,9 @@
 				uni.navigateTo({
 					url
 				})
+			},
+			changeImage(){
+				
 			}
 		},
 		onLoad() {
@@ -86,6 +90,10 @@
 		.wall{
 			height: 250rpx;
 			background: #007AFF;
+			image{
+				height:100%;
+				width: 100%;
+			}
 		}
 		.badge {
 			background-color: #e60000 !important;

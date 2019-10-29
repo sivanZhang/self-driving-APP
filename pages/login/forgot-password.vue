@@ -1,184 +1,126 @@
 <template>
-	<view id="forgot">
-		<view class="logo">
-			<image src="/static/image/touxiang.png" alt=""></image>
+	<view id="sign-up">
+		<text>修改密码</text>
+		<input class="signup-inp" type="text" v-model="formData.phone" placeholder="手机号" />
+		<view class="code-warp">
+			<input class="signup-inp" type="number" v-model.number="formData.code" placeholder="验证码" />
+			<button type="default" :disabled="codeButtonType" @click="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
 		</view>
-		<view class="h3">Need help with your password?</view>
-		<view class="p">Enter the Email you use for<br />Estrata, and you will receive a<br />verfication code from us.</view>
-		</uni-steps>
-		<uni-steps :data="steps" :active="active" active-color="#fad87b">
-		</uni-steps>
-		<view class="form">
-			<block v-if="active==0">
-				<input v-model="email" type="text" class="common-inp" placeholder="Email">
-				<button @tap="next" class="conmmt-btn">Next</button>
-			</block>
-			<block v-if="active==1">
-				<input v-model="code" type="number" class="common-inp" placeholder="Code">
-				<button @tap="verify" class="conmmt-btn">Verify</button>
-			</block>
-			<block v-if="active==2">
-				<input v-model="password" type="text" class="common-inp" placeholder="New Password">
-				<button @tap="reset" class="conmmt-btn">Reset</button>
-			</block>
-		</view>
+		<input class="signup-inp" type="text" v-model="formData.username" placeholder="用户名" />
+		<input type="text" class="signup-inp" v-model="formData.password" placeholder="密码" />
+		<button type="primary" @tap="signup">注册</button>
 	</view>
 </template>
 
 <script>
-	import { GET_Password, SET_Password } from "@/api/login";
-	import uniSteps from "@/components/uni-steps/uni-steps.vue"
+	import graceChecker from "@/utils/graceChecker"
+	import { Put_Password, Get_PhoneCode } from "@/api/login";
 	export default {
-		components: {
-			uniSteps,
-		},
 		data() {
 			return {
-				code: "",
-				email: "",
-				isSend: false,
-				active: 0,
-				steps: [{
-						title: 'Email'
-					},
-					{
-						title: 'Code'
-					},
-					{
-						title: 'New Password'
-					}
-				]
-			};
-		},
-		methods: {
-			verify() {
-				const rex = /\d{4}/;
-				if (rex.test(this.code)) {
-					GET_Password(`${this.email}/${this.code}`).then(res => {
-					    if (res.data.status == "ok") {
-							if (res.data.status == "ok") {
-								uni.showToast({
-								  title: res.data.msg,
-								  icon: "none",
-								});
-								this.active = 2;
-							} else {
-								uni.showToast({
-								  title: res.data.msg,
-								  icon: "none",
-								});
-							}
-					    }
-					  })
-				} else {
-					uni.showToast({
-					  title:"Code error!",
-					  icon: "none",
-					});
-				}
-			},
-			reset() {
-				let data = {
-					email: this.email,
-					password: this.password,
-					code: this.code
-				};
-				SET_Password(data).then(
-					res => {
-					  if (res.data.status == "ok") {
-					  	uni.showToast({
-					  	  title: res.data.msg,
-					  	  icon: "none",
-					  	});
-					  	uni.navigateTo({
-					  	  url: "/pages/login/login-page"
-					  	});
-					  } else {
-					  	uni.showToast({
-					  	  title: res.data.msg,
-					  	  icon: "none",
-					  	});
-					  }
-				  }
-				)
-			},
-			next() {
-				const pattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-				if (pattern.test(this.email)) {
-					GET_Password(`${this.email}`).then(res => {
-					    if (res.data.status == "ok") {
-							if (res.data.status == "ok") {
-								uni.showToast({
-								  title: res.data.msg,
-								  icon: "none",
-								});
-								this.active = 1;
-							} else {
-								uni.showToast({
-								  title: res.data.msg,
-								  icon: "none",
-								});
-							}
-					    }
-					  })
-				} else {
-					uni.showToast({
-					  title: "Mailbox format error!",
-					  icon: "none",
-					});
-				}
-				
+				formData: {
+					phone: 18691631041,
+					password: '',
+					code: '',
+					username: '',
+					method:'put'
+				},
+				codeButtonType: false,
+				secondCount: 30,
 			}
 		},
+		methods: {
+			// 获取手机验证码
+			getCode() {
+				let reg = /^1(3|4|5|7|8)\d{9}$/
+				if (!reg.test(this.formData.phone)) {
+					uni.showToast({
+						title: '请输入正确的手机号',
+						duration: 2000,
+						icon: "none"
+					})
+					return false
+				}
+				this.codeButtonType = true
+				Get_PhoneCode(this.formData.phone, {
+					codetype: 1
+				}).then(res => {
+					uni.showToast({
+						title: res.data.msg,
+						duration: 2000,
+						icon: "none"
+					})
+					let timeCount = setInterval(() => {
+
+						this.secondCount--
+						if (this.secondCount === 0) {
+							clearInterval(timeCount)
+							this.codeButtonType = false
+							this.secondCount = 30
+						}
+					}, 1000)
+				}).catch((err) => {
+					this.codeButtonType = false
+				})
+			},
+			//注册
+			signup() {
+				const rule = [{
+						name: "password",
+						checkType: "string",
+						checkRule: "6,16",
+						errorMsg: "密码最少输入6位"
+					},
+					{
+						name: "code",
+						checkType: "reg",
+						checkRule: /\d{4}/,
+						errorMsg: "验证码格式错误"
+					},
+					{
+						name: "phone",
+						checkType: "phoneno",
+						checkRule: "",
+						errorMsg: "手机号格式错误"
+					},
+				]
+				let checkRes =graceChecker.check(this.formData, rule)
+				if(checkRes){
+					Put_Password(this.formData).then(res=>{
+						uni.showToast({ title: res.msg, icon: "none" });
+					})
+				}else{
+					uni.showToast({ title: graceChecker.error, icon: "none" });
+				}
+			}
+		}
 	}
 </script>
 
-<style lang="scss" scoped>
-	#forgot {
-  .p {
-    width: 520.833upx;
-    color: #c8c8c8;
-    margin: 0 auto 31.25upx;
-		 text-align: center;
-  }
+<style lang="scss">
+	#sign-up {
+		text-align: center;
+		padding: 250rpx 31.25rpx 0;
 
-  .h3 {
-    text-align: center;
-    font-size: 37.5upx;
-    height:97.916upx;
-    line-height: 97.916upx;
-  }
+		.code-warp {
+			position: relative;
 
-  button.conmmt-btn {
-    display: block;
-    width:  520.833upx;
-    height: 85.416upx;
-    border-radius: 85.416upx;
-    margin: 0 auto;
-    background-color: #fad87b;
-    margin-top: 58.333upx;
-    font-size: 31.25upx;
-  }
-  .common-inp {
-		height: 89.583upx;
-		line-height: 89.583upx;
-    width:  520.833upx;
-		display: block;
-		margin: 0 auto;
-  }
+			button {
+				position: absolute;
+				right: 20.833rpx;
+				top: 5px;
+				padding: 0;
+			}
+		}
 
-  .logo {
-    margin: 31.25upx auto 31.25upx;
-    text-align: center;
-
-    image {
-      height: 195.833upx;
-      width:195.833upx;
-      border-radius: 50%;
-      background-color: #d8d8d8;
-      border: 1px solid #c8c8cc;
-    }
-  }
-}
-
+		.signup-inp {
+			border: 2.083rpx solid #C8C8CC;
+			margin: 31.25rpx 0;
+			padding: 12.5rpx 25rpx;
+			text-align: left;
+		}
+	}
 </style>
+
+
+
