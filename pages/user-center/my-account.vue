@@ -70,10 +70,13 @@
 			}
 		},
 		onLoad() {
-			GET_Notice().then(res => {
-				this.noticeData = res.data.msg;
-				this.noticeData = this.noticeData.filter(item => item.fields.read == 0);
-			})
+			const Token = this.$store.state.estateToken || uni.getStorageSync('estateToken');
+			if (!Token) {
+				uni.navigateTo({
+					url: "/pages/login/login-page"
+				})
+			}
+		
 		}
 	};
 </script>

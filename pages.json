@@ -131,39 +131,39 @@
 		]
 	},
 	"tabBar" : {
-	        "color" : "#cdcdcd",
-	        "selectedColor" : "#009cd3",
+	        "color" : "#bfbfbf",
+	        "selectedColor" : "#F6A945",
 			"borderStyle": "white",
 	        "backgroundColor" : "#ffffff",
 	        "list" : [
 	            {
 	                "pagePath" : "pages/home/home-page",
-	                "iconPath" : "static/icons/zhuye.svg",
-	                "selectedIconPath" : "static/icons/azhuye.svg",
+	                "iconPath" : "static/icons/zhuye.png",
+	                "selectedIconPath" : "static/icons/azhuye.png",
 	                "text" : "行程"
 	            },
 	            {
 	                "pagePath" : "pages/team/from-team",
-	                "iconPath" : "static/icons/qizhi.svg",
-	                "selectedIconPath" : "static/icons/aqizhi.svg",
+	                "iconPath" : "static/icons/qizhi.png",
+	                "selectedIconPath" : "static/icons/aqizhi.png",
 	                "text" : "组队"
 	            },
 				{
 				    "pagePath" : "pages/offer-reward/offer-reward",
-				    "iconPath" : "static/icons/xuanshang.svg",
-				    "selectedIconPath" : "static/icons/axuanshang.svg",
+				    "iconPath" : "static/icons/xuanshang.png",
+				    "selectedIconPath" : "static/icons/axuanshang.png",
 				    "text" : "悬赏"
 				},
 	            {
 	                "pagePath" : "pages/circle/hi-circle",
-	                "iconPath" : "static/icons/quan.svg",
-	                "selectedIconPath" : "static/icons/aquan.svg",
+	                "iconPath" : "static/icons/quan.png",
+	                "selectedIconPath" : "static/icons/aquan.png",
 	                "text" : "嗨圈"
 	            },
 	            {
 	                "pagePath" : "pages/user-center/my-account",
-	                "iconPath" : "static/icons/wode.svg",
-	                "selectedIconPath" : "static/icons/awode.svg",
+	                "iconPath" : "static/icons/wode.png",
+	                "selectedIconPath" : "static/icons/awode.png",
 	                "text" : "我的"
 	            }
 	        ]
