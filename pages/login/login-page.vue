@@ -74,7 +74,7 @@
 							email
 						});
 						uni.switchTab({
-							url: "/pages/home/home-page",
+							url: "/pages/user-center/my-account",
 							animationType: 'pop-in',
 							animationDuration: 200
 						})

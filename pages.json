@@ -27,17 +27,17 @@
         {
             "path" : "pages/user-center/user-settings",
             "style" : {
-                "navigationBarTitleText" : "Settings",
-                "app-plus" : {
-                    "titleNView" : {
-                        "buttons" : [
-                            {
-                                "type" : "home",
-                                "width" : "auto"
-                            }
-                        ]
-                    }
-                }
+                "navigationBarTitleText" : "设置"
+                // "app-plus" : {
+                //     "titleNView" : {
+                //         "buttons" : [
+                //             {
+                //                 "type" : "home",
+                //                 "width" : "auto"
+                //             }
+                //         ]
+                //     }
+                // }
             }
         },
         {
@@ -112,7 +112,77 @@
         ,{
             "path" : "pages/login/sign-up",
             "style" : {}
-        }
+        },
+		{
+		    "path" : "pages/user-center/browser-history",
+		    "style" : {}
+		},
+		{
+		    "path" : "pages/user-center/mymessage",
+		    "style" : {}
+		},
+		{
+		    "path" : "pages/user-center/personalCenter/personalCenter",
+		    "style" : {
+		   	"navigationBarTitleText" : "个人主页"
+		   }
+		},
+		{
+		    "path" : "pages/user-center/personalCenter/editProfile",
+		    "style" : {
+		   	"navigationBarTitleText" : "编辑资料",
+			"app-plus": {
+				"titleNView": {
+					"buttons":[{
+						"float":"right",
+						"text":"保存",
+						"width":"auto",
+						"fontSize":"38upx"
+					}]
+				}
+			}
+		   }
+		},
+		{
+		    "path" : "pages/user-center/change-background",
+		    "style" : {
+		   	"navigationBarTitleText" : "更换相册封面"
+		   }
+		},
+		{
+		    "path" : "pages/user-center/account/accountSetting",
+		    "style" : {
+		   	"navigationBarTitleText" : "账号设置"
+		   }
+		},
+		{
+		    "path" : "pages/user-center/account/checkPhone",
+		    "style" : {
+		   	"navigationBarTitleText" : "验证当前手机"
+		   }
+		},
+		{
+		    "path" : "pages/user-center/account/bindNewPhone",
+		    "style" : {
+		   	"navigationBarTitleText" : "绑定新手机"
+		   }
+		},
+		{
+		    "path" : "pages/user-center/account/changePassword",
+		    "style" : {
+		   	"navigationBarTitleText" : "修改密码",
+			"app-plus": {
+				"titleNView": {
+					"buttons":[{
+						"float":"right",
+						"text":"忘记",
+						"width":"auto",
+						"fontSize":"38upx"
+					}]
+				}
+			}
+		   }
+		}
     ],
     "globalStyle" : {
         "navigationBarTextStyle" : "white",
