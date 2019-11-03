@@ -3,16 +3,19 @@
 		<!-- //验证当前手机 -->
 		<view class="card">
 			<view class="section">
-				<view>原手机号码:</view>
-				<view style="padding-left: 5upx;" @click="show" v-if="!inputShow">{{formData.phone}}</view>
-				<view>
-					<input v-if="inputShow" focus="true"  type="number" v-model.number="formData.code" />
+				<view class="phonenumber" style="" @click="show" v-if="!inputShow">
+					<view>原手机号码:</view>
+					<view>{{formData.phone}}</view>
+				</view>
+				<view class="phonenumber" v-else>
+					<view>新手机号码:</view>
+					<input focus="true" type="number"  />
 				</view>
 			</view>
 			<view class="section">
 				<view class="check">
 					<view style="width: 30%;">验证码:</view>
-					<view >
+					<view>
 						<input type="number" v-model.number="formData.code" />
 					</view>
 					<view>
@@ -22,9 +25,10 @@
 				</view>
 			</view>
 		</view>
-		<view class="bind" >
-			<view class="bindphone" @tap="bindNewPhone()">绑定新手机</view>
-			<view @tap="target('/pages/user-center/account/bindNewPhone')">原手机不可用?</view>
+		<view class="bind">
+			<button class="bindphone" type="primary" @tap="bindNewPhone()" size="mini">绑定新手机</button>
+			<!-- <view class="bindphone" @tap="bindNewPhone()">绑定新手机</view> -->
+			<view class="confirm" @tap="target('/pages/user-center/account/bindNewPhone')">原手机不可用?</view>
 		</view>
 	</view>
 </template>
@@ -49,7 +53,7 @@
 			};
 		},
 		methods: {
-			show(){
+			show() {
 				this.inputShow = true
 			},
 			// 获取手机验证码
@@ -85,12 +89,12 @@
 					this.codeButtonType = false
 				})
 			},
-			target(url){
+			target(url) {
 				uni.navigateTo({
 					url
 				});
 			},
-			bindNewPhone(){
+			bindNewPhone() {
 				console.log("11111")
 			}
 
@@ -101,7 +105,7 @@
 <style lang="scss">
 	#checkPhone {
 		.card {
-			padding: 100upx  10upx;
+			padding: 100upx 10upx;
 
 			.section {
 				display: flex;
@@ -112,12 +116,17 @@
 				&>view {
 					font-weight: bold;
 				}
+				.phonenumber{
+					padding-left: 5upx;
+					display: flex;
+				}
 			}
 
-			.check{
+			.check {
 				display: flex;
 				align-items: center;
-				button{
+
+				button {
 					padding: 0;
 					width: 230upx;
 					height: 75upx;
@@ -125,15 +134,19 @@
 				}
 			}
 		}
-		.bind{
-			padding:25upx 250upx;
+
+		.bind {
+			padding: 25upx 60upx;
 			text-align: center;
-			
-			.bindphone{
+
+			.bindphone {
 				border: 2.083rpx solid #C8C8CC;
-				margin: 31.25rpx 0;
-				padding: 12.5rpx 25rpx;
+				display: block;
 				text-align: center;
+			}
+
+			.confirm {
+				padding: 15upx;
 			}
 		}
 	}

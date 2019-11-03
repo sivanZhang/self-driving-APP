@@ -8,7 +8,8 @@
 			</view>
 		</view>
 		<view class="bind" >
-			<view class="bindphone" @tap="bindNewPhone()">绑定新手机</view>
+			<button class="bindphone" type="primary" @tap="bindNewPhone()" size="mini">绑定新手机</button>
+			<!-- <view class="bindphone" @tap="bindNewPhone()">绑定新手机</view> -->
 		</view>
 	</view>
 </template>
@@ -51,13 +52,12 @@
 			}
 		}
 		.bind{
-			padding:0upx 250upx;
+			padding:0upx 60upx;
 			text-align: center;
 			
 			.bindphone{
 				border: 2.083rpx solid #C8C8CC;
-				margin: 31.25rpx 0;
-				padding: 12.5rpx 25rpx;
+				display: block;
 				text-align: center;
 			}
 		}

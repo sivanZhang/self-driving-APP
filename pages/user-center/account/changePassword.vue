@@ -33,7 +33,7 @@
 				</view>
 			</view>
 			<view class="assure" >
-				<view class="assurePassword" @tap="assure()">确认</view>
+				<button class="assurePassword" type="primary" @tap="assure()" size="mini">确认</button>
 			</view>
 		</view>
 	</view>
@@ -145,13 +145,14 @@
 				font-weight: bold;
 			}
 			.assure{
-				padding:25upx 280upx;
+				padding:25upx 60upx;
 				text-align: center;
 				
 				.assurePassword{
 					border: 2.083rpx solid #C8C8CC;
-					margin: 31.25rpx 0;
-					padding: 12.5rpx 25rpx;
+					    display: block;
+					// margin: 31.25rpx 0;
+					// padding: 12.5rpx 25rpx;
 					text-align: center;
 				}
 			}
