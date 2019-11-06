@@ -1,5 +1,6 @@
 <template>
 	<view id="personCenter">
+		<!-- 个人中心 -->
 		<view class="header">
 			<image src="../../../static/image/touxiang.png"></image>
 			<view class="header-top">
@@ -12,9 +13,9 @@
 				</view>
 			</view>
 			<view class="header-main">
-				<view style="padding: 15upx,0upx;">关注{{follow}}
+				<view style="padding: 15upx,0upx;">关注{{follow_count}}
 					<span style="padding:0upx 15upx;">|</span></view>
-				<view style="padding: 15upx,0upx;">粉丝{{fans}}
+				<view style="padding: 15upx,0upx;">粉丝{{fans_count}}
 					<span style="padding:0upx 15upx;">|</span></view>
 				<view style="padding: 15upx,0upx;">被赞与收藏0</view>
 			</view>
@@ -41,8 +42,8 @@
 	export default {
 		data() {
 			return {
-				follow: null,
-				fans: null
+				follow_count:null,
+				fans_count:null,
 			};
 		},
 		computed: {
@@ -57,11 +58,13 @@
 				})
 			},
 			search() {
-				// searchFollow({
-				// 	follow: ''
-				// }).then(res => {
-				// 	console.log(res.data)
-				// })
+				searchFollow({
+					followfans: ''
+				}).then(res => {
+					this.follow_count = res.data.msg.follow_count;
+					this.fans_count = res.data.msg.fans_count
+					console.log(res)
+				})
 
 			}
 		},

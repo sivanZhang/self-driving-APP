@@ -1,6 +1,6 @@
 <template>
 	<view id="BrowserHistory">
-		浏览历史
+		<!-- 浏览历史 -->
 	</view>
 </template>
 

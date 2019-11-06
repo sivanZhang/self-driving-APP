@@ -1,5 +1,6 @@
 <template>
 	<view id="accountSetting">
+		<!-- 账号管理 -->
 		<view class="card">
 			<view class="section">
 				<view class="left">
@@ -7,7 +8,7 @@
 					<view style="padding-left: 5upx;">手机号码:{{UserInfo.phone}}</view>
 				</view>
 				<view @tap="target('/pages/user-center/account/checkPhone')">
-					<button type="text">修改</button>
+					<button type="text" size="mini">修改</button>
 				</view>
 			</view>
 			<view class="section" @tap="target('/pages/user-center/account/changePassword')">
@@ -35,8 +36,8 @@
 				return this.$store.state.UserInfo
 			}
 		},
-		methods:{
-			target(url){
+		methods: {
+			target(url) {
 				uni.navigateTo({
 					url
 				});
@@ -47,29 +48,33 @@
 
 <style lang="scss">
 	#accountSetting {
+		background-color: #efefef;
+		height: 100vh;
+		width: 100%;
+
 		.card {
-			padding: 100upx 10upx;
+			padding: 25upx 0upx;
 
 			.section {
+				background-color: #FFFFFF;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				padding: 50.25upx 41.666upx;
-				border-bottom: 2.083upx solid #c8c8cc;
+				padding: 20upx;
+				border-bottom: 2.083upx solid #efefef;
 
 				.left {
 					display: flex;
 					align-items: center;
 					font-weight: bold;
 				}
-                button {
-                	width: 130upx;
-                	height: 75upx;
-                	font-size: 32upx;
-                }
 				image {
 					width: 60upx;
 					height: 60upx;
+				}
+
+				.uni-icon {
+					color: #c8c8cc;
 				}
 			}
 		}

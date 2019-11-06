@@ -1,6 +1,6 @@
 <template>
 	<view id="home">
-		<view class="header">
+		<!-- <view class="header">
 			<view class="title">
 				Home
 				<view class="hint">
@@ -16,8 +16,8 @@
 				</view>
 			</view>
 		</view>
-		<view class="main">
-			<view class="mask">
+		<view class="main"> -->
+	<!-- 		<view class="mask">
 				<view class="left" @tap="target('/pages/notifications/new-list')">
 					<image src="/static/icons/laba.svg"></image>
 					<view class="tag-p">All News</view>
@@ -31,53 +31,53 @@
 				</view>
 				<view v-else class="right">No news</view>
 			</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 
 <script>
-	import {GET_Notice,GET_News} from '@/api/notice'
-	import dayjs from "dayjs";
-	import uniIcon from "@/components/uni-icon/uni-icon.vue"
-	import uniBadge from "@/components/uni-badge/uni-badge.vue"
-	export default {
-		components: {
-			uniBadge,
-			uniIcon
-		},
-		data() {
-			return {
-				noticeData: [],
-				newsListData: [],
-				notice: '',
-			};
-		},
-		methods: {
-			target(url) {
-				uni.navigateTo({
-					url
-				});
-			}
-		},
-		onLoad() {
-			const Token = this.$store.state.estateToken || uni.getStorageSync('estateToken');
-			if (!Token) {
-				uni.navigateTo({
-        url:"/pages/login/login-page"
-    })
-			} else {
-				GET_Notice().then(res => {
-					this.noticeData = [...res.data.msg];
-					this.noticeData = this.noticeData.filter(item => item.fields.read == 0);
-				});
-				GET_News().then(res => {
-					this.newsListData = [...res.data.msg];
-					this.notice = this.newsListData[0].fields.title;
-				});
-			}
-
-		}
-	}
+// 	import {GET_Notice,GET_News} from '@/api/notice'
+// 	import dayjs from "dayjs";
+// 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
+// 	import uniBadge from "@/components/uni-badge/uni-badge.vue"
+// 	export default {
+// 		components: {
+// 			uniBadge,
+// 			uniIcon
+// 		},
+// 		data() {
+// 			return {
+// 				noticeData: [],
+// 				newsListData: [],
+// 				notice: '',
+// 			};
+// 		},
+// 		methods: {
+// 			target(url) {
+// 				uni.navigateTo({
+// 					url
+// 				});
+// 			}
+// 		},
+// 		onLoad() {
+// 			const Token = this.$store.state.estateToken || uni.getStorageSync('estateToken');
+// 			if (!Token) {
+// 				uni.navigateTo({
+//         url:"/pages/login/login-page"
+//     })
+// 			} else {
+// 				GET_Notice().then(res => {
+// 					this.noticeData = [...res.data.msg];
+// 					this.noticeData = this.noticeData.filter(item => item.fields.read == 0);
+// 				});
+// 				GET_News().then(res => {
+// 					this.newsListData = [...res.data.msg];
+// 					this.notice = this.newsListData[0].fields.title;
+// 				});
+// 			}
+// 
+// 		}
+// 	}
 </script>
 
 <style lang="scss" scoped>

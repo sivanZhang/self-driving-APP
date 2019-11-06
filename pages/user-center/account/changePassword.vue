@@ -3,7 +3,7 @@
 		<!-- 修改密码 -->
 		<view class="card">
 			<view>
-				<view class="identify" style="">验证身份</view>
+				<view class="identify" style="padding-bottom: 10upx;">验证身份:</view>
 				<view class="section">
 					<view class="check">
 						<view style="width: 30%;">验证码:</view>
@@ -18,22 +18,39 @@
 				</view>
 			</view>
 			<view>
-				<view class="setting" style="">设置新密码</view>
+				<view class="setting" style="padding-bottom: 10upx;">设置新密码:</view>
 				<view class="settingNew">
-					<view>新密码:</view>
-					<view style="padding-left: 10upx;">
-						<input type="number"  />
+					<view class="newpassward">
+						<view>新密码:</view>
+						<view style="padding-left: 10upx;">
+							<input placeholder="请输入密码" :password="showPassword" v-model="NewPassward"/>
+						</view>
 					</view>
+					<view v-if="isshow" @click="changePassword">
+						<view class="iconfont icon-yanjing-biyan"></view>
+					</view>
+					<view v-else @click="changePassword">
+						<view class="iconfont icon-jurassic_openeyes"></view>
+					</view>
+
 				</view>
 				<view class="settingNew">
-					<view>确认密码:</view>
-					<view style="padding-left: 10upx;">
-						<input type="number" value="" />
+					<view class="newpassward">
+						<view>确认密码:</view>
+						<view style="padding-left: 10upx;">
+							<input placeholder="请输入密码" :password="showPassword1" v-model="assureNewPassward"/>
+						</view>
+					</view>
+					<view v-if="isshow1" @click="assurePassword">
+						<view class="iconfont icon-yanjing-biyan"></view>
+					</view>
+					<view v-else @click="assurePassword">
+						<view class="iconfont icon-jurassic_openeyes"></view>
 					</view>
 				</view>
 			</view>
-			<view class="assure" >
-				<button class="assurePassword" type="primary" @tap="assure()" size="mini">确认</button>
+			<view class="assure">
+				<button class="assurePassword" type="primary" @tap="assure()" size="mini">确定</button>
 			</view>
 		</view>
 	</view>
@@ -52,17 +69,31 @@
 					code: '',
 					username: '',
 				},
+				showPassword: true,
+				showPassword1: true,
+				NewPassward: '',
+				assureNewPassward: '',
+				isshow: false,
+				isshow1: false,
 				codeButtonType: false,
 				secondCount: 30,
 			};
 		},
 		methods: {
+			changePassword: function() {
+				this.showPassword = !this.showPassword;
+				this.isshow = !this.isshow
+			},
+			assurePassword: function() {
+				this.showPassword1 = !this.showPassword1;
+				this.isshow1 = !this.isshow1
+			},
 			onNavigationBarButtonTap(val) {
 				uni.reLaunch({
 					url: "/pages/login/forgot-password"
 				})
 			},
-			assure(){
+			assure() {
 				console.log("修改成功")
 			},
 			// 获取手机验证码
@@ -104,18 +135,21 @@
 
 <style lang="scss">
 	#changePassword {
+		background:#EFEFEF;
 		.card {
 			padding: 100upx 10upx;
-			.identify{
+
+			.identify {
 				padding: 0upx 41.666upx;
 				font-size: 38upx;
 			}
 
 			.section {
+				background:#FFFFFF;
 				display: flex;
 				align-items: center;
-				padding: 50.25upx 41.666upx;
-				border-bottom: 2.083upx solid #c8c8cc;
+				padding: 15.25upx 41.666upx;
+				// border-bottom: 2.083upx solid #c8c8cc;
 
 				&>view {
 					font-weight: bold;
@@ -125,32 +159,42 @@
 			.check {
 				display: flex;
 				align-items: center;
+				height:70upx;
 
 				button {
 					padding: 0;
-					width: 230upx;
-					height: 75upx;
-					font-size: 32upx;
+					width: 200upx;
+					font-size: 30upx;
 				}
 			}
-			.setting{
+
+			.setting {
 				padding: 50.25upx 41.666upx 0upx 41.666upx;
 				font-size: 38upx;
 			}
-			.settingNew{
+
+			.settingNew {
+				background:#FFFFFF;
 				display: flex;
 				align-items: center;
-				padding: 50.25upx 41.666upx;
-				border-bottom: 2.083upx solid #c8c8cc;
+				padding: 15.25upx 41.666upx;
 				font-weight: bold;
+				justify-content: space-between;
+				border: 2.083rpx solid #C8C8CC;
+
+				.newpassward {
+					display: flex;
+					align-items: center;
+				}
 			}
-			.assure{
-				padding:25upx 60upx;
+			.assure {
+				padding: 25upx 60upx;
 				text-align: center;
-				
-				.assurePassword{
-					border: 2.083rpx solid #C8C8CC;
-					    display: block;
+
+				.assurePassword {
+					height: 80upx;
+					// border: 2.083rpx solid #C8C8CC;
+					display: block;
 					// margin: 31.25rpx 0;
 					// padding: 12.5rpx 25rpx;
 					text-align: center;

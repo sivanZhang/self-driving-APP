@@ -1,4 +1,5 @@
 <script>
+	import Vue from 'vue'
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
@@ -14,5 +15,6 @@
 
 <style lang="scss">
 	@import './common/uni.scss';
+	@import './common/iconfont.css';
 	@import url(/static/font/iconfont.css)
 </style>

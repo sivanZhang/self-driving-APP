@@ -51,7 +51,7 @@
 					<view class="uni-content-text">悬赏</view>
 				</view>
 				<view  class="uni-content-box">
-					<view class="uni-content-image" @tap="target('/pages/user-center/mymessage')">
+					<view class="uni-content-image" @tap="target('/pages/user-center/message/mymessage')">
 						<image src="/static/icons/xiaoxi.png"  />
 					</view>
 					<view class="uni-content-text">消息</view>
