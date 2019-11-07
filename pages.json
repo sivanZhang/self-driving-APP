@@ -91,13 +91,45 @@
 			}
 		}, {
 			"path": "pages/team/from-team",
-			"style": {}
+			"style": {
+				"navigationBarTitleText": "搭伴",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue635", //搜索
+							"fontSrc": "/static/fonts/iconfont.ttf",
+							"fontSize": "22px"
+
+						}, {
+							"text": "\ue623", //添加群聊
+							"fontSrc": "/static/font/iconfont.ttf",
+							"fontSize": "22px"
+						}]
+
+					}
+				}
+			}
 		}, {
 			"path": "pages/circle/hi-circle",
 			"style": {}
 		}, {
 			"path": "pages/offer-reward/offer-reward",
-			"style": {}
+			"style": {
+				"navigationBarTitleText": "悬赏",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue623", //添加群聊
+							"fontSrc": "/static/font/iconfont.ttf",
+							"fontSize": "22px"
+						}, {
+							"text": "\ue635", //搜索
+							"fontSrc": "/static/fonts/iconfont.ttf",
+							"fontSize": "22px"
+						}]
+					}
+				}
+			}
 		}, {
 			"path": "pages/login/sign-up",
 			"style": {}
@@ -281,12 +313,30 @@
 			"style": {
 				"navigationBarTitleText": "通知"
 			}
+		},
+		{
+			"path": "pages/team/createTeam/index",
+			"style": {
+				// "navigationBarTextStyle": "black",
+				"navigationBarTitleText": "创建搭伴",
+				// "navigationBarBackgroundColor": "#FAFAFA",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"float": "right",
+							"text": "发布",
+							"width": "auto",
+							"fontSize": "38upx"
+						}]
+					}
+				}
+			}
 		}
 	],
 	"globalStyle": {
-		"navigationBarTextStyle": "white",
+		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
-		"navigationBarBackgroundColor": "#222329",
+		"navigationBarBackgroundColor": "#fafafa",
 		"backgroundColor": "#C7C6CD"
 	},
 	"condition": { //模式配置，仅开发期间生效
