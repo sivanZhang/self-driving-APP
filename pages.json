@@ -331,6 +331,42 @@
 					}
 				}
 			}
+		},
+		{
+			"path": "pages/activity/activity",
+			"style": {
+				"navigationBarTitleText": "自驾之旅"
+				// "app-plus": {
+				// 	"titleNView": false
+				// }
+			}
+		},
+		{
+			"path": "pages/journey/journey",
+			"style": {
+				"navigationBarTitleText": "自驾之旅"
+				// "app-plus": {
+				// 	"titleNView": false
+				// }
+			}
+		},
+		{
+			"path": "pages/share/share",
+			"style": {
+				"navigationBarTitleText": "自驾之旅"
+				// "app-plus": {
+				// 	"titleNView": false
+				// }
+			}
+		},
+		{
+			"path": "pages/foot/foot",
+			"style": {
+				"navigationBarTitleText": "自驾之旅"
+				// "app-plus": {
+				// 	"titleNView": false
+				// }
+			}
 		}
 	],
 	"globalStyle": {

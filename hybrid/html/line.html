@@ -1,0 +1,407 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+		<title>自驾之旅</title>
+		<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+
+		<style>
+			body,html,#container{
+            height:100%;
+            width: 100%;
+			
+			overflow-x: hidden;
+        }
+		
+		
+        .input-card{
+			top:1rem;
+			left:13.5rem;
+			width:16rem;
+			height:10rem;
+			z-index:99;
+			position:fixed;
+		}
+        .input-card .btn{
+            margin-right: 1.2rem;
+            width: 6rem;
+        }
+		.icon{
+			overflow:hidden;
+			display: inline-block;
+			    position: relative;
+			    height:100px;
+			    width: 100px;
+				
+				
+		}
+		.icon-del {
+		    background: url(../../static/image/journey/p.png) no-repeat;
+		   height:100%;
+		   width:100%;
+		   
+		   display: inline-block;
+		}
+		.icon >.icon-del {
+		    filter: drop-shadow(100px 0 #fff); 
+			position: relative;
+			   left: -100px;
+			 
+		   }
+		
+        .input-card .btn:last-child{
+            margin-right: 0;
+        }
+		  
+				.btn-list {
+				  display: flex;
+				  flex-direction: column;
+				  min-width: 0;
+				  word-wrap: break-word;
+				  background-color: #fff;
+				  background-clip: border-box;
+				  z-index:99;
+				  position:relative;
+				  width: 12rem;
+				  height:10rem;
+				  border-width: 0;
+				  border-radius: 0.4rem;
+				  box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
+				  position: fixed;
+				  top: 1rem;
+				  left: 0.5rem;
+				  -ms-flex: 1 1 auto;
+				  flex: 1 1 auto;
+				  padding: 0.75rem 1.25rem;
+				}
+                .bttn {
+                  display: inline-block;
+                  font-weight: 400;
+                  text-align: center;
+                  white-space: nowrap;
+                  vertical-align: middle;
+                 margin-top:1.5rem;
+                  user-select: none;
+                  border: 1px solid transparent;
+                  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+                  background-color: transparent;
+                  background-image: none;
+                  color: #25A5F7;
+                  border-color: #25A5F7;
+                  padding: .25rem .5rem;
+                  line-height: 1.5;
+                  border-radius: 1rem;
+                  -webkit-appearance: button;
+                  cursor:pointer;
+                }
+               
+			   
+               /*自定义滚动条的伪对象选择器, CSS 可以隐藏滚动条*/
+              #i::-webkit-scrollbar{
+                   display: none;
+               }
+			   
+               .heart { background: url(http://demo.htmleaf.com/1511/201511131551/images/web_heart_animation.png);
+                 height: 90px; width: 90px;  position: relative; top:-4.6rem; left:-1rem; background-size: 2900%; }
+               .heart:hover, .heart:focus { background-position: right; }
+                @-webkit-keyframes heartBlast {  from {
+                background-position: left;
+               }
+                to{
+                background-position: right;
+               }
+               }
+                @keyframes heartBlast {  from{
+                background-position: left;
+               }
+                to{
+                background-position: right;
+               }
+               }
+               .heartAnimation {  -webkit-animation-name: heartBlast; animation-name: heartBlast; -webkit-animation-duration: .3s; animation-duration: .3s; -webkit-animation-iteration-count: 1; animation-iteration-count: 1; -webkit-animation-timing-function: steps(28); animation-timing-function: steps(28); background-position: right; }
+               
+               
+              
+              
+	                   
+    </style>
+	</head>
+	<body>
+		<div id="container"></div>
+
+		  <div style="border-radius:5px;background:#fff;position:relative;z-index:999;top:-17rem;left:4rem;width:22rem;height:10rem;">
+			<image style="width:4.5rem;height:4.5rem;left:1rem;top:-1rem;border-radius:50%;position:relative;" src="../../static/image/journey/1.jpeg">
+			</image>
+			<p style="position:relative;left:5rem;top:-3.3rem;">越野越执着</p>
+			<p style="position:relative;color:#7BC549;white-space: pre-wrap;top:-5rem;left:14rem;font-size:16px;"><b>14h 40m</b></p>
+			<p style="position:relative;white-space: pre-wrap;font-size:13px;top:-3rem;left:1rem;">     开始时间</br>2019年10月11日</br> <b>    16:40</b></p>
+			<p style="position:relative;white-space: pre-wrap;font-size:13px;top:-8rem;left:14rem;">     结束时间</br>2019年10月12日</br> <b>    11:20</b></p>
+		</div> 
+		
+		<div class="box" style="border-radius:5px;background:#fff;position:relative;z-index:999;top:-16rem;left:4rem;width:22rem;height:11rem;padding:10px">
+			 <img style="position:relative;border-radius:5px;width:8rem;height:10.2rem;left:0.5rem;bottom:0.4rem;" src="../../static/image/journey/c.jpg" />
+			<button type="button" onclick="showImg();" style="position:relative;z-index:9;color:#fff;top:-8.5rem;left:3.5rem;background:transparent;font-size:16px;border:0px;"><pre>+6 more</br><img src="../../static/image/journey/down.png" /></pre></button>
+			<img style="position:relative;border-radius:5px;z-index:1;top:-15.2rem;left:10.5rem;width:9.2rem;height:5rem;" src="../../static/image/journey/f.jpg" />
+			<img style="position:relative;border-radius:5px;top:-9.8rem;left:5.6rem;width:4.5rem;height:5rem;" src="../../static/image/journey/c.jpg" />
+			<img style="position:relative;border-radius:5px;top:-9.8rem;left:-3.8rem;width:4.5rem;height:5rem;" src="../../static/image/journey/f.jpg" /> 
+		</div>
+		<div class="footer" style="position:fixed;bottom:0;height:3rem;width:100%;background-color:#fff;z-index:999;">
+			<image style="width:2rem;position:relative;left:24rem;top:0.5rem;" src="../../static/image/journey/shar.png">
+			</image>
+
+			<button class=" b" style="position:relative;left:23.7rem;top:0rem;border:0px;background:transparent" type="button"
+			 data-action="navigateTo">分享</button>
+			<image style="width:2rem;position:relative;left:2rem;top:0.5rem;" src="../../static/image/journey/l.png">
+			</image>
+			<button style="position:relative;left:1.5rem;top:0rem;border:0px;background:transparent" type="button">评论</button>
+			<image style="width:2rem;position:relative;left:7.5rem;top:0.3rem;" src="../../static/image/journey/g.png">
+			</image>
+			<button style="position:relative;left:7rem;top:0rem;border:0px;background:transparent" type="button">关注</button>
+			<image style="width:2rem;position:relative;left:-3.5rem;top:0.5rem;" src="../../static/image/journey/collection.png">
+			</image>
+			<button style="position:relative;left:-4rem;top:0rem;border:0px;background:transparent" type="button">收藏</button>
+			
+			<div class="heart" id="like2" rel="like"></div>
+			<button style="position:relative;left:3.5rem;bottom:9.2rem;border:0px;background:transparent" type="button">点赞</button>
+		</div>
+		 
+      <div id="im" style="display:none;">
+       <div id="i"  style="position:relative;white-space: nowrap;overflow-y:hidden;width:30rem;top:-13rem;">
+		<img id="img" style="position:relative;width:6rem;height:8rem;" src="../../static/image/journey/1.jpg" />
+		<img id="img" style="position:relative;width:6rem;height:8rem;" src="../../static/image/journey/2.jpg" />
+		<img id="img" style="position:relative;width:6rem;height:8rem;" src="../../static/image/journey/3.jpg"/>
+		<img id="img" style="position:relative;width:6rem;height:8rem;" src="../../static/image/journey/4.jpg"/>
+		<img id="img" style="position:relative;width:6rem;height:8rem;" src="../../static/image/journey/1.jpg" />
+		<img id="img" style="position:relative;width:6rem;height:8rem;" src="../../static/image/journey/2.jpg" />
+        </div>
+       </div>
+    
+
+		<div class="btn-list">
+			<button class="bttn" type="button" data-action="navigateTo">动态</button>
+			<button class="bttn" type="button" action="navigateTo">足迹</button>
+		</div>
+
+		<div class="input-card">
+			<h4>绘制我的轨迹</h4>
+			<div class="input-item">
+				<input type="button" class="btn" value="我的行程" id="start" onclick="startAnimation()" />
+				<input type="button" class="btn" value="暂停" id="pause" onclick="pauseAnimation()" />
+			</div>
+			<div class="input-item">
+				<input type="button" class="btn" value="继续" id="resume" onclick="resumeAnimation()" />
+				<input type="button" class="btn" value="停止" id="stop" onclick="stopAnimation()" />
+			</div>
+		</div>   
+
+		<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+		<script type="text/javascript" src='https://a.amap.com/jsapi_demos/static/resource/capitals.js'></script>
+		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4f59b5834fb366bde9c97903d0963626"></script>
+		<script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js"></script>
+		<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+		<script>
+			$(document).ready(function() {
+				$('body').on("click", '.heart', function() {
+					var A = $(this).attr("id");
+					var B = A.split("like");
+					var messageID = B[1];
+
+					$(this).css("background-position", "")
+					var D = $(this).attr("rel");
+					if (D === 'like') {
+
+						$(this).addClass("heartAnimation").attr("rel", "unlike");
+					} else {
+
+						$(this).removeClass("heartAnimation").attr("rel", "like");
+						$(this).css("background-position", "left");
+					}
+				});
+			});
+			//定义一个地图
+			var map = new AMap.Map("container", {
+				resizeEnable: true, //窗口大小可以被调整
+				center: [116.397428, 39.90923], //中心点位置
+				zoom: 20 //缩放级别
+			});
+
+			function showImg() {
+				document.getElementById('im').style.display = 'block';
+			}
+
+			//定义一系列标记点
+			var marker, lineArr = [
+				[116.478935, 39.997761],
+				[116.478939, 39.997825],
+				[116.478912, 39.998549],
+				[116.478912, 39.998549],
+				[116.478998, 39.998555],
+				[116.478998, 39.998555],
+				[116.479282, 39.99856],
+				[116.479658, 39.998528],
+				[116.480151, 39.998453],
+				[116.480784, 39.998302],
+				[116.480784, 39.998302],
+				[116.481149, 39.998184],
+				[116.481573, 39.997997],
+				[116.481863, 39.997846],
+				[116.482072, 39.997718],
+				[116.482362, 39.997718],
+				[116.483633, 39.998935],
+				[116.48367, 39.998968],
+				[116.484648, 39.999861],
+				[116.48367, 39.998968],
+				[116.479658, 39.998528],
+				[116.478939, 39.997825],
+				[116.478935, 39.997761]
+			];
+
+
+			//自定义marker(点标记)
+			marker = new AMap.Marker({
+				map: map, //要显示该marker的地图对象
+				position: [116.478935, 39.997761], //点标记的位置
+				content: '<img src="https://webapi.amap.com/images/car.png" />', //自定义点标记覆盖物内容
+				offset: new AMap.Pixel(-26, -13), //相对于点标记的偏移位置
+				autoRotation: true, //是否自动旋转,点标记在使用动画时,路径方向如果有变,是否自动设置角度
+				angle: -90, //点标记的旋转角度
+			});
+			//继续定义点标记
+			var viaMarker = new AMap.Marker({
+				position: new AMap.LngLat(116.478912, 39.998549),
+
+				content: '<a target="_blank" href = "https://ditu.amap.com/detail/B000A8URXB?citycode=110105"><i class="icon"><i class="icon-del"></i></i></a>',
+
+				offset: new AMap.Pixel(0, -55)
+			});
+			var vMarker = new AMap.Marker({
+
+				position: new AMap.LngLat(116.478912, 39.998547),
+				content: '<img style="border-radius:50%;width:50px;height:50px" src="../../static/image/journey/c.jpg" >',
+				offset: new AMap.Pixel(7, -52)
+			});
+			var vMarker1 = new AMap.Marker({
+				position: new AMap.LngLat(116.478912, 39.998547),
+				content: '<div class="radian" style=" position:relative;width: 13rem;height: 4rem;border-radius:10px;background-color:#fff;"><pre style="position:relative;left:1.5rem;top:0.6rem;"><p><b>路上美景</b></br>距离0.00km 海拔1314m</p></pre></div>',
+				offset: new AMap.Pixel(40, -65)
+			})
+			var aMarker = new AMap.Marker({
+				position: new AMap.LngLat(116.480784, 39.998302),
+
+				content: '<a target="_blank" href = "https://ditu.amap.com/detail/B0FFG2XU0U?citycode=110000"><i class="icon"><i class="icon-del"></i></i></a>',
+
+				offset: new AMap.Pixel(10, -40)
+			});
+			var aMarker2 = new AMap.Marker({
+				position: new AMap.LngLat(116.480784, 39.998302),
+				content: '<div class="radian" style=" position:relative;width: 13rem;height: 4rem;border-radius:10px;background-color:#fff;background: radial-gradient(circle at 0 22px, transparent 19px, white 23px)  left;"><pre style="position:relative;left:1.7rem;top:0.6rem;"><p><b>望京SOHO中心T2</b></br>距离0.00km 海拔1299m</p></pre></div>',
+				offset: new AMap.Pixel(47, -45)
+			})
+			var aMarker1 = new AMap.Marker({
+				position: new AMap.LngLat(116.480784, 39.998299),
+				content: '<img style="border-radius:50%;width:50px;height:50px" src="../../static/image/journey/f.jpg" >',
+				offset: new AMap.Pixel(17, -37)
+			});
+			var eMarker = new AMap.Marker({
+				position: new AMap.LngLat(116.482362, 39.997718),
+				// 将一张图片的地址设置为 icon
+				content: '<i class="icon"><i class="icon-del"></i></i>',
+				// 设置了 icon 以后，设置 icon 的偏移量，以 icon 的 [center bottom] 为原点
+				offset: new AMap.Pixel(20, -130)
+			});
+			var eMarker1 = new AMap.Marker({
+				position: new AMap.LngLat(116.482362, 39.997716),
+				content: '<img style="border-radius:50%;width:50px;height:50px" src="../../static/image/journey/2.jpg" > ',
+				offset: new AMap.Pixel(27, -127)
+			})
+			var eMarker2 = new AMap.Marker({
+				position: new AMap.LngLat(116.482362, 39.997716),
+				// 将一张图片的地址设置为 icon
+				content: '<div class="radian" style=" position:relative;width: 13rem;height: 4rem;border-radius:10px;background-color:#fff;background: radial-gradient(circle at 0 25px, transparent 19px, #fff 25px)  left;"><pre style="position:relative;left:1.9rem;top:0.6rem;"><p><b>望京SOHO中心T2</b></br>距离0.00km 海拔1299m</p></pre></div>',
+				// 设置了 icon 以后，设置 icon 的偏移量，以 icon 的 [center bottom] 为原点
+				offset: new AMap.Pixel(57, -140)
+			})
+			map.add([viaMarker, vMarker1, aMarker, aMarker1, eMarker, aMarker2, vMarker, eMarker1, eMarker2]); //在地图上添加这些自定义标记点
+
+
+			// 绘制轨迹
+			var polyline = new AMap.Polyline({
+				map: map, //显示该轨迹的地图
+				path: lineArr, //显示该轨迹的路径
+				showDir: true,
+				strokeColor: "#28F", //线颜色
+				// strokeOpacity: 1,     //线透明度
+				strokeWeight: 6, //线宽
+				// strokeStyle: "solid"  //线样式
+			});
+
+			//绘制小车走过的轨迹
+			var passedPolyline = new AMap.Polyline({
+				map: map,
+				// path: lineArr,
+				strokeColor: "#AF5", //线颜色
+				// strokeOpacity: 1,     //线透明度
+				strokeWeight: 6, //线宽
+				// strokeStyle: "solid"  //线样式
+			});
+
+			//点标记移动的方法
+			marker.on('moving', function(e) {
+				passedPolyline.setPath(e.passedPath);
+			});
+			//适应窗口
+			map.setFitView();
+			//开始动画
+			function startAnimation() {
+				marker.moveAlong(lineArr, 200);
+			}
+
+			function pauseAnimation() {
+				marker.pauseMove();
+			}
+
+			function resumeAnimation() {
+				marker.resumeMove();
+			}
+
+			function stopAnimation() {
+				marker.stopMove();
+			}
+			window.onload = function() {
+				document.addEventListener('UniAppJSBridgeReady', function() {
+					document.querySelector('.btn-list').addEventListener('click', function(evt) {
+						var target = evt.target;
+						if (target.tagName === 'BUTTON') {
+							var action = target.getAttribute('data-action');
+							if (action === 'navigateTo') {
+								uni.navigateTo({
+									url: '/pages/activity/activity'
+								});
+							}
+							var act = target.getAttribute('action');
+							if (act === 'navigateTo') {
+								uni.navigateTo({
+									url: '/pages/foot/foot'
+								});
+							}
+						}
+					});
+					document.querySelector('.b').addEventListener('click', function(evt) {
+						var target = evt.target;
+						if (target.tagName === 'BUTTON') {
+							var action = target.getAttribute('data-action');
+							if (action === 'navigateTo') {
+								uni.navigateTo({
+									url: '/pages/share/share'
+								});
+							}
+
+						}
+					});
+				});
+			}
+		</script>
+	</body>
+</html>

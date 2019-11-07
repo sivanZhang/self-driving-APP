@@ -39,7 +39,7 @@
 					</view>
 					<view class="uni-content-text">足迹</view>
 				</view>
-				<view class="uni-content-box">
+				<view class="uni-content-box" @tap="target('/pages/activity/activity')">
 					<view class="uni-content-image">
 						<image src="/static/icons/dongtai.png"  />
 					</view>
@@ -60,7 +60,7 @@
 			</view>
 		</view>
 		<view class="content">
-			<view class="section">
+			<view class="section" @tap="target('/pages/journey/journey')">
 				<view>
 					<image class="icon" src="/static/icons/mydriving.png"></image>
 					正在进行的自驾之旅
