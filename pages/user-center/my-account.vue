@@ -1,4 +1,5 @@
 <template>
+	<!-- 我的首页 -->
 	<view id="MyAccount">
 		<view class="wall">
 			<image @tap="changeImage()" src="/static/image/test1.jpg"></image>

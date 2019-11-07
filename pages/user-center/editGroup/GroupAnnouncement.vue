@@ -1,7 +1,8 @@
 <template>
+	<!-- 修改群公告 -->
 	<view id="GroupAnnouncement">
 		<view class="main">
-			<input type="text" focus placeholder="请编辑群公告" />
+			 <textarea  focus placeholder="请编辑群公告"  auto-height />
 		</view>
 	</view>
 </template>

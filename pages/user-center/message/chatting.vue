@@ -1,5 +1,5 @@
 <template>
-	<!-- 聊天 -->
+	<!-- 聊天界面 -->
 	<view id="chatting">
 		<view class="uni-column">
 			<view class="content" id="content" :style="{height:style.contentViewHeight+'px'}">

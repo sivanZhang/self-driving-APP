@@ -1,4 +1,5 @@
 <template>
+	<!-- 修改群组信息 -->
 	<view id="modifychatting">
 		<view class="header-image">
 			<view class="imagesize"><image src="../../../static/image/q.jpg"></image></view>

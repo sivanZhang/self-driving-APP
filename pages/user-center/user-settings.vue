@@ -1,9 +1,6 @@
 <template>
+	<!-- 设置界面 -->
 	<view id="setting">
-		<!-- <goHome /> -->
-		<!-- <view class="section" @tap="LogOut" style="position: relative;"> -->
-		<!-- <view>Log out</view>
-			<image class="icon" src="/static/icons/logout.svg"></image> -->
 		<view>
 			<view class="settingList" @tap="target('/pages/user-center/personalCenter/editProfile')">
 				<view>编辑个人信息</view>
@@ -102,23 +99,6 @@
 
 <style lang="scss">
 	#setting {
-
-		// 		.section {
-		// 			padding: 31.25upx 41.666upx;
-		// 			display: flex;
-		// 			align-items: center;
-		// 			justify-content: space-between;
-		// 			border-bottom: 2.083upx solid #c8c8cc;
-		// 
-		// 			&>view {
-		// 				font-weight: bold;
-		// 			}
-		// 
-		// 			&>.icon {
-		// 				width: 45.833upx;
-		// 				height: 45.833upx;
-		// 			}
-		// 		}
 		.settingList {
 			background-color: #FFFFFF;
 			padding: 0 41.666upx;

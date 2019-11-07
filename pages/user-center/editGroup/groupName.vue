@@ -1,4 +1,5 @@
 <template>
+	<!-- 修改群聊名称 -->
 	<view id="groupName">
 		<!-- <view > -->
 			<view class="header">群聊名称</view>

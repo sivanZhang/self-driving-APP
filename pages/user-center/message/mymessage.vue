@@ -1,14 +1,69 @@
 <template>
-	<!-- 消息 -->
+	<!-- 消息首页 -->
 	<view id="mymessage">
-		<view class="">
-			<view @tap="target('/pages/user-center/message/groupchat')">发起群聊</view>
+		<view class="list">
+			<view class="list-left">
+				<image src="../../../static/image/face.jpg"></image>
+			</view>
+			<view class="list-right">
+				<view>张三</view>
+				<view>上午10:12</view>
+			</view>
 		</view>
+		<view class="list">
+			<view class="list-left">
+				<image src="../../../static/icons/notify.png"></image>
+			</view>
+			<view class="list-right">
+				<view>提醒</view>
+		        <view>昨天</view>
+			</view>
+		</view>
+		<view class="list">
+			<view class="list-left">
+				<image src="../../../static/icons/notify.png"></image>
+			</view>
+			<view class="list-right">
+				<view>组队群聊名称1</view>
+		        <view>日期时间</view>
+			</view>
+		</view>
+		<view class="list">
+			<view class="list-left">
+				<image src="../../../static/icons/notify.png"></image>
+			</view>
+			<view class="list-right">
+				<view>回复</view>
+		        <view>11月12日</view>
+			</view>
+		</view>
+		<view class="list">
+			<view class="list-left">
+				<image src="../../../static/icons/notify.png"></image>
+			</view>
+			<view class="list-right">
+				<view>通知</view>
+		        <view>10月1日</view>
+			</view>
+		</view>
+		<view class="list">
+			<view class="list-left">
+				<image src="../../../static/icons/notify.png"></image>
+			</view>
+			<view class="list-right">
+				<view>自己建的群名称</view>
+		        <view>昨天</view>
+			</view>
+		</view>
+		<!-- 临时的一个创建群聊按钮，起作用的是导航栏的按钮 -->
+		<view style="padding: 15upx;">
+			<button type="primary" @tap="target('/pages/user-center/message/groupchat')">发起群聊</button>
+		</view>
+		<!-- //弹出创建群聊 -->
 		<uni-popup ref="popup" type="right" :custom="true" :show="true">
 			<view class="uni-logout">
 				<view class="iconfont icon-message4xinxi"></view>
 				<view @tap="target('/pages/user-center/message/groupchat')">发起群聊</view>
-				<!-- <view>添加朋友</view> -->
 			</view>
 		</uni-popup>
 	</view>
@@ -77,6 +132,29 @@
 
 <style lang="scss">
 	#mymessage {
+		.list{
+			width: 100%;
+			padding: 15upx 0upx;
+			display: flex;
+			border-bottom: 2.083upx solid #c8c8cc;
+			align-items: center;
+		}	
+		.list-left{
+			padding: 15upx;
+			
+			&>image {
+				width: 100upx;
+				height: 100upx;
+				border-radius: 10%;
+			}
+		}
+		.list-right{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 35upx 30upx 25upx 30upx;
+			width: 100%;
+		}
 		.uni-popup {
 			position: absolute;
 			width: 100%;
