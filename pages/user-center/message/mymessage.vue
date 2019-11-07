@@ -10,9 +10,9 @@
 				<view>上午10:12</view>
 			</view>
 		</view>
-		<view class="list">
+		<view class="list" @tap="target('/pages/user-center/message/tixing')">
 			<view class="list-left">
-				<image src="../../../static/icons/notify.png"></image>
+				<image src="../../../static/icons/tixing.png"></image>
 			</view>
 			<view class="list-right">
 				<view>提醒</view>
@@ -21,25 +21,25 @@
 		</view>
 		<view class="list">
 			<view class="list-left">
-				<image src="../../../static/icons/notify.png"></image>
+				<image src="../../../static/image/face.jpg"></image>
 			</view>
 			<view class="list-right">
 				<view>组队群聊名称1</view>
 		        <view>日期时间</view>
 			</view>
 		</view>
-		<view class="list">
+		<view class="list" @tap="target('/pages/user-center/message/huifu')">
 			<view class="list-left">
-				<image src="../../../static/icons/notify.png"></image>
+				<image src="../../../static/icons/huifu.png"></image>
 			</view>
 			<view class="list-right">
 				<view>回复</view>
 		        <view>11月12日</view>
 			</view>
 		</view>
-		<view class="list">
+		<view class="list" @tap="target('/pages/user-center/message/tongzhi')">
 			<view class="list-left">
-				<image src="../../../static/icons/notify.png"></image>
+				<image src="../../../static/icons/tongzhi.png"></image>
 			</view>
 			<view class="list-right">
 				<view>通知</view>
@@ -48,7 +48,7 @@
 		</view>
 		<view class="list">
 			<view class="list-left">
-				<image src="../../../static/icons/notify.png"></image>
+				<image src="../../../static/image/face.jpg"></image>
 			</view>
 			<view class="list-right">
 				<view>自己建的群名称</view>
@@ -57,13 +57,13 @@
 		</view>
 		<!-- 临时的一个创建群聊按钮，起作用的是导航栏的按钮 -->
 		<view style="padding: 15upx;">
-			<button type="primary" @tap="target('/pages/user-center/message/groupchat')">发起群聊</button>
+			<button  type="primary" @tap="target1('/pages/user-center/message/groupchat')">发起群聊</button>
 		</view>
 		<!-- //弹出创建群聊 -->
 		<uni-popup ref="popup" type="right" :custom="true" :show="true">
 			<view class="uni-logout">
 				<view class="iconfont icon-message4xinxi"></view>
-				<view @tap="target('/pages/user-center/message/groupchat')">发起群聊</view>
+				<view @tap="target1('/pages/user-center/message/groupchat')">发起群聊</view>
 			</view>
 		</uni-popup>
 	</view>
@@ -93,6 +93,9 @@
 				uni.navigateTo({
 					url
 				});
+			},
+			target1(url){
+				this.target(url);
 				this.$refs.popup.close();
 			},
 			search() {
@@ -143,8 +146,8 @@
 			padding: 15upx;
 			
 			&>image {
-				width: 100upx;
-				height: 100upx;
+				width: 80upx;
+				height: 80upx;
 				border-radius: 10%;
 			}
 		}
