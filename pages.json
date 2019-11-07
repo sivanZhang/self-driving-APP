@@ -263,6 +263,24 @@
 					}
 				}
 			}
+		},
+		{
+			"path": "pages/user-center/message/tixing",
+			"style": {
+				"navigationBarTitleText": "提醒"
+			}
+		},
+		{
+			"path": "pages/user-center/message/huifu",
+			"style": {
+				"navigationBarTitleText": "回复"
+			}
+		},
+		{
+			"path": "pages/user-center/message/tongzhi",
+			"style": {
+				"navigationBarTitleText": "通知"
+			}
 		}
 	],
 	"globalStyle": {
