@@ -6,11 +6,11 @@
 				<image src="../../../static/image/p10.jpg"></image>
 				<view class="header-name">张三</view>
 				<view style="border: 1px solid #DF5000;color:#DF5000 ;" class="header-right" v-if="followClick" @tap="follow">
-					<view style="font-size: 18upx;" class="iconfont icon-jiahao"></view>
+					<view style="font-size: 24upx;" class="iconfont icon-jiahao"></view>
 					<view>关注</view>
 				</view>
 				<view style="border: 1px solid #c8c8cc;" class="header-right" v-else @tap="follow">
-					<view style="font-size: 18upx;" class="iconfont icon-duigou"></view>
+					<view style="font-size: 24upx;" class="iconfont icon-duigou"></view>
 					<view >已关注</view>
 				</view>
 			</view>
@@ -136,7 +136,7 @@
 				 padding: 20upx;
 			}
 			.header-right {
-				font-size: 16upx;
+				font-size: 24upx;
                 width:15%;
 				height: 20px;
 				display: flex;

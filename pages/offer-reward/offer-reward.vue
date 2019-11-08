@@ -57,7 +57,7 @@
 		<!-- //弹出悬赏窗口 -->
 		<uni-popup ref="popup" type="right" :custom="true" :show="true">
 			<view class="uni-logout">
-				<view @tap="target1('/pages/user-center/message/groupchat')">我的悬赏</view>
+				<view>我的悬赏</view>
 			</view>
 			<view class="uni-logout">
 				<view @tap="target1('/pages/offer-reward/createReward/createReward')">发布悬赏</view>
