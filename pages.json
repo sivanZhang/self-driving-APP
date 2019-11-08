@@ -418,10 +418,33 @@
 		{
 			"path": "pages/offer-reward/createReward/createReward",
 			"style": {
-				"navigationBarTitleText": "发布悬赏"
-				// "app-plus": {
-				// 	"titleNView": false
-				// }
+				"navigationBarTitleText": "创建悬赏",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"float": "right",
+							"text": "确定",
+							"width": "auto",
+							"fontSize": "38upx"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/cityList/index",
+			"style": {
+				"navigationBarTitleText": "城市列表",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"float": "right",
+							"text": "确定",
+							"width": "auto",
+							"fontSize": "38upx"
+						}]
+					}
+				}
 			}
 		}
 	],
