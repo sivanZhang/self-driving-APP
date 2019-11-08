@@ -94,7 +94,7 @@
       		<text style="position:relative;top:-3.5rem;left:-1rem;font-size:16px;color:#009CF9;">10月10日</text>
       		<text style="position:relative;top:-4rem;left:0rem;font-size:15px;">我去了北京</text>
       		
-      	<image style="width:3rem;height:3rem;left:-8.5rem;top:-1rem;position:relative;"
+      	<image style="width:3rem;height:3rem;left:-8.5rem;top:-0.5rem;position:relative;"
       	    src="../../static/image/journey/e.png" @click="chooseLocation">
       		</image>  
       		<block v-if="hasLocation === false">
