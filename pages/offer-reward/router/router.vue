@@ -1,6 +1,7 @@
 <template>
 	<view id="router">
-		路线攻略
+		<!-- 路线攻略 -->
+		
 	</view>
 </template>
 

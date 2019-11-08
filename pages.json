@@ -390,10 +390,17 @@
 		{
 			"path": "pages/offer-reward/createReward/rewardDetail",
 			"style": {
-				"navigationBarTitleText": "悬赏详情"
-				// "app-plus": {
-				// 	"titleNView": false
-				// }
+				"navigationBarTitleText": "悬赏详情",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue86e",
+							"fontSrc": "/static/fonts/iconfont.ttf",
+							"fontSize": "22px",
+							"float": "right"
+						}]
+					}
+				}
 			}
 		},
 		{
