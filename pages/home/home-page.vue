@@ -34,24 +34,27 @@
 		</view> 
 	</view>-->
 	<view class="page-body">
-		<image style="width:2rem;height:2rem;position:relative;left:17rem;top:2rem;" src="../../static/image/journey/s.png" @click="shareInfo">
+		<image style="width:2rem;height:2rem;position:relative;left:17rem;top:2rem;" src="../../static/image/journey/s.png"
+		 @click="shareInfo">
 		</image>
 		<view style="position:relative;width:100%;height:5rem;background-color:#DAC2A6;top:2.5rem;">
 			<image style="width:4rem;height:4rem;left:0.5rem;top:-1rem;position:relative;border-radius:50%;" src="../../static/image/journey/1.jpeg">
 			</image>
-			<text style="font-size:16px;top:-1rem;left:1.5rem;position:relative;white-space:pre-wrap;" class="t">张三\n          10月10日出发\n</text>
-			<button style="position:relative;top:-4rem;left:3rem;width:4.5rem;height:2rem;line-height:2rem;" type="primary" plain="true">关注</button>
-			
+			<text style="font-size:16px;top:-1rem;left:1.5rem;position:relative;white-space:pre-wrap;" class="t">张三\n         10月10日出发\n</text>
+			<button style="position:relative;top:-4rem;left:3rem;width:4.5rem;height:2rem;line-height:2rem;" type="primary"
+			 plain="true">关注</button>
+
 		</view>
-		<view style="position:relative;width:100%;background-color:#DAC2A6;top:4rem;">
-			<text style="position:relative;font-size:16px;top:-0.5rem;left:0.5rem;color:#009CF9">10月11日</text>
-			<image style="width:3rem;height:3rem;position:relative;top:4rem;left:5rem;" src="../../static/image/journey/e.png" @click="chooseLocation">
+		<view style="position:relative;width:100%;background-color:#DAC2A6;top:3.4rem;">
+			<text style="position:relative;font-size:16px;top:0.4rem;left:0.5rem;color:#009CF9">10月11日</text>
+			<image style="width:3rem;height:3rem;position:relative;top:6rem;left:5rem;" src="../../static/image/journey/e.png"
+			 @click="chooseLocation">
 			</image>
 			<block v-if="hasLocation === false">
-				<view style="position:relative;left:12rem;top:2rem;">未选择位置</view>
+				<view style="position:relative;left:12rem;top:4rem;">未选择位置</view>
 			</block>
 			<block v-if="hasLocation === true">
-				<view style="position:relative;left:12rem;top:2rem;">
+				<view style="position:relative;left:12rem;top:4rem;width:7rem;">
 					{{locationAddress}}
 				</view>
 			</block>
@@ -59,33 +62,73 @@
 
 			<!-- <image style="position:relative;width:2rem;height:2rem;top:-2rem;left:-9rem;" src="../../static/img/sc.png" @click="galleryImgs"></image>
 		  <text style="position:relative;left:-11.5rem;top:-1rem;">上传图片</text> -->
-			<view class="uni-label" style="position:relative;top:-3rem;font-size:15px;left:0.7rem;">数量限制</view>
+			<view class="uni-label" style="position:relative;top:-1rem;font-size:15px;left:0.3rem;">数量限制</view>
 			<picker :range="count" @change="countChange" mode="selector">
-				<view class="uni-input" style="position:relative;background-color:#DAC2A6;top:-4.5rem;left:5rem;width:2rem;border:5px solid;border-color:#009CF9;text-align: center;font-size:15px;">{{count[countIndex]}}</view>
+				<view class="uni-input" style="position:relative;background-color:#DAC2A6;top:-2.5rem;left:4.5rem;width:2rem;border:5px solid;border-color:#009CF9;text-align: center;font-size:15px;">{{count[countIndex]}}</view>
 			</picker>
 
-			<view class="uni-uploader-info" style="position:relative;color:black;top:-4rem;left:7rem;">{{imageList.length}}/{{count[countIndex]}}</view>
+			<view class="uni-uploader-info" style="position:relative;color:black;top:0rem;left:5rem;">{{imageList.length}}/{{count[countIndex]}}</view>
 			<view class="uni-uploader-body">
 				<view class="uni-uploader__files">
 					<block v-for="(image,index) in imageList" :key="index">
-						<view class="uni-uploader__file" style="position:relative;top:0rem;left:0.5rem;">
+						<view class="uni-uploader__file">
 							<image class="uni-uploader__img" :src="image" :data-src="image" @tap="previewImage" mode="aspectFill"></image>
 							<image src="../../static/image/journey/de.png" class="remove" :data-index="index" @tap='deleteImage' style=" position:relative;width: 38upx;height: 38upx;top:-5.5rem;left:4.5rem;"></image>
-  
+
 						</view>
 					</block>
-					<view class="uni-uploader__input-box" style="position:absolute;top:-4rem;left:1rem;">  
+					<view class="uni-uploader__input-box">
 						<view class="uni-uploader__input" @tap="chooseImage"></view>
 					</view>
 				</view>
-
 			</view>
-
 		</view>
 
-
+      <view class="uni-padding-wrap">
+      	<image style="width:4rem;height:4rem;left:0.5rem;top:-1rem;position:relative;border-radius:50%;"
+      	    src="../../static/image/journey/1.jpeg">
+      		</image>
+		<button style="position:relative;top:-2.8rem;left:3.2rem;width:4.5rem;height:2rem;line-height:2rem;" type="primary"
+		 plain="true">关注</button>	
+      		<text  style="position:relative;top:-6rem;left:6.5rem;font-size:15px;" class="t">张三</text>
+      		<text style="position:relative;top:-3.5rem;left:-1rem;font-size:16px;color:#009CF9;">10月10日</text>
+      		<text style="position:relative;top:-4rem;left:0rem;font-size:15px;">我去了北京</text>
+      		
+      	<image style="width:3rem;height:3rem;left:-8.5rem;top:-1rem;position:relative;"
+      	    src="../../static/image/journey/e.png" @click="chooseLocation">
+      		</image>  
+      		<block v-if="hasLocation === false">
+      			<view style="position:relative;left:0.9rem;top:-0.5rem;">未选择位置</view>
+      		</block>
+      		<block v-if="hasLocation === true">
+      			<view style="position:relative;left:0.9rem;top:-0.5rem;width:5rem;">
+      				{{locationAddress}}
+      			</view>
+      		</block>
+      		<!-- <button type="primary" @tap="chooseLocation">选择位置</button> -->
+      		<image style="width:2rem;height:2rem;position:relative;left:17rem;top:-10.5rem;"
+      		    src="../../static/image/journey/s.png" @click="shareInfo">
+      			</image> 
+				
+      		<image style="width:3rem;height:4rem;position:relative;top:-3rem;left:4rem;" src="../../static/image/journey/1.jpg"></image>							
+      		<image style="width:3rem;height:4rem;position:relative;top:-3rem;left:4.5rem;" src="../../static/image/journey/2.jpg"></image>
+      			<image style="width:3rem;height:4rem;position:relative;top:-3rem;left:5rem;" src="../../static/image/journey/3.jpg"></image>
+      			<div class="heart" id="like2" rel="like"></div>
+      			<text style="position:relative;left:3.5rem;top:-5rem;">点赞</text>
+      			<image style="width:2rem;height:2rem;position:relative;left:5.5rem;top:-5.5rem;" src="../../static/image/journey/l.png">
+      			</image>
+      			<text style="position:relative;left:6rem;top:-5rem;">评论</text>
+      			<image style="width:1.5rem;height:1.5rem;position:relative;left:8.5rem;top:-5.5rem;" src="../../static/image/journey/collection.png">
+      			</image>
+      			<text style="position:relative;left:9rem;top:-5rem; ">收藏</text>
+      </view>
+      <view style="width:50%;position:relative;background-color:#fff;height:2rem;line-height: 2rem;text-align:center;top:1rem;">
+		 搭伴
+	  </view>
+	  <view style="width:50%;position:relative;background-color:#fff;height:2rem;line-height: 2rem;text-align:center;left:52%;top:-1rem;">
+	  		 发消息
+	  </view>
 	</view>
-
 </template>
 
 <script>
@@ -134,7 +177,7 @@
 	import share from "@/common/share.js";
 	var util = require('../../common/util.js');
 	var formatLocation = util.formatLocation;
-	
+
 	import permision from "@/common/permission.js"
 	var sourceType = [
 		['camera'],
@@ -161,14 +204,6 @@
 				count: [1, 2, 3, 4, 5, 6, 7, 8, 9]
 			}
 		},
-		onUnload() {
-			this.imageList = [],
-				this.sourceTypeIndex = 2,
-				this.sourceType = ['拍照', '相册', '拍照或相册'],
-				this.sizeTypeIndex = 2,
-				this.sizeType = ['压缩', '原图', '压缩或原图'],
-				this.countIndex = 8;
-		},
 		onBackPress() {
 			//监听back键，关闭弹出菜单
 			if (this.shareObj.shareMenu.isVisible()) {
@@ -177,6 +212,15 @@
 				return true
 			}
 		},
+		onUnload() {
+			this.imageList = [],
+				this.sourceTypeIndex = 2,
+				this.sourceType = ['拍照', '相册', '拍照或相册'],
+				this.sizeTypeIndex = 2,
+				this.sizeType = ['压缩', '原图', '压缩或原图'],
+				this.countIndex = 8;
+		},
+
 		methods: {
 			chooseLocation: function() {
 				uni.chooseLocation({
@@ -188,141 +232,141 @@
 				})
 			},
 			//删除图片
-							deleteImage: function(e) {
-								var index = e.target.dataset.index;
-								var that = this;
-								var images = that.imageList;
-								images.splice(index, 1);
-								that.imageList = images;
-							},
-			
-			
+			deleteImage: function(e) {
+				var index = e.target.dataset.index;
+				var that = this;
+				var images = that.imageList;
+				images.splice(index, 1);
+				that.imageList = images;
+			},
+
+
 			sourceTypeChange: function(e) {
-					this.sourceTypeIndex = parseInt(e.target.value)
-				},
-				sizeTypeChange: function(e) {
-					this.sizeTypeIndex = parseInt(e.target.value)
-				},
-				countChange: function(e) {
-					this.countIndex = e.target.value;
-				},
-				chooseImage: async function() {
-					// #ifdef APP-PLUS
-					// TODO 选择相机或相册时 需要弹出actionsheet，目前无法获得是相机还是相册，在失败回调中处理
-					if (this.sourceTypeIndex !== 2) {
-						let status = await this.checkPermission();
-						if (status !== 1) {
-							return;
-						}
+				this.sourceTypeIndex = parseInt(e.target.value)
+			},
+			sizeTypeChange: function(e) {
+				this.sizeTypeIndex = parseInt(e.target.value)
+			},
+			countChange: function(e) {
+				this.countIndex = e.target.value;
+			},
+			chooseImage: async function() {
+				// #ifdef APP-PLUS
+				// TODO 选择相机或相册时 需要弹出actionsheet，目前无法获得是相机还是相册，在失败回调中处理
+				if (this.sourceTypeIndex !== 2) {
+					let status = await this.checkPermission();
+					if (status !== 1) {
+						return;
 					}
-					// #endif
-			
-					if (this.imageList.length === 9) {
-						let isContinue = await this.isFullImg();
-						console.log("是否继续?", isContinue);
-						if (!isContinue) {
-							return;
-						}
+				}
+				// #endif
+
+				if (this.imageList.length === 9) {
+					let isContinue = await this.isFullImg();
+					console.log("是否继续?", isContinue);
+					if (!isContinue) {
+						return;
 					}
-					uni.chooseImage({
-						sourceType: sourceType[this.sourceTypeIndex],
-						sizeType: sizeType[this.sizeTypeIndex],
-						count: this.imageList.length + this.count[this.countIndex] > 9 ? 9 - this.imageList.length : this.count[this.countIndex],
-						success: (res) => {
-							this.imageList = this.imageList.concat(res.tempFilePaths);
-						},
-						fail: (err) => {
-							// #ifdef APP-PLUS
-							if (err['code'] && err.code !== 0 && this.sourceTypeIndex === 2) {
-								this.checkPermission(err.code);
-							}
-							// #endif
-							// #ifdef MP
-							uni.getSetting({
-								success: (res) => {
-									let authStatus = false;
-									switch (this.sourceTypeIndex) {
-										case 0:
-											authStatus = res.authSetting['scope.camera'];
-											break;
-										case 1:
-											authStatus = res.authSetting['scope.album'];
-											break;
-										case 2:
-											authStatus = res.authSetting['scope.album'] && res.authSetting['scope.camera'];
-											break;
-										default:
-											break;
-									}
-									if (!authStatus) {
-										uni.showModal({
-											title: '授权失败',
-											content: 'Hello uni-app需要从您的相机或相册获取图片，请在设置界面打开相关权限',
-											success: (res) => {
-												if (res.confirm) {
-													uni.openSetting()
-												}
+				}
+				uni.chooseImage({
+					sourceType: sourceType[this.sourceTypeIndex],
+					sizeType: sizeType[this.sizeTypeIndex],
+					count: this.imageList.length + this.count[this.countIndex] > 9 ? 9 - this.imageList.length : this.count[this.countIndex],
+					success: (res) => {
+						this.imageList = this.imageList.concat(res.tempFilePaths);
+					},
+					fail: (err) => {
+						// #ifdef APP-PLUS
+						if (err['code'] && err.code !== 0 && this.sourceTypeIndex === 2) {
+							this.checkPermission(err.code);
+						}
+						// #endif
+						// #ifdef MP
+						uni.getSetting({
+							success: (res) => {
+								let authStatus = false;
+								switch (this.sourceTypeIndex) {
+									case 0:
+										authStatus = res.authSetting['scope.camera'];
+										break;
+									case 1:
+										authStatus = res.authSetting['scope.album'];
+										break;
+									case 2:
+										authStatus = res.authSetting['scope.album'] && res.authSetting['scope.camera'];
+										break;
+									default:
+										break;
+								}
+								if (!authStatus) {
+									uni.showModal({
+										title: '授权失败',
+										content: 'Hello uni-app需要从您的相机或相册获取图片，请在设置界面打开相关权限',
+										success: (res) => {
+											if (res.confirm) {
+												uni.openSetting()
 											}
-										})
-									}
+										}
+									})
 								}
-							})
-							// #endif
-						}
-					})
-				},
-				
-			
-				isFullImg: function() {
-					return new Promise((res) => {
-						uni.showModal({
-							content: "已经有9张图片了,是否清空现有图片？",
-							success: (e) => {
-								if (e.confirm) {
-									this.imageList = [];
-									res(true);
-								} else {
-									res(false)
-								}
-							},
-							fail: () => {
+							}
+						})
+						// #endif
+					}
+				})
+			},
+
+
+			isFullImg: function() {
+				return new Promise((res) => {
+					uni.showModal({
+						content: "已经有9张图片了,是否清空现有图片？",
+						success: (e) => {
+							if (e.confirm) {
+								this.imageList = [];
+								res(true);
+							} else {
 								res(false)
 							}
-						})
+						},
+						fail: () => {
+							res(false)
+						}
 					})
-				},
-				previewImage: function(e) {
-					var current = e.target.dataset.src
-					uni.previewImage({
-						current: current,
-						urls: this.imageList
-					})
-				},
-				async checkPermission(code) {
-					let type = code ? code - 1 : this.sourceTypeIndex;
-					let status = permision.isIOS ? await permision.requestIOS(sourceType[type][0]) :
-						await permision.requestAndroid(type === 0 ? 'android.permission.CAMERA' :
-							'android.permission.READ_EXTERNAL_STORAGE');
-			
-					if (status === null || status === 1) {
-						status = 1;
-					} else {
-						uni.showModal({
-							content: "没有开启权限",
-							confirmText: "设置",
-							success: function(res) {
-								if (res.confirm) {
-									permision.gotoAppSetting();
-								}
-							}
-						})
-					}
-			
-					return status;
-				}
+				})
 			},
-			
-			
+			previewImage: function(e) {
+				var current = e.target.dataset.src
+				uni.previewImage({
+					current: current,
+					urls: this.imageList
+				})
+			},
+			async checkPermission(code) {
+				let type = code ? code - 1 : this.sourceTypeIndex;
+				let status = permision.isIOS ? await permision.requestIOS(sourceType[type][0]) :
+					await permision.requestAndroid(type === 0 ? 'android.permission.CAMERA' :
+						'android.permission.READ_EXTERNAL_STORAGE');
+
+				if (status === null || status === 1) {
+					status = 1;
+				} else {
+					uni.showModal({
+						content: "没有开启权限",
+						confirmText: "设置",
+						success: function(res) {
+							if (res.confirm) {
+								permision.gotoAppSetting();
+							}
+						}
+					})
+				}
+
+				return status;
+			},
+
+
+
 			shareInfo() {
 				let shareInfo = {
 					href: "https://uniapp.dcloud.io",
@@ -421,58 +465,68 @@
 					this.shareObj.shareMenu.show();
 				})
 			},
-	
-	
-		
+		}
+
+
 	}
 </script>
 
 <style>
-	
-.page-body {
+	.page-body {
 		width: 100%;
 		height: 612px;
 		background-color: #3B4144;
 		overflow-x: hidden;
 	}
+
 	/* 上传 */
 	.uni-uploader {
 		flex: 1;
 		flex-direction: column;
 	}
+
 	.uni-uploader-head {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 	}
+
 	.uni-uploader-info {
 		color: #B2B2B2;
 	}
+
 	.uni-uploader-body {
 		margin-top: 16upx;
 	}
+
 	.uni-uploader__files {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
 	}
+
 	.uni-uploader__file {
 		margin: 10upx;
 		width: 210upx;
 		height: 210upx;
 	}
+
 	.uni-uploader__img {
 		display: block;
 		width: 210upx;
 		height: 210upx;
+
 	}
+
 	.uni-uploader__input-box {
 		position: relative;
-		margin:10upx;
+		margin: 10upx;
+
 		width: 208upx;
 		height: 208upx;
 		border: 2upx solid #D9D9D9;
 	}
+
 	.uni-uploader__input-box:before,
 	.uni-uploader__input-box:after {
 		content: " ";
@@ -483,21 +537,26 @@
 		transform: translate(-50%, -50%);
 		background-color: #D9D9D9;
 	}
+
 	.uni-uploader__input-box:before {
 		width: 4upx;
 		height: 79upx;
 	}
+
 	.uni-uploader__input-box:after {
 		width: 79upx;
 		height: 4upx;
 	}
+
 	.uni-uploader__input-box:active {
 		border-color: #999999;
 	}
+
 	.uni-uploader__input-box:active:before,
 	.uni-uploader__input-box:active:after {
 		background-color: #999999;
 	}
+
 	.uni-uploader__input {
 		position: absolute;
 		z-index: 1;
@@ -506,6 +565,58 @@
 		width: 100%;
 		height: 100%;
 		opacity: 0;
+	}
+	.uni-padding-wrap{
+		background-color:#DAC2A6;
+		width: 100%;
+		top: 4.5rem;
+		position: relative;
+	}
+	.heart {
+		background: url(http://demo.htmleaf.com/1511/201511131551/images/web_heart_animation.png);
+		height: 90px;
+		width: 90px;
+		position: relative;
+		top: -2rem;
+		left: 0rem;
+		background-size: 2900%;
+	}
+	
+	.heart:hover,
+	.heart:focus {
+		background-position: right;
+	}
+	
+	@-webkit-keyframes heartBlast {
+		from {
+			background-position: left;
+		}
+	
+		to {
+			background-position: right;
+		}
+	}
+	
+	@keyframes heartBlast {
+		from {
+			background-position: left;
+		}
+	
+		to {
+			background-position: right;
+		}
+	}
+	
+	.heartAnimation {
+		-webkit-animation-name: heartBlast;
+		animation-name: heartBlast;
+		-webkit-animation-duration: .8s;
+		animation-duration: .8s;
+		-webkit-animation-iteration-count: 1;
+		animation-iteration-count: 1;
+		-webkit-animation-timing-function: steps(28);
+		animation-timing-function: steps(28);
+		background-position: right;
 	}
 </style>
 <!-- <style lang="scss" scoped>
