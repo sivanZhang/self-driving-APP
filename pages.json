@@ -95,15 +95,15 @@
 				"navigationBarTitleText": "搭伴",
 				"app-plus": {
 					"titleNView": {
-						"buttons": [{
+						"buttons": [ {
+							"text": "\ue623", //添加搭伴
+							"fontSrc": "/static/font/iconfont.ttf",
+							"fontSize": "22px"
+						},{
 							"text": "\ue635", //搜索
 							"fontSrc": "/static/fonts/iconfont.ttf",
 							"fontSize": "22px"
 
-						}, {
-							"text": "\ue623", //添加群聊
-							"fontSrc": "/static/font/iconfont.ttf",
-							"fontSize": "22px"
 						}]
 
 					}
