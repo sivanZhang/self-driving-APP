@@ -1,5 +1,6 @@
 {
-	"pages": [{
+	"pages": [
+		{
 			"path": "pages/home/home-page",
 			"style": {
 				"navigationStyle": "custom",
@@ -8,6 +9,17 @@
 				}
 			}
 		},
+		{
+			"path": "pages/foot/my-foot",
+			"style": {
+				"navigationBarTitleText": "我的足迹"
+				// "app-plus": {
+				// 	"titleNView": false
+				// }
+			}
+		},
+		
+		
 		{
 			"path": "pages/login/login-page",
 			"style": {

@@ -33,7 +33,7 @@
 		</view> -->
 		<view class="main">
 			<view class="uni-content">
-				<view  class="uni-content-box">
+				<view  class="uni-content-box" @tap="target('/pages/foot/my-foot')">
 					<view class="uni-content-image">
 						<image src="/static/icons/zuji.png"  />
 					</view>

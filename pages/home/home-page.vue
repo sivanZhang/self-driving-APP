@@ -524,7 +524,7 @@
 
 		width: 208upx;
 		height: 208upx;
-		border: 2upx solid #D9D9D9;
+		border: 2upx solid #F2F2F2;
 	}
 
 	.uni-uploader__input-box:before,
@@ -535,7 +535,7 @@
 		left: 50%;
 		-webkit-transform: translate(-50%, -50%);
 		transform: translate(-50%, -50%);
-		background-color: #D9D9D9;
+		background-color: #F2F2F2;
 	}
 
 	.uni-uploader__input-box:before {
@@ -549,12 +549,12 @@
 	}
 
 	.uni-uploader__input-box:active {
-		border-color: #999999;
+		border-color: #F2F2F2;
 	}
 
 	.uni-uploader__input-box:active:before,
 	.uni-uploader__input-box:active:after {
-		background-color: #999999;
+		background-color: #F2F2F2;
 	}
 
 	.uni-uploader__input {
