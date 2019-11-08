@@ -5,7 +5,7 @@
 			<view class="content" id="content" :style="{height:style.contentViewHeight+'px'}">
 				<scroll-view id="scrollview"   scroll-y="true" :style="{height:style.contentViewHeight+'px'}" :scroll-with-animation="true"
 				    :scroll-top="scrollTop">
-					<message-show v-for="(message,index) in messages" :key="index" v-bind:message="message" :id="index"></message-show>
+					<message-show v-for="(message,index) in messages" :key="index" v-bind:message="message" v-bind:id="index"></message-show>
 					<view id="bottom"></view>
 				</scroll-view>
 			</view>

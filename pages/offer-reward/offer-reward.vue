@@ -3,12 +3,12 @@
 	<view id="offer-reward">
 		<view class="header">
 			<view class="reward">悬赏大厅</view>
-			<view class="line">路线/攻略</view>
+			<view class="line" @tap="target('/pages/offer-reward/router/router')">路线/攻略</view>
 		</view>
 		<block>
 			<view class="container section">
 				<view class="detail">
-					<view class="content">
+					<view class="content" @tap="target('/pages/offer-reward/createReward/rewardDetail')">
 						<view class="name">
 							<span style="font-weight: bold;">路线：</span>西安——贵州
 						</view>
@@ -40,7 +40,7 @@
 				<view @tap="target1('/pages/user-center/message/groupchat')">我的悬赏</view>
 			</view>
 			<view class="uni-logout">
-				<view @tap="target1('/pages/user-center/message/groupchat')">发布悬赏</view>
+				<view @tap="target1('/pages/offer-reward/createReward/createReward')">发布悬赏</view>
 			</view>
 		</uni-popup>
 	</view>
@@ -58,6 +58,15 @@
 			}
 		},
 		methods: {
+			target(url){
+				uni.navigateTo({
+					url
+				});
+			},
+			target1(url){
+				this.target(url);
+				this.$refs.popup.close();
+			},
 
 		},
 		//发起群聊
@@ -179,6 +188,14 @@
 					}
 				}
 			}
+		}
+		.uni-popup {
+			position: absolute;
+			width: 100%;
+			display: flex;
+			justify-content: flex-end;
+			z-index: 998;
+			overflow: hidden;
 		}
 
 		.uni-logout {

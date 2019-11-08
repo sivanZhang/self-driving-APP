@@ -317,9 +317,7 @@
 		{
 			"path": "pages/team/createTeam/index",
 			"style": {
-				// "navigationBarTextStyle": "black",
 				"navigationBarTitleText": "创建搭伴",
-				// "navigationBarBackgroundColor": "#FAFAFA",
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
@@ -363,6 +361,45 @@
 			"path": "pages/foot/foot",
 			"style": {
 				"navigationBarTitleText": "自驾之旅"
+				// "app-plus": {
+				// 	"titleNView": false
+				// }
+			}
+		},
+		{
+			"path": "pages/offer-reward/router/router",
+			"style": {
+				"navigationBarTitleText": "创建攻略",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"float": "right",
+							"text": "保存",
+							"width": "auto",
+							"fontSize": "38upx"
+						},{
+							"float": "right",
+							"text": "发表",
+							"width": "auto",
+							"fontSize": "38upx"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/offer-reward/createReward/rewardDetail",
+			"style": {
+				"navigationBarTitleText": "悬赏详情"
+				// "app-plus": {
+				// 	"titleNView": false
+				// }
+			}
+		},
+		{
+			"path": "pages/offer-reward/createReward/createReward",
+			"style": {
+				"navigationBarTitleText": "发布悬赏"
 				// "app-plus": {
 				// 	"titleNView": false
 				// }
