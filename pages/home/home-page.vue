@@ -126,7 +126,7 @@
 		 搭伴
 	  </view>
 	  <view style="width:50%;position:relative;background-color:#fff;height:2rem;line-height: 2rem;text-align:center;left:52%;top:-1rem;">
-	  		 发消息
+	  		 发消息 
 	  </view>
 	</view>
 </template>
