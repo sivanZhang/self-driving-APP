@@ -84,7 +84,7 @@
 			</view>
 		</view>
 
-      <view class="uni-padding-wrap">
+      <view class="uni-padding-wrap" >
       	<image style="width:4rem;height:4rem;left:0.5rem;top:-1rem;position:relative;border-radius:50%;"
       	    src="../../static/image/journey/1.jpeg">
       		</image>
