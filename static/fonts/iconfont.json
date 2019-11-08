@@ -20,6 +20,20 @@
       "unicode_decimal": 58930
     },
     {
+      "icon_id": "579286",
+      "name": "点赞",
+      "font_class": "dianzan",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "658035",
+      "name": "钱",
+      "font_class": "qian",
+      "unicode": "e662",
+      "unicode_decimal": 58978
+    },
+    {
       "icon_id": "792349",
       "name": "Microphone-话筒",
       "font_class": "microphonehuatong",
@@ -55,11 +69,39 @@
       "unicode_decimal": 58995
     },
     {
+      "icon_id": "2076191",
+      "name": "分享",
+      "font_class": "fenxiang",
+      "unicode": "e86e",
+      "unicode_decimal": 59502
+    },
+    {
+      "icon_id": "3402400",
+      "name": "星星",
+      "font_class": "xingxing",
+      "unicode": "e6b9",
+      "unicode_decimal": 59065
+    },
+    {
       "icon_id": "6095690",
       "name": "减",
       "font_class": "jian",
       "unicode": "e6d4",
       "unicode_decimal": 59092
+    },
+    {
+      "icon_id": "6548553",
+      "name": "已点赞",
+      "font_class": "yidianzan",
+      "unicode": "e65c",
+      "unicode_decimal": 58972
+    },
+    {
+      "icon_id": "7316260",
+      "name": "加号",
+      "font_class": "jiahao",
+      "unicode": "e636",
+      "unicode_decimal": 58934
     },
     {
       "icon_id": "9512631",
