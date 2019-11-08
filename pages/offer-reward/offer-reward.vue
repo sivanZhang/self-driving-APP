@@ -5,29 +5,49 @@
 			<view class="reward">悬赏大厅</view>
 			<view class="line" @tap="target('/pages/offer-reward/router/router')">路线/攻略</view>
 		</view>
-		<block>
+		<!-- 临时的按钮 -->
+		<button type="primary" size="mini" @tap="target('/pages/offer-reward/createReward/rewardDetail')">临时跳转到详情的按钮</button>
+		<block v-for="(item,index) of RewardList" :key="index">
 			<view class="container section">
 				<view class="detail">
-					<view class="content" @tap="target('/pages/offer-reward/createReward/rewardDetail')">
-						<view class="name">
-							<span style="font-weight: bold;">路线：</span>西安——贵州
-						</view>
-						<view style="font-size: 32upx;">
-							<span style="font-weight: bold;">时间：</span>2019/10/1-2019/11/30
-						</view>
-						<block >
-							<view class="forwardContent">
-								<view>悬赏内容：帮忙制作旅游攻略</view>
-							</view>
-						</block>
-						<view class="footer">
-							<view class="footer-left">
+					<view class="content" >
+						<view @tap="target('/pages/offer-reward/createReward/rewardDetail')">
+							<view class="top-left">
 								<image src="../../static/image/p10.jpg"></image>
-								<view>张三</view>
+								<view>{{item.lineinfo.creator_name}}</view>
 							</view>
+							<view class="name">
+								<span style="font-weight: bold;">路线：</span>
+								{{item.lineinfo.content }}
+							</view>
+							<view style="font-size: 32upx;">
+								<span style="font-weight: bold;">时间：</span>
+								{{ item.lineinfo.start_date | dateFormat }}--{{ item.lineinfo.end_date | dateFormat }}
+							</view>
+							<block >
+								<view class="forwardContent">
+									<view>悬赏内容：{{item.content}}</view>
+								</view>
+							</block>
+						</view>
+						<view class="footer">
 							<view class="footer-right">
-								<image src="../../static/icons/money.png"></image>
-								<view>张三</view>
+								<view>
+									<view class="iconfont icon-qian" style="color: #EE0000;"></view>
+									<view style="padding: 0upx 5upx;">{{item.money}}元</view>
+								</view>
+								<view>
+									<view>
+										<view class="iconfont icon-dianzan" style="color: #EE2222;padding-right: 8upx;"></view>
+										<view>3</view>
+									</view>
+									<view>
+										<view class="iconfont icon-yidianzan" style="color: #EE2222;padding-right: 8upx;"></view>
+										<view>5</view>
+									</view>
+									
+								</view>
+								
 							</view>
 						</view>
 					</view>
@@ -48,21 +68,39 @@
 
 <script>
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import { query_RewardDetail } from '@/api/offerReward';
 	export default {
 		components: {
 			uniPopup
 		},
 		data() {
 			return {
+				RewardList: []
 
 			}
 		},
+		onLoad() {
+		    this.getRewardList();
+	    },
 		methods: {
+			//获取悬赏详情列表
+			getRewardList(){
+              query_RewardDetail().then(({ data }) =>{
+				 
+				  if(data.status == 0){
+					  this.RewardList = [...data.msg];
+					  console.log("----------")
+					   console.log(this.RewardList)
+				  }
+			  })
+			},
+			//页面跳转
 			target(url){
 				uni.navigateTo({
 					url
 				});
 			},
+			//发布悬赏和我的悬赏页面跳转
 			target1(url){
 				this.target(url);
 				this.$refs.popup.close();
@@ -143,6 +181,20 @@
 						line-height: 1.8;
 						font-size: 32upx;
 					}
+						.top-left{
+							width: 50%;
+							display: flex;
+							justify-content: flex-start;
+							align-items: center;
+							&>image{
+								width: 80upx;
+								height: 80upx;
+								border-radius: 50%;
+							}
+							&>view{
+								padding-left: 10upx;
+							}
+						}
 
 					.forwardContent{
 						font-size: 32upx;
@@ -157,24 +209,9 @@
 
 					.footer {
 						padding: 10upx;
-						display: flex;
-						.footer-left{
-							width: 50%;
-							display: flex;
-							justify-content: flex-start;
-							align-items: center;
-							&>image{
-								width: 60upx;
-								height: 60upx;
-								border-radius: 50%;
-							}
-							&>view{
-								padding-left: 10upx;
-							}
-						}
 						.footer-right{
 							display: flex;
-							justify-content: flex-start;
+							justify-content: space-between;
 							align-items: center;
 							&>image{
 								width: 60upx;
@@ -182,7 +219,12 @@
 								border-radius: 50%;
 							}
 							&>view{
-								padding-left: 10upx;
+								display: flex;
+								&>view{
+									display: flex;
+									align-items: center;
+									padding: 0upx 10upx;
+								}
 							}
 						}
 					}

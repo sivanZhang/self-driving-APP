@@ -70,7 +70,7 @@ export default {
 			QUERY_TEAMDETAIL().then(({ data }) => {
 				if (data.status == 0) {
 					this.TeamList = [...data.msg];
-					//console.log(this.TeamList)
+					console.log(this.TeamList)
 				}
 			});
 		},

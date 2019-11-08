@@ -69,6 +69,13 @@
       "unicode_decimal": 58995
     },
     {
+      "icon_id": "1833856",
+      "name": "对勾",
+      "font_class": "duigou",
+      "unicode": "e733",
+      "unicode_decimal": 59187
+    },
+    {
       "icon_id": "2076191",
       "name": "分享",
       "font_class": "fenxiang",
