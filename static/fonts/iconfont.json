@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "15367",
+      "name": "下三角形",
+      "font_class": "xiasanjiaoxing",
+      "unicode": "e642",
+      "unicode_decimal": 58946
+    },
+    {
       "icon_id": "376369",
       "name": "添加",
       "font_class": "add",
@@ -88,6 +95,13 @@
       "font_class": "xingxing",
       "unicode": "e6b9",
       "unicode_decimal": 59065
+    },
+    {
+      "icon_id": "4482980",
+      "name": "收藏",
+      "font_class": "shoucang",
+      "unicode": "e681",
+      "unicode_decimal": 59009
     },
     {
       "icon_id": "6095690",
