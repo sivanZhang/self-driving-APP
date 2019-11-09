@@ -1,9 +1,7 @@
 <template>
 <view class="page-body">
-        <image style="width:2rem;height:2rem;position:relative;left:17rem;top:1rem;"
-            src="../../static/image/journey/s.png" @click="shareInfo">
-        	</image> 
-	    <view  style="position:relative;width:20rem;height:2.5rem;background-color:#F0F0F0;top:29.5rem;">
+          
+	    <view  style="position:fixed;width:20rem;height:2.5rem;background-color:#F0F0F0;bottom:0rem;">
 		<div class="heart" id="like2" rel="like" style="position:relative;top:-1.1rem;left:0rem;"></div>
 	    <text style="position:relative;left:3.5rem;top:-4.5rem;">点赞</text>
 	    <image style="width:2rem;height:2rem;position:relative;left:6rem;top:-4.7rem;" src="../../static/image/journey/l.png">
@@ -13,15 +11,18 @@
 	    </image>
 	    <text style="position:relative;left:9.5rem;top:-4.5rem; ">收藏</text>
 		</view>
+		
     </view>
 </template>
-<style>
+<style lang="scss">
 		.page-body{
 			width:100%;
 			height: 612px;
 			background-color: #3B4144;
 			overflow: hidden;
 		}
+		
+		
 		.heart {
 			background: url(http://demo.htmleaf.com/1511/201511131551/images/web_heart_animation.png);
 			height: 90px;
@@ -69,6 +70,7 @@
 		}
 </style>
 <script>
+	
 	 import share from "@/common/share.js";
 	export default{
 		data(){
@@ -76,6 +78,8 @@
 				
 			}
 		},
+		
+		
 		onBackPress() {
 			//监听back键，关闭弹出菜单
 			if (this.shareObj.shareMenu.isVisible()) {
@@ -85,7 +89,14 @@
 			}
 		},
 		methods: {
-				
+				onNavigationBarButtonTap(val) {
+					console.log(val.index);
+					if (val.index == 0) { //添加
+						console.log("第一个按钮");
+						this.shareInfo()
+					};
+					
+				},
 				shareInfo(){
 					let shareInfo={
 						href:"https://uniapp.dcloud.io",

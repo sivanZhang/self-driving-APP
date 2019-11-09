@@ -354,10 +354,17 @@
 		{
 			"path": "pages/journey/journey",
 			"style": {
-				"navigationBarTitleText": "自驾之旅"
-				// "app-plus": {
-				// 	"titleNView": false
-				// }
+				"navigationBarTitleText": "自驾之旅",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"float": "right",
+							"text": "开启我的足迹",
+							"width": "auto",
+							"fontSize": "30upx"
+						}]
+					}
+				}
 			}
 		},
 		{
@@ -372,10 +379,17 @@
 		{
 			"path": "pages/foot/foot",
 			"style": {
-				"navigationBarTitleText": "自驾之旅"
-				// "app-plus": {
-				// 	"titleNView": false
-				// }
+				"navigationBarTitleText": "2019年10月14日08:03",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue86e",
+							"fontSrc": "/static/fonts/iconfont.ttf",
+							"fontSize": "22px",
+							"float": "right"
+						}]
+					}
+				}
 			}
 		},
 		{

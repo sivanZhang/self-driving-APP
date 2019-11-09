@@ -81,15 +81,7 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
-			<view class="section" @tap="target('/pages/user-center/user-settings')">
-				<view>
-					<image class="icon" src="/static/icons/setting.png"></image>
-					设置
-				</view>
-				<view>
-					<uni-icon type="arrowright"></uni-icon>
-				</view>
-			</view>
+			
 			<view class="section" @tap="target('/pages/user-center/browser-history')">
 				<view>
 					<image class="icon" src="/static/icons/viewhistory.png"></image>
@@ -108,6 +100,15 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
+			<view class="section" @tap="target('/pages/user-center/user-settings')">
+				<view>
+					<image class="icon" src="/static/icons/setting.png"></image>
+					设置
+				</view>
+				<view>
+					<uni-icon type="arrowright"></uni-icon>
+				</view>
+			</view>
 			<view class="section">
 				<view>
 					<image class="icon" src="/static/icons/fankui.png"></image>
@@ -118,9 +119,9 @@
 				</view>
 			</view>
 		</view>
-	<!-- 	<view class="foot">
-			APP版本号:
-		</view> -->
+		<view class="foot" >
+			版本:12.321.33
+		</view>
 		<uni-popup ref="popup" type="center" :show="true">
 			<view  @tap="target('/pages/user-center/change-background')">更换相册封面</view>
 		</uni-popup>
@@ -296,8 +297,8 @@
 			}
 		}
 		.foot{
-			color: #C8C8CC;
-			font-size: 20upx;
+			color: #BD2C00;
+			font-size: 25upx;
 			display: flex;
 			justify-content: center;
 		}

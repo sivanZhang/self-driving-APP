@@ -11,7 +11,7 @@
 			<navigator url="/pages/login/forgot-password">重置密码</navigator>
 			<navigator url="/pages/login/sign-up">注册</navigator>
 		</view>
-		<button class="sunbmit common-btn" :loading="isLoding" @tap="submit">Log In</button>
+		<button class="sunbmit common-btn" :loading="isLoding" @tap="submit">登录</button>
 
 	</view>
 </template>
