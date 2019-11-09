@@ -121,6 +121,14 @@
 				this.click1 = !this.click1
 			}
 		},
+		//导航栏分享按钮事件
+		onNavigationBarButtonTap(val) {
+			console.log(val.index);
+			if (val.index == 0) { //添加
+				console.log("第一个按钮")
+			};
+			
+		}
 	}
 </script>
 
