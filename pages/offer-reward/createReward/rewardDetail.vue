@@ -3,16 +3,25 @@
 		<!-- 悬赏详情 -->
 		<view class="top">
 			<view class="header">
-				<image src="../../../static/image/p10.jpg"></image>
-				<view class="header-name">张三</view>
-				<view style="border: 1px solid #DF5000;color:#DF5000 ;" class="header-right" v-if="followClick" @tap="follow">
-					<view style="font-size: 24upx;" class="iconfont icon-jiahao"></view>
-					<view>关注</view>
+				<view class="header-top-left" style="display: flex;">
+					<image src="../../../static/image/p10.jpg"></image>
+				    <view>
+					    <view class="header-name">张三</view>
+					    <view style="padding-left:20upx">11-4 21：47</view>
+				    </view>
+				
 				</view>
-				<view style="border: 1px solid #c8c8cc;" class="header-right" v-else @tap="follow">
-					<view style="font-size: 24upx;" class="iconfont icon-duigou"></view>
-					<view >已关注</view>
+				<view class="header-top-right" >
+					<view style="border: 1px solid #DF5000;color:#DF5000 ;" class="header-right" v-if="followClick" @tap="follow">
+						<view style="font-size: 24upx;" class="iconfont icon-jiahao"></view>
+						<view>关注</view>
+					</view>
+					<view style="border: 1px solid #c8c8cc;" class="header-right" v-else @tap="follow">
+						<view style="font-size: 24upx;" class="iconfont icon-duigou"></view>
+						<view >已关注</view>
+					</view>
 				</view>
+				
 			</view>
 			<view class="header-body">
 			    <view class="list">
@@ -123,27 +132,31 @@
 		.header {
 			padding: 30upx;
 			display: flex;
-			justify-content: flex-start;
+			justify-content: space-between;
 			align-items: center;
-
-			&>image {
-				width: 100upx;
-				height: 100upx;
-				border-radius: 50%;
+			.header-top-left{
+				&>image {
+					width: 100upx;
+					height: 100upx;
+					border-radius: 50%;
+				}
+				.header-name{
+					font-size: 34upx;
+					padding: 15upx 20upx 5upx 20upx;
+					color: #DF5000;
+				}
 			}
-            .header-name{
-				font-size: 34upx;
-				 padding: 20upx;
-			}
-			.header-right {
-				font-size: 24upx;
-                width:15%;
-				height: 20px;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				border-radius: 18%;
-			}
+			.header-top-right{
+				width: 15%;
+				.header-right {
+					font-size: 24upx;
+					height: 20px;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					border-radius: 18%;
+				}
+			}	
 		}
 		.header-body{
 			padding: 15upx 30upx 15upx 30upx;
