@@ -32,9 +32,6 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
-			<view class="settingList1">
-				<view>切换账号</view>
-			</view>
 			<view class="settingList1" @tap="togglePopup()">
 				<view>退出</view>
 			</view>
@@ -68,7 +65,7 @@
 				this.$store.commit("setToken");
 				this.$store.commit("setUserInfo");
 				uni.showToast({
-					title: 'Logged out',
+					title: '账号退出成功',
 					mask: false,
 					duration: 1500,
 					success() {
