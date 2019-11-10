@@ -3,10 +3,13 @@
 	<view id="MyAccount">
 		<view class="wall">
 			<image @tap="changeImage()" src="/static/image/test1.jpg"></image>
-			<view class="wall-top" @tap="target('/pages/user-center/personalCenter/personalCenter')">
+			<view class="wall-top" >
 				<view style="display: flex;">
-					<image src="/static/image/touxiang.png"></image>
-					<view>
+					<view class="header" >
+					<cropper selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imgurl" avatarStyle="width:125rpx;height:125rpx;border-radius:50%;">
+					</cropper>
+					</view>
+					<view @tap="target('/pages/user-center/personalCenter/personalCenter')">
 						<view class="top-header">
 							<span style="font-weight: bold;"></span>{{UserInfo.username||'用户'+UserInfo.phone}}</span>
 							<view v-if="UserInfo.sex == '女'">
@@ -134,6 +137,7 @@
 		GET_Notice
 	} from '@/api/notice'
 	// import uniBadge from "@/components/uni-badge/uni-badge.vue"
+	import cropper from "@/components/cropper.vue";
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
 	import uniPopup from "@/components/uni-popup/uni-popup.vue"
 	export default {
@@ -141,18 +145,28 @@
 			// uniBadge,
 			uniIcon,
 			uniPopup,
+			cropper
 		},
 		data() {
 			return {
+				imgurl:'/static/image/touxiang.png',
 				noticeData: [],
 			};
 		},
+		
 		computed: {
 			UserInfo() {
 				return this.$store.state.UserInfo
 			}
+			
 		},
 		methods: {
+			//上传返回图片
+			myUpload(rsp) {
+			  const self = this;
+			  self.imgurl = rsp.path; //更新头像方式一
+			  // rsp.avatar.imgSrc = rsp.path; //更新头像方式二
+			},
 			target(url) {
 				uni.navigateTo({
 					url
@@ -176,6 +190,7 @@
 
 <style lang="scss">
 	#MyAccount {
+		
 		.wall {
 			height: 360rpx;
             position:relative;
@@ -197,6 +212,12 @@
 				 image{
 					 width: 125rpx;height: 125rpx;border-radius: 50%;
 				 }
+			}
+			.header {
+			    display: flex;
+			    flex-direction: column;
+			    align-items: center;
+			    justify-content: center;
 			}
 			.top-header{
 				display: flex;

@@ -2,9 +2,8 @@
 	<view id="editProfile">
 		<!-- 编辑资料 -->
 		<view class="header">
-			<view @tap="changeImage()" >
-				<image :src="image"></image>
-			</view>
+			<cropper selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imgurl" avatarStyle="width:185rpx;height:185rpx;border-radius:50%;">
+			</cropper>
 		</view>
 		<view class="body">
 			<view class="bodyList">
@@ -53,6 +52,7 @@
 </template>
 
 <script>
+	import cropper from "@/components/cropper.vue";
 	import uniPopup from "@/components/uni-popup/uni-popup.vue"
 	export default {
 		data() {
@@ -62,11 +62,12 @@
 			return {
 				showUpImg:false,
 				date: currentDate,
-				image:'../../../static/image/touxiang.png',
+				imgurl:'/static/image/touxiang.png',
 			};
 		},
 		components: {
 			uniPopup,
+			cropper
 		},
 		computed: {
 			startDate() {
@@ -80,10 +81,11 @@
 			}
 		},
 		methods: {
-			//更换图像
-			changeImage() {
-				showUpImg:true,
-				this.$refs.popup.open()
+			//上传返回图片
+			myUpload(rsp) {
+			  const self = this;
+			  self.imgurl = rsp.path; //更新头像方式一
+			  // rsp.avatar.imgSrc = rsp.path; //更新头像方式二
 			},
 			cancel() {
 				this.$refs.popup.close()
@@ -147,12 +149,15 @@
 			padding-bottom: 45upx;
 			text-align: center;
 			border-bottom: 2.083upx solid #c8c8cc;
-
-			image {
-				width: 185rpx;
-				height: 185rpx;
-				border-radius: 50%;
-			}
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+			// image {
+			// 	width: 185rpx;
+			// 	height: 185rpx;
+			// 	border-radius: 50%;
+			// }
 		}
 
 		.body {
