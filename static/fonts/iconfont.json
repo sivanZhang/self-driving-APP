@@ -125,6 +125,13 @@
       "unicode_decimal": 58934
     },
     {
+      "icon_id": "7741464",
+      "name": "通知",
+      "font_class": "huabanfuben",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
       "icon_id": "9512631",
       "name": "搜索",
       "font_class": "search",

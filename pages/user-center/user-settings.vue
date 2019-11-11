@@ -65,7 +65,7 @@
 				this.$store.commit("setToken");
 				this.$store.commit("setUserInfo");
 				uni.showToast({
-					title: '账号退出成功',
+					title: '成功退出账号',
 					mask: false,
 					duration: 1500,
 					success() {
