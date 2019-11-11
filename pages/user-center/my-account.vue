@@ -2,15 +2,16 @@
 	<!-- 我的首页 -->
 	<view id="MyAccount">
 		<view class="wall">
-			<image @tap="changeImage()" src="/static/image/test1.jpg"></image>
-			<view class="wall-top" >
+			<image  @tap="changeImage()" src="/static/image/test1.jpg"></image>
+			<view class="wall-top" @tap="target('/pages/user-center/personalCenter/personalCenter')">
 				<view style="display: flex;">
-					<view class="header" >
+					<!-- <view class="header" >
 					<cropper selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imgurl" avatarStyle="width:125rpx;height:125rpx;border-radius:50%;">
 					</cropper>
-					</view>
-					<view @tap="target('/pages/user-center/personalCenter/personalCenter')">
-						<view class="top-header">
+					</view> -->
+					<image class="i" src="/static/image/touxiang.png"></image>
+					<view>
+						<view class="top-header" >
 							<span style="font-weight: bold;"></span>{{UserInfo.username||'用户'+UserInfo.phone}}</span>
 							<view v-if="UserInfo.sex == '女'">
 								<image src="/static/icons/women.png"></image>
@@ -19,7 +20,7 @@
 								<image src="/static/icons/men.png"></image>
 							</view>
 						</view>
-					<!-- 	<view class="top-bottom">
+						<!-- 	<view class="top-bottom">
 							<view style="flex-wrap: wrap;padding-left: 5upx;">0关注</view>
 							<view style="flex-wrap: wrap;padding-left: 10upx">10粉丝</view>
 						</view> -->
@@ -36,27 +37,27 @@
 		</view> -->
 		<view class="main">
 			<view class="uni-content">
-				<view  class="uni-content-box" @tap="target('/pages/foot/my-foot')">
-					<view class="uni-content-image" >
-						<image src="/static/icons/zuji.png"  />
+				<view class="uni-content-box" @tap="target('/pages/foot/my-foot')">
+					<view class="uni-content-image">
+						<image src="/static/icons/zuji.png" />
 					</view>
 					<view class="uni-content-text">足迹</view>
 				</view>
 				<view class="uni-content-box" @tap="target('/pages/activity/activity')">
 					<view class="uni-content-image">
-						<image src="/static/icons/dongtai.png"  />
+						<image src="/static/icons/dongtai.png" />
 					</view>
 					<view class="uni-content-text">动态</view>
 				</view>
-				<view  class="uni-content-box">
+				<view class="uni-content-box">
 					<view class="uni-content-image">
-						<image src="/static/icons/xuanshang2.png"  />
+						<image src="/static/icons/xuanshang2.png" />
 					</view>
 					<view class="uni-content-text">悬赏</view>
 				</view>
-				<view  class="uni-content-box">
+				<view class="uni-content-box">
 					<view class="uni-content-image" @tap="target('/pages/user-center/message/mymessage')">
-						<image src="/static/icons/xiaoxi.png"  />
+						<image src="/static/icons/xiaoxi.png" />
 					</view>
 					<view class="uni-content-text">消息</view>
 				</view>
@@ -84,7 +85,7 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
-			
+
 			<view class="section" @tap="target('/pages/user-center/browser-history')">
 				<view>
 					<image class="icon" src="/static/icons/viewhistory.png"></image>
@@ -122,13 +123,13 @@
 				</view>
 			</view>
 		</view>
-		<view class="foot" >
+		<view class="foot">
 			版本:12.321.33
 		</view>
 		<uni-popup ref="popup" type="center" :show="true">
-			<view  @tap="target('/pages/user-center/change-background')">更换相册封面</view>
+			<view @tap="target('/pages/user-center/change-background')">更换相册封面</view>
 		</uni-popup>
-			
+
 	</view>
 </template>
 
@@ -149,23 +150,23 @@
 		},
 		data() {
 			return {
-				imgurl:'/static/image/touxiang.png',
+				imgurl: '/static/image/touxiang.png',
 				noticeData: [],
 			};
 		},
-		
+
 		computed: {
 			UserInfo() {
 				return this.$store.state.UserInfo
 			}
-			
+
 		},
 		methods: {
 			//上传返回图片
 			myUpload(rsp) {
-			  const self = this;
-			  self.imgurl = rsp.path; //更新头像方式一
-			  // rsp.avatar.imgSrc = rsp.path; //更新头像方式二
+				const self = this;
+				self.imgurl = rsp.path; //更新头像方式一
+				// rsp.avatar.imgSrc = rsp.path; //更新头像方式二
 			},
 			target(url) {
 				uni.navigateTo({
@@ -190,45 +191,60 @@
 
 <style lang="scss">
 	#MyAccount {
-		
 		.wall {
 			height: 360rpx;
-            position:relative;
-			background: #007AFF;
+			position: relative;
+			background: #fff;
+             
+			 image{
+				 width:100%;
+				 height:100%;
+				 border-top-left-radius: 0px;
+				 border-top-right-radius: 0px;
+				 border-bottom-left-radius: 90%;
+				 border-bottom-right-radius: 90%;
+			 }
+			
 
-			image {
-				height: 100%;
-				width: 100%;
-				// boder-bottom-left-radius:30rpx;  
-				// boder-bottom-right-radius:30rpx;
-			}
-			.wall-top{
-				position:relative; 
-				z-index:2; 
-				left:12upx;
-				 bottom:75upx;
-				 font-size: 32upx;
-				 
-				 image{
-					 width: 125rpx;height: 125rpx;border-radius: 50%;
-				 }
-			}
-			.header {
-			    display: flex;
-			    flex-direction: column;
-			    align-items: center;
-			    justify-content: center;
-			}
-			.top-header{
-				display: flex;
-				padding-left: 15upx;
-				padding-top: 25upx;
-				color: #FFFFFF;
-				image{
-					width: 45rpx;height: 35rpx;padding-left: 8upx;z-index:2;
+			.wall-top {
+				position: relative;
+				z-index: 2;
+				left: 12upx;
+				bottom: 75upx;
+				font-size: 32upx;
+
+				.i {
+					
+					width: 125rpx;
+					height: 125rpx;
+					border-radius: 50%;
+					box-shadow: 1px 1px 2px #fff;
+					border: 1px solid #fff;
 				}
 			}
-			.top-bottom{
+
+			.header {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.top-header {
+				display: flex;
+				padding-left: 15upx;
+				padding-top: 8upx;
+				color: #FFFFFF;
+
+				image {
+					width: 45rpx;
+					height: 35rpx;
+					padding-left: 8upx;
+					z-index: 2;
+				}
+			}
+
+			.top-bottom {
 				display: flex;
 				flex-wrap: nowrap;
 				padding-left: 15upx;
@@ -238,6 +254,7 @@
 
 		.main {
 			height: 220upx;
+
 			.uni-content {
 				display: flex;
 				flex-wrap: wrap;
@@ -245,6 +262,7 @@
 				padding-top: 85upx;
 				padding-right: 40upx;
 			}
+
 			.uni-content-box {
 				display: flex;
 				flex-direction: column;
@@ -252,14 +270,18 @@
 				width: 25%;
 				box-sizing: border-box;
 			}
+
 			.uni-content-image {
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				image{
-					width: 70upx;height: 70upx;
+
+				image {
+					width: 70upx;
+					height: 70upx;
 				}
 			}
+
 			.uni-content-text {
 				font-size: 26upx;
 				color: #333;
@@ -317,8 +339,11 @@
 				}
 			}
 		}
-		.foot{
-			color: #BD2C00;
+
+		.foot {
+			padding-top: 40upx;
+			opacity: 0.5;
+			color: black;
 			font-size: 25upx;
 			display: flex;
 			justify-content: center;
