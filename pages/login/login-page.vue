@@ -4,8 +4,8 @@
 			<image src="/static/image/touxiang.png"></image>
 		</view>
 		<view class="inputs">
-			<input type="number" v-model="PhoneNumber" placeholder="Phone Number" placeholder-style="color:#fab701;">
-			<input :password="true" v-model="Password" placeholder="Password" placeholder-style="color:#fab701;">
+			<input type="number" v-model="PhoneNumber" placeholder="手机号" placeholder-style="color:#fab701;">
+			<input :password="true" v-model="Password" placeholder="密码" placeholder-style="color:#fab701;">
 		</view>
 		<view class="links">
 			<navigator url="/pages/login/forgot-password">重置密码</navigator>

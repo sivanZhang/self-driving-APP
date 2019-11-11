@@ -1,6 +1,7 @@
 <template>
 	<view id="editProfile">
 		<!-- 编辑资料 -->
+		
 		<view class="header">
 			<cropper selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imgurl" avatarStyle="width:185rpx;height:185rpx;border-radius:50%;">
 			</cropper>
@@ -8,6 +9,7 @@
 		<view class="body">
 			<view class="bodyList">
 				<view>昵称：</view>
+				{{ item.username }}
 				<view>
 					<input type="text" />
 				</view>
@@ -40,6 +42,7 @@
 				</view>
 			</view>
 		</view>
+		
 		<uni-popup ref="popup" type="bottom" :show="true">
 			<view class="uni-changeimage">
 				<view @tap="chooseImage">从手机相册选择</view>
@@ -52,6 +55,7 @@
 </template>
 
 <script>
+	import { update_users } from '@/api/usercenter';
 	import cropper from "@/components/cropper.vue";
 	import uniPopup from "@/components/uni-popup/uni-popup.vue"
 	export default {
@@ -63,6 +67,7 @@
 				showUpImg:false,
 				date: currentDate,
 				imgurl:'/static/image/touxiang.png',
+				List: []
 			};
 		},
 		components: {
@@ -80,7 +85,19 @@
 				return this.$store.state.UserInfo
 			}
 		},
+		onLoad() {
+			this.getList();
+		},
 		methods: {
+			
+			getList: function() {
+				update_users(method).then(({ data }) => {
+					if (data.status == 0) {
+						this.List = [...data.msg];
+						console.log(this.List)
+					}
+				});
+			},
 			//上传返回图片
 			myUpload(rsp) {
 			  const self = this;

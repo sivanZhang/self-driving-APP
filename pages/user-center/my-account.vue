@@ -2,7 +2,11 @@
 	<!-- 我的首页 -->
 	<view id="MyAccount">
 		<view class="wall">
-			<image  @tap="changeImage()" src="/static/image/test1.jpg"></image>
+			<!-- <image  @tap="changeImage()" src="/static/image/test1.jpg"></image> -->
+			<view class="header">
+			<cropper selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imgurl" avatarStyle="width:100vw;height:50vw;border-top-left-radius: 0px;border-top-right-radius: 0px;border-bottom-left-radius: 50%;border-bottom-right-radius: 50%;">
+			</cropper>
+			</view> 
 			<view class="wall-top" @tap="target('/pages/user-center/personalCenter/personalCenter')">
 				<view style="display: flex;">
 					<!-- <view class="header" >
@@ -150,7 +154,7 @@
 		},
 		data() {
 			return {
-				imgurl: '/static/image/touxiang.png',
+				imgurl:"/static/image/test1.jpg",
 				noticeData: [],
 			};
 		},
@@ -191,35 +195,28 @@
 
 <style lang="scss">
 	#MyAccount {
+		overflow-x: hidden;
 		.wall {
 			height: 360rpx;
 			position: relative;
 			background: #fff;
              
-			 image{
-				 width:100%;
-				 height:100%;
-				 border-top-left-radius: 0px;
-				 border-top-right-radius: 0px;
-				 border-bottom-left-radius: 90%;
-				 border-bottom-right-radius: 90%;
-			 }
+			 
 			
 
 			.wall-top {
 				position: relative;
 				z-index: 2;
 				left: 12upx;
-				bottom: 75upx;
+				bottom: 90upx;
 				font-size: 32upx;
 
 				.i {
-					
-					width: 125rpx;
-					height: 125rpx;
+ 				    width: 130rpx;
+					height: 130rpx;
 					border-radius: 50%;
-					box-shadow: 1px 1px 2px #fff;
-					border: 1px solid #fff;
+					box-shadow: 1px 1px 2px #F2F2F2;
+					border: 1.5px solid #F2F2F2;
 				}
 			}
 
@@ -233,7 +230,7 @@
 			.top-header {
 				display: flex;
 				padding-left: 15upx;
-				padding-top: 8upx;
+				padding-top: 15upx;
 				color: #FFFFFF;
 
 				image {

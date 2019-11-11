@@ -39,7 +39,6 @@
 		<uni-popup ref="logout" type="bottom" :custom="true" :show="true">
 			<view class="uni-logout">
 				<view  @tap="LogOut">退出登录</view>
-				<view>关闭嗨自驾</view>
 				<view @tap="cancel()">取消</view>
 			</view>
 		</uni-popup>
