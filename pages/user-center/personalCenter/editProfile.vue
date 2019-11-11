@@ -7,7 +7,7 @@
 			</cropper>
 		</view>
 		<view class="body">
-			<view class="bodyList">
+			<view class="bodyList" >
 				<view>昵称：</view>
 				{{ item.username }}
 				<view>
