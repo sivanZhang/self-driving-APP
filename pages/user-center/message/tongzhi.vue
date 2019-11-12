@@ -74,7 +74,6 @@ export default {
 						margin:-20upx;
 						height:80upx;
 						padding-top:20upx;
-						
 					}
 					.img {
 						white-space: nowrap;
