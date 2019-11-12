@@ -4,10 +4,10 @@
 		<view>
 			<block>
 				<!-- <view v-if="AjaxData==''" class="text-center">No data.</view> -->
-				<view class="container section">
+				<view class="container section" >
 					<!-- <view class="date">2019/10/12 12:00</view> -->
 					<view class="detail">
-						<view class="content">
+						<view class="content" >
 							<view class="header">
 								<image class="icon" src="/static/icons/notify.png"></image>
 								<view class="tip">通知1</view>
