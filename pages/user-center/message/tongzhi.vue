@@ -80,7 +80,7 @@ export default {
 						overflow: hidden;
 						text-overflow: ellipsis;
 						line-height: 1.8;
-					}
+					} 
 					.icon{
 						width: 40upx;
 						height: 40upx;
