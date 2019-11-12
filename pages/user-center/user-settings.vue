@@ -39,7 +39,6 @@
 		<uni-popup ref="logout" type="bottom" :custom="true" :show="true">
 			<view class="uni-logout">
 				<view  @tap="LogOut">退出登录</view>
-				<view>关闭嗨自驾</view>
 				<view @tap="cancel()">取消</view>
 			</view>
 		</uni-popup>
@@ -65,7 +64,7 @@
 				this.$store.commit("setToken");
 				this.$store.commit("setUserInfo");
 				uni.showToast({
-					title: '账号退出成功',
+					title: '成功退出账号',
 					mask: false,
 					duration: 1500,
 					success() {

@@ -494,16 +494,16 @@
 				"text": "组队"
 			},
 			{
-				"pagePath": "pages/offer-reward/offer-reward",
-				"iconPath": "static/icons/xuanshang.png",
-				"selectedIconPath": "static/icons/axuanshang.png",
-				"text": "悬赏"
-			},
-			{
 				"pagePath": "pages/circle/hi-circle",
 				"iconPath": "static/icons/quan.png",
 				"selectedIconPath": "static/icons/aquan.png",
 				"text": "嗨圈"
+			},
+			{
+				"pagePath": "pages/offer-reward/offer-reward",
+				"iconPath": "static/icons/xuanshang.png",
+				"selectedIconPath": "static/icons/axuanshang.png",
+				"text": "悬赏"
 			},
 			{
 				"pagePath": "pages/user-center/my-account",
