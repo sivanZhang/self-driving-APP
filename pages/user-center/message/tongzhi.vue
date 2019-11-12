@@ -57,7 +57,7 @@ export default {
 				font-size: 27.083upx;
 		
 				.operation {
-					flex: 1 1 20%;
+					flex: 1 1 20%;    
 					display: flex;
 					flex-flow: column nowrap;
 					justify-content: space-between;
