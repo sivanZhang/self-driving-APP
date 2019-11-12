@@ -75,7 +75,7 @@ export default {
 						height:80upx;
 						padding-top:20upx;
 						
-					}
+					}   
 					.img {
 						white-space: nowrap;
 						overflow: hidden;
