@@ -58,7 +58,7 @@
 					<view class="uni-content-image" @tap="target('/pages/user-center/message/mymessage')">
 						<image src="/static/icons/xiaoxi.png"  />
 					</view>
-					<view class="uni-content-text">消息</view>
+					<view class="uni-content-text">通知</view>
 				</view>
 			</view>
 		</view>
