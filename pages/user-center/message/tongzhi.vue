@@ -65,7 +65,7 @@ export default {
 				}
 		
 				.content {
-					flex: 0 1 100%;
+					flex: 0 1 100%;  
 					width: 0;
 					font-size: 27.083upx;
 					.header{
