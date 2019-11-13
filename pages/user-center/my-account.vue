@@ -9,11 +9,13 @@
 			</view> 
 			<view class="wall-top" @tap="target('/pages/user-center/personalCenter/personalCenter')">
 				<view style="display: flex;">
-					<!-- <view class="header" >
-					<cropper selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imgurl" avatarStyle="width:125rpx;height:125rpx;border-radius:50%;">
-					</cropper>
-					</view> -->
-					<image class="i" src="/static/image/touxiang.png"></image>
+					
+					<!-- <cropper selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imgurl" avatarStyle="width:125rpx;height:125rpx;border-radius:50%;">
+					</cropper> -->
+					<!-- <image  class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.portrait"></image> -->
+					
+					<image   class="i" src="/static/image/touxiang.png"></image>
+					
 					<view>
 						<view class="top-header" >
 							<span style="font-weight: bold;"></span>{{UserInfo.username||'用户'+UserInfo.phone}}</span>
@@ -182,6 +184,7 @@
 			},
 		},
 		onLoad() {
+			console.log(this.$store.state.UserInfo.portrait)
 			const Token = this.$store.state.estateToken || uni.getStorageSync('estateToken');
 			if (!Token) {
 				uni.navigateTo({
