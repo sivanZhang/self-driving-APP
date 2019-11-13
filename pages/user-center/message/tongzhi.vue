@@ -41,7 +41,7 @@
 <script>
 import uniIcon from "@/components/uni-icon/uni-icon.vue"
 import dayjs from "dayjs"
-import { look_Notice,update_Notice,delete_Notice } from '@/api/notice.js'
+import { look_Notice} from '@/api/notice.js'
 export default {
 	data() {
 		return {
