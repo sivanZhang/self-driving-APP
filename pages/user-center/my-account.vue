@@ -45,7 +45,7 @@
 					<view class="uni-content-image">
 						<image src="/static/icons/zuji.png" />
 					</view>
-					<view class="uni-content-text">足迹</view>
+					<view class="uni-content-text">车迹</view>
 				</view>
 				<view class="uni-content-box" @tap="target('/pages/activity/activity')">
 					<view class="uni-content-image">

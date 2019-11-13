@@ -1,17 +1,13 @@
 import Ajax from '../libs/http'
-//获取通知列表
-// export function GET_Notice(params) {
-// 	return Ajax.get('/notice/notice/?json', {
-// 		params
-// 	})
-// }
-// //已读未读信息
-// export function POST_Notice(data) {
-// 	return Ajax.post('/notice/notice/?json', data)
-// }
-//获取news或者根据id获取detaile
-// export const GET_News = params => {
-// 	return Ajax.get('/annoucement/annoucement/?json', {
-// 		params
-// 	})
-// }
+//查看通知
+export function look_Notice(params) {
+	return Ajax.get('/notice/notice/', {params})
+}
+//修改通知
+export function update_Notice(payload) {
+	return Ajax.post('/notice/notice/?put', payload)
+}
+//删除通知
+export function delete_Notice(payload){
+	return Ajax.get('/notice/notice/?delete', payload)
+}
