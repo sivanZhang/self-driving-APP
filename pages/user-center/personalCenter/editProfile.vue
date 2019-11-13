@@ -3,8 +3,12 @@
 		<!-- 编辑资料 -->
 		
 		<view class="header">
+			<view>
+				上传头像：
+				<input type="text"  v-model="portrait"   />
+			</view>
 			<cropper selWidth="660rpx"  selHeight="660rpx" @upload="myUpload" :avatarSrc="portrait" avatarStyle="width:185rpx;height:185rpx;border-radius:50%;">
-			</cropper>
+			</cropper>  
 		</view>
 		
 		<view class="body">
@@ -14,12 +18,7 @@
 					<input type="text"  v-model="username"   />
 				</view>
 			</view>
-			<!-- <view class="bodyList" >
-				<view>id：</view>
-				<view>
-					<input type="text"  v-model="userid"   />
-				</view>
-			</view> -->
+			
 			<view class="bodyList">
 				<view>性别：</view>
 				<view>
