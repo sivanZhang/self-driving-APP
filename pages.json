@@ -10,6 +10,15 @@
 			}
 		},
 		{
+			"path": "pages/user-center/personalCenter/portrait",
+			"style": {
+				"navigationBarTitleText": "头像"
+				// "app-plus": {
+				// 	"titleNView": false
+				// }
+			}
+		},
+		{
 			"path": "pages/foot/my-foot",
 			"style": {
 				"navigationBarTitleText": "我的足迹"

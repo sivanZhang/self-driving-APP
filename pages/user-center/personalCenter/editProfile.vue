@@ -2,11 +2,11 @@
 	<view id="editProfile">
 		<!-- 编辑资料 -->
 		<view class="header">
-			<cropper  selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imageurl" avatarStyle="width:185rpx;height:185rpx;border-radius:50%;box-shadow: 1px 1px 2px #F2F2F2;border: 1.5px solid #F2F2F2;">
-		</cropper>  
-			
+			<!-- <cropper  selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imageurl" avatarStyle="width:185rpx;height:185rpx;border-radius:50%;box-shadow: 1px 1px 2px #F2F2F2;border: 1.5px solid #F2F2F2;">
+		</cropper> --> 
+			<image @tap="target('/pages/user-center/personalCenter/portrait')"   class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.thumbnail_portait"></image>
 		</view>
-
+  
 		<view class="body">
 			<view class="bodyList">
 				<view>昵称：</view>
@@ -94,36 +94,42 @@
 		// 	this.ss()
 		// },
 		methods: {
-			//上传返回图片
-			myUpload(rsp) {
-				console.log(rsp)
-				const self = this;
-				self.imageurl = rsp.path; //更新头像方式一	
-				uni.uploadFile({
-					url: 'https://tl.chidict.com/appfile/appfile/',
-					filePath:rsp.path,  
-					name: 'file', 
-					header: {
-						"Content-Type": "multipart/form-data",
-						'Authorization': uni.getStorageSync('estateToken') || this.$store.state.estateToken,
-					},
-					success: (res) => {
-						let data = JSON.parse(res.data)
-						this.msg = data.msg
-						console.log(this.msg)
-						uni.showToast({
-							title: '上传成功',
-							icon: "none",
-						});
-					},
-					fail: () => {
-						uni.showToast({
-							title: '上传失败'
-						});
-					}
-				});
-				// rsp.avatar.imgSrc = rsp.path; //更新头像方式二
+			target(url) {
+				uni.navigateTo({
+					url
+				})
 			},
+			//上传返回图片
+			// myUpload(rsp) {
+				
+				// console.log(rsp)
+				// const self = this;
+				// self.imageurl = rsp.path; //更新头像方式一	
+				// uni.uploadFile({
+				// 	url: 'https://tl.chidict.com/appfile/appfile/',
+				// 	filePath:rsp.path,  
+				// 	name: 'file', 
+				// 	header: {
+				// 		"Content-Type": "multipart/form-data",
+				// 		'Authorization': uni.getStorageSync('estateToken') || this.$store.state.estateToken,
+				// 	},
+				// 	success: (res) => {
+				// 		let data = JSON.parse(res.data)
+				// 		this.msg = data.msg
+				// 		console.log(this.msg)
+				// 		uni.showToast({
+				// 			title: '上传成功',
+				// 			icon: "none",
+				// 		});
+				// 	},
+				// 	fail: () => {
+				// 		uni.showToast({
+				// 			title: '上传失败'
+				// 		});
+				// 	}
+				// });
+				// rsp.avatar.imgSrc = rsp.path; //更新头像方式二
+			// },
 			//保存
 			save(val) {
 				let data = {
@@ -132,7 +138,6 @@
 					sex: this.sex,
 					signature: this.signature,
 					area: this.area,
-					portrait: this.msg,
 					method: 'put',
 				};
 				
@@ -168,12 +173,11 @@
 					url:'/pages/login/login-page',
 					animationDuration: 200
 				});
-			},
+			},  
 			
 			onNavigationBarButtonTap(val) {
 				let data = {
 					userid: this.$store.state.UserInfo.id,
-					portrait: this.msg,
 					username: this.username,
 					sex: this.sex,
 					signature: this.signature,
@@ -209,6 +213,10 @@
 						})
 					}
 				})
+				uni.reLaunch({
+					url:'/pages/login/login-page',
+					animationDuration: 200
+				});
 			},
 			//选择出生日期
 			bindDateChange: function(e) {
@@ -244,7 +252,13 @@
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			
+			.i {
+				width: 185rpx;
+				height: 185rpx;
+				border-radius: 50%;
+				box-shadow: 1px 1px 2px #F2F2F2;
+				border: 1.5px solid #F2F2F2;
+			}
 		}
 
 		.body {
