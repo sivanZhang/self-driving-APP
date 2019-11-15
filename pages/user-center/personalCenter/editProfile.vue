@@ -65,7 +65,7 @@
 			return {
 				imageurl:'https://tl.chidict.com'+'/'+this.$store.state.UserInfo.thumbnail_portait,
 				username: '',
-				sex: '',  
+				sex: '',    
 				area:110100,
 				signature: '',  
 				birth: '',
