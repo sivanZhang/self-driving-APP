@@ -1,19 +1,26 @@
 <template>
-	<view id="login">
-		<view class="logo">
-			<image src="/static/image/touxiang.png"></image>
-		</view>
-		<view class="inputs">
-			<input type="number" v-model="PhoneNumber" placeholder="手机号" placeholder-style="color:#fab701;">
-			<input :password="true" v-model="Password" placeholder="密码" placeholder-style="color:#fab701;">
-		</view>
-		<view class="links">
-			<navigator url="/pages/login/forgot-password">重置密码</navigator>
-			<navigator url="/pages/login/sign-up">注册</navigator>
-		</view>
-		<button class="sunbmit common-btn" :loading="isLoding" @tap="submit">登录</button>
+		<view id="login" :style="{backgroundImage: 'url('+imageURL+')',backgroundSize:'100% 100%'}">
+			<view class="logo">
+				嗨自驾, 自驾嗨
+			</view>
+			<view class="inputs">
+				<view class="left">
+					<image src="/static/icons/user.png"></image>
+					<input type="number" v-model="PhoneNumber" placeholder="手机号" placeholder-style="color:#ffffff;">
+				</view>
+				<view class="left">
+					<image src="/static/icons/password.png"></image>
+					<input :password="true" v-model="Password" placeholder="密码" placeholder-style="color:#ffffff;">
+				</view>
+			</view>
+			<button class="submit common-btn" :loading="isLoding" @tap="submit" >登录</button>
+			<view class="links">
+				<navigator url="/pages/login/forgot-password">找回密码 | </navigator>
+				<navigator url="/pages/login/sign-up"> 开始注册</navigator>
+			</view>
 
-	</view>
+		</view>
+	
 </template>
 
 <script>
@@ -23,16 +30,38 @@
 	export default {
 		data() {
 			return {
+				imageURL: '/static/image/background2.jpg',
 				PhoneNumber: "",
 				Password: "",
 				isLoding: false,
+				winSize: {},
 			};
 		},
-		onLoad() {},
+		onLoad() {
+			this.getWindowSize();
+			console.log(this.winSize.width)
+			console.log(this.winSize.height)
+			// #ifdef H5
+			document.onLong = function(e) {
+				var e = e || window.event;
+				e.preventDefault();
+			};
+			// #endif
+		},
 		methods: {
+			getWindowSize() {
+				uni.getSystemInfo({
+					success: (res) => {
+						this.winSize = {
+							"width": res.windowWidth,
+							"height": res.windowHeight
+						}
+					}
+				})
+			},
 			submit() {
-				this.isLoding = true;
-				let reg = /^1(3|4|5|7|8)\d{9}$/
+				this.isLoading = true;
+				let reg = /^1(3|4|5|7|8|9)\d{9}$/
 				if (!reg.test(this.PhoneNumber)) {
 					uni.showToast({
 						title: "手机号格式错误",
@@ -52,7 +81,7 @@
 					password: this.Password,
 				};
 				POST_LOGIN(data).then(res => {
-					this.isLoding = false;
+					this.isLoading = false;
 					uni.showToast({
 						title: res.data.msg,
 						icon: "none",
@@ -81,9 +110,8 @@
 							animationType: 'pop-in',
 							animationDuration: 200
 						})
-
 					} else {
-						this.isLoding = false;
+						this.isLoading = false;
 						uni.showToast({
 							title: res.data.msg,
 							icon: "none",
@@ -97,58 +125,72 @@
 
 <style lang="scss">
 	#login {
-		padding-bottom: 145.833upx;
-
+		height:100vh;
+		//  // padding-bottom: 400upx;
+  // //       padding-top: 160upx;
+  // //       width:'this.winSize.width';
+		// // height:'this.winSize.height';
 		.logo {
-			margin: 329.166upx auto 239.583upx;
+			// margin-top: 329.166upx auto 239.583upx;
+			// margin-left:239.583upx;
+			padding-top:200upx;
 			text-align: center;
-
-			image {
-				height: 270.833upx;
-				width: 270.833upx;
-				border-radius: 50%;
-				background-color: #d8d8d8;
-				border: 2.083upx solid #c8c8cc;
+		    font-size:50upx;
+			//font-weight: bold;
+			color: #FFFFFF;
+		}
+		.submit {
+			// position: absolute;
+			// bottom: 0;
+			width:90%;
+			background-color:#DF5000;
+			font-size: 32upx;
+			
+			text-align: center;
+			font-family: "OpenSans-SemiBold";
+			height: 100upx;
+			// line-height: 145.833upx;
+			
+			margin-left:50upx;
+			margin-top:200upx;
+			color: #FFFFFF;
+			border-radius: 50upx;
+		}
+		.inputs {
+			margin-top:500upx;
+			color:#FFFFFF;
+			.left {
+				display: flex;
+				align-items: center;
+				// font-weight: bold;
+				margin-top:60upx;
+				margin-left:80upx;
+			}
+			image{
+				height: 40upx;
+				width: 40upx;
 			}
 		}
-
-		.sunbmit {
-			position: fixed;
-			bottom: 0;
-			width: 100%;
-			background-color: #fad87b;
-			font-size: 31.25upx;
-			font-family: "OpenSans-SemiBold";
-			height: 145.833upx;
-			line-height: 145.833upx;
-			padding: 0;
-			color: #222329;
-			border-radius: 0;
-		}
-
-		.inputs {
-			margin: 0 58.333upx;
-
+		// 	margin: 0 58.333upx;
 			input {
 				display: block;
 				outline: none;
 				padding: 12.5upx 25upx;
 				font-size: 29.166upx;
-				border-bottom: 2.083upx solid #c8c8cc;
-
+				width:480upx;
+				border-bottom: 2upx solid #c8c8cc;
 				&+input {
 					margin-top: 25upx;
 				}
 			}
-		}
-
+		// }
 		.links {
+			text-align: center;
+			margin-left: 260upx;
+			margin-top: 50upx;
 			display: flex;
-			justify-content: space-between;
-			margin-top: 35.416upx;
-			padding: 0 66.666rpx;
-			color: #fab701;
-			font-size: 29.166upx;
+			color: #FFFFFF;
+			font-size: 30upx;
 		}
 	}
 </style>

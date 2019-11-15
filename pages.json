@@ -309,19 +309,19 @@
 			}
 		},
 		{
-			"path": "pages/user-center/message/tixing",
+			"path": "pages/user-center/message/remind",
 			"style": {
 				"navigationBarTitleText": "提醒"
 			}
 		},
 		{
-			"path": "pages/user-center/message/huifu",
+			"path": "pages/user-center/message/reply",
 			"style": {
 				"navigationBarTitleText": "回复"
 			}
 		},
 		{
-			"path": "pages/user-center/message/tongzhi",
+			"path": "pages/user-center/message/notice",
 			"style": {
 				"navigationBarTitleText": "通知"
 			}

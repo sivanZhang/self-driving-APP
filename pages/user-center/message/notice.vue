@@ -1,5 +1,5 @@
 <template>
-	<view id="tongzhi">
+	<view id="notice">
 		<!-- 通知 -->
 		<view>
 			<block v-for="(item,index) of NoticeList" :key="index">
@@ -9,7 +9,7 @@
 					<view class="detail" @tap="listTap" @longpress="onLongPress" :class="{'active':pickerUserIndex==index}" :key="index" :data-index="index">
 						<view class="content">
 							<view class="header">
-								<image class="icon" src="/static/icons/notify.png"></image>
+								<image class="icon" src="/static/icons/notice.png"></image>
 								<view class="tip">消息通知</view>
 							</view>
 							<view class="middle">
@@ -164,7 +164,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-	#tongzhi{
+	#notice{
 		position: relative;
 		padding-top:30upx;
 		.section {
@@ -195,7 +195,6 @@ export default {
 						display:flex;
 						margin:-20upx;
 						height:80upx;
-						padding-top:20upx;
 					}
 					.img {
 						white-space: nowrap;
@@ -204,12 +203,12 @@ export default {
 						line-height: 1.8;
 					} 
 					.icon{
-						width: 40upx;
-						height: 40upx;
+						width: 80upx;
+						height: 80upx;
 						display: inline-block;
-						margin-left:20upx;
 					}
 					.tip{
+						padding-top:20upx;
 						margin-left:16upx;
 						font-size:30upx;
 					}

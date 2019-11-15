@@ -1,5 +1,5 @@
 <template>
-	<view id="huifu">
+	<view id="reply">
 		<!-- 回复 -->
 		<view>
 			<block>
@@ -30,7 +30,7 @@
 </script>
 
 <style lang="scss" scoped>
-	#huifu{
+	#reply{
 		position: relative;
 		padding-top:30upx;
 		.section {
