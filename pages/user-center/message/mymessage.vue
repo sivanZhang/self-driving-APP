@@ -10,7 +10,7 @@
 				<view>上午10:12</view>
 			</view>
 		</view>
-		<view class="list" @tap="target('/pages/user-center/message/tixing')">
+		<view class="list" @tap="target('/pages/user-center/message/remind')">
 			<view class="list-left">
 				<image src="../../../static/icons/tixing.png"></image>
 			</view>
@@ -28,7 +28,7 @@
 		        <view>日期时间</view>
 			</view>
 		</view>
-		<view class="list" @tap="target('/pages/user-center/message/huifu')">
+		<view class="list" @tap="target('/pages/user-center/message/reply')">
 			<view class="list-left">
 				<image src="../../../static/icons/huifu.png"></image>
 			</view>
@@ -37,7 +37,7 @@
 		        <view>11月12日</view>
 			</view>
 		</view>
-		<view class="list" @tap="target('/pages/user-center/message/tongzhi')">
+		<view class="list" @tap="target('/pages/user-center/message/notice')">
 			<view class="list-left">
 				<image src="../../../static/icons/tongzhi.png"></image>
 			</view>

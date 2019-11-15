@@ -1,5 +1,5 @@
 <template>
-	<view id="tixing">
+	<view id="remind">
 		<!-- 提醒 -->
 		<view>
 			<block>
@@ -27,7 +27,7 @@
 </script>
 
 <style lang="scss" scoped>
-	#tixing {
+	#remind {
 		position: relative;
 		padding-top: 30upx;
 

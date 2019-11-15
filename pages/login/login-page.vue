@@ -1,23 +1,23 @@
 <template>
-		<view id="login" :style="{background: 'url('+imageURL+')',backgroundSize:'100% 100%'}">
+		<view id="login" :style="{backgroundImage: 'url('+imageURL+')',backgroundSize:'100% 100%'}">
 			<view class="logo">
-				<image src="/static/image/touxiang.png"></image>
+				嗨自驾
 			</view>
 			<view class="inputs">
 				<view class="left">
-					<image src="/static/icons/wode.png"></image>
+					<image src="/static/icons/user.png"></image>
 					<input type="number" v-model="PhoneNumber" placeholder="手机号" placeholder-style="color:#ffffff;">
 				</view>
 				<view class="left">
-					<image src="/static/icons/mima.png"></image>
+					<image src="/static/icons/password.png"></image>
 					<input :password="true" v-model="Password" placeholder="密码" placeholder-style="color:#ffffff;">
 				</view>
 			</view>
+			<button class="submit common-btn" :loading="isLoding" @tap="submit" >登录</button>
 			<view class="links">
 				<navigator url="/pages/login/forgot-password">重置密码</navigator>
 				<navigator url="/pages/login/sign-up">注册</navigator>
 			</view>
-			<button class="submit common-btn" :loading="isLoding" @tap="submit" >登录</button>
 
 		</view>
 	
@@ -109,7 +109,6 @@
 							animationType: 'pop-in',
 							animationDuration: 200
 						})
-
 					} else {
 						this.isLoading = false;
 						uni.showToast({
@@ -135,16 +134,9 @@
 			// margin-left:239.583upx;
 			padding-top:200upx;
 			text-align: center;
-
-			image {
-				height: 160upx;
-				width: 160upx;
-				border-radius: 50%;
-				background-color: #d8d8d8;
-				border: 2.083upx solid #c8c8cc;
-			}
+		    font-size:50upx;
+			font-weight: bold;
 		}
-
 		.submit {
 			// position: absolute;
 			// bottom: 0;
@@ -158,12 +150,10 @@
 			// line-height: 145.833upx;
 			
 			margin-left:40upx;
-			margin-top:180upx;
-			margin-bottom: 80upx;
+			margin-top:200upx;
 			color: #FFFFFF;
 			border-radius: 50upx;
 		}
-
 		.inputs {
 			margin-top:300upx;
 			color:#FFFFFF;
@@ -180,7 +170,6 @@
 			}
 		}
 		// 	margin: 0 58.333upx;
-
 			input {
 				display: block;
 				outline: none;
@@ -188,13 +177,11 @@
 				font-size: 29.166upx;
 				width:480upx;
 				border-bottom: 2upx solid #c8c8cc;
-
 				&+input {
 					margin-top: 25upx;
 				}
 			}
 		// }
-
 		.links {
 			display: flex;
 			justify-content: space-between;
