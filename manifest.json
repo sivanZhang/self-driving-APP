@@ -28,6 +28,7 @@
                     "unipush" : {}
                 }
             },
+			"orientation": ["portrait-primary"],
             "icons" : {
                 "android" : {
                     "hdpi" : "unpackage/res/icons/72x72.png",

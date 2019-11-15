@@ -33,6 +33,7 @@
 			"path": "pages/login/login-page",
 			"style": {
 				"navigationStyle": "custom",
+				"disableScroll":true,
 				"app-plus": {
 					"titleNView": false
 				}
@@ -41,7 +42,8 @@
 		{
 			"path": "pages/login/forgot-password",
 			"style": {
-				"navigationBarTitleText": "Reset Password"
+				"navigationBarTitleText": "Reset Password",
+				"disableScroll":true
 			}
 		},
 		{
