@@ -67,7 +67,7 @@
 				username: '',
 				sex: '',  
 				area:110100,
-				signature: '',
+				signature: '',  
 				birth: '',
 				method: 'put',
 				showUpImg: false,
