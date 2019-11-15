@@ -1,5 +1,5 @@
 export default {
-    estateToken: '',
+    estateToken:uni.getStorageSync('estateToken').data||'',
     UserInfo: {},
 	BaseUrl: 'https://tl.chidict.com',
 	user: {

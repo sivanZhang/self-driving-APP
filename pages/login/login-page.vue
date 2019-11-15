@@ -11,7 +11,7 @@
 			<navigator url="/pages/login/forgot-password">重置密码</navigator>
 			<navigator url="/pages/login/sign-up">注册</navigator>
 		</view>
-		<button class="sunbmit common-btn" :loading="isLoding" @tap="submit">登录</button>
+		<button class="sunbmit common-btn" :loading="isLoading" @tap="submit">登录</button>
 
 	</view>
 </template>
@@ -23,15 +23,15 @@
 	export default {
 		data() {
 			return {
-				PhoneNumber: "",
+				PhoneNumber:'',
 				Password: "",
-				isLoding: false,
+				isLoading: false,
 			};
 		},
 		onLoad() {},
 		methods: {
 			submit() {
-				this.isLoding = true;
+				this.isLoading = true;
 				let reg = /^1(3|4|5|7|8)\d{9}$/
 				if (!reg.test(this.PhoneNumber)) {
 					uni.showToast({
@@ -52,7 +52,7 @@
 					password: this.Password,
 				};
 				POST_LOGIN(data).then(res => {
-					this.isLoding = false;
+					this.isLoading = false;
 					uni.showToast({
 						title: res.data.msg,
 						icon: "none",
@@ -82,7 +82,7 @@
 						})
 
 					} else {
-						this.isLoding = false;
+						this.isLoading = false;
 						uni.showToast({
 							title: res.data.msg,
 							icon: "none",

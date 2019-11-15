@@ -22,7 +22,7 @@
 		data() {
 			return {
 				formData: {
-					phone: 18691631041,
+					phone: '',
 					password: '',
 					code: '',
 					username: '',
