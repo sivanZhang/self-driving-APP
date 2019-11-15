@@ -128,11 +128,11 @@
 			save(val) {
 				let data = {
 					userid: this.$store.state.UserInfo.id,
-					portrait: this.msg,
 					username: this.username,
 					sex: this.sex,
 					signature: this.signature,
 					area: this.area,
+					portrait: this.msg,
 					method: 'put',
 				};
 				
@@ -164,6 +164,10 @@
 						})
 					}
 				})
+				uni.reLaunch({
+					url:'/pages/login/login-page',
+					animationDuration: 200
+				});
 			},
 			
 			onNavigationBarButtonTap(val) {
