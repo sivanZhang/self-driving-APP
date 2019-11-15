@@ -1,24 +1,20 @@
 <template>
 	<view id="editProfile">
 		<!-- 编辑资料 -->
-		
 		<view class="header">
-			<view>
-				上传头像：
-				<input type="text"  v-model="portrait"   />
-			</view>
-			<cropper selWidth="660rpx"  selHeight="660rpx" @upload="myUpload" :avatarSrc="portrait" avatarStyle="width:185rpx;height:185rpx;border-radius:50%;">
-			</cropper>  
+			<cropper  selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imageurl" avatarStyle="width:185rpx;height:185rpx;border-radius:50%;box-shadow: 1px 1px 2px #F2F2F2;border: 1.5px solid #F2F2F2;">
+		</cropper>  
+			
 		</view>
-		
+
 		<view class="body">
-			<view class="bodyList" >
+			<view class="bodyList">
 				<view>昵称：</view>
 				<view>
-					<input type="text"  v-model="username"   />
+					<input type="text" v-model="username" />  
 				</view>
 			</view>
-			
+
 			<view class="bodyList">
 				<view>性别：</view>
 				<view>
@@ -37,7 +33,7 @@
 			<view class="bodyList">
 				<view>常住地：</view>
 				<view>
-					<input type="text" v-model="area"/>
+					<input type="text" v-model="area" />
 				</view>
 			</view>
 			<view class="bodyList">
@@ -47,46 +43,40 @@
 				</view>
 			</view>
 		</view>
+		<view style="padding: 15upx;">
+			<button type="primary" @tap="save">保存</button>
 			
-			<view style="padding: 15upx;">
-				<button  type="primary" @tap="save" >保存</button>
-			</view>
-			<uni-popup ref="popup" type="bottom" :show="true">
-			<view class="uni-changeimage">
-				<view @tap="chooseImage">从手机相册选择</view>
-				<view>查看上一张头像</view>
-				<view>保存到手机</view>
-				<view style="padding-top: 20upx;" @tap="cancel()">取消</view>
-			</view>
-		</uni-popup>
+		</view>
 	</view>
 </template>
 
 <script>
-	import { update_users } from '@/api/usercenter';
+	import {
+		post_file,
+		update_users
+	} from '@/api/usercenter';
 	import cropper from "@/components/cropper.vue";
-	import uniPopup from "@/components/uni-popup/uni-popup.vue"
+	
 	export default {
 		data() {
 			const currentDate = this.getDate({
 				format: true
 			})
 			return {
-					portrait: '/static/image/touxiang.png',
-					username: '',
-					sex: '',
-					area:110100,
-					signature:'',
-					birth:'',
-					method:'put',
-				showUpImg:false,
+				imageurl:'https://tl.chidict.com'+'/'+this.$store.state.UserInfo.thumbnail_portait,
+				username: '',
+				sex: '',  
+				area:110100,
+				signature: '',
+				birth: '',
+				method: 'put',
+				showUpImg: false,
 				date: currentDate,
-				
+				msg1:'',
 				
 			};
 		},
 		components: {
-			uniPopup,
 			cropper
 		},
 		computed: {
@@ -100,50 +90,52 @@
 				return this.$store.state.UserInfo
 			}
 		},
-		onLoad() {
-			
-			
-		},
+		// onLoad() {
+		// 	this.ss()
+		// },
 		methods: {
 			//上传返回图片
 			myUpload(rsp) {
-			  const self = this;
-			  self.portrait = rsp.path; //更新头像方式一
-			  // rsp.avatar.imgSrc = rsp.path; //更新头像方式二
+				console.log(rsp)
+				const self = this;
+				self.imageurl = rsp.path; //更新头像方式一	
+				uni.uploadFile({
+					url: 'https://tl.chidict.com/appfile/appfile/',
+					filePath:rsp.path,  
+					name: 'file', 
+					header: {
+						"Content-Type": "multipart/form-data",
+						'Authorization': uni.getStorageSync('estateToken') || this.$store.state.estateToken,
+					},
+					success: (res) => {
+						let data = JSON.parse(res.data)
+						this.msg = data.msg
+						console.log(this.msg)
+						uni.showToast({
+							title: '上传成功',
+							icon: "none",
+						});
+					},
+					fail: () => {
+						uni.showToast({
+							title: '上传失败'
+						});
+					}
+				});
+				// rsp.avatar.imgSrc = rsp.path; //更新头像方式二
 			},
-			cancel() {
-				this.$refs.popup.close()
-			},
-			chooseImage() {
-			    uni.chooseImage({
-					count:1,
-				    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-					sourceType: ['album'],
-			        success: (res) => {
-						console.log(res.tempFilePaths)
-			            this.image = JSON.stringify(res.tempFilePaths);
-						console.log(this.image)
-			        },
-			    })
-			},
-			// previewImage: function(e) {
-			//     var current = e.target.dataset.src
-			//     uni.previewImage({
-			//         current: current,
-			//         urls: this.image
-			//     })
-			// },
 			//保存
-			save(val){
+			save(val) {
 				let data = {
 					userid: this.$store.state.UserInfo.id,
-					portrait: this.portrait,
+					portrait: this.msg,
 					username: this.username,
 					sex: this.sex,
-					signature:this.signature,
+					signature: this.signature,
 					area: this.area,
-					method:'put',
+					method: 'put',
 				};
+				
 				update_users(data).then(res => {
 					console.log(res)
 					uni.showToast({
@@ -154,64 +146,64 @@
 						const {
 							username,
 							sex,
-							portrait,
+							thumbnail_portait,
 							id,
 						} = res.data
 						this.$store.commit("setToken", `JWT ${res.data.token}`);
 						this.$store.commit("setUserInfo", {
 							username,
 							sex,
-							portrait,
+							thumbnail_portait,
 							id,
 						});
-					
+
 					} else {
 						uni.showToast({
 							title: res.data.msg,
 							icon: "none",
 						})
 					}
-		      })
-
+				})
 			},
+			
 			onNavigationBarButtonTap(val) {
-				console.log(val)
 				let data = {
-					portrait: this.portrait,
+					userid: this.$store.state.UserInfo.id,
+					portrait: this.msg,
 					username: this.username,
 					sex: this.sex,
-					signature:this.signature,
+					signature: this.signature,
 					area: this.area,
-					
+					method: 'put',
 				};
-		    update_users(data).then(res => {
-				console.log(res)
+				
+				update_users(data).then(res => {
+					console.log(res)
 					uni.showToast({
 						title: res.data.msg,
 						icon: "none",
 					});
-					// if (res.data.status === 0) {
-					// 	const {
-					// 		username,
-					// 		sex,
-					// 		portrait,
-					// 		area,
-					// 		signature,
-					// 	} = res.data
-					// 	this.$store.commit("setToken", `JWT ${res.data.token}`);
-					// 	this.$store.commit("setUserInfo", {
-					// 		username,
-					// 		sex,
-					// 		portrait,
-					// 		area,
-					// 		signature,
-					// 	});
-					// } else {
-					// 	uni.showToast({
-					// 		title: res.data.msg,
-					// 		icon: "none",
-					// 	})
-					// }
+					if (res.data.status === 0) {
+						const {
+							username,
+							sex,
+							thumbnail_portait,
+							id,
+						} = res.data
+						this.$store.commit("setToken", `JWT ${res.data.token}`);
+						this.$store.commit("setUserInfo", {
+							username,
+							sex,
+							thumbnail_portait,
+							id,
+						});
+				
+					} else {
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none",
+						})
+					}
 				})
 			},
 			//选择出生日期
@@ -235,7 +227,6 @@
 			}
 		}
 	}
-	
 </script>
 
 <style lang="scss">
@@ -245,15 +236,11 @@
 			padding-bottom: 45upx;
 			text-align: center;
 			border-bottom: 2.083upx solid #c8c8cc;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-			// image {
-			// 	width: 185rpx;
-			// 	height: 185rpx;
-			// 	border-radius: 50%;
-			// }
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			
 		}
 
 		.body {
@@ -266,8 +253,9 @@
 		}
 
 		.uni-changeimage {
+
 			// background: #fff;
-            // background: #C8C8CC;
+			// background: #C8C8CC;
 			&>view {
 				background: #fff;
 				padding: 0 41.666upx;

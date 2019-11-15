@@ -9,13 +9,7 @@
 			</view> 
 			<view class="wall-top" @tap="target('/pages/user-center/personalCenter/personalCenter')">
 				<view style="display: flex;">
-					
-					<!-- <cropper selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imgurl" avatarStyle="width:125rpx;height:125rpx;border-radius:50%;">
-					</cropper> -->
-					<!-- <image  class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.portrait"></image> -->
-					
-					<image   class="i" src="/static/image/touxiang.png"></image>
-					
+					<image   class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.thumbnail_portait"></image>
 					<view>
 						<view class="top-header" >
 							<span style="font-weight: bold;"></span>{{UserInfo.username||'用户'+UserInfo.phone}}</span>
@@ -140,6 +134,7 @@
 </template>
 
 <script>
+	
 	import {
 		GET_Notice
 	} from '@/api/notice'
@@ -158,6 +153,7 @@
 			return {
 				imgurl:"/static/image/test1.jpg",
 				noticeData: [],
+				
 			};
 		},
 
@@ -168,6 +164,7 @@
 
 		},
 		methods: {
+			
 			//上传返回图片
 			myUpload(rsp) {
 				const self = this;
@@ -184,7 +181,7 @@
 			},
 		},
 		onLoad() {
-			console.log(this.$store.state.UserInfo.portrait)
+			
 			const Token = this.$store.state.estateToken || uni.getStorageSync('estateToken');
 			if (!Token) {
 				uni.navigateTo({

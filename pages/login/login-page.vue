@@ -59,9 +59,10 @@
 					});
 					if (res.data.status === 0) {
 						const {
+							
 							username,
 							sex,
-							portrait,
+							thumbnail_portait,
 							phone,
 							email,
 							id
@@ -70,7 +71,7 @@
 						this.$store.commit("setUserInfo", {
 							username,
 							sex,
-							portrait,
+							thumbnail_portait,  
 							phone,
 							email,
 							id

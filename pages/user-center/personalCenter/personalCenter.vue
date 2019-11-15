@@ -2,10 +2,7 @@
 	<view id="personCenter">
 		<!-- 个人中心 -->
 		<view class="header">
-			<image  class="i" src="../../../static/image/touxiang.png"></image>
-			
-		    <!-- <image class="i" :src="UserInfo.portrait"></image> -->
-			
+			<image  class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.thumbnail_portait"></image>
 			<view class="header-top">
 				<span style=""></span>{{UserInfo.username||'用户'+UserInfo.phone}}</span>
 				<view v-if="UserInfo.sex == '女'">
