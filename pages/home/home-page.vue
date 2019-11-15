@@ -34,19 +34,24 @@
 		</view> 
 	</view>-->
 	<view class="page-body">
+		
 		<image style="width:2rem;height:2rem;position:relative;left:17rem;top:2rem;" src="../../static/image/journey/s.png"
 		 @click="shareInfo">
 		</image>
+	   
 		<view style="position:relative;width:100%;height:5rem;background-color:#DAC2A6;top:2.5rem;">
 			<image style="width:4rem;height:4rem;left:0.5rem;top:-1rem;position:relative;border-radius:50%;" src="../../static/image/journey/1.jpeg">
 			</image>
-			<text style="font-size:16px;top:-1rem;left:1.5rem;position:relative;white-space:pre-wrap;" class="t">张三\n         10月10日出发\n</text>
+		    <block v-for="(item,index) of RewardList" :key="index">
+			<view style="font-size:16px;top:-1rem;left:1.5rem;position:relative;white-space:pre-wrap;" class="t">{{item.lineinfo.creator_name}}</view>
+			</block>
 			<button style="position:relative;top:-4rem;left:3rem;width:4.5rem;height:2rem;line-height:2rem;" type="primary"
 			 plain="true">关注</button>
-
 		</view>
+		
 		<view style="position:relative;width:100%;background-color:#DAC2A6;top:3.4rem;">
-			<text style="position:relative;font-size:16px;top:0.4rem;left:0.5rem;color:#009CF9">10月11日</text>
+			<view style="position:relative;font-size:16px;top:0.4rem;left:0.5rem;color:#009CF9">10月11日</view>
+			
 			<image style="width:3rem;height:3rem;position:relative;top:6rem;left:5rem;" src="../../static/image/journey/e.png"
 			 @click="chooseLocation">
 			</image>
@@ -177,21 +182,25 @@
 	import share from "@/common/share.js";
 	var util = require('../../common/util.js');
 	var formatLocation = util.formatLocation;
-
+    
+	import { query_RewardDetail } from '@/api/offerReward';
 	import permision from "@/common/permission.js"
 	var sourceType = [
 		['camera'],
 		['album'],
-		['camera', 'album']
+		['camera', 'album']  
 	]
 	var sizeType = [
 		['compressed'],
 		['original'],
 		['compressed', 'original']
 	]
+	
 	export default {
 		data() {
 			return {
+				RewardList: [],
+				
 				hasLocation: false,
 				location: {},
 				locationAddress: '',
@@ -219,9 +228,26 @@
 				this.sizeTypeIndex = 2,
 				this.sizeType = ['压缩', '原图', '压缩或原图'],
 				this.countIndex = 8;
+				
 		},
-
+       onLoad(){
+		   this.getRewardList();
+		  
+	   },
+	   
 		methods: {
+			
+			//获取悬赏详情列表
+			getRewardList(){
+			  query_RewardDetail().then(({ data }) =>{
+				 
+				  if(data.status == 0){
+					  this.RewardList = [...data.msg];
+					  console.log("----------")
+					   console.log(this.RewardList)
+				  }
+			  })
+			},
 			chooseLocation: function() {
 				uni.chooseLocation({
 					success: (res) => {

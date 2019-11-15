@@ -92,7 +92,8 @@
 							sex,
 							portrait,
 							phone,
-							email
+							email,
+							id
 						} = res.data
 						this.$store.commit("setToken", `JWT ${res.data.token}`);
 						this.$store.commit("setUserInfo", {
@@ -100,7 +101,8 @@
 							sex,
 							portrait,
 							phone,
-							email
+							email,
+							id
 						});
 						uni.switchTab({
 							url: "/pages/user-center/my-account",

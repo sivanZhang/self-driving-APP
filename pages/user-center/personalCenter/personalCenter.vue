@@ -2,12 +2,15 @@
 	<view id="personCenter">
 		<!-- 个人中心 -->
 		<view class="header">
-			<image src="../../../static/image/touxiang.png"></image>
+			<image  class="i" src="../../../static/image/touxiang.png"></image>
+			
+		    <!-- <image class="i" :src="UserInfo.portrait"></image> -->
+			
 			<view class="header-top">
 				<span style=""></span>{{UserInfo.username||'用户'+UserInfo.phone}}</span>
 				<view v-if="UserInfo.sex == '女'">
 					<image src="/static/icons/women.png"></image>
-				</view>
+				</view> 
 				<view v-else>
 					<image src="/static/icons/men.png"></image>
 				</view>
@@ -82,10 +85,12 @@
 			text-align: center;
 			border-bottom: 2.083upx solid #c8c8cc;
 
-			image {
+			.i {
 				width: 185rpx;
 				height: 185rpx;
 				border-radius: 50%;
+				box-shadow: 1px 1px 2px #F2F2F2;
+				border: 1.5px solid #F2F2F2;
 			}
 		}
 

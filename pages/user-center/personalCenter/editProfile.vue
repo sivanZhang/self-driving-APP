@@ -3,21 +3,26 @@
 		<!-- 编辑资料 -->
 		
 		<view class="header">
-			<cropper selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imgurl" avatarStyle="width:185rpx;height:185rpx;border-radius:50%;">
-			</cropper>
+			<view>
+				上传头像：
+				<input type="text"  v-model="portrait"   />
+			</view>
+			<cropper selWidth="660rpx"  selHeight="660rpx" @upload="myUpload" :avatarSrc="portrait" avatarStyle="width:185rpx;height:185rpx;border-radius:50%;">
+			</cropper>  
 		</view>
+		
 		<view class="body">
 			<view class="bodyList" >
 				<view>昵称：</view>
-				{{ item.username }}
 				<view>
-					<input type="text" />
+					<input type="text"  v-model="username"   />
 				</view>
 			</view>
+			
 			<view class="bodyList">
 				<view>性别：</view>
 				<view>
-					<input type="text" />
+					<input type="text" v-model="sex" />
 				</view>
 			</view>
 			<view class="bodyList">
@@ -25,25 +30,28 @@
 				<view>
 					<!-- <input type="text" /> -->
 					<picker mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChange">
-						<view class="uni-input">{{date}}</view>
+						<view class="uni-input" v-model="birth">{{date}}</view>
 					</picker>
 				</view>
 			</view>
 			<view class="bodyList">
 				<view>常住地：</view>
 				<view>
-					<input type="text" />
+					<input type="text" v-model="area"/>
 				</view>
 			</view>
 			<view class="bodyList">
 				<view>签名：</view>
 				<view>
-					<input type="text" />
+					<input type="text" v-model="signature" />
 				</view>
 			</view>
 		</view>
-		
-		<uni-popup ref="popup" type="bottom" :show="true">
+			
+			<view style="padding: 15upx;">
+				<button  type="primary" @tap="save" >保存</button>
+			</view>
+			<uni-popup ref="popup" type="bottom" :show="true">
 			<view class="uni-changeimage">
 				<view @tap="chooseImage">从手机相册选择</view>
 				<view>查看上一张头像</view>
@@ -64,10 +72,17 @@
 				format: true
 			})
 			return {
+					portrait: '/static/image/touxiang.png',
+					username: '',
+					sex: '',
+					area:110100,
+					signature:'',
+					birth:'',
+					method:'put',
 				showUpImg:false,
 				date: currentDate,
-				imgurl:'/static/image/touxiang.png',
-				List: []
+				
+				
 			};
 		},
 		components: {
@@ -86,22 +101,14 @@
 			}
 		},
 		onLoad() {
-			this.getList();
+			
+			
 		},
 		methods: {
-			
-			getList: function() {
-				update_users(method).then(({ data }) => {
-					if (data.status == 0) {
-						this.List = [...data.msg];
-						console.log(this.List)
-					}
-				});
-			},
 			//上传返回图片
 			myUpload(rsp) {
 			  const self = this;
-			  self.imgurl = rsp.path; //更新头像方式一
+			  self.portrait = rsp.path; //更新头像方式一
 			  // rsp.avatar.imgSrc = rsp.path; //更新头像方式二
 			},
 			cancel() {
@@ -127,14 +134,85 @@
 			//     })
 			// },
 			//保存
+			save(val){
+				let data = {
+					userid: this.$store.state.UserInfo.id,
+					portrait: this.portrait,
+					username: this.username,
+					sex: this.sex,
+					signature:this.signature,
+					area: this.area,
+					method:'put',
+				};
+				update_users(data).then(res => {
+					console.log(res)
+					uni.showToast({
+						title: res.data.msg,
+						icon: "none",
+					});
+					if (res.data.status === 0) {
+						const {
+							username,
+							sex,
+							portrait,
+							id,
+						} = res.data
+						this.$store.commit("setToken", `JWT ${res.data.token}`);
+						this.$store.commit("setUserInfo", {
+							username,
+							sex,
+							portrait,
+							id,
+						});
+					
+					} else {
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none",
+						})
+					}
+		      })
+
+			},
 			onNavigationBarButtonTap(val) {
 				console.log(val)
-				// uni.showToast({
-				// 	title: res.data.msg,
-				// 	mask: false,
-				// 	duration: 1500,
-				// 	icon: "none"
-				// });
+				let data = {
+					portrait: this.portrait,
+					username: this.username,
+					sex: this.sex,
+					signature:this.signature,
+					area: this.area,
+					
+				};
+		    update_users(data).then(res => {
+				console.log(res)
+					uni.showToast({
+						title: res.data.msg,
+						icon: "none",
+					});
+					// if (res.data.status === 0) {
+					// 	const {
+					// 		username,
+					// 		sex,
+					// 		portrait,
+					// 		area,
+					// 		signature,
+					// 	} = res.data
+					// 	this.$store.commit("setToken", `JWT ${res.data.token}`);
+					// 	this.$store.commit("setUserInfo", {
+					// 		username,
+					// 		sex,
+					// 		portrait,
+					// 		area,
+					// 		signature,
+					// 	});
+					// } else {
+					// 	uni.showToast({
+					// 		title: res.data.msg,
+					// 		icon: "none",
+					// 	})
+					// }
+				})
 			},
 			//选择出生日期
 			bindDateChange: function(e) {
@@ -153,10 +231,11 @@
 				}
 				month = month > 9 ? month : '0' + month;;
 				day = day > 9 ? day : '0' + day;
-				return `${year}-${month}-${day}`;
+				return `${year}/${month}/${day}`;
 			}
 		}
 	}
+	
 </script>
 
 <style lang="scss">

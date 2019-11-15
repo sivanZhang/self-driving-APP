@@ -7,3 +7,7 @@ export function searchFollow(params) {
 export function update_users(payload){
 	return Ajax.post('/users/users/?put',payload)
 }
+//上传附件
+export function post_file(payload) {
+    return Ajax.post('/appfile/appfile/',payload);
+}
