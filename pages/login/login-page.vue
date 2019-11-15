@@ -1,7 +1,7 @@
 <template>
 		<view id="login" :style="{backgroundImage: 'url('+imageURL+')',backgroundSize:'100% 100%'}">
 			<view class="logo">
-				嗨自驾
+				嗨自驾, 自驾嗨
 			</view>
 			<view class="inputs">
 				<view class="left">
@@ -15,8 +15,8 @@
 			</view>
 			<button class="submit common-btn" :loading="isLoding" @tap="submit" >登录</button>
 			<view class="links">
-				<navigator url="/pages/login/forgot-password">重置密码</navigator>
-				<navigator url="/pages/login/sign-up">注册</navigator>
+				<navigator url="/pages/login/forgot-password">找回密码 | </navigator>
+				<navigator url="/pages/login/sign-up"> 开始注册</navigator>
 			</view>
 
 		</view>
@@ -61,7 +61,7 @@
 			},
 			submit() {
 				this.isLoading = true;
-				let reg = /^1(3|4|5|7|8)\d{9}$/
+				let reg = /^1(3|4|5|7|8|9)\d{9}$/
 				if (!reg.test(this.PhoneNumber)) {
 					uni.showToast({
 						title: "手机号格式错误",
@@ -135,7 +135,8 @@
 			padding-top:200upx;
 			text-align: center;
 		    font-size:50upx;
-			font-weight: bold;
+			//font-weight: bold;
+			color: #FFFFFF;
 		}
 		.submit {
 			// position: absolute;
@@ -149,13 +150,13 @@
 			height: 100upx;
 			// line-height: 145.833upx;
 			
-			margin-left:40upx;
+			margin-left:50upx;
 			margin-top:200upx;
 			color: #FFFFFF;
 			border-radius: 50upx;
 		}
 		.inputs {
-			margin-top:300upx;
+			margin-top:500upx;
 			color:#FFFFFF;
 			.left {
 				display: flex;
@@ -165,8 +166,8 @@
 				margin-left:80upx;
 			}
 			image{
-				height: 60upx;
-				width: 60upx;
+				height: 40upx;
+				width: 40upx;
 			}
 		}
 		// 	margin: 0 58.333upx;
@@ -183,10 +184,10 @@
 			}
 		// }
 		.links {
+			text-align: center;
+			margin-left: 260upx;
+			margin-top: 50upx;
 			display: flex;
-			justify-content: space-between;
-			margin-top: 60upx;
-			padding: 0 66.666rpx;
 			color: #FFFFFF;
 			font-size: 30upx;
 		}
