@@ -36,22 +36,14 @@
 				<view>退出</view>
 			</view>
 		</view>
-		<uni-popup ref="logout" type="bottom" :custom="true" :show="true">
-			<view class="uni-logout">
-				<view  @tap="LogOut">退出登录</view>
-				<view @tap="cancel()">取消</view>
-			</view>
-		</uni-popup>
 	</view>
 </template>
 
 <script>
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
-	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
 		components: {
 			uniIcon,
-			uniPopup
 		},
 		methods: {
 			target(url) {
@@ -68,10 +60,14 @@
 				})
 			},
 			togglePopup() {
-				this.$refs.logout.open()
-			},
-			cancel() {
-				this.$refs.logout.close()
+				uni.showActionSheet({
+				    itemList: ['退出登录'],
+				    success: res=> {
+				        if(res.tapIndex===0){
+							this.LogOut()
+						}
+				    }
+				});
 			},
 
 		},

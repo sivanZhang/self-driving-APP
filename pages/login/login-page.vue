@@ -4,7 +4,7 @@
 			<view id="login">  
 			<!-- #endif -->
 			<!-- #ifndef H5 -->
-			<view id="login"  :style="{backgroundImage: 'url('+imageURL+')',backgroundSize:'100% 100%'}"> 
+			<view id="login"  :style="{backgroundImage: 'url('+imageURL+')',backgroundSize:'cover',backgroundPosition:'center'}"> 
 			<!-- #endif -->
 			<view class="logo">
 				嗨自驾, 自驾嗨
@@ -19,9 +19,9 @@
 					<input type="password" v-model="Password" placeholder="密码" placeholder-style="color:#ffffff;">
 				</view>
 			</view>
-			<button class="submit common-btn" :loading="isLoding" @tap="submit" >登录</button>
+			<button class="submit common-btn" :loading="isLoading" @tap="submit" >登录</button>
 			<view class="links">
-				<navigator url="/pages/login/forgot-password">找回密码 | </navigator>
+				<navigator url="/pages/login/forgot-password">找回密码</navigator>
 				<navigator url="/pages/login/sign-up"> 开始注册</navigator>
 			</view>
 		</view>
@@ -37,7 +37,7 @@
 				imageURL: '/static/image/background2.jpg',
 				PhoneNumber: "",
 				Password: "",
-				isLoding: false,
+				isLoading: false,
 				// winSize: {},
 			};
 		},
@@ -152,7 +152,6 @@
 			width:90%;
 			background-color:#DF5000;
 			font-size: 32upx;
-			
 			text-align: center;
 			font-family: "OpenSans-SemiBold";
 			height: 100upx;
@@ -198,6 +197,13 @@
 			display: flex;
 			color: #FFFFFF;
 			font-size: 30upx;
+			navigator{
+				padding: 0 10.416rpx;
+				line-height: 1;
+				&:first-child{
+					border-right: 2.083rpx solid #fff;
+				}
+			}
 		}
 	}
 </style>

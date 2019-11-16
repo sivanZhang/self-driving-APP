@@ -131,3 +131,6 @@ uni-button:after {
 	border-radius: inherit;
 	transform: scale(1, 1);
 }
+button:after {
+    border: none!important;
+}
