@@ -34,7 +34,7 @@
 	export default {
 		data() {
 			return {
-				imageURL: '/static/image/background2.jpg',
+				imageURL: '/static/image/background.jpg',
 				PhoneNumber: "",
 				Password: "",
 				isLoding: false,
@@ -130,10 +130,10 @@
 
 <style lang="scss">
 	#login {
-		height:100vh;
+		min-height:100vh;
 		position: relative;
 		/* #ifdef H5 */  
-		background-image: url(~@/static/image/background2.jpg) ;
+		background-image: url(~@/static/image/background.jpg) ;
 		background-size: cover;
 		background-position: center;
 		/* #endif */
@@ -159,19 +159,19 @@
 			height: 100upx;
 			// line-height: 145.833upx;
 			
-			margin-left:50upx;
-			margin-top:200upx;
+			margin-left:38upx;
+			margin-top:80upx;
 			color: #FFFFFF;
 			border-radius: 50upx;
 		}
 		.inputs {
-			margin-top:500upx;
+			margin-top:700upx;
 			color:#FFFFFF;
 			.left {
 				display: flex;
 				align-items: center;
 				// font-weight: bold;
-				margin-top:60upx;
+				margin-top:50upx;
 				margin-left:80upx;
 			}
 			image{
@@ -195,7 +195,7 @@
 		.links {
 			text-align: center;
 			margin-left: 260upx;
-			margin-top: 50upx;
+			margin-top: 30upx;
 			display: flex;
 			color: #FFFFFF;
 			font-size: 30upx;
