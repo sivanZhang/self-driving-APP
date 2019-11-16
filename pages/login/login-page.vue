@@ -107,7 +107,7 @@
 							sex,
 							thumbnail_portait,  
 							phone,
-							email,
+							email,  
 							id
 						});
 						uni.switchTab({
