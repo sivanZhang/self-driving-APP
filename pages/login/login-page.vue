@@ -108,7 +108,7 @@
 							thumbnail_portait,  
 							phone,
 							email,  
-							id    
+							id      
 						});
 						uni.switchTab({
 							url: "/pages/user-center/my-account",
