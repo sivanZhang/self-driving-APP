@@ -10,15 +10,18 @@
 			<view class="wall-top" @tap="target('/pages/user-center/personalCenter/personalCenter')">
 				<view style="display: flex;">
 					<image   class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.thumbnail_portait"></image>
-					<view>
+					<view class="top" style="display:flex;padding-top:20upx;">
+						<view class="position">
+							<image src="../../static/image/position.png"></image>
+						</view>
 						<view class="top-header" >
 							<span style="font-weight: bold;"></span>{{UserInfo.username||'用户'+UserInfo.phone}}</span>
-							<view v-if="UserInfo.sex == '女'">
+							<!-- <view v-if="UserInfo.sex == '女'">
 								<image src="/static/icons/women.png"></image>
 							</view>
 							<view v-else>
 								<image src="/static/icons/men.png"></image>
-							</view>
+							</view> -->
 						</view>
 						<!-- 	<view class="top-bottom">
 							<view style="flex-wrap: wrap;padding-left: 5upx;">0关注</view>
@@ -200,9 +203,6 @@
 			height: 360rpx;
 			position: relative;
 			background: #fff;
-             
-			 
-			
 
 			.wall-top {
 				position: relative;
@@ -226,19 +226,18 @@
 				align-items: center;
 				justify-content: center;
 			}
-
+            .position{
+				image {
+					width: 70upx;
+					height: 45upx;
+					padding-left: 30upx;
+					z-index: 2;
+				}
+			}
 			.top-header {
 				display: flex;
 				padding-left: 15upx;
-				padding-top: 15upx;
 				color: #FFFFFF;
-
-				image {
-					width: 45rpx;
-					height: 35rpx;
-					padding-left: 8upx;
-					z-index: 2;
-				}
 			}
 
 			.top-bottom {
