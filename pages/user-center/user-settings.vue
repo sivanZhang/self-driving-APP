@@ -63,19 +63,9 @@
 				let self = this;
 				this.$store.commit("setToken");
 				this.$store.commit("setUserInfo");
-				uni.showToast({
-					title: '成功退出账号',
-					mask: false,
-					duration: 1500,
-					success() {
-						setTimeout(() => {
-							uni.navigateTo({
-								url: "/pages/login/login-page"
-							})
-						}, 1000);
-					}
-				});
-
+				uni.navigateTo({
+					url: "/pages/login/login-page"
+				})
 			},
 			togglePopup() {
 				this.$refs.logout.open()

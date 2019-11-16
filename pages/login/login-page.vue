@@ -1,5 +1,11 @@
 <template>
-		<view id="login" :style="{backgroundImage: 'url('+imageURL+')',backgroundSize:'100% 100%'}">
+		
+			<!-- #ifdef H5 -->  
+			<view id="login">  
+			<!-- #endif -->
+			<!-- #ifndef H5 -->
+			<view id="login"  :style="{backgroundImage: 'url('+imageURL+')',backgroundSize:'100% 100%'}"> 
+			<!-- #endif -->
 			<view class="logo">
 				嗨自驾, 自驾嗨
 			</view>
@@ -10,7 +16,7 @@
 				</view>
 				<view class="left">
 					<image src="/static/icons/password.png"></image>
-					<input :password="true" v-model="Password" placeholder="密码" placeholder-style="color:#ffffff;">
+					<input type="password" v-model="Password" placeholder="密码" placeholder-style="color:#ffffff;">
 				</view>
 			</view>
 			<button class="submit common-btn" :loading="isLoding" @tap="submit" >登录</button>
@@ -18,9 +24,7 @@
 				<navigator url="/pages/login/forgot-password">找回密码 | </navigator>
 				<navigator url="/pages/login/sign-up"> 开始注册</navigator>
 			</view>
-
 		</view>
-	
 </template>
 
 <script>
@@ -34,13 +38,13 @@
 				PhoneNumber: "",
 				Password: "",
 				isLoding: false,
-				winSize: {},
+				// winSize: {},
 			};
 		},
 		onLoad() {
-			this.getWindowSize();
-			console.log(this.winSize.width)
-			console.log(this.winSize.height)
+			// this.getWindowSize();
+			// console.log(this.winSize.width)
+			// console.log(this.winSize.height)
 			// #ifdef H5
 			document.onLong = function(e) {
 				var e = e || window.event;
@@ -49,16 +53,16 @@
 			// #endif
 		},
 		methods: {
-			getWindowSize() {
-				uni.getSystemInfo({
-					success: (res) => {
-						this.winSize = {
-							"width": res.windowWidth,
-							"height": res.windowHeight
-						}
-					}
-				})
-			},
+			// getWindowSize() {
+			// 	uni.getSystemInfo({
+			// 		success: (res) => {
+			// 			this.winSize = {
+			// 				"width": res.windowWidth,
+			// 				"height": res.windowHeight
+			// 			}
+			// 		}
+			// 	})
+			// },
 			submit() {
 				this.isLoading = true;
 				let reg = /^1(3|4|5|7|8|9)\d{9}$/
@@ -126,14 +130,17 @@
 <style lang="scss">
 	#login {
 		height:100vh;
-		//  // padding-bottom: 400upx;
-  // //       padding-top: 160upx;
-  // //       width:'this.winSize.width';
-		// // height:'this.winSize.height';
+		position: relative;
+		/* #ifdef H5 */  
+		background-image: url(~@/static/image/background2.jpg) ;
+		background-size: cover;
+		background-position: center;
+		/* #endif */
 		.logo {
 			// margin-top: 329.166upx auto 239.583upx;
 			// margin-left:239.583upx;
-			padding-top:200upx;
+			position: relative;
+			top:200upx;
 			text-align: center;
 		    font-size:50upx;
 			//font-weight: bold;
