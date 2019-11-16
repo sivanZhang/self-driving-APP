@@ -34,7 +34,7 @@
 	export default {
 		data() {
 			return {
-				imageURL: '/static/image/background2.jpg',
+				imageURL: '/static/image/background.jpg',
 				PhoneNumber: "",
 				Password: "",
 				isLoding: false,
@@ -132,7 +132,7 @@
 		min-height:100vh;
 		position: relative;
 		/* #ifdef H5 */  
-		background-image: url(~@/static/image/background2.jpg) ;
+		background-image: url(~@/static/image/background.jpg) ;
 		background-size: cover;
 		background-position: center;
 		/* #endif */
