@@ -12,10 +12,27 @@
 		{
 			"path": "pages/user-center/personalCenter/portrait",
 			"style": {
-				"navigationBarTitleText": "头像"
-				// "app-plus": {
-				// 	"titleNView": false
-				// }
+				"navigationBarTitleText": "头像",
+				"navigationBarBackgroundColor": "#3B4144",
+				"navigationBarTextStyle":"white"
+			}
+		},
+		
+		
+		{
+			"path": "pages/user-center/personalCenter/editProfile",
+			"style": {
+				"navigationBarTitleText": "编辑资料",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"float": "right",
+							"text": "保存",
+							"width": "auto",
+							"fontSize": "38upx"
+						}]
+					}
+				}
 			}
 		},
 		{
@@ -196,22 +213,7 @@
 				"navigationBarTitleText": "个人主页"
 			}
 		},
-		{
-			"path": "pages/user-center/personalCenter/editProfile",
-			"style": {
-				"navigationBarTitleText": "编辑资料",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"float": "right",
-							"text": "保存",
-							"width": "auto",
-							"fontSize": "38upx"
-						}]
-					}
-				}
-			}
-		},
+		
 		{
 			"path": "pages/user-center/change-background",
 			"style": {

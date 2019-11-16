@@ -10,15 +10,18 @@
 			<view class="wall-top" @tap="target('/pages/user-center/personalCenter/personalCenter')">
 				<view style="display: flex;">
 					<image   class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.thumbnail_portait"></image>
-					<view>
+					<view class="top" style="display:flex;padding-top:20upx;">
+						<view class="position">
+							<image src="../../static/image/position.png"></image>
+						</view>
 						<view class="top-header" >
 							<span style="font-weight: bold;"></span>{{UserInfo.username||'用户'+UserInfo.phone}}</span>
-							<view v-if="UserInfo.sex == '女'">
+							<!-- <view v-if="UserInfo.sex == '女'">
 								<image src="/static/icons/women.png"></image>
 							</view>
 							<view v-else>
 								<image src="/static/icons/men.png"></image>
-							</view>
+							</view> -->
 						</view>
 						<!-- 	<view class="top-bottom">
 							<view style="flex-wrap: wrap;padding-left: 5upx;">0关注</view>
@@ -151,7 +154,7 @@
 		},
 		data() {
 			return {
-				imgurl:"/static/image/test1.jpg",
+				imgurl:'https://tl.chidict.com'+'/'+this.$store.state.UserInfo.background_image,
 				noticeData: [],
 				
 			};
@@ -167,9 +170,37 @@
 			
 			//上传返回图片
 			myUpload(rsp) {
+				console.log(rsp)
 				const self = this;
-				self.imgurl = rsp.path; //更新头像方式一
-				// rsp.avatar.imgSrc = rsp.path; //更新头像方式二
+				self.imgurl = rsp.path; //更新头像方式一	
+				uni.uploadFile({
+					url: 'https://tl.chidict.com/users/portrait_backimage/',
+					filePath:rsp.path,  
+					name: 'backimage_file', 
+					header: {
+						"Content-Type": "multipart/form-data",
+						'Authorization': uni.getStorageSync('estateToken') || this.$store.state.estateToken,
+					},
+					success: (res) => {
+						// let data = JSON.parse(res.data)
+						// this.msg = data.msg
+						// console.log(this.msg)
+						uni.showToast({
+							title: '修改成功',
+							icon: "none",
+						});
+					},
+					fail: () => {
+						uni.showToast({
+							title: '修改失败'
+						});
+					}
+				});
+				uni.reLaunch({
+					url:'/pages/login/login-page',
+					animationDuration: 200
+				});
+			//	rsp.avatar.imgSrc = rsp.path; //更新头像方式二
 			},
 			target(url) {
 				uni.navigateTo({
@@ -200,9 +231,6 @@
 			height: 360rpx;
 			position: relative;
 			background: #fff;
-             
-			 
-			
 
 			.wall-top {
 				position: relative;
@@ -226,19 +254,18 @@
 				align-items: center;
 				justify-content: center;
 			}
-
+            .position{
+				image {
+					width: 70upx;
+					height: 45upx;
+					padding-left: 30upx;
+					z-index: 2;
+				}
+			}
 			.top-header {
 				display: flex;
 				padding-left: 15upx;
-				padding-top: 15upx;
 				color: #FFFFFF;
-
-				image {
-					width: 45rpx;
-					height: 35rpx;
-					padding-left: 8upx;
-					z-index: 2;
-				}
 			}
 
 			.top-bottom {

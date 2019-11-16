@@ -18,7 +18,9 @@
 			<view class="bodyList">
 				<view>性别：</view>
 				<view>
-					<input type="text" v-model="sex" />
+					<picker @change="bindPickerChange" :value="index" :range="array" range-key="name">
+						<view class="uni-input" v-model="sex">{{array[index].name}}</view>
+					</picker>
 				</view>
 			</view>
 			<view class="bodyList">
@@ -64,16 +66,16 @@
 			})
 			return {
 				imageurl:'https://tl.chidict.com'+'/'+this.$store.state.UserInfo.thumbnail_portait,
-				username: '',
-				sex: '',    
+				username:this.$store.state.UserInfo.username,
+				sex:this.$store.state.UserInfo.sex,    
 				area:110100,
 				signature: '',  
-				birth: '',
+				birth: '',  
 				method: 'put',
 				showUpImg: false,
 				date: currentDate,
-				msg1:'',
-				
+				array: [{name:'男'},{name: '女'}],
+				index: 0,
 			};
 		},
 		components: {
@@ -90,45 +92,47 @@
 				return this.$store.state.UserInfo
 			}
 		},
-		// onLoad() {
-		// 	this.ss()
-		// },
+		
 		methods: {
 			target(url) {
 				uni.navigateTo({
 					url
 				})
 			},
+			bindPickerChange: function(e) {
+				console.log('picker发送选择改变，携带值为：' + e.target.value)
+				this.index = e.target.value
+			},
 			//上传返回图片
 			// myUpload(rsp) {
 				
-				// console.log(rsp)
-				// const self = this;
-				// self.imageurl = rsp.path; //更新头像方式一	
-				// uni.uploadFile({
-				// 	url: 'https://tl.chidict.com/appfile/appfile/',
-				// 	filePath:rsp.path,  
-				// 	name: 'file', 
-				// 	header: {
-				// 		"Content-Type": "multipart/form-data",
-				// 		'Authorization': uni.getStorageSync('estateToken') || this.$store.state.estateToken,
-				// 	},
-				// 	success: (res) => {
-				// 		let data = JSON.parse(res.data)
-				// 		this.msg = data.msg
-				// 		console.log(this.msg)
-				// 		uni.showToast({
-				// 			title: '上传成功',
-				// 			icon: "none",
-				// 		});
-				// 	},
-				// 	fail: () => {
-				// 		uni.showToast({
-				// 			title: '上传失败'
-				// 		});
-				// 	}
-				// });
-				// rsp.avatar.imgSrc = rsp.path; //更新头像方式二
+			// 	console.log(rsp)
+			// 	const self = this;
+			// 	self.imageurl = rsp.path; //更新头像方式一	
+			// 	uni.uploadFile({
+			// 		url: 'https://tl.chidict.com/appfile/appfile/',
+			// 		filePath:rsp.path,  
+			// 		name: 'file', 
+			// 		header: {
+			// 			"Content-Type": "multipart/form-data",
+			// 			'Authorization': uni.getStorageSync('estateToken') || this.$store.state.estateToken,
+			// 		},
+			// 		success: (res) => {
+			// 			let data = JSON.parse(res.data)
+			// 			this.msg = data.msg
+			// 			console.log(this.msg)
+			// 			uni.showToast({
+			// 				title: '上传成功',
+			// 				icon: "none",
+			// 			});
+			// 		},
+			// 		fail: () => {
+			// 			uni.showToast({
+			// 				title: '上传失败'
+			// 			});
+			// 		}
+			// 	});
+			// 	rsp.avatar.imgSrc = rsp.path; //更新头像方式二
 			// },
 			//保存
 			save(val) {
@@ -169,10 +173,10 @@
 						})
 					}
 				})
-				uni.reLaunch({
-					url:'/pages/login/login-page',
-					animationDuration: 200
-				});
+				// uni.reLaunch({
+				// 	url:'/pages/login/login-page',
+				// 	animationDuration: 200
+				// });
 			},  
 			
 			onNavigationBarButtonTap(val) {
