@@ -104,7 +104,7 @@
 						this.$store.commit("setUserInfo", {
 							background_image,
 							username,
-							sex,
+							sex,  
 							thumbnail_portait,  
 							phone,
 							email,  
