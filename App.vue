@@ -1,8 +1,8 @@
 <script>
 	import Vue from 'vue'
 	export default {
-		onLaunch: function() {
-			console.log('App Launch')
+		onLaunch: function() { 
+			plus.screen.lockOrientation('portrait-primary');
 		},
 		onShow: function() {
 			console.log('App Show')
