@@ -151,7 +151,7 @@
 		},
 		data() {
 			return {
-				imgurl:"/static/image/test1.jpg",
+				imgurl:'https://tl.chidict.com'+'/'+this.$store.state.UserInfo.background_image,
 				noticeData: [],
 				
 			};
@@ -167,9 +167,37 @@
 			
 			//上传返回图片
 			myUpload(rsp) {
+				console.log(rsp)
 				const self = this;
-				self.imgurl = rsp.path; //更新头像方式一
-				// rsp.avatar.imgSrc = rsp.path; //更新头像方式二
+				self.imgurl = rsp.path; //更新头像方式一	
+				uni.uploadFile({
+					url: 'https://tl.chidict.com/users/portrait_backimage/',
+					filePath:rsp.path,  
+					name: 'backimage_file', 
+					header: {
+						"Content-Type": "multipart/form-data",
+						'Authorization': uni.getStorageSync('estateToken') || this.$store.state.estateToken,
+					},
+					success: (res) => {
+						// let data = JSON.parse(res.data)
+						// this.msg = data.msg
+						// console.log(this.msg)
+						uni.showToast({
+							title: '修改成功',
+							icon: "none",
+						});
+					},
+					fail: () => {
+						uni.showToast({
+							title: '修改失败'
+						});
+					}
+				});
+				uni.reLaunch({
+					url:'/pages/login/login-page',
+					animationDuration: 200
+				});
+			//	rsp.avatar.imgSrc = rsp.path; //更新头像方式二
 			},
 			target(url) {
 				uni.navigateTo({

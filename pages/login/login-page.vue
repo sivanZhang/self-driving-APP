@@ -92,7 +92,7 @@
 					});
 					if (res.data.status === 0) {
 						const {
-							
+							background_image,
 							username,
 							sex,
 							thumbnail_portait,
@@ -102,6 +102,7 @@
 						} = res.data
 						this.$store.commit("setToken", `JWT ${res.data.token}`);
 						this.$store.commit("setUserInfo", {
+							background_image,
 							username,
 							sex,
 							thumbnail_portait,  
