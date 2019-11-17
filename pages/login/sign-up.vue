@@ -158,6 +158,7 @@
 					margin-bottom:30upx;
 					padding: 10upx;
 					background-color: #DAC2A6;
+					z-index: 50;
 				}
 			}
 			input {
