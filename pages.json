@@ -60,7 +60,7 @@
 		{
 			"path": "pages/login/forgot-password",
 			"style": {
-				"navigationBarTitleText": "Reset Password",
+				"navigationBarTitleText": "找回密码",
 				 "app-plus": { 
 				 	// 将回弹属性关掉
 				 	"bounce":"none"
@@ -176,7 +176,14 @@
 			}
 		}, {
 			"path": "pages/login/sign-up",
-			"style": {}
+			"style": {
+				"navigationStyle": "custom", 
+				"app-plus": {
+					"titleNView": false,
+					// 将回弹属性关掉
+					"bounce":"none"
+				}
+			}
 		},
 		{
 			"path": "pages/user-center/browser-history",
@@ -210,7 +217,11 @@
 		{
 			"path": "pages/user-center/personalCenter/personalCenter",
 			"style": {
-				"navigationBarTitleText": "个人主页"
+				"navigationBarTitleText": "个人主页",
+				"app-plus": {
+					// 将回弹属性关掉
+					"bounce":"none"
+				}
 			}
 		},
 		

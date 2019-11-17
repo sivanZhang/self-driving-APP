@@ -1,6 +1,6 @@
 <template>
 	<view id="portrait">
-		
+		<view class="t">点击可以修改头像</view>
 		<cropper  selWidth="750rpx" selHeight="700rpx" @upload="myUpload" :avatarSrc="imageurl" avatarStyle="width:95%;height: 700rpx;position:relative;margin-top:25%;left:2.5%;border: 1px solid #F2F2F2;">
 		</cropper>
 	</view>
@@ -66,6 +66,14 @@
 		overflow-x: hidden;
 		width:100%;
 		height:100vh;
+		.t{
+			color:#fff;
+			position:relative;
+			left:2.5%;
+			font-size:15px;
+			top:5%;
+			text-align: center;
+		}
 	}
 	
 </style>

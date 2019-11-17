@@ -10,7 +10,7 @@
 			<view class="wall-top" @tap="target('/pages/user-center/personalCenter/personalCenter')">
 				<view style="display: flex;">
 					<image   class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.thumbnail_portait"></image>
-					<view class="top" style="display:flex;padding-top:20upx;">
+					<view class="top" style="display:flex;padding-top:20upx;padding-left:10upx;">
 						<view class="position">
 							<image src="../../static/image/position.png"></image>
 						</view>
@@ -51,6 +51,12 @@
 						<image src="/static/icons/dongtai.png" />
 					</view>
 					<view class="uni-content-text">动态</view>
+				</view>
+				<view class="uni-content-box" >
+					<view class="uni-content-image" style="position:relative;top:-0.5rem;">
+						<image class="img" src="/static/image/journey/start.png" />
+					</view>
+					
 				</view>
 				<view class="uni-content-box">
 					<view class="uni-content-image">
@@ -240,6 +246,8 @@
 				font-size: 32upx;
 
 				.i {
+					position:relative;
+					left:3%;
  				    width: 130rpx;
 					height: 130rpx;
 					border-radius: 50%;
@@ -282,16 +290,16 @@
 			.uni-content {
 				display: flex;
 				flex-wrap: wrap;
-				padding-left: 40upx;
+				padding-left: 0upx;
 				padding-top: 85upx;
-				padding-right: 40upx;
+				padding-right: 5upx;
 			}
 
 			.uni-content-box {
 				display: flex;
 				flex-direction: column;
 				align-items: center;
-				width: 25%;
+				width: 20%;
 				box-sizing: border-box;
 			}
 
@@ -299,7 +307,11 @@
 				display: flex;
 				justify-content: center;
 				align-items: center;
-
+                .img{
+					width:100upx;
+					height:100upx;
+				}
+				
 				image {
 					width: 70upx;
 					height: 70upx;
