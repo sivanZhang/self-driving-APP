@@ -46,7 +46,7 @@
 					username: '',
 				},
 				codeButtonType: false,
-				secondCount: 30,
+				secondCount: 60,
 			}
 		},
 		methods: {
@@ -76,7 +76,7 @@
 						if (this.secondCount === 0) {
 							clearInterval(timeCount)
 							this.codeButtonType = false
-							this.secondCount = 30
+							this.secondCount = 60
 						}
 					}, 1000)
 				}).catch((err) => {
@@ -108,6 +108,9 @@
 				if(checkRes){
 					Post_Signup(this.formData).then(res=>{
 						uni.showToast({ title: res.msg, icon: "none" });
+						uni.navigateTo({
+							url: "/pages/login/login-page"
+						})
 					})
 				}else{
 					uni.showToast({ title: graceChecker.error, icon: "none" });
@@ -191,6 +194,7 @@
 			margin-top:80upx;
 			color: #FFFFFF;
 			border-radius: 50upx;
+			z-index: 50;
 		}
 	}
 </style>
