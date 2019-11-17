@@ -177,9 +177,14 @@
 		}, {
 			"path": "pages/login/sign-up",
 			"style": {
+<<<<<<< HEAD
 				"navigationStyle": "custom", 
 				"app-plus": {
 					"titleNView": false,
+=======
+				"navigationBarTitleText": "注册为新用户",
+				"app-plus": {
+>>>>>>> 8eb658e23419b18d45fc3c7566ce4ff05ae417a2
 					// 将回弹属性关掉
 					"bounce":"none"
 				}
