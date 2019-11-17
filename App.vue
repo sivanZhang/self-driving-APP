@@ -2,7 +2,9 @@
 	import Vue from 'vue'
 	export default {
 		onLaunch: function() { 
+			// #ifdef APP-PLUS
 			plus.screen.lockOrientation('portrait-primary');
+			// #endif
 		},
 		onShow: function() {
 			console.log('App Show')

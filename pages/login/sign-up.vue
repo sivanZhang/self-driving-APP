@@ -1,7 +1,10 @@
 <template>
-	<!-- #ifndef H5 -->
-	<view id="sign-up" :style="{backgroundImage: 'url('+imageURL+')',backgroundSize:'100% 100%'}">
-	<!-- #endif -->
+<!-- #ifdef H5 -->  
+			<view id="sign-up">  
+			<!-- #endif -->
+			<!-- #ifndef H5 -->
+			<view id="sign-up"  :style="{backgroundImage: 'url('+imageURL+')',backgroundSize:'cover',backgroundPosition:'center'}"> 
+			<!-- #endif -->
 		<text class="text">注册</text>
 		<view class="content">
 			<view class="item">
@@ -117,6 +120,11 @@
 <style lang="scss">
 	#sign-up {
 		min-height:100vh;
+		/* #ifdef H5 */  
+		background-image: url(~@/static/image/background.jpg) ;
+		background-size: cover;
+		background-position: center;
+		/* #endif */
 		.text{
 		    position: relative;
 			top:200upx;
