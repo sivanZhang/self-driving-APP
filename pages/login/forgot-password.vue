@@ -5,7 +5,7 @@
 			<!-- #ifndef H5 -->
 		<view id="forgot-password"  :style="{backgroundImage: 'url('+imageURL+')',backgroundSize:'cover',backgroundPosition:'center'}"> 
 		<!-- #endif -->
-		<text class="text">修改密码</text>
+		<text class="text">找回密码</text>
 		<view class="content">
 			<view class="item">
 				<image src="/static/icons/phone.png"></image>
@@ -16,27 +16,21 @@
 				<input type="number" v-model.number="formData.code" placeholder="验证码" placeholder-style="color:#ffffff;"/>
 				<button type="default" :disabled="codeButtonType" @click="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
 			</view>
-			<view class="item">
-				<image src="/static/icons/password.png"></image>
-				<input type="text" v-model="formData.password" placeholder="密码" placeholder-style="color:#ffffff;"/>
-			</view>
 		</view>
-		<button class="submit" @tap="signup">确认</button>
+		<button class="submit" @tap="assure">确定</button>
 	</view>
 </template>
 
 <script>
 	import graceChecker from "@/utils/graceChecker"
-	import { Put_Password, Get_PhoneCode } from "@/api/login";
+	import { Find_Password, Get_PhoneCode } from "@/api/login.js";
 	export default {
 		data() {
 			return {
 				imageURL: '/static/image/background.jpg',
 				formData: {
 					phone: '',
-					password: '',
 					code: '',
-					method:'put'
 				},
 				codeButtonType: false,
 				secondCount: 60,
@@ -77,13 +71,8 @@
 				})
 			},
 			//注册
-			signup() {
-				const rule = [{
-						name: "password",
-						checkType: "string",
-						checkRule: "6,16",
-						errorMsg: "密码最少输入6位"
-					},
+			assure () {
+				const rule = [
 					{
 						name: "code",
 						checkType: "reg",
@@ -99,8 +88,8 @@
 				]
 				let checkRes =graceChecker.check(this.formData, rule)
 				if(checkRes){
-					Put_Password(this.formData).then(res=>{
-						uni.showToast({ title: "修改成功", icon: "none" });
+					Find_Password(this.formData).then(res=>{
+						uni.showToast({ title: res.data.msg, icon: "none" });
 					})
 				}else{
 					uni.showToast({ title: graceChecker.error, icon: "none" });
@@ -126,7 +115,7 @@
 				color: #FFFFFF;
 			}
 		    .content{
-				margin-top:400upx;
+				margin-top:600upx;
 				color:#FFFFFF;
 				image{
 					height: 40upx;
@@ -182,6 +171,4 @@
 			}
 		}
 </style>
-
-
 

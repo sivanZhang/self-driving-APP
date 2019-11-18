@@ -107,7 +107,7 @@
 				let checkRes =graceChecker.check(this.formData, rule)
 				if(checkRes){
 					Post_Signup(this.formData).then(res=>{
-						uni.showToast({ title: res.msg, icon: "none" });
+						uni.showToast({ title: res.data.msg, icon: "none" });
 						uni.navigateTo({
 							url: "/pages/login/login-page"
 						})
@@ -176,12 +176,6 @@
 				}
 			}
 		}
-		// .signup-inp {
-		// 	border: 2.083rpx solid #C8C8CC;
-		// 	margin: 31.25rpx 0;
-		// 	padding: 12.5rpx 25rpx;
-		// 	text-align: left;
-		// }
 		.submit {
 			width:90%;
 			background-color:#DF5000;
