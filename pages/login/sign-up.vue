@@ -9,7 +9,7 @@
 		<view class="content">
 			<view class="item">
 				<image src="/static/icons/phone.png"></image>
-				<input type="text" v-model="formData.phone" placeholder="手机号" placeholder-style="color:#ffffff;"/>
+				<input type="number" v-model="formData.phone" pattern="[0-9]*" oninput="value=value.replace(/[^\d.]/g,'')" maxlength="11" placeholder="手机号" placeholder-style="color:#ffffff;"/>
 			</view>
 			<view class="code-warp">
 				<image src="/static/icons/code.png"></image>
@@ -22,7 +22,7 @@
 			</view>
 			<view class="item">
 				<image src="/static/icons/password.png"></image>
-				<input type="text" v-model="formData.password" placeholder="密码" placeholder-style="color:#ffffff;"/>
+				<input type="password" v-model="formData.password" placeholder="密码" placeholder-style="color:#ffffff;"/>
 			</view>
 		</view>
 		<button class="submit" @tap="signup">注册</button>
@@ -108,10 +108,14 @@
 				if(checkRes){
 					Post_Signup(this.formData).then(res=>{
 						uni.showToast({ title: res.data.msg, icon: "none" });
-						uni.navigateTo({
-							url: "/pages/login/login-page"
-						})
-					})
+							if (res.data.status == 0){
+								setTimeout(function(){
+									uni.navigateTo({
+										url: "/pages/login/login-page",
+									});
+								},1000)
+					        }
+				    })
 				}else{
 					uni.showToast({ title: graceChecker.error, icon: "none" });
 				}

@@ -9,16 +9,17 @@
 		<view class="content">
 			<view class="item">
 				<image src="/static/icons/phone.png"></image>
-				<input type="text" v-model="formData.phone" placeholder="手机号" placeholder-style="color:#ffffff;"/>
+				<input type="number" v-model="formData.phone" oninput="value=value.replace(/[^\d.]/g,'')" pattern="[0-9]*" placeholder="手机号" placeholder-style="color:#ffffff;"
+				 maxlength="11"/>
 			</view>
 			<view class="code-warp">
 				<image src="/static/icons/code.png"></image>
 				<input type="number" v-model.number="formData.code" placeholder="验证码" placeholder-style="color:#ffffff;"/>
-				<button type="defalut" plain="true" :disabled="codeButtonType" @click="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
+				<button type="defalut" plain="true" :disabled="codeButtonType" @tap="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
 			</view>
 			<view class="item">
 				<image src="/static/icons/password.png"></image>
-				<input type="text" v-model="formData.password" placeholder="新密码" placeholder-style="color:#ffffff;"/>
+				<input type="password" v-model="formData.password" placeholder="新密码" placeholder-style="color:#ffffff;"/>
 			</view>
 		</view>
 		<button class="submit" @tap="assure">确定</button>
@@ -32,6 +33,7 @@
 		data() {
 			return {
 				imageURL: '/static/image/background.jpg',
+				oldNum:0,
 				formData: {
 					phone: '',
 					code: '',
@@ -95,9 +97,13 @@
 				if(checkRes){
 					Put_Password(this.formData).then(res=>{
 						uni.showToast({ title: res.data.msg, icon: "none" });
-						uni.navigateTo({
-							url: "/pages/login/login-page"
-						})
+							if (res.data.status == 0){
+							setTimeout(function(){
+								uni.navigateTo({
+									url: "/pages/login/login-page",
+								});
+							},1000)
+					    }
 					})
 				}else{
 					uni.showToast({ title: graceChecker.error, icon: "none" });
@@ -148,6 +154,7 @@
 						right: 100upx;
 						margin-bottom:30upx;
 						padding: 10upx;
+						padding-bottom:12upx;
 						z-index: 50;
 					}
 				}
