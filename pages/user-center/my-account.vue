@@ -190,7 +190,7 @@
 				search_users({
 					userid: this.$store.state.UserInfo.id
 				}).then(res => {
-					console.log(res)
+					console.log(res)  
 				})
 			},
 			target(url) {
