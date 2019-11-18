@@ -37,7 +37,7 @@
 
 <script>
 	import {
-		searchFollow
+		searchFollow,search_users
 	} from '@/api/usercenter'
 	export default {
 		data() {
@@ -65,7 +65,12 @@
 					this.fans_count = res.data.msg.fans_count
 					console.log(res)
 				})
-
+                  
+				  // search_users({
+				  // 	userid: this.$store.state.UserInfo.id
+				  // }).then(res => {
+				  // 	console.log(res)
+				  // })
 			}
 		},
 		created() {

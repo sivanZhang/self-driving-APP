@@ -87,6 +87,7 @@
 			"path": "pages/user-center/my-account",
 			"style": {
 				"navigationStyle": "custom"
+				
 			},
 			"app-plus": {
 				"titleNView": false

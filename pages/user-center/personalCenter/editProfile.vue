@@ -18,9 +18,7 @@
 			<view class="bodyList">
 				<view>性别：</view>
 				<view>
-					<picker @change="bindPickerChange" :value="index" :range="array" range-key="name">
-						<view class="uni-input" v-model="sex">{{array[index].name}}</view>
-					</picker>
+					<input type="text" v-model="sex" />  
 				</view>
 			</view>
 			<view class="bodyList">
@@ -54,6 +52,7 @@
 
 <script>
 	import {
+		search_users,
 		post_file,
 		update_users
 	} from '@/api/usercenter';
@@ -151,33 +150,20 @@
 						title: res.data.msg,
 						icon: "none",
 					});
-					if (res.data.status === 0) {
-						const {
-							username,
-							sex,
-							thumbnail_portait,
-							id,
-						} = res.data
-						this.$store.commit("setToken", `JWT ${res.data.token}`);
-						this.$store.commit("setUserInfo", {
-							username,
-							sex,
-							thumbnail_portait,
-							id,
-						});
-
-					} else {
-						uni.showToast({
-							title: res.data.msg,
-							icon: "none",
-						})
-					}
+					
 				})
-				// uni.reLaunch({
-				// 	url:'/pages/login/login-page',
-				// 	animationDuration: 200
-				// });
+				uni.reLaunch({
+					url:'/pages/user-center/my-account',
+					animationDuration: 200
+				});
+				// search_users({
+				// 	userid: this.$store.state.UserInfo.id
+				// }).then(res => {
+				// 	console.log(res)
+				// })
 			},  
+			
+				
 			
 			onNavigationBarButtonTap(val) {
 				let data = {
@@ -195,32 +181,11 @@
 						title: res.data.msg,
 						icon: "none",
 					});
-					if (res.data.status === 0) {
-						const {
-							username,
-							sex,
-							thumbnail_portait,
-							id,
-						} = res.data
-						this.$store.commit("setToken", `JWT ${res.data.token}`);
-						this.$store.commit("setUserInfo", {
-							username,
-							sex,
-							thumbnail_portait,
-							id,
-						});
-				
-					} else {
-						uni.showToast({
-							title: res.data.msg,
-							icon: "none",
-						})
-					}
 				})
-				uni.reLaunch({
-					url:'/pages/login/login-page',
-					animationDuration: 200
-				});
+				// uni.reLaunch({
+				// 	url:'/pages/login/login-page',
+				// 	animationDuration: 200
+				// });
 			},
 			//选择出生日期
 			bindDateChange: function(e) {
@@ -241,7 +206,8 @@
 				day = day > 9 ? day : '0' + day;
 				return `${year}/${month}/${day}`;
 			}
-		}
+		},
+		
 	}
 </script>
 

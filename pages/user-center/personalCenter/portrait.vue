@@ -7,6 +7,9 @@
 </template>
 
 <script>
+	import {
+		search_users
+	} from '@/api/usercenter'
 	import cropper from "@/components/cropper.vue";
 	export default{
 		data(){
@@ -50,10 +53,10 @@
 						});
 					}
 				});
-				uni.reLaunch({
-					url:'/pages/login/login-page',
-					animationDuration: 200
-				});
+			uni.reLaunch({
+				url:'/pages/user-center/my-account',
+				animationDuration: 200
+			});
 			//	rsp.avatar.imgSrc = rsp.path; //更新头像方式二
 			},
 		}

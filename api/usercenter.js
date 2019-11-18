@@ -11,3 +11,7 @@ export function update_users(payload){
 export function post_file(payload) {
     return Ajax.post('/appfile/appfile/',payload);
 }
+//查看用户
+export function search_users(params){
+	return Ajax.get('/users/list/',{params});
+}

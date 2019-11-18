@@ -2,20 +2,23 @@
 	<!-- 我的首页 -->
 	<view id="MyAccount">
 		<view class="wall">
-			<!-- <image  @tap="changeImage()" src="/static/image/test1.jpg"></image> -->
+
 			<view class="header">
-			<cropper selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imgurl" avatarStyle="width:100vw;height:50vw;border-top-left-radius: 0px;border-top-right-radius: 0px;border-bottom-left-radius: 50%;border-bottom-right-radius: 50%;">
-			</cropper>
+				<map style="width:100vw;height:40vw;"></map>
+			 <!-- <web-view      src="/hybrid/html/line.html" ></web-view> -->
 			</view> 
-			<view class="wall-top" @tap="target('/pages/user-center/personalCenter/personalCenter')">
+			<view class="wall-top" >
 				<view style="display: flex;">
-					<image   class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.thumbnail_portait"></image>
+					<image   class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
 					<view class="top" style="display:flex;padding-top:20upx;padding-left:10upx;">
 						<view class="position">
-							<image src="../../static/image/position.png"></image>
+							<image @tap="chooseLocation"  src="../../static/image/journey/e.png"></image>
+							<view  class="address">
+								{{locationAddress}}
+							</view>
 						</view>
-						<view class="top-header" >
-							<span style="font-weight: bold;"></span>{{UserInfo.username||'用户'+UserInfo.phone}}</span>
+						<view class="top-header" @tap="target('/pages/user-center/personalCenter/personalCenter')" >
+							<span style="font-weight: bold"></span>{{UserInfo.username||'用户'+UserInfo.phone}}</span>
 							<!-- <view v-if="UserInfo.sex == '女'">
 								<image src="/static/icons/women.png"></image>
 							</view>
@@ -135,97 +138,81 @@
 		<view class="foot">
 			版本:12.321.33
 		</view>
-		<uni-popup ref="popup" type="center" :show="true">
-			<view @tap="target('/pages/user-center/change-background')">更换相册封面</view>
-		</uni-popup>
+		
+		
 
 	</view>
 </template>
 
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
-	
+	import {
+		search_users
+	} from '@/api/usercenter'
 	import {
 		GET_Notice
 	} from '@/api/notice'
 	// import uniBadge from "@/components/uni-badge/uni-badge.vue"
-	import cropper from "@/components/cropper.vue";
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
-	import uniPopup from "@/components/uni-popup/uni-popup.vue"
+	var util = require('../../common/util.js');
+	var formatLocation = util.formatLocation;
 	export default {
 		components: {
 			// uniBadge,
 			uniIcon,
-			uniPopup,
-			cropper
 		},
 		data() {
 			return {
-				imgurl:'https://tl.chidict.com'+'/'+this.$store.state.UserInfo.background_image,
 				noticeData: [],
 				
+				location: {},
+				locationAddress: '',
 			};
 		},
 
 		computed: {
 			UserInfo() {
 				return this.$store.state.UserInfo
-			}
-
+			},
+            
 		},
-		methods: {
-			
-			//上传返回图片
-			myUpload(rsp) {
-				console.log(rsp)
-				const self = this;
-				self.imgurl = rsp.path; //更新头像方式一	
-				uni.uploadFile({
-					url: 'https://tl.chidict.com/users/portrait_backimage/',
-					filePath:rsp.path,  
-					name: 'backimage_file', 
-					header: {
-						"Content-Type": "multipart/form-data",
-						'Authorization': uni.getStorageSync('estateToken') || this.$store.state.estateToken,
-					},
-					success: (res) => {
-						// let data = JSON.parse(res.data)
-						// this.msg = data.msg
-						// console.log(this.msg)
-						uni.showToast({
-							title: '修改成功',
-							icon: "none",
-						});
-					},
-					fail: () => {
-						uni.showToast({
-							title: '修改失败'
-						});
-					}
-				});
-				uni.reLaunch({
-					url:'/pages/login/login-page',
-					animationDuration: 200
-				});
-			//	rsp.avatar.imgSrc = rsp.path; //更新头像方式二
+		methods: { 
+		chooseLocation: function() {
+			uni.chooseLocation({
+				success: (res) => {
+					this.hasLocation = true,
+						this.location = formatLocation(res.longitude, res.latitude),
+						this.locationAddress = res.address
+				}
+			})
+		},
+			search(){
+				search_users({
+					userid: this.$store.state.UserInfo.id
+				}).then(res => {
+					console.log(res)
+				})
 			},
 			target(url) {
 				uni.navigateTo({
 					url
 				})
 			},
-			changeImage() {
-				this.$refs.popup.open()
-			},
 		},
-		onLoad() {
-			
+		onLoad() { 
+					
 			const Token = this.$store.state.estateToken || uni.getStorageSync('estateToken');
 			if (!Token) {
 				uni.navigateTo({
 					url: "/pages/login/login-page"
 				})
 			}
-
+           this.amapPlugin = new amap.AMapWX({
+           				key: this.key
+           			});  
+		},
+		created() {
+			this.search();
 		}
 	};
 </script>
@@ -242,7 +229,7 @@
 				position: relative;
 				z-index: 2;
 				left: 12upx;
-				bottom: 90upx;
+				bottom: 3upx;
 				font-size: 32upx;
 
 				.i {
@@ -264,16 +251,22 @@
 			}
             .position{
 				image {
-					width: 70upx;
-					height: 45upx;
+					width: 85upx;
+					height: 60upx;
 					padding-left: 30upx;
 					z-index: 2;
 				}
+				.address{
+					
+					position:relative;
+					top:-1.5rem;
+					right:-2rem;
+				}
 			}
 			.top-header {
-				display: flex;
-				padding-left: 15upx;
-				color: #FFFFFF;
+				position:relative;
+				left:2.5rem;
+				color: black;
 			}
 
 			.top-bottom {
