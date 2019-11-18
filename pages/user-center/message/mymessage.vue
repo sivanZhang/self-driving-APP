@@ -46,14 +46,19 @@
 		        <view>10月1日</view>
 			</view>
 		</view>
-		<view class="list">
+		<view  v-for="(row,index) of groupList" :key="index">
+		<!-- <view class="list"  @tap="deleteGroupList(row.id)"> -->
+		<view class="list" @tap="target('/pages/user-center/message/chatting?id='+row.id+'&mumbers='+row.members+'&name='+row.name)">
 			<view class="list-left">
 				<image src="../../../static/image/face.jpg"></image>
 			</view>
 			<view class="list-right">
-				<view>自己建的群名称</view>
-		        <view>昨天</view>
+				<view>{{row.name}}</view>
+		        <view>{{row.time|dateFormat}}</view>
 			</view>
+			<view :data-userid="row.id" @tap="deleteGroupList(row.id)">
+			</view>
+		</view>
 		</view>
 		<!-- 临时的一个创建群聊按钮，起作用的是导航栏的按钮 -->
 		<view style="padding: 15upx;">
@@ -72,6 +77,7 @@
 </template>
 
 <script>
+    import { LookGroupsChatting, DeleteGroupsChatting } from "@/api/chatting";
 	import { searchFollow } from '@/api/usercenter'
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
@@ -82,13 +88,36 @@
 			return {
 				user_name:'',
 				followlist:[],
+				groupList:[],
+				// 前台用户标志
+                result:[],
+                delBtnWidth: 60, //删除按钮宽度单位（rpx）
+				startX:'',
+				members:[],
 
 			};
 		},
-		created(){
-			this.search()
+		onLoad(){
+			this.search();
+			this.searchGroupList()
 		},
 		methods: {
+			//查看群组
+			searchGroupList(){
+               LookGroupsChatting({mine:this.$store.state.UserInfo.id}).then(({ data })=>{
+				   this.groupList = data.msg;
+				   this.groupid = data.msg.id;
+			   })
+			},
+			//删除群组
+			deleteGroupList(id){
+			// 	setTimeout(() => {
+            //       DeleteGroupsChatting({member_ids:id}).then(({ data })=>{
+			// 	   console.log("shanchu")
+			// 	   console.log(data)
+			//    })
+			// 	},200)
+			},
 			target(url){
 				uni.navigateTo({
 					url
@@ -106,9 +135,7 @@
 					console.log(res)
 				})
 			
-			}
-
-
+			},
 		},
 		//发起群聊
 		onNavigationBarButtonTap(val) {
