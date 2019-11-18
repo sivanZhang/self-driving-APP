@@ -60,8 +60,9 @@
 		{
 			"path": "pages/login/forgot-password",
 			"style": {
-				"navigationBarTitleText": "找回密码",
+				"navigationStyle": "custom",
 				 "app-plus": { 
+					"titleNView": false,
 				 	// 将回弹属性关掉    
 				 	"bounce":"none"
 				 }
@@ -178,11 +179,13 @@
 		}, {
 			"path": "pages/login/sign-up",
 			"style": {
-               "navigationBarTitleText": "注册为新用户",
-				"app-plus": {
-					// 将回弹属性关掉
-					"bounce":"none"
-				}
+               // "navigationBarTitleText": "注册为新用户",
+				"navigationStyle": "custom",
+				 "app-plus": { 
+					"titleNView": false,
+				 	// 将回弹属性关掉    
+				 	"bounce":"none"
+				 }
 			}
 		},
 		{
