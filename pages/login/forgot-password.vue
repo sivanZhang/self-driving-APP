@@ -14,7 +14,11 @@
 			<view class="code-warp">
 				<image src="/static/icons/code.png"></image>
 				<input type="number" v-model.number="formData.code" placeholder="验证码" placeholder-style="color:#ffffff;"/>
-				<button type="default" :disabled="codeButtonType" @click="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
+				<button type="defalut" plain="true" :disabled="codeButtonType" @click="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
+			</view>
+			<view class="item">
+				<image src="/static/icons/password.png"></image>
+				<input type="text" v-model="formData.password" placeholder="新密码" placeholder-style="color:#ffffff;"/>
 			</view>
 		</view>
 		<button class="submit" @tap="assure">确定</button>
@@ -23,7 +27,7 @@
 
 <script>
 	import graceChecker from "@/utils/graceChecker"
-	import { Find_Password, Get_PhoneCode } from "@/api/login.js";
+	import { Put_Password, Get_PhoneCode } from "@/api/login.js";
 	export default {
 		data() {
 			return {
@@ -31,6 +35,7 @@
 				formData: {
 					phone: '',
 					code: '',
+					password:''
 				},
 				codeButtonType: false,
 				secondCount: 60,
@@ -70,7 +75,7 @@
 					this.codeButtonType = false
 				})
 			},
-			//注册
+			//保存修改密码
 			assure () {
 				const rule = [
 					{
@@ -88,8 +93,11 @@
 				]
 				let checkRes =graceChecker.check(this.formData, rule)
 				if(checkRes){
-					Find_Password(this.formData).then(res=>{
+					Put_Password(this.formData).then(res=>{
 						uni.showToast({ title: res.data.msg, icon: "none" });
+						uni.navigateTo({
+							url: "/pages/login/login-page"
+						})
 					})
 				}else{
 					uni.showToast({ title: graceChecker.error, icon: "none" });
@@ -135,11 +143,11 @@
 					position: relative;
 				
 					button {
+						color:#FFFFFF;
 						position: absolute;
 						right: 100upx;
 						margin-bottom:30upx;
 						padding: 10upx;
-						background-color: #DAC2A6;
 						z-index: 50;
 					}
 				}

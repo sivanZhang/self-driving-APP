@@ -14,7 +14,7 @@
 			<view class="code-warp">
 				<image src="/static/icons/code.png"></image>
 				<input type="number" v-model.number="formData.code" placeholder="验证码" placeholder-style="color:#ffffff;"/>
-				<button type="default" :disabled="codeButtonType" @click="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
+				<button type="default" plain="true" :disabled="codeButtonType" @click="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
 			</view>
 			<view class="item">
 				<image src="/static/icons/user.png"></image>
@@ -160,8 +160,8 @@
 					right: 100upx;
 					margin-bottom:30upx;
 					padding: 10upx;
-					background-color: #DAC2A6;
 					z-index: 50;
+					color:#FFFFFF;
 				}
 			}
 			input {
@@ -176,6 +176,7 @@
 				}
 			}
 		}
+		
 		.submit {
 			width:90%;
 			background-color:#DF5000;

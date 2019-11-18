@@ -13,9 +13,5 @@ export function Post_Signup(payload) {
 }
 //修改密码
 export function Put_Password(payload) {
-    return Ajax.post('/users/list/?put',payload);
-}
-//找回密码
-export function Find_Password(payload) {
-    return Ajax.post('/users/find_password/',payload);
+    return Ajax.post('/users/update_password/',payload);
 }
