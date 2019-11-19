@@ -16,7 +16,7 @@
 			</view>
 			<view class="list-right">
 				<view>提醒</view>
-		        <view>昨天</view>
+				<view>昨天</view>
 			</view>
 		</view>
 		<view class="list">
@@ -25,7 +25,7 @@
 			</view>
 			<view class="list-right">
 				<view>组队群聊名称1</view>
-		        <view>日期时间</view>
+				<view>日期时间</view>
 			</view>
 		</view>
 		<view class="list" @tap="target('/pages/user-center/message/reply')">
@@ -34,7 +34,7 @@
 			</view>
 			<view class="list-right">
 				<view>回复</view>
-		        <view>11月12日</view>
+				<view>11月12日</view>
 			</view>
 		</view>
 		<view class="list" @tap="target('/pages/user-center/message/notice')">
@@ -43,26 +43,26 @@
 			</view>
 			<view class="list-right">
 				<view>通知</view>
-		        <view>10月1日</view>
+				<view>10月1日</view>
 			</view>
 		</view>
-		<view  v-for="(row,index) of groupList" :key="index">
-		<!-- <view class="list"  @tap="deleteGroupList(row.id)"> -->
-		<view class="list" @tap="target('/pages/user-center/message/chatting?id='+row.id+'&mumbers='+row.members+'&name='+row.name)">
-			<view class="list-left">
-				<image src="../../../static/image/face.jpg"></image>
+		<view v-for="(row,index) of groupList" :key="index" @longpress="longtap(row.id)">
+			<!-- <view class="list"  @tap="deleteGroupList(row.id)"> -->
+			<view class="list" @tap="target('/pages/user-center/message/chatting?id='+row.id+'&mumbers='+row.members+'&name='+row.name)">
+				<view class="list-left">
+					<image src="../../../static/image/face.jpg"></image>
+				</view>
+				<view class="list-right">
+					<view>{{row.name}}</view>
+					<view>{{row.time|dateFormat}}</view>
+				</view>
+				<!-- <view :data-userid="row.id" @tap="deleteGroupList(row.id)">
+			</view> -->
 			</view>
-			<view class="list-right">
-				<view>{{row.name}}</view>
-		        <view>{{row.time|dateFormat}}</view>
-			</view>
-			<view :data-userid="row.id" @tap="deleteGroupList(row.id)">
-			</view>
-		</view>
 		</view>
 		<!-- 临时的一个创建群聊按钮，起作用的是导航栏的按钮 -->
 		<view style="padding: 15upx;">
-			<button  type="primary" @tap="target1('/pages/user-center/message/groupchat')">发起群聊</button>
+			<button type="primary" @tap="target1('/pages/user-center/message/groupchat')">发起群聊</button>
 		</view>
 		<!-- //弹出创建群聊 -->
 		<uni-popup ref="popup" type="right" :custom="true" :show="true">
@@ -77,8 +77,13 @@
 </template>
 
 <script>
-    import { LookGroupsChatting, DeleteGroupsChatting } from "@/api/chatting";
-	import { searchFollow } from '@/api/usercenter'
+	import {
+		LookGroupsChatting,
+		DeleteGroupsChatting
+	} from "@/api/chatting";
+	import {
+		searchFollow
+	} from '@/api/usercenter'
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
 		components: {
@@ -86,44 +91,76 @@
 		},
 		data() {
 			return {
-				user_name:'',
-				followlist:[],
-				groupList:[],
+				user_name: '',
+				followlist: [],
+				groupList: [],
 				// 前台用户标志
-                result:[],
-                delBtnWidth: 60, //删除按钮宽度单位（rpx）
-				startX:'',
-				members:[],
+				result: [],
+				delBtnWidth: 60, //删除按钮宽度单位（rpx）
+				startX: '',
+				members: [],
 
 			};
 		},
-		onLoad(){
+		onLoad() {
 			this.search();
 			this.searchGroupList()
 		},
 		methods: {
+			//长按事件
+			longtap(e) {
+				let id = e
+				let that = this
+				uni.showActionSheet({
+					itemList: ['删除群组'],
+					success: res => {
+						if (res.tapIndex === 0) {
+							uni.showModal({
+								content: '删除后，将清空该群聊的消息记录',
+								confirmColor: "#FF0000",
+								success: function(res) {
+									if (res.confirm) {
+										console.log('用户点击确定');
+										that.deleteGroupList(id);
+									} else if (res.cancel) {
+										console.log('用户点击取消');
+									}
+								}
+							});
+						}
+					}
+				});
+			},
 			//查看群组
-			searchGroupList(){
-               LookGroupsChatting({mine:this.$store.state.UserInfo.id}).then(({ data })=>{
-				   this.groupList = data.msg;
-				   this.groupid = data.msg.id;
-			   })
+			searchGroupList() {
+				LookGroupsChatting({
+					mine: this.$store.state.UserInfo.id
+				}).then(({
+					data
+				}) => {
+					this.groupList = data.msg;
+					this.groupid = data.msg.id;
+				})
 			},
 			//删除群组
-			deleteGroupList(id){
-			// 	setTimeout(() => {
-            //       DeleteGroupsChatting({member_ids:id}).then(({ data })=>{
-			// 	   console.log("shanchu")
-			// 	   console.log(data)
-			//    })
-			// 	},200)
+			deleteGroupList(id) {
+				// setTimeout(() => {
+				DeleteGroupsChatting({
+					id: id,
+					method:'delete'
+				}).then(({
+					data
+				}) => {
+					this.searchGroupList()
+				})
+				// },200)
 			},
-			target(url){
+			target(url) {
 				uni.navigateTo({
 					url
 				});
 			},
-			target1(url){
+			target1(url) {
 				this.target(url);
 				this.$refs.popup.close();
 			},
@@ -134,7 +171,7 @@
 					this.followlist = res.data.msg.follow_lst;
 					console.log(res)
 				})
-			
+
 			},
 		},
 		//发起群聊
@@ -162,29 +199,32 @@
 
 <style lang="scss">
 	#mymessage {
-		.list{
+		.list {
 			width: 100%;
 			padding: 15upx 0upx;
 			display: flex;
 			border-bottom: 2.083upx solid #c8c8cc;
 			align-items: center;
-		}	
-		.list-left{
+		}
+
+		.list-left {
 			padding: 15upx;
-			
+
 			&>image {
 				width: 80upx;
 				height: 80upx;
 				border-radius: 10%;
 			}
 		}
-		.list-right{
+
+		.list-right {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			padding: 35upx 30upx 25upx 30upx;
 			width: 100%;
 		}
+
 		.uni-popup {
 			position: absolute;
 			width: 100%;
@@ -197,9 +237,10 @@
 		.uni-logout {
 			background: #404040;
 			color: #fff;
-			display:flex;
-			width:100%;
-			.iconfont{
+			display: flex;
+			width: 100%;
+
+			.iconfont {
 				padding: 0upx 10upx 0upx 20upx;
 			}
 
