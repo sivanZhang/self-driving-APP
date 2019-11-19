@@ -2,9 +2,9 @@
 	<view id="personCenter">
 		<!-- 个人中心 -->
 		<view class="header">
-			<image  class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.thumbnail_portait"></image>
+			<image  class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
 			<view class="header-top">
-				<span style=""></span>{{UserInfo.username||'用户'+UserInfo.phone}}</span>
+				<span style="">{{UserInfo.username||'用户'+UserInfo.phone}}</span>
 				<view v-if="UserInfo.sex == '女'">
 					<image src="/static/icons/women.png"></image>
 				</view> 
@@ -44,6 +44,7 @@
 			return {
 				follow_count:null,
 				fans_count:null,
+				thumbnail_portait:'',
 			};
 		},
 		computed: {
@@ -51,31 +52,37 @@
 				return this.$store.state.UserInfo
 			}
 		},
+		onShow() {
+			this.searchUser();
+		},
+		onLoad(){
+            this.search();
+		},
 		methods: {
 			target(url) {
 				uni.navigateTo({
 					url
 				})
 			},
+			//查看关注信息
 			search() {
 				searchFollow({
 					followfans: ''
 				}).then(res => {
 					this.follow_count = res.data.msg.follow_count;
 					this.fans_count = res.data.msg.fans_count
-					console.log(res)
 				})
-                  
-				  // search_users({
-				  // 	userid: this.$store.state.UserInfo.id
-				  // }).then(res => {
-				  // 	console.log(res)
-				  // })
-			}
+			},
+			//查看用户信息
+			searchUser(){
+				let data = '';
+				data=this.UserInfo.id;
+				search_users({userid: data}).then(({ data }) => {
+					this.thumbnail_portait = data.msg[0].thumbnail_portait
+				})
+			},
 		},
-		created() {
-			this.search();
-		}
+		
 	}
 </script>
 

@@ -5,20 +5,20 @@
 
 			<view class="header">
 				<map style="width:100vw;height:40vw;"></map>
-			 <!-- <web-view      src="/hybrid/html/line.html" ></web-view> -->
-			</view> 
-			<view class="wall-top" >
+				<!-- <web-view      src="/hybrid/html/line.html" ></web-view> -->
+			</view>
+			<view class="wall-top">
 				<view style="display: flex;">
-					<image   class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
+					<image class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
 					<view class="top" style="display:flex;padding-top:20upx;padding-left:10upx;">
 						<view class="position">
-							<image @tap="chooseLocation"  src="../../static/image/journey/e.png"></image>
-							<view  class="address">
+							<image @tap="chooseLocation" src="../../static/image/journey/e.png"></image>
+							<view class="address">
 								{{locationAddress}}
 							</view>
 						</view>
-						<view class="top-header" @tap="target('/pages/user-center/personalCenter/personalCenter')" >
-							<span style="font-weight: bold"></span>{{UserInfo.username||'用户'+UserInfo.phone}}</span>
+						<view class="top-header" @tap="target('/pages/user-center/personalCenter/personalCenter')">
+							<span style="font-weight: bold">{{UserInfo.username||'用户'+UserInfo.phone}}</span>
 							<!-- <view v-if="UserInfo.sex == '女'">
 								<image src="/static/icons/women.png"></image>
 							</view>
@@ -55,11 +55,11 @@
 					</view>
 					<view class="uni-content-text">动态</view>
 				</view>
-				<view class="uni-content-box" >
+				<view class="uni-content-box">
 					<view class="uni-content-image" style="position:relative;top:-0.5rem;">
 						<image class="img" src="/static/image/journey/start.png" />
 					</view>
-					
+
 				</view>
 				<view class="uni-content-box">
 					<view class="uni-content-image">
@@ -138,9 +138,6 @@
 		<view class="foot">
 			版本:12.321.33
 		</view>
-		
-		
-
 	</view>
 </template>
 
@@ -164,33 +161,36 @@
 		data() {
 			return {
 				noticeData: [],
-				
+				thumbnail_portait: '',
 				location: {},
 				locationAddress: '',
 			};
 		},
-
 		computed: {
 			UserInfo() {
 				return this.$store.state.UserInfo
 			},
-            
 		},
-		methods: { 
-		chooseLocation: function() {
-			uni.chooseLocation({
-				success: (res) => {
-					this.hasLocation = true,
-						this.location = formatLocation(res.longitude, res.latitude),
-						this.locationAddress = res.address
-				}
-			})
-		},
-			search(){
+		methods: {
+			chooseLocation: function() {
+				uni.chooseLocation({
+					success: (res) => {
+						this.hasLocation = true,
+							this.location = formatLocation(res.longitude, res.latitude),
+							this.locationAddress = res.address
+					}
+				})
+			},
+			//查看用户信息
+			search() {
+				let data = '';
+				data = this.UserInfo.id;
 				search_users({
-					userid: this.$store.state.UserInfo.id
-				}).then(res => {
-					console.log(res)  
+					userid: data
+				}).then(({
+					data
+				}) => {
+					this.thumbnail_portait = data.msg[0].thumbnail_portait
 				})
 			},
 			target(url) {
@@ -199,20 +199,17 @@
 				})
 			},
 		},
-		onLoad() { 
-					
+		onShow() {
+			this.search();
+		},
+		onLoad(option) {
+			this.search();
 			const Token = this.$store.state.estateToken || uni.getStorageSync('estateToken');
 			if (!Token) {
 				uni.navigateTo({
 					url: "/pages/login/login-page"
 				})
 			}
-           this.amapPlugin = new amap.AMapWX({
-           				key: this.key
-           			});  
-		},
-		created() {
-			this.search();
 		}
 	};
 </script>
@@ -220,6 +217,7 @@
 <style lang="scss">
 	#MyAccount {
 		overflow-x: hidden;
+
 		.wall {
 			height: 360rpx;
 			position: relative;
@@ -233,9 +231,9 @@
 				font-size: 32upx;
 
 				.i {
-					position:relative;
-					left:3%;
- 				    width: 130rpx;
+					position: relative;
+					left: 3%;
+					width: 130rpx;
 					height: 130rpx;
 					border-radius: 50%;
 					box-shadow: 1px 1px 2px #F2F2F2;
@@ -249,23 +247,26 @@
 				align-items: center;
 				justify-content: center;
 			}
-            .position{
+
+			.position {
 				image {
 					width: 85upx;
 					height: 60upx;
 					padding-left: 30upx;
 					z-index: 2;
 				}
-				.address{
-					
-					position:relative;
-					top:-1.5rem;
-					right:-2rem;
+
+				.address {
+
+					position: relative;
+					top: -1.5rem;
+					right: -2rem;
 				}
 			}
+
 			.top-header {
-				position:relative;
-				left:2.5rem;
+				position: relative;
+				left: 2.5rem;
 				color: black;
 			}
 
@@ -300,11 +301,12 @@
 				display: flex;
 				justify-content: center;
 				align-items: center;
-                .img{
-					width:100upx;
-					height:100upx;
+
+				.img {
+					width: 100upx;
+					height: 100upx;
 				}
-				
+
 				image {
 					width: 70upx;
 					height: 70upx;

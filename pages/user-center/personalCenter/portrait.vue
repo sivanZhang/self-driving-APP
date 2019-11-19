@@ -14,7 +14,7 @@
 	export default{
 		data(){
 			return{
-				imageurl:'https://tl.chidict.com'+'/'+this.$store.state.UserInfo.thumbnail_portait,
+				imageurl:null,
 			};
 		},
 		components: {
@@ -25,9 +25,12 @@
 				return this.$store.state.UserInfo
 			}
 		},
+		onLoad(option){
+			const item = JSON.parse(decodeURIComponent(option.image));
+			this.imageurl='https://tl.chidict.com'+'/'+item
+		},
 		methods:{
 			myUpload(rsp) {
-				console.log(rsp)
 				const self = this;
 				self.imageurl = rsp.path; //更新头像方式一	
 				uni.uploadFile({
@@ -41,11 +44,14 @@
 					success: (res) => {
 						// let data = JSON.parse(res.data)
 						// this.msg = data.msg
-						// console.log(this.msg)
 						uni.showToast({
 							title: '修改成功',
 							icon: "none",
 						});
+				uni.navigateTo({
+				url:'/pages/user-center/personalCenter/editProfile',
+				animationDuration: 200
+			});
 					},
 					fail: () => {
 						uni.showToast({
@@ -53,13 +59,11 @@
 						});
 					}
 				});
-			uni.reLaunch({
-				url:'/pages/user-center/my-account',
-				animationDuration: 200
-			});
+			
 			//	rsp.avatar.imgSrc = rsp.path; //更新头像方式二
 			},
 		}
+		
 	}
 </script>
 

@@ -4,7 +4,8 @@
 		<view class="header">
 			<!-- <cropper  selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imageurl" avatarStyle="width:185rpx;height:185rpx;border-radius:50%;box-shadow: 1px 1px 2px #F2F2F2;border: 1.5px solid #F2F2F2;">
 		</cropper> --> 
-			<image @tap="target('/pages/user-center/personalCenter/portrait')"   class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.thumbnail_portait"></image>
+			<!-- <image @tap="target('/pages/user-center/personalCenter/portrait')"   class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image> -->
+			<image @tap="target('/pages/user-center/personalCenter/portrait?image='+encodeURIComponent(JSON.stringify(this.thumbnail_portait)))"   class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
 		</view>
   
 		<view class="body">
@@ -57,14 +58,12 @@
 		update_users
 	} from '@/api/usercenter';
 	import cropper from "@/components/cropper.vue";
-	
 	export default {
 		data() {
 			const currentDate = this.getDate({
 				format: true
 			})
 			return {
-				imageurl:'https://tl.chidict.com'+'/'+this.$store.state.UserInfo.thumbnail_portait,
 				username:this.$store.state.UserInfo.username,
 				sex:this.$store.state.UserInfo.sex,    
 				area:110100,
@@ -75,6 +74,7 @@
 				date: currentDate,
 				array: [{name:'男'},{name: '女'}],
 				index: 0,
+				thumbnail_portait:'',
 			};
 		},
 		components: {
@@ -91,15 +91,28 @@
 				return this.$store.state.UserInfo
 			}
 		},
-		
+		onLoad(option){
+			this.search();	
+		},
+		onShow(){
+           this.search();	
+		},
 		methods: {
+			//查看用户信息
+			search(){
+				let data = '';
+				data=this.UserInfo.id;
+				search_users({userid: data}).then(({ data }) => {
+					this.thumbnail_portait = data.msg[0].thumbnail_portait
+				})
+			},
 			target(url) {
 				uni.navigateTo({
 					url
 				})
 			},
 			bindPickerChange: function(e) {
-				console.log('picker发送选择改变，携带值为：' + e.target.value)
+				// console.log('picker发送选择改变，携带值为：' + e.target.value)
 				this.index = e.target.value
 			},
 			//上传返回图片
@@ -145,48 +158,18 @@
 				};
 				
 				update_users(data).then(res => {
-					console.log(res)
+					if(res.data.status == 0){
 					uni.showToast({
 						title: res.data.msg,
 						icon: "none",
 					});
-					
-				})
-				uni.reLaunch({
+					uni.switchTab({
 					url:'/pages/user-center/my-account',
 					animationDuration: 200
 				});
-				// search_users({
-				// 	userid: this.$store.state.UserInfo.id
-				// }).then(res => {
-				// 	console.log(res)
-				// })
-			},  
-			
-				
-			
-			onNavigationBarButtonTap(val) {
-				let data = {
-					userid: this.$store.state.UserInfo.id,
-					username: this.username,
-					sex: this.sex,
-					signature: this.signature,
-					area: this.area,
-					method: 'put',
-				};
-				
-				update_users(data).then(res => {
-					console.log(res)
-					uni.showToast({
-						title: res.data.msg,
-						icon: "none",
-					});
+					}		
 				})
-				// uni.reLaunch({
-				// 	url:'/pages/login/login-page',
-				// 	animationDuration: 200
-				// });
-			},
+			},  
 			//选择出生日期
 			bindDateChange: function(e) {
 				this.date = e.target.value
@@ -207,6 +190,28 @@
 				return `${year}/${month}/${day}`;
 			}
 		},
+		onNavigationBarButtonTap(val) {
+				let data = {
+					userid: this.$store.state.UserInfo.id,
+					username: this.username,
+					sex: this.sex,
+					signature: this.signature,
+					area: this.area,
+					method: 'put',
+				};
+				
+				update_users(data).then(res => {
+					// console.log(res)
+					uni.showToast({
+						title: res.data.msg,
+						icon: "none",
+					});
+				})
+				// uni.reLaunch({
+				// 	url:'/pages/login/login-page',
+				// 	animationDuration: 200
+				// });
+			},
 		
 	}
 </script>
