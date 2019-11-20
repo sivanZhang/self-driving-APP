@@ -302,6 +302,38 @@
 			}
 		},
 		{
+			"path": "pages/user-center/message/addressList",
+			"style": {
+				// "navigationBarTitleText": "通讯录",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue708",
+							"fontSrc": "/static/fonts/iconfont.ttf",
+							"fontSize": "22px",
+							"float": "right"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/user-center/message/groupList",
+			"style": {
+				// "navigationBarTitleText": "群组",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue708",
+							"fontSrc": "/static/fonts/iconfont.ttf",
+							"fontSize": "22px",
+							"float": "right"
+						}]
+					}
+				}
+			}
+		},
+		{
 			"path": "pages/user-center/editGroup/modifychatting",
 			"style": {
 				"navigationBarTitleText": "聊天信息"
