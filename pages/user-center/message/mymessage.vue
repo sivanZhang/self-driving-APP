@@ -7,7 +7,7 @@
 			</view>
 			<view class="list-right">
 				<view>张三</view>
-				<view>上午10:12</view>
+				<view class="list-time">上午10:12</view>
 			</view>
 		</view>
 		<view class="list" @tap="target('/pages/user-center/message/remind')">
@@ -16,7 +16,7 @@
 			</view>
 			<view class="list-right">
 				<view>提醒</view>
-				<view>昨天</view>
+				<view class="list-time">昨天</view>
 			</view>
 		</view>
 		<view class="list">
@@ -25,7 +25,7 @@
 			</view>
 			<view class="list-right">
 				<view>组队群聊名称1</view>
-				<view>日期时间</view>
+				<view class="list-time">日期时间</view>
 			</view>
 		</view>
 		<view class="list" @tap="target('/pages/user-center/message/reply')">
@@ -34,7 +34,7 @@
 			</view>
 			<view class="list-right">
 				<view>回复</view>
-				<view>11月12日</view>
+				<view class="list-time">11月12日</view>
 			</view>
 		</view>
 		<view class="list" @tap="target('/pages/user-center/message/notice')">
@@ -43,7 +43,7 @@
 			</view>
 			<view class="list-right">
 				<view>通知</view>
-				<view>10月1日</view>
+				<view class="list-time">10月1日</view>
 			</view>
 		</view>
 		<view v-for="(row,index) of groupList" :key="index" @longpress="longtap(row.id)">
@@ -53,8 +53,11 @@
 					<image src="../../../static/image/face.jpg"></image>
 				</view>
 				<view class="list-right">
-					<view>{{row.name}}</view>
-					<view>{{row.time|dateFormat}}</view>
+					<view class="list-content">
+                        <view class="name">{{row.name}}</view>
+						<view class="content">要展示的聊天内容</view>
+					</view>
+					<view class="list-time">{{row.time|dateTimeFormat}}</view>
 				</view>
 				<!-- <view :data-userid="row.id" @tap="deleteGroupList(row.id)">
 			</view> -->
@@ -62,13 +65,20 @@
 		</view>
 		<!-- 临时的一个创建群聊按钮，起作用的是导航栏的按钮 -->
 		<view style="padding: 15upx;">
-			<button type="primary" @tap="target1('/pages/user-center/message/groupchat')">发起群聊</button>
+			<button type="primary" @tap="target1('/pages/user-center/message/groupchat')">临时发起群聊</button>
+		</view>
+		<view style="padding: 15upx;">
+			<button type="primary" @tap="target1('/pages/user-center/message/addressList')">临时通讯录</button>
 		</view>
 		<!-- //弹出创建群聊 -->
 		<uni-popup ref="popup" type="right" :custom="true" :show="true">
 			<view class="uni-logout">
 				<view class="iconfont icon-message4xinxi"></view>
 				<view @tap="target1('/pages/user-center/message/groupchat')">发起群聊</view>
+			</view>
+			<view class="uni-logout">
+				<view class="iconfont icon-tongxunlu"></view>
+				<view @tap="target1('/pages/user-center/message/addressList')">通讯录</view>
 			</view>
 		</uni-popup>
 	</view>
@@ -79,7 +89,8 @@
 <script>
 	import {
 		LookGroupsChatting,
-		DeleteGroupsChatting
+		DeleteGroupsChatting,
+		Receive_Chatting
 	} from "@/api/chatting";
 	import {
 		searchFollow
@@ -94,17 +105,11 @@
 				user_name: '',
 				followlist: [],
 				groupList: [],
-				// 前台用户标志
-				result: [],
-				delBtnWidth: 60, //删除按钮宽度单位（rpx）
-				startX: '',
-				members: [],
-
 			};
 		},
 		onLoad() {
 			this.search();
-			this.searchGroupList()
+			this.searchGroupList();
 		},
 		methods: {
 			//长按事件
@@ -220,11 +225,22 @@
 		.list-right {
 			display: flex;
 			justify-content: space-between;
-			align-items: center;
-			padding: 35upx 30upx 25upx 30upx;
+			// align-items: center;
+			padding: 35upx 10upx 25upx 30upx;
 			width: 100%;
 		}
-
+		.list-content{
+				// align-items: center;
+				.content{
+					font-size: 24upx;
+					color:#c8c8cc;
+					padding-top: 10upx;
+				}
+			}
+        .list-time{
+			font-size: 24upx;
+			color:#c8c8cc;
+		}
 		.uni-popup {
 			position: absolute;
 			width: 100%;
