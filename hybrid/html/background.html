@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <style>
+    html,
+    body,
+    #container {
+        width: 100%;
+        height: 100%;
+    }
+	.btn-lis {
+	  display: flex;
+	  flex-direction: column;
+	  min-width: 0;
+	  word-wrap: break-word;
+	  background-color: #fff;
+	  background-clip: border-box;
+	  z-index:99;
+	  position:relative;
+	  width: 8rem;
+	  height:4rem;
+	  border-width: 0;
+	  border-radius: 0.4rem;
+	  box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
+	  position: fixed;
+	  top: 1rem;
+	  left: 0.5rem;
+	  -ms-flex: 1 1 auto;
+	  flex: 1 1 auto;
+	  padding: 0.75rem 1.25rem;
+	}
+	.bt{
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		word-wrap: break-word;
+		background-color: #fff;
+		background-clip: border-box;
+		z-index:99;
+		position:relative;
+		width: 8rem;
+		height:4rem;
+		border-width: 0;
+		border-radius: 0.4rem;
+		box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
+		position: fixed;
+		top: 1rem;
+		left: 20rem;
+		-ms-flex: 1 1 auto;
+		flex: 1 1 auto;
+		padding: 0.75rem 1.25rem;
+		
+		
+	}
+    </style>
+   
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" /> <script src="https://webapi.amap.com/maps?v=1.4.15&key=4f59b5834fb366bde9c97903d0963626&plugin=AMap.PolyEditor"></script>
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=4f59b5834fb366bde9c97903d0963626&plugin=AMap.Walking"></script>
+    <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
+</head>
+<body>
+<div id="container"></div>
+<div class="btn-lis">
+		总里程数
+</div>
+<div class="bt">
+	排行榜
+</div>
+<script type="text/javascript">
+    var map = new AMap.Map("container", {
+        center: [116.397559, 39.89621],
+        zoom: 18,
+		viewMode:'3D'
+    });
+
+    // 当前示例的目标是展示如何根据规划结果绘制路线，因此walkOption为空对象
+    var walkingOption = {}
+
+    // 步行导航
+    var walking = new AMap.Walking(walkingOption)
+
+    //根据起终点坐标规划步行路线
+    walking.search([116.399028, 39.845042], [116.436281, 39.880719], function(status, result) {
+        // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
+        if (status === 'complete') {
+            if (result.routes && result.routes.length) {
+                drawRoute(result.routes[0])
+               
+            }
+        } else {
+            
+        } 
+    });
+
+    function drawRoute (route) {
+        var path = parseRouteToPath(route)
+
+        var startMarker = new AMap.Marker({
+            position: path[0],
+            content: '<img src="../../static/image/journey/start.png" />', 
+            map: map,
+			offset: new AMap.Pixel(17, -37)
+        })
+
+        
+
+        var routeLine = new AMap.Polyline({
+            path: path,
+            isOutline: true,
+            outlineColor: '#ffeeee',
+            borderWeight: 2,
+            strokeWeight: 5,
+            strokeColor: '#0091ff',
+            lineJoin: 'round'
+        })
+
+        routeLine.setMap(map)
+
+        // 调整视野达到最佳显示区域
+        map.setFitView([ startMarker,routeLine ])
+    }
+
+    // 解析WalkRoute对象，构造成AMap.Polyline的path参数需要的格式
+    // WalkRoute对象的结构文档 https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkRoute
+    function parseRouteToPath(route) {
+        var path = []
+
+        for (var i = 0, l = route.steps.length; i < l; i++) {
+            var step = route.steps[i]
+
+            for (var j = 0, n = step.path.length; j < n; j++) {
+              path.push(step.path[j])
+            }
+        }
+
+        return path
+    }
+</script>
+</body>
+</html>

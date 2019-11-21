@@ -4,8 +4,8 @@
 		<view class="header">
 			<image  class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
 			<view class="header-top">
-				<span style="">{{UserInfo.username||'用户'+UserInfo.phone}}</span>
-				<view v-if="UserInfo.sex == '女'">
+				<span style="">{{username||'用户'+UserInfo.phone}}</span>
+				<view v-if="sex == '女'">
 					<image src="/static/icons/women.png"></image>
 				</view> 
 				<view v-else>
@@ -45,6 +45,8 @@
 				follow_count:null,
 				fans_count:null,
 				thumbnail_portait:'',
+				username:'',
+				sex:'',
 			};
 		},
 		computed: {
@@ -78,7 +80,10 @@
 				let data = '';
 				data=this.UserInfo.id;
 				search_users({userid: data}).then(({ data }) => {
-					this.thumbnail_portait = data.msg[0].thumbnail_portait
+					this.thumbnail_portait = data.msg[0].thumbnail_portait;
+					this.sex = data.msg[0].sex;
+					this.username = data.msg[0].username;
+					
 				})
 			},
 		},

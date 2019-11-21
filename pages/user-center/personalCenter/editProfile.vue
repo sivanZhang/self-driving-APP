@@ -3,42 +3,43 @@
 		<!-- 编辑资料 -->
 		<view class="header">
 			<!-- <cropper  selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imageurl" avatarStyle="width:185rpx;height:185rpx;border-radius:50%;box-shadow: 1px 1px 2px #F2F2F2;border: 1.5px solid #F2F2F2;">
-		</cropper> --> 
+		</cropper> -->
 			<!-- <image @tap="target('/pages/user-center/personalCenter/portrait')"   class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image> -->
-			<image @tap="target('/pages/user-center/personalCenter/portrait?image='+encodeURIComponent(JSON.stringify(this.thumbnail_portait)))"   class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
+			<image @tap="target('/pages/user-center/personalCenter/portrait?image='+encodeURIComponent(JSON.stringify(this.thumbnail_portait)))"
+			 class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
 		</view>
-  
+
 		<view class="body">
 			<view class="bodyList">
 				<view>昵称：</view>
 				<view>
-					<input type="text" v-model="username" />  
+					<input type="text" v-model="username" />
 				</view>
 			</view>
 
 			<view class="bodyList">
 				<view>性别：</view>
 				<view>
-					<input type="text" v-model="sex" />  
-				</view>
+				    <radio-group   @change="radioChange">
+				    	
+						<label>
+					    <radio value="男" :checked="checked" />男</label>
+						<label>
+				       <radio value="女" :checked="checked1" />女</label>
+				    </radio-group>
+				</view> 
+				
+		         
 			</view>
 			<view class="bodyList">
-				<view>生日：</view>
+				<view>车牌：</view>
 				<view>
-					<!-- <input type="text" /> -->
-					<picker mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChange">
-						<view class="uni-input" v-model="birth">{{date}}</view>
-					</picker>
+					<input type="text"  v-model="car_number"/>
 				</view>
 			</view>
+			
 			<view class="bodyList">
-				<view>常住地：</view>
-				<view>
-					<input type="text" v-model="area" />
-				</view>
-			</view>
-			<view class="bodyList">
-				<view>签名：</view>
+				<view>个性签名：</view>
 				<view>
 					<input type="text" v-model="signature" />
 				</view>
@@ -46,173 +47,142 @@
 		</view>
 		<view style="padding: 15upx;">
 			<button type="primary" @tap="save">保存</button>
-			
+
 		</view>
 	</view>
 </template>
 
 <script>
+	
 	import {
 		search_users,
-		post_file,
 		update_users
 	} from '@/api/usercenter';
 	import cropper from "@/components/cropper.vue";
 	export default {
 		data() {
-			const currentDate = this.getDate({
-				format: true
-			})
+			
 			return {
-				username:this.$store.state.UserInfo.username,
-				sex:this.$store.state.UserInfo.sex,    
-				area:110100,
-				signature: '',  
-				birth: '',  
+				checked:false,
+				checked1:false,
+				username: '',
+				sex:'',
+				signature: '',
+				birth: '',
 				method: 'put',
 				showUpImg: false,
-				date: currentDate,
-				array: [{name:'男'},{name: '女'}],
-				index: 0,
-				thumbnail_portait:'',
+				thumbnail_portait: '',
+				car_number:null,
+				
 			};
 		},
 		components: {
 			cropper
 		},
 		computed: {
-			startDate() {
-				return this.getDate('start');
-			},
-			endDate() {
-				return this.getDate('end');
-			},
+			
 			UserInfo() {
 				return this.$store.state.UserInfo
 			}
 		},
 		onLoad(option){
-			this.search();	
+			// this.search();	
+			
 		},
-		onShow(){
-           this.search();	
+		onShow() {
+			this.search();
+
 		},
 		methods: {
-			//查看用户信息
-			search(){
-				let data = '';
-				data=this.UserInfo.id;
-				search_users({userid: data}).then(({ data }) => {
-					this.thumbnail_portait = data.msg[0].thumbnail_portait
-				})
+			radioChange(e){
+				this.sex = e.detail.value;
 			},
+			//查看用户信息
+			search() {
+				let data = '';
+				data = this.UserInfo.id;
+				search_users({
+					userid: data
+				}).then(({
+					data
+				}) => {
+					this.thumbnail_portait = data.msg[0].thumbnail_portait;
+                    this.username = data.msg[0].username;
+					this.car_number = data.msg[0].car_number;
+					this.signature = data.msg[0].signature;
+					this.sex = data.msg[0].sex;
+			        if(this.sex == '男'){
+						this.checked = true;
+						}
+						else{
+							this.checked1 = true;
+						}
+				})
+				
+					
+			},
+
+
 			target(url) {
 				uni.navigateTo({
 					url
 				})
 			},
-			bindPickerChange: function(e) {
-				// console.log('picker发送选择改变，携带值为：' + e.target.value)
-				this.index = e.target.value
-			},
-			//上传返回图片
-			// myUpload(rsp) {
-				
-			// 	console.log(rsp)
-			// 	const self = this;
-			// 	self.imageurl = rsp.path; //更新头像方式一	
-			// 	uni.uploadFile({
-			// 		url: 'https://tl.chidict.com/appfile/appfile/',
-			// 		filePath:rsp.path,  
-			// 		name: 'file', 
-			// 		header: {
-			// 			"Content-Type": "multipart/form-data",
-			// 			'Authorization': uni.getStorageSync('estateToken') || this.$store.state.estateToken,
-			// 		},
-			// 		success: (res) => {
-			// 			let data = JSON.parse(res.data)
-			// 			this.msg = data.msg
-			// 			console.log(this.msg)
-			// 			uni.showToast({
-			// 				title: '上传成功',
-			// 				icon: "none",
-			// 			});
-			// 		},
-			// 		fail: () => {
-			// 			uni.showToast({
-			// 				title: '上传失败'
-			// 			});
-			// 		}
-			// 	});
-			// 	rsp.avatar.imgSrc = rsp.path; //更新头像方式二
-			// },
+			
+			
 			//保存
 			save(val) {
 				let data = {
-					userid: this.$store.state.UserInfo.id,
-					username: this.username,
+					userid: this.UserInfo.id,
 					sex: this.sex,
 					signature: this.signature,
-					area: this.area,
+					carnum:this.car_number,
 					method: 'put',
-				};
-				
+				};			
 				update_users(data).then(res => {
-					if(res.data.status == 0){
+					
+					if (res.data.status == 0) {
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none",
+						});
+						uni.switchTab({
+							url: '/pages/user-center/my-account',
+							animationDuration: 200
+						});
+
+					}
+				})
+
+
+			},
+			
+		},
+		onNavigationBarButtonTap(val) {
+			let data = {
+				userid: this.UserInfo.id,
+				sex: this.sex,
+				carnum:this.car_number,
+				signature: this.signature,
+				method: 'put',
+			};
+			
+			update_users(data).then(res => {
+				if (res.data.status == 0) {
 					uni.showToast({
 						title: res.data.msg,
 						icon: "none",
 					});
 					uni.switchTab({
-					url:'/pages/user-center/my-account',
-					animationDuration: 200
-				});
-					}		
-				})
-			},  
-			//选择出生日期
-			bindDateChange: function(e) {
-				this.date = e.target.value
-			},
-			getDate(type) {
-				const date = new Date();
-				let year = date.getFullYear();
-				let month = date.getMonth() + 1;
-				let day = date.getDate();
-
-				if (type === 'start') {
-					year = year - 60;
-				} else if (type === 'end') {
-					year = year + 2;
-				}
-				month = month > 9 ? month : '0' + month;;
-				day = day > 9 ? day : '0' + day;
-				return `${year}/${month}/${day}`;
-			}
-		},
-		onNavigationBarButtonTap(val) {
-				let data = {
-					userid: this.$store.state.UserInfo.id,
-					username: this.username,
-					sex: this.sex,
-					signature: this.signature,
-					area: this.area,
-					method: 'put',
-				};
-				
-				update_users(data).then(res => {
-					// console.log(res)
-					uni.showToast({
-						title: res.data.msg,
-						icon: "none",
+						url: '/pages/user-center/my-account',
+						animationDuration: 200
 					});
-				})
-				// uni.reLaunch({
-				// 	url:'/pages/login/login-page',
-				// 	animationDuration: 200
-				// });
-			},
-		
+			
+				}
+			})
+			
+		},
+
 	}
 </script>
 
@@ -227,6 +197,7 @@
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
+
 			.i {
 				width: 185rpx;
 				height: 185rpx;

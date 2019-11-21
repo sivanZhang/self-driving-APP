@@ -4,7 +4,8 @@
 		<view class="wall">
 
 			<view class="header">
-				<map style="width:100vw;height:40vw;"></map>
+				<image src="../../static/image/journey/map.png"  style="width:100vw;height:40vw;position:absolute;z-index:1;top:5%;"></image>
+				<image class="img" src="/static/image/journey/start.png" />  
 				<!-- <web-view      src="/hybrid/html/line.html" ></web-view> -->
 			</view>
 			<view class="wall-top">
@@ -12,13 +13,13 @@
 					<image class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
 					<view class="top" style="display:flex;padding-top:20upx;padding-left:10upx;">
 						<view class="position">
-							<image @tap="chooseLocation" src="../../static/image/journey/e.png"></image>
+							<image @tap="chooseLocation"  src="../../static/image/position.png"></image>
 							<view class="address">
 								{{locationAddress}}
 							</view>
 						</view>
 						<view class="top-header" @tap="target('/pages/user-center/personalCenter/personalCenter')">
-							<span style="font-weight: bold">{{UserInfo.username||'用户'+UserInfo.phone}}</span>
+							<span style="font-weight: bold">{{username||'用户'+UserInfo.phone}}</span>
 							<!-- <view v-if="UserInfo.sex == '女'">
 								<image src="/static/icons/women.png"></image>
 							</view>
@@ -56,12 +57,6 @@
 					<view class="uni-content-text">动态</view>
 				</view>
 				<view class="uni-content-box">
-					<view class="uni-content-image" style="position:relative;top:-0.5rem;">
-						<image class="img" src="/static/image/journey/start.png" />
-					</view>
-
-				</view>
-				<view class="uni-content-box">
 					<view class="uni-content-image">
 						<image src="/static/icons/xuanshang2.png" />
 					</view>
@@ -92,7 +87,7 @@
 				<view>
 					<image class="icon" src="/static/icons/save.png"></image>
 					我的收藏
-				</view>
+				</view> 
 				<view>
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
@@ -143,6 +138,7 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
+	var wv;
 	import {
 		search_users
 	} from '@/api/usercenter'
@@ -162,6 +158,7 @@
 			return {
 				noticeData: [],
 				thumbnail_portait: '',
+				username:'',
 				location: {},
 				locationAddress: '',
 			};
@@ -190,7 +187,9 @@
 				}).then(({
 					data
 				}) => {
-					this.thumbnail_portait = data.msg[0].thumbnail_portait
+					this.thumbnail_portait = data.msg[0].thumbnail_portait;
+					this.username = data.msg[0].username;
+					
 				})
 			},
 			target(url) {
@@ -210,6 +209,20 @@
 					url: "/pages/login/login-page"
 				})
 			}
+			   //     // #ifdef APP-PLUS
+			   //      wv = plus.webview.create("","custom-webview",{
+			   //          plusrequire:"none", //禁止远程网页使用plus的API，有些使用mui制作的网页可能会监听plus.key，造成关闭页面混乱，可以通过这种方式禁止
+			   //           'uni-app': 'none', //不加载uni-app渲染层框架，避免样式冲突
+			   //          top:uni.getSystemInfoSync().statusBarHeight,//放置在titleNView下方。如果还想在webview上方加个地址栏的什么的，可以继续降低TOP值
+						// height:100,
+			   //      })
+			   //      wv.loadURL("/hybrid/html/background.html")
+			   //      var currentWebview = this.$mp.page.$getAppWebview() //获取当前页面的webview对象
+			   //      currentWebview.append(wv);//一定要append到当前的页面里！！！才能跟随当前页面一起做动画，一起关闭
+			   //      setTimeout(function() {
+			   //          console.log(wv.getStyle())
+			   //      }, 1000);//如果是首页的onload调用时需要延时一下，二级页面无需延时，可直接获取
+			   //      // #endif
 		}
 	};
 </script>
@@ -227,7 +240,7 @@
 				position: relative;
 				z-index: 2;
 				left: 12upx;
-				bottom: 3upx;
+				top:5rem;
 				font-size: 32upx;
 
 				.i {
@@ -246,12 +259,20 @@
 				flex-direction: column;
 				align-items: center;
 				justify-content: center;
+				
+				.img {
+					width: 100upx;
+					height: 100upx;
+					position:relative;
+					z-index:2;
+					top:3rem;
+				}
 			}
 
 			.position {
 				image {
-					width: 85upx;
-					height: 60upx;
+					width: 70upx;
+					height: 45upx;
 					padding-left: 30upx;
 					z-index: 2;
 				}
@@ -293,7 +314,7 @@
 				display: flex;
 				flex-direction: column;
 				align-items: center;
-				width: 20%;
+				width: 25%;
 				box-sizing: border-box;
 			}
 
@@ -301,11 +322,6 @@
 				display: flex;
 				justify-content: center;
 				align-items: center;
-
-				.img {
-					width: 100upx;
-					height: 100upx;
-				}
 
 				image {
 					width: 70upx;
