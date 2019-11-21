@@ -32,7 +32,8 @@
 			</view>
 			<span class="aui-news-item-fr">昨天</span>
 		</view>
-		<view class="aui-news-item">
+		<view class="aui-news-item"  
+		@tap="target('/pages/user-center/message/chatting')">
 			<view class="aui-news-item-hd">
 				<image src="../../../static/image/face.jpg"></image>
 			</view>
@@ -42,17 +43,9 @@
 			</view>
 			<span class="aui-news-item-fr">昨天</span>
 			</view>
-		<view class="aui-news-item">
-			<view class="aui-news-item-hd">
-				<image src="../../../static/image/face.jpg"></image>
-			</view>
-			<view class="aui-news-item-bd">
-				<h4>组队群聊名称1</h4>
-				<p>内容.....</p>
-			</view>
-			<span class="aui-news-item-fr">前天</span>
-		</view>
-		<view class="aui-news-item" v-for="(row,index) of groupList" :key="index" @longpress="longtap(row.id)"  @tap="target('/pages/user-center/message/chatting?id='+row.id+'&mumbers='+row.members+'&name='+row.name)">
+		<view class="aui-news-item" v-for="(row,index) of groupList" :key="index"
+		 @longpress="longtap(row.id)"  
+		 @tap="target('/pages/user-center/message/chatting?id='+row.id+'&mumbers='+row.members+'&name='+row.name)">
 			<view class="aui-news-item-hd">
 					<image src="../../../static/image/face.jpg"></image>
 				</view>

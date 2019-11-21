@@ -2,7 +2,7 @@
 	<view>
 		<view class="content" @touchstart="hideDrawer">
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop"
-			 :scroll-into-view="scrollToView" @scrolltoupper="loadHistory" upper-threshold="50">
+			 :scroll-into-view="scrollToView" @scrolltoupper="loadHistory1" upper-threshold="50">
 				<!-- 加载历史数据waitingUI -->
 				<!-- <view class="loading">
 					<view class="spinner">
@@ -13,7 +13,7 @@
 						<view class="rect5"></view>
 					</view>
 				</view> -->
-				<view class="row" >
+				<view class="row"  v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
 				<!-- <view class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.msg.id"> -->
 					<!-- 系统消息 -->
 					<!-- <block v-if="row.type=='system'">
@@ -28,13 +28,21 @@
 					<block>
 					<!-- <block v-if="row.type=='user'"> -->
 						<!-- 自己发出的消息 -->
-						<view class="my" v-for="(row,index) in msgList" :key="index">
+						<!-- <view class="my" style="padding:8upx 0upx"> -->
+						<view class="my" style="padding:8upx 0upx" v-if="row.sender_id == UserInfo.id">
 							<!-- 左-消息 -->
 							<view class="left">
+								<!-- <view class="username1">
+									<view class="time1">{{row.time| dateHMSFormat}}</view>
+									<view class="name1">{{row.sender_username}}</view>
+								</view> -->
 								<!-- 文字消息 -->
 								<view class="bubble" v-if="row.type=='1'">
 									<rich-text :nodes="row.content"></rich-text>
 								</view>
+								<!-- <view class="bubble" v-if="row.type=='1'">
+									<rich-text :nodes="row.content"></rich-text>
+								</view> -->
 								<!-- 语言消息 -->
 								<!-- <view v-if="row.msg.type=='voice'" class="bubble voice" @tap="playVoice(row.msg)" :class="playMsgid == row.msg.id?'play':''">
 									<view class="length">{{row.msg.content.length}}</view>
@@ -44,7 +52,6 @@
 								<!-- <view v-if="row.msg.type=='img'" class="bubble img" @tap="showPic(row.msg)">
 									<image :src="row.msg.content.url" :style="{'width': row.msg.content.w+'px','height': row.msg.content.h+'px'}"></image>
 								</view> -->
-
 							</view>
 							<!-- 右-头像 -->
 							<view class="right">
@@ -52,7 +59,8 @@
 							</view>
 						</view>
 						<!-- 别人发出的消息 -->
-						<view class="other" v-for="(row,index) in msgList1" :key="index">
+						<!-- <view class="other" style="padding:8upx 0upx"> -->
+						<view class="other" style="padding:8upx 0upx" v-if="row.sender_id !== UserInfo.id">
 							<!-- 左-头像 -->
 							<view class="left">
 								<image :src="'https://tl.chidict.com'+'/'+row.sender_portait"></image>
@@ -60,11 +68,12 @@
 							<!-- 右-用户名称-时间-消息 -->
 							<view class="right">
 								<view class="username">
-									<view class="name">{{row.sender}}</view>
-									<view class="time">{{row.time| dateFormat}}</view>
+									<view class="name">{{row.sender_username}}</view>
+									<view class="time">{{row.time| dateHMSFormat}}</view>
 								</view>
 								<!-- 文字消息 -->
-								<view v-if="row.type=='1'" class="bubble">
+								<view  class="bubble" v-if="row.type=='1'">
+								<!-- <view v-if="row.type=='1'" class="bubble"> -->
 									<rich-text :nodes="row.content"></rich-text>
 								</view>
 								<!-- 语音消息 -->
@@ -154,6 +163,7 @@
 				groupid:'',
 				groupname:'',
 				mumbers:'',
+				instance:'',
 				entity : '',
 				//文字消息
 				textMsg:'',
@@ -163,7 +173,7 @@
 				scrollTop:0,//设置竖向滚动条位置
 				scrollToView:'',//设置哪个方向可滚动，则在哪个方向滚动到该元素
 				msgList:[],//发送者信息列表
-				msgList1:[],//接收者信息列表
+				msgList1:'',//接收者信息列表
 				msgImgList:[],
 				myuid:0,
 				
@@ -202,12 +212,18 @@
 				onlineEmoji:{"100.gif":"AbNQgA.gif","101.gif":"AbN3ut.gif","102.gif":"AbNM3d.gif","103.gif":"AbN8DP.gif","104.gif":"AbNljI.gif","105.gif":"AbNtUS.gif","106.gif":"AbNGHf.gif","107.gif":"AbNYE8.gif","108.gif":"AbNaCQ.gif","109.gif":"AbNN4g.gif","110.gif":"AbN0vn.gif","111.gif":"AbNd3j.gif","112.gif":"AbNsbV.gif","113.gif":"AbNwgs.gif","114.gif":"AbNrD0.gif","115.gif":"AbNDuq.gif","116.gif":"AbNg5F.gif","117.gif":"AbN6ET.gif","118.gif":"AbNcUU.gif","119.gif":"AbNRC4.gif","120.gif":"AbNhvR.gif","121.gif":"AbNf29.gif","122.gif":"AbNW8J.gif","123.gif":"AbNob6.gif","124.gif":"AbN5K1.gif","125.gif":"AbNHUO.gif","126.gif":"AbNIDx.gif","127.gif":"AbN7VK.gif","128.gif":"AbNb5D.gif","129.gif":"AbNX2d.gif","130.gif":"AbNLPe.gif","131.gif":"AbNjxA.gif","132.gif":"AbNO8H.gif","133.gif":"AbNxKI.gif","134.gif":"AbNzrt.gif","135.gif":"AbU9Vf.gif","136.gif":"AbUSqP.gif","137.gif":"AbUCa8.gif","138.gif":"AbUkGQ.gif","139.gif":"AbUFPg.gif","140.gif":"AbUPIS.gif","141.gif":"AbUZMn.gif","142.gif":"AbUExs.gif","143.gif":"AbUA2j.gif","144.gif":"AbUMIU.gif","145.gif":"AbUerq.gif","146.gif":"AbUKaT.gif","147.gif":"AbUmq0.gif","148.gif":"AbUuZV.gif","149.gif":"AbUliF.gif","150.gif":"AbU1G4.gif","151.gif":"AbU8z9.gif","152.gif":"AbU3RJ.gif","153.gif":"AbUYs1.gif","154.gif":"AbUJMR.gif","155.gif":"AbUadK.gif","156.gif":"AbUtqx.gif","157.gif":"AbUUZ6.gif","158.gif":"AbUBJe.gif","159.gif":"AbUdIO.gif","160.gif":"AbU0iD.gif","161.gif":"AbUrzd.gif","162.gif":"AbUDRH.gif","163.gif":"AbUyQA.gif","164.gif":"AbUWo8.gif","165.gif":"AbU6sI.gif","166.gif":"AbU2eP.gif","167.gif":"AbUcLt.gif","168.gif":"AbU4Jg.gif","169.gif":"AbURdf.gif","170.gif":"AbUhFS.gif","171.gif":"AbU5WQ.gif","172.gif":"AbULwV.gif","173.gif":"AbUIzj.gif","174.gif":"AbUTQs.gif","175.gif":"AbU7yn.gif","176.gif":"AbUqe0.gif","177.gif":"AbUHLq.gif","178.gif":"AbUOoT.gif","179.gif":"AbUvYF.gif","180.gif":"AbUjFU.gif","181.gif":"AbaSSJ.gif","182.gif":"AbUxW4.gif","183.gif":"AbaCO1.gif","184.gif":"Abapl9.gif","185.gif":"Aba9yR.gif","186.gif":"AbaFw6.gif","187.gif":"Abaiex.gif","188.gif":"AbakTK.gif","189.gif":"AbaZfe.png","190.gif":"AbaEFO.gif","191.gif":"AbaVYD.gif","192.gif":"AbamSH.gif","193.gif":"AbaKOI.gif","194.gif":"Abanld.gif","195.gif":"Abau6A.gif","196.gif":"AbaQmt.gif","197.gif":"Abal0P.gif","198.gif":"AbatpQ.gif","199.gif":"Aba1Tf.gif","200.png":"Aba8k8.png","201.png":"AbaGtS.png","202.png":"AbaJfg.png","203.png":"AbaNlj.png","204.png":"Abawmq.png","205.png":"AbaU6s.png","206.png":"AbaaXn.png","207.png":"Aba000.png","208.png":"AbarkT.png","209.png":"AbastU.png","210.png":"AbaB7V.png","211.png":"Abafn1.png","212.png":"Abacp4.png","213.png":"AbayhF.png","214.png":"Abag1J.png","215.png":"Aba2c9.png","216.png":"AbaRXR.png","217.png":"Aba476.png","218.png":"Abah0x.png","219.png":"Abdg58.png"},
 			};
 		},
+		computed: {
+			UserInfo() {
+				return this.$store.state.UserInfo
+			},
+		},
 		onLoad(option) {
 			//从路由获得群组信息
 			this.groupid = option.id;
 			this.groupname = option.name;
 			this.mumbers = option.mumbers;
-			this.getMsgList();
+			this.getMsgList();//加载初始页面消息
+			this.screenMsg();
 			//语音自然播放结束
 			this.AUDIO.onEnded((res)=>{
 				this.playMsgid=null;
@@ -224,7 +240,15 @@
 			// #endif
 		},
 		onShow(){
-			// this.scrollTop = 9999999;
+			this.scrollTop = 9999999;
+			this.screenMsg();
+// 			uni.getStorage({
+//     key: 'msgList',
+//     success: function (res) {
+// 		console.log("quchu")
+//         console.log(res);
+//     }
+// });
 		},
 		methods:{
 			//发送事件
@@ -241,85 +265,64 @@
 			sendMsg(content,type){
 				//实际应用中，此处应该提交长连接，模板仅做本地处理。
 				if(this.mumbers.length<3){
-                    this.entity = 0
+					this.entity = 0;
+					this.instance = this.mumbers
 				}
 				else{
-					this.entity = 1
+					this.entity = 1;
+					this.instance = this.groupid
 				}
-                Created_Chatting({entity:this.entity,instance:this.groupid,content:this.textMsg}).then(({ data })=>{
+                Created_Chatting({entity:this.entity,instance:this.instance,content:this.textMsg}).then(({ data })=>{
 					if(data.status == 0){
-						setTimeout(()=>{
-                           this.lookHistory();
-						},1000)
+						// var that = this;
+                        // uni.getStorage({
+                        //       key: 'storage_key',
+                        //       success: function (res) {
+						// 	  console.log('successnierong');
+						// 	  console.log(res.data)
+						// 	  that.setData({
+						// 		  msgList :res.data
+						// 	  })
+                        //      }
+						// });
+						// this.msgList = this.msgList + data.msg;
+                        this.screenMsg();
 					   this.textMsg = '';//清空输入框
 					}	
 				})
 			},
-			//查看聊天记录
-			lookHistory(){
-				 	Look_ChatHistory({entity:this.entity,instance:this.groupid}).then(({ data })=>{
-					 this.msgList1 = data.msg.rec_rets;
-					 this.msgList = data.msg.send_rets;
-					 this.$nextTick(function() {
-					// 滚动到底
-					this.scrollToView = 'msg'+data.msg.id
-					console.log("020202")
-					console.log(this.scrollToView)
-				});
-				})
-			},
-			// 接受消息(筛选处理)
-			screenMsg(msg){
-				//从长连接处转发给这个方法，进行筛选处理
-				if(msg.type=='system'){
-					// 系统消息
-					switch (msg.msg.type){
-						case 'text':
-							this.addSystemTextMsg(msg);
-							break;
-						case 'redEnvelope':
-							this.addSystemRedEnvelopeMsg(msg);
-							break;
-					}
-				}else if(msg.type=='user'){
-					// 用户消息
-					switch (msg.msg.type){
-						case 'text':
-							this.addTextMsg(msg);
-							break;
-						case 'voice':
-							this.addVoiceMsg(msg);
-							break;
-						case 'img':
-							this.addImgMsg(msg);
-							break;
-						case 'redEnvelope':
-							this.addRedEnvelopeMsg(msg);
-							break;
-					}
-					console.log('用户消息');
-					//非自己的消息震动
-					// if(msg.msg.userinfo.uid!=this.myuid){
-					// 	console.log('振动');
-					// 	uni.vibrateLong();
-					// }
+			// 接收消息(筛选处理)
+			screenMsg(){
+				if(this.mumbers.length<3){
+					this.entity = 0;
+					this.instance = this.mumbers
 				}
-				this.$nextTick(function() {
-					// 滚动到底
-					this.scrollToView = 'msg'+msg.msg.id
-				});
+				else{
+					this.entity = 1;
+					this.instance = this.groupid
+				}
+				 	Look_ChatHistory({entity:this.entity,instance:this.instance}).then(({ data })=>{
+						 console.log("jieshouxiaoix")
+						 console.log(data)
+					 this.msgList = data.msg;
+				})
+				// this.$nextTick(function() {
+				// 	// 滚动到底
+				// 	this.scrollToView = 'msg'+this.msgList[this.msgList.length-1].id?this.msgList[this.msgList.length-1].id:this.msgList1[this.msgList.length-1].id
+				// 	// this.scrollToView = 'msg'+msg.msg.id
+				// });
 			},
 			
 			//触发滑动到顶部(加载历史信息记录)
-			loadHistory(e){
+			loadHistory1(e){
 				if(this.isHistoryLoading){
 					return ;
 				}
 				this.isHistoryLoading = true;//参数作为进入请求标识，防止重复请求
 				this.scrollAnimation = false;//关闭滑动动画
-				let Viewid = this.msgList[0].id;//记住第一个信息ID
+				// let Viewid = this.msgList[0].id;//记住第一个信息ID
 				//本地模拟请求历史记录效果
-				setTimeout(()=>{
+				//setTimeout(()=>{
 					// 消息列表
 					// let list = [];
 					// 获取消息中的图片,并处理显示尺寸
@@ -335,41 +338,40 @@
 					// }else {
 					// 	return;
 					// }
-					this.lookHistory();
+					//this.lookHistory();
 					//这段代码很重要，不然每次加载历史数据都会跳到顶部
-					this.$nextTick(function() {
-						this.scrollToView = 'msg'+Viewid;//跳转上次的第一行信息位置
-						this.$nextTick(function() {
-							this.scrollAnimation = true;//恢复滚动动画
-						});
-					});
-					this.isHistoryLoading = false;	
-				},1000)
+				// 	this.$nextTick(function() {
+				// 		this.scrollToView = 'msg'+Viewid;//跳转上次的第一行信息位置
+				// 		this.$nextTick(function() {
+				// 			this.scrollAnimation = true;//恢复滚动动画
+				// 		});
+				// 	});
+				// 	this.isHistoryLoading = false;	
+				// },1000)
 			},
 			// 加载初始页面消息
 			getMsgList(){
-				// 消息列表
-				// let list = [{type:"system",msg:{id:0,type:"text",content:{text:"欢迎进入聊天"}}}]
-				// 	{type:"system",msg:{id:0,type:"text",content:{text:"欢迎进入HM-chat聊天室"}}},
-				// 	{type:"user",msg:{id:1,type:"text",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/image/face.jpg"},content:{text:"为什么温度会相差那么大？"}}},
-				// 	{type:"user",msg:{id:2,type:"text",time:"12:57",userinfo:{uid:1,username:"售后客服008",face:"/static/image/p10.jpg"},content:{text:"这个是有偏差的，两个温度相差十几二十度是很正常的，如果相差五十度，那即是质量问题了。"}}},
-				// ]
-				// 获取消息中的图片,并处理显示尺寸
-				// for(let i=0;i<list.length;i++){
-				// 	if(list[i].type=='user'&&list[i].msg.type=="img"){
-				// 		list[i].msg.content = this.setPicSize(list[i].msg.content);
-				// 		this.msgImgList.push(list[i].msg.content.url);
-				// 	}
-				// }
 				if(this.mumbers.length<3){
-                    this.entity = 0
+					this.entity = 0;
+					this.instance = this.mumbers
 				}
 				else{
-					this.entity = 1
+					this.entity = 1;
+					this.instance = this.groupid
 				}
-				Look_ChatHistory({entity:this.entity,instance:this.groupid}).then(({ data })=>{
-					 this.msgList = data.msg.rec_rets;
+				Look_ChatHistory({entity:this.entity,instance:this.instance}).then(({ data })=>{
+					 this.msgList = data.msg;
+					 //同步获取历史聊天数据
+					 uni.setStorage({
+                          key: 'storage_key',
+                          data: this.msgList,
+                         success: function (res) {
+							console.log('success');
+							console.log(res)
+                         }
+                 });
 				})
+				// 消息列表
 				let list = this.msgList
 				// 获取消息中的图片,并处理显示尺寸
 				for(let i=0;i<list.length;i++){
@@ -661,11 +663,20 @@
 		onNavigationBarButtonTap(val) {
 			if (val.index == 0) {
 				console.log("第一个按钮");
+				// uni.navigateTo({
+				//    url: '/pages/user-center/editGroup/modifychatting'
+			 //   });
 				uni.navigateTo({
-				   url: '/pages/user-center/editGroup/modifychatting'
+				   url: '/pages/user-center/editGroup/modifychatting?id=' + this.groupid + '&mumbers=' + this.mumbers + '&name=' + this.groupname
 			   });
 			};
-		}
+		},
+		onBackPress(options) {
+			uni.reLaunch({
+				   url: '/pages/user-center/message/mymessage'
+			   });
+    }
+		
 	}
 </script> 
 
