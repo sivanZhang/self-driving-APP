@@ -340,6 +340,12 @@
 			}
 		},
 		{
+			"path": "pages/user-center/editGroup/LookHistory",
+			"style": {
+				"navigationBarTitleText": "查找聊天记录"
+			}
+		},
+		{
 			"path": "pages/user-center/editGroup/groupName",
 			"style": {
 				"navigationBarTitleText": "群名片",

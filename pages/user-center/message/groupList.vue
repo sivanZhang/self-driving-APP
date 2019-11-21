@@ -1,18 +1,18 @@
 <template>
     <view id="groupList">
         <!-- 群聊 -->
-        <view class="search" @tap="searchGroupName">
-			<uni-icon type="search"></uni-icon>
-			<input type="text" v-model="groupName" placeholder="搜索" />
+        <view class="search">
+			<uni-icon type="search" @tap="searchGroupName"></uni-icon>
+			<input type="text" v-model="groupName" placeholder="搜索" @change="searchGroupName" />
 		</view>
         <view v-for="(row,index) of groupList" :key="index" @longpress="longtap(row.id)">
 			<view class="list" @tap="target('/pages/user-center/message/chatting?id='+row.id+'&mumbers='+row.members+'&name='+row.name)">
 				<view class="list-left">
 					<image src="../../../static/image/face.jpg"></image>
+					<!-- <image :src="'https://tl.chidict.com'+'/'+row.user_protrait"></image>                    -->
 				</view>
 				<view class="list-right">
 					<view>{{row.name}}</view>
-					<view>{{row.time|dateFormat}}</view>
 				</view>
 			</view>
 		</view>
@@ -62,13 +62,9 @@ export default {
 			},
             //查看群组
 			searchGroupList() {
-                console.log("chakanqidsssss")
-                console.log(this.$store.state.UserInfo.id)
 				LookGroupsChatting({include_me:this.$store.state.UserInfo.id}).then(({
 					data
 				}) => {
-                    console.log("inciudeme")
-                    console.log(data)
 					this.groupList = data.msg;
 					this.groupid = data.msg.id;
 				})
@@ -87,9 +83,7 @@ export default {
             //按名称搜索群组
             searchGroupName(){
               LookGroupsChatting({ name:this.groupName }).then(({ data })=>{
-                  console.log("按名称搜索群组")
-                  console.log(data)
-                //   this.groupList = data.msg;
+                  this.groupList = data.msg;
               })
             },
             target(url) {
@@ -113,6 +107,7 @@ export default {
 			border-bottom: 2.083upx solid #c8c8cc;
         }
          .list {
+             background-color: #FFFFFF;
 			width: 100%;
 			padding: 15upx 0upx;
 			display: flex;

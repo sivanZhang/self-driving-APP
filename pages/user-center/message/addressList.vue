@@ -73,7 +73,7 @@
 				}).then(({
 					data
 				}) => {
-					this.followlist = data.msg.follow_lst;
+					this.followlist = data.msg.follow_info;
 				})
             },
             target(url) {

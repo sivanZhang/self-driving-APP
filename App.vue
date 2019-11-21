@@ -1,5 +1,6 @@
 <script>
 	import Vue from 'vue'
+	import permision from "@/common/permission.js"
 	export default {
 		onLaunch: function() { 
 			// #ifdef APP-PLUS

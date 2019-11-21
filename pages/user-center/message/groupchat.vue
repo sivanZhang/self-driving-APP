@@ -9,7 +9,8 @@
 			<!-- <form :model="GroupForm" ref="GroupForm"> -->
 			<view class="list" v-for="(item,index) of followlist" :key="index" @tap="change(item)">
 				<view class="listimage">
-					<image src="'https://tl.chidict.com'+'/'+item.user_protrai"></image>
+					<image src="../../../static/image/face.jpg"></image>
+					<!-- <image :src="'https://tl.chidict.com'+'/'+item.user_protrait"></image> -->
 				</view>
 				<view class="userlist1">
 					<view class="listuser">{{item.user_name}}</view>
@@ -50,12 +51,12 @@
 				checkbox1: '',
 				num: [],
 				checked: false,
-				groupid : '',
-				groupname :'',
+				groupid: '',
+				groupname: '',
 				// GroupForm: {},
 			}
 		},
-		created() {
+		onLoad() {
 			this.search()
 		},
 		computed: {
@@ -65,59 +66,40 @@
 		},
 		methods: {
 			change(item) {
-				// 	var items = this.followlist;	
-				// 	for (var i = 0, lenI = items.length; i < lenI; ++i) {
-				// 		const item = items[i]
-				// 		this.followlist.map(res =>{
-				// 			console.log("121212")
-				// 			console.log(values)
-				// 			if (res.user_id == item.user_id){
-				// 				this.$set(item, 'checked', false)
-				// 			} else {
-				// 				this.$set(item, 'checked', true)
-				// 			}
-				// 		})
-				// 	}
-				// 	this.checkboxChange(item);
-			},
-			// checkboxChange(e) {
-			// 	console.log(e)
-			// 	this.num.push(e.user_id);
-			// 	this.mumbers=this.num.map(item=>item).join(',')
-			// 	
-			// },
-			checkboxChange: function(e) {
-				var items = this.followlist;
-				var values = e.detail.value;
-
-				this.num.push(e.detail.value[0]);
-				console.log(this.num)
+				this.num.push(item.user_id);
 				this.mumbers = this.num.map(item => item).join(',')
+				this.checkboxChange(item.user_id);
+			},
+			checkboxChange(e) {
+				var items = this.followlist;
+				var values = String(e);
+				// console.log(values)
 				for (var i = 0, lenI = items.length; i < lenI; ++i) {
 					const item = items[i]
-					if (values.indexOf(item.value) >= 0) {
+					if (values.includes(item.user_id)) {
+						// if (values.indexOf(item.user_id) >= 0) {
 						this.$set(item, 'checked', true)
-					} else {
-						this.$set(item, 'checked', false)
-					}
+						}
+					// } else {
+					// 	this.$set(item, 'checked', false)
+					// }
 				}
 			},
-
 			assure() {
 				let data = '';
-				data=this.$store.state.UserInfo.id;
+				data = this.$store.state.UserInfo.id;
 				createdGroupsChatting({
-					member_ids: this.mumbers + ',' + data
+					member_ids: this.mumbers
 				}).then(res => {
 					if (res.data.status == 0) {
 						// this.mumbers = '';
 						this.groupid = res.data.msg.groupid;
 						this.groupname = res.data.msg.groupname;
 						uni.navigateTo({
-								url: '/pages/user-center/message/chatting?id='+this.groupid+'&mumbers='+this.mumbers+'&name='+this.groupname
-							});
+							url: '/pages/user-center/message/chatting?id=' + this.groupid + '&mumbers=' + this.mumbers + '&name=' + this.groupname
+						});
 					}
-				});	
+				});
 			},
 			search() {
 				searchFollow({
@@ -125,22 +107,34 @@
 				}).then(({
 					data
 				}) => {
-					this.followlist = data.msg.follow_lst;
+					this.followlist = data.msg.follow_info;
 				})
 
 			},
 			//导航栏的确认按钮（创建群聊）
 			onNavigationBarButtonTap(val) {
-				console.log(val)
-				uni.showLoading({
-					title: '正在创建群聊'
-				})
-				setTimeout(function() {
-					uni.hideLoading();
-					uni.navigateTo({
-						url: '/pages/user-center/message/chatting?id='+this.groupid+'&mumbers='+this.mumbers+'&name='+this.groupname
-					});
-				}, 2000);
+				// console.log(val)
+				let data = '';
+				data = this.$store.state.UserInfo.id;
+				// createdGroupsChatting({
+				// 	member_ids: this.mumbers
+				// }).then(res => {
+				// 	if (res.data.status == 0) {
+				// 		// this.mumbers = '';
+				// 		this.groupid = res.data.msg.groupid;
+				// 		this.groupname = res.data.msg.groupname;
+				// 		uni.showLoading({
+				// 			title: '正在创建群聊'
+				// 		})
+				// 		setTimeout(function() {
+				// 			uni.hideLoading();
+							uni.navigateTo({
+								url: '/pages/user-center/message/chatting?id=' + this.groupid + '&mumbers=' + this.mumbers + '&name=' + this.groupname
+							});
+				// 		}, 2000);
+				// 	}
+				// });
+
 			},
 		},
 
