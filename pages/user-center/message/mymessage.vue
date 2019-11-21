@@ -52,8 +52,8 @@
 			</view>
 			<span class="aui-news-item-fr">前天</span>
 		</view>
-		<view class="aui-news-item" v-for="(row,index) of groupList" :key="index" @longpress="longtap(row.id)">
-			<view class="aui-news-item-hd" @tap="target('/pages/user-center/message/chatting?id='+row.id+'&mumbers='+row.members+'&name='+row.name)">
+		<view class="aui-news-item" v-for="(row,index) of groupList" :key="index" @longpress="longtap(row.id)"  @tap="target('/pages/user-center/message/chatting?id='+row.id+'&mumbers='+row.members+'&name='+row.name)">
+			<view class="aui-news-item-hd">
 					<image src="../../../static/image/face.jpg"></image>
 				</view>
 				<view class="aui-news-item-bd">
