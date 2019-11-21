@@ -13,7 +13,7 @@
 			<view class="bodyList">
 				<view>昵称：</view>
 				<view>
-					<input type="text" v-model="username" />
+					<input type="text" disabled="true" v-model="username" />
 				</view>
 			</view>
 
