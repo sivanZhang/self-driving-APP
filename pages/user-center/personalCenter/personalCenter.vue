@@ -19,9 +19,9 @@
 					<span style="padding:0upx 15upx;">|</span></view>
 				<view style="padding: 15upx,0upx;">被赞与收藏0</view>
 			</view>
-			<view class="header-footer" style="">
+			<!-- <view class="header-footer" style="">
 				<button style="" type="text" @tap="target('/pages/user-center/personalCenter/editProfile')">编辑资料</button>
-			</view>
+			</view> -->
 		</view>
 		<view class="middle">
 			<span>个人介绍:</span>
@@ -97,7 +97,7 @@
 			padding-top: 35upx;
 			padding-bottom: 23upx;
 			text-align: center;
-			border-bottom: 2.083upx solid #c8c8cc;
+			// border-bottom: 2.083upx solid #c8c8cc;
 
 			.i {
 				width: 185rpx;

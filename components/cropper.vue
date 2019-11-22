@@ -10,7 +10,7 @@
 		<view class="oper-wrapper" :style="{display: styleDisplay}">
 			<view class="btn-wrapper" v-if="showOper">
 				<view @click="fClose" hover-class="hover">取消</view>
-				<view @click="fUpload" hover-class="hover">选取</view>
+				<view @click="fUpload" hover-class="hover">确定</view>
 			</view>
 		</view>
 	</view>

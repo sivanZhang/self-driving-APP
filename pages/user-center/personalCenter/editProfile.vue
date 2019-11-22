@@ -2,18 +2,21 @@
 	<view id="editProfile">
 		<!-- 编辑资料 -->
 		<view class="header">
-			<!-- <cropper  selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imageurl" avatarStyle="width:185rpx;height:185rpx;border-radius:50%;box-shadow: 1px 1px 2px #F2F2F2;border: 1.5px solid #F2F2F2;">
-		</cropper> -->
+			
 			<!-- <image @tap="target('/pages/user-center/personalCenter/portrait')"   class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image> -->
-			<image @tap="target('/pages/user-center/personalCenter/portrait?image='+encodeURIComponent(JSON.stringify(this.thumbnail_portait)))"
-			 class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
+			<!-- <image @tap="target('/pages/user-center/personalCenter/portrait?image='+encodeURIComponent(JSON.stringify(this.thumbnail_portait)))"
+			 class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image> -->
+			 <image  class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
 		</view>
 
 		<view class="body">
 			<view class="bodyList">
-				<view>昵称：</view>
-				<view>
-					<input type="text" disabled="true" v-model="username" />
+				<view class="us">昵称：</view>
+				<view v-if="username == ''">
+					<input type="text" @tap="change" @input="onKeyInput"   />
+				</view>
+				<view else>
+					<input  disabled="true"     v-model="username" />
 				</view>
 			</view>
 
@@ -68,6 +71,7 @@
 				checked:false,
 				checked1:false,
 				username: '',
+				name:'',
 				sex:'',
 				signature: '',
 				birth: '',
@@ -99,6 +103,17 @@
 
 		},
 		methods: {
+			onKeyInput: function(event) {
+						console.log(event.target.value)
+						this.name = event.target.value;
+			        },
+			change(){
+				
+				uni.showToast({
+					title: '昵称只可以修改一次哦',
+					icon: "none",
+				});
+			},
 			radioChange(e){
 				this.sex = e.detail.value;
 			},
@@ -117,7 +132,7 @@
 					data
 				}) => {
 					this.thumbnail_portait = data.msg[0].thumbnail_portait;
-                    this.username = data.msg[0].username;
+                   
 					this.plateNo = data.msg[0].car_number;
 					this.signature = data.msg[0].signature;
 					this.sex = data.msg[0].sex;
@@ -127,6 +142,13 @@
 						else{
 							this.checked1 = true;
 						}
+					if(data.msg[0].username == ''){
+						console.log(data.msg[0].username);
+					}
+					else{
+						this.username = data.msg[0].username;
+						
+					}
 				})
 				
 					
@@ -142,6 +164,67 @@
 			
 			//保存
 			save(val) {
+				if(this.name == ''){
+					let data = {
+						userid: this.UserInfo.id,
+						sex: this.sex,
+						signature: this.signature,
+						carnum:this.plateNo,
+						method: 'put',
+					};			
+					update_users(data).then(res => {
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none",
+						});
+						if (res.data.status == 0) {
+							uni.showToast({
+								title: res.data.msg,
+								icon: "none",
+							});
+							uni.switchTab({
+								url: '/pages/user-center/my-account',
+								animationDuration: 200
+							});
+					
+						}
+					})
+				}
+				else{
+					let data = {
+						userid: this.UserInfo.id,
+						sex: this.sex,
+						signature: this.signature,
+						carnum:this.plateNo,
+						username:this.name,
+						method: 'put',
+					};			
+					update_users(data).then(res => {
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none",
+						});
+						if (res.data.status == 0) {
+							uni.showToast({
+								title: res.data.msg,
+								icon: "none",
+							});
+							uni.switchTab({
+								url: '/pages/user-center/my-account',
+								animationDuration: 200
+							});
+					
+						}
+					})
+					
+				}
+
+
+			},
+			
+		},
+		onNavigationBarButtonTap(val) {
+			if(this.name == ''){
 				let data = {
 					userid: this.UserInfo.id,
 					sex: this.sex,
@@ -150,7 +233,10 @@
 					method: 'put',
 				};			
 				update_users(data).then(res => {
-					
+					uni.showToast({
+						title: res.data.msg,
+						icon: "none",
+					});
 					if (res.data.status == 0) {
 						uni.showToast({
 							title: res.data.msg,
@@ -160,37 +246,38 @@
 							url: '/pages/user-center/my-account',
 							animationDuration: 200
 						});
-
+				
 					}
 				})
-
-
-			},
-			
-		},
-		onNavigationBarButtonTap(val) {
-			let data = {
-				userid: this.UserInfo.id,
-				sex: this.sex,
-				carnum:this.car_number,
-				signature: this.signature,
-				method: 'put',
-			};
-			
-			update_users(data).then(res => {
-				if (res.data.status == 0) {
+			}
+			else{
+				let data = {
+					userid: this.UserInfo.id,
+					sex: this.sex,
+					signature: this.signature,
+					carnum:this.plateNo,
+					username:this.name,
+					method: 'put',
+				};			
+				update_users(data).then(res => {
 					uni.showToast({
 						title: res.data.msg,
 						icon: "none",
 					});
-					uni.switchTab({
-						url: '/pages/user-center/my-account',
-						animationDuration: 200
-					});
-			
-				}
-			})
-			
+					if (res.data.status == 0) {
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none",
+						});
+						uni.switchTab({
+							url: '/pages/user-center/my-account',
+							animationDuration: 200
+						});
+				
+					}
+				})
+				
+			}
 		},
 
 	}
@@ -223,6 +310,11 @@
 				align-items: center;
 				padding: 50.25upx 41.666upx;
 				border-bottom: 2.083upx solid #c8c8cc;
+				.us{
+					display: flex;
+					width:2.5rem;
+					
+				}
 			}
 		}
 

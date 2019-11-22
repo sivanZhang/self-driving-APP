@@ -48,8 +48,8 @@
 							title: '修改成功',
 							icon: "none",
 						});
-						uni.navigateTo({
-							url: '/pages/user-center/personalCenter/editProfile',
+						uni.switchTab({
+							url: '/pages/user-center/my-account',
 							animationDuration: 200
 						});
 					},
