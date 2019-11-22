@@ -34,7 +34,8 @@
 			<view class="bodyList">
 				<view>车牌：</view>
 				<view>
-					<input type="text"  v-model="car_number"/>
+					<input   disabled="true" @tap="plateShow=true" v-model.trim="plateNo"></input>
+					<plate-input v-if="plateShow" :plate="plateNo" @export="setPlate" @close="plateShow=false"></plate-input>
 				</view>
 			</view>
 			
@@ -59,6 +60,7 @@
 		update_users
 	} from '@/api/usercenter';
 	import cropper from "@/components/cropper.vue";
+	import plateInput from '@/components/uni-plate-input/uni-plate-input.vue'
 	export default {
 		data() {
 			
@@ -73,11 +75,14 @@
 				showUpImg: false,
 				thumbnail_portait: '',
 				car_number:null,
+				plateNo:'',
+				plateShow:false
 				
 			};
 		},
 		components: {
-			cropper
+			cropper,
+			plateInput
 		},
 		computed: {
 			
@@ -97,6 +102,11 @@
 			radioChange(e){
 				this.sex = e.detail.value;
 			},
+			setPlate(plate){
+							if(plate.length >= 7) this.plateNo = plate
+							this.plateShow = false
+							this.car_number = this.plateNo;
+						},
 			//查看用户信息
 			search() {
 				let data = '';
@@ -108,7 +118,7 @@
 				}) => {
 					this.thumbnail_portait = data.msg[0].thumbnail_portait;
                     this.username = data.msg[0].username;
-					this.car_number = data.msg[0].car_number;
+					this.plateNo = data.msg[0].car_number;
 					this.signature = data.msg[0].signature;
 					this.sex = data.msg[0].sex;
 			        if(this.sex == '男'){
@@ -136,7 +146,7 @@
 					userid: this.UserInfo.id,
 					sex: this.sex,
 					signature: this.signature,
-					carnum:this.car_number,
+					carnum:this.plateNo,
 					method: 'put',
 				};			
 				update_users(data).then(res => {
