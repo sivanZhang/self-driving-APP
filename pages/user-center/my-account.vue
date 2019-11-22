@@ -4,38 +4,42 @@
 		<view class="wall">
 
 			<view class="header">
-
-				<image src="../../static/image/journey/map.png"  style="width:100vw;height:40vw;position:absolute;z-index:1;top:5%;"></image>
-				<image class="img" src="/static/image/journey/start.png" />  
-				<!-- <web-view      src="/hybrid/html/line.html" ></web-view> -->
+				<view class="left">
+					<view class="milage">
+						总里程数
+					</view>
+					<view class="total">
+						<view class="number">0.15</view>
+						<view class="kilometers">公里</view>
+					</view>
+				</view>
+				<image class="img" src="/static/image/journey/start.png" /> 
+		<!-- <image src="../../static/image/journey/map.png"  style="width:100vw;height:40vw;position:absolute;z-index:1;top:5%;"></image> --> 
+				<view class="rank">
+					<view class="showrank">
+						<view class="name">名次</view>
+						<view class="num">7046</view>
+					</view>
+					<view class="lookrank">查看排行</view>
+				</view>
 			</view>
 			
 			<view class="wall-top" >
-				<view style="display: flex;">
-					<image   class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
-					<view class="top" style="display:flex;padding-top:20upx;padding-left:10upx;">
-						<view class="position">
-							<image @tap="getLocation"  src="../../static/image/position.png"></image>
-							<view class="address">
-								<view v-if="hasLocation === false">
-									获取定位
-								</view>
-								<view v-if="hasLocation === true">
-									{{address.province}}{{address.city}}{{address.district}}
-								</view>
+				<image   class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
+				<view class="top">
+					<view class="username" @tap="target('/pages/user-center/personalCenter/personalCenter')">
+						<span v-if="username">{{username}}</span>
+						<span v-if="!username">用户{{UserInfo.phone}}</span>
+					</view>
+					<view class="position">
+						<image @tap="getLocation"  src="../../static/image/position.png"></image>
+						<view class="address">
+							<view v-if="hasLocation === false">
+								获取定位
 							</view>
-						</view>
-						<view class="top-header" @tap="target('/pages/user-center/personalCenter/personalCenter')">
-							<span style="font-weight: bold">{{username||'用户'+UserInfo.phone}}</span>
-							<!-- <view v-if="UserInfo.sex == '女'">
-								<image src="/static/icons/women.png"></image>
+							<view v-if="hasLocation === true">
+								{{address.province}}{{address.city}}{{address.district}}
 							</view>
-							<view v-else>
-								<image src="/static/icons/men.png"></image>
-							</view> -->
-
-						
-
 						</view>
 					</view>
 				</view>
@@ -270,11 +274,11 @@
 					}
 				}
 			},
-			async getLocationTest() {
+			async getLocationTest() {
 			    if(this.hasLocation === true){
-					let SI = setInterval(()=> {
-			           this.doGetLocation();
-			        },1000)
+					let SI = setInterval(()=> {
+			           this.doGetLocation();
+			        },1000)
 				} else {
 					this.getLocation();
 				}
@@ -335,60 +339,113 @@
 			height: 360rpx;
 			position: relative;
 			background: #fff;
+			.header {
+				padding-left:40upx;
+				padding-top:50upx;
+				display: flex;
+				flex-wrap: wrap;
+				// flex-direction: column;
+				// align-items: center;
+				// justify-content: center;
+				.img {
+					width: 100upx;
+					height: 100upx;
+					margin-top:100upx;
+					margin-left:60upx;
+				}
+				.left{
+					padding-top:20upx;
+					left:3%;
+					// display:flex;
+					// flex-direction: column;
+					.milage{
+						font-size:30upx;
+						border-bottom: 10upx solid #DF5000;
+						width:120upx;
+					}
+					.total{
+						display:flex;
+						// flex-wrap: wrap;
+						padding-top:20upx;
+						.number{
+							font-weight:bold;
+							font-size:100upx;
+						}
+						.kilometers{
+							font-size:30upx;
+							margin-top:80upx;}
+					}
+				}
+				.rank{
+					padding-top:100upx;
+					padding-left:40upx;
+					padding-right:20upx;
+					display:flex;
+					flex-wrap: wrap;
+					.showrank{
+						padding-left:15upx;
+						padding-right:15upx;
+						background-color:#4D4D4D;
+						height:100upx;
+						color:#FFFFFF;
+						.name{}
+						.num{
+							padding-top:15upx;
+							font-weight: bold;
+						}
+					}
+					.lookrank{
+						background-color:#DF5000;
+						color:#FFFFFF;
+						height:100upx;
+						padding-top:25upx;
+						font-size:32upx;
+						padding-left:9upx;
+						padding-right:9upx;
+					}
+				}
+			}
 			.wall-top {
-				position: relative;
+				display:flex;
+				position: absolute;
 				z-index: 2;
 				left: 12upx;
-				top:5rem;
+				top:290upx;
 				font-size: 32upx;
 				.i {
 					position:relative;
 					left:3%;
- 				    width: 130rpx;
+				    width: 130rpx;
 					height: 130rpx;
 					border-radius: 50%;
 					box-shadow: 1px 1px 2px #F2F2F2;
 					border: 1.5px solid #F2F2F2;
 				}
-			}
-			.header {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				
-				.img {
-					width: 100upx;
-					height: 100upx;
-					position:relative;
-					z-index:2;
-					top:3rem;
+				.top{
+					padding-top:10upx;
+					padding-left:10upx;
+					.position{
+						padding-top:12upx;
+						image {
+							width: 70upx;
+							height: 45upx;
+							padding-left: 30upx;
+							z-index: 2;
+						}
+						.address{
+							padding-top:18upx;
+							position:relative;
+							top:-1.5rem;
+							right:-2rem;
+						}
+					}
 				}
 			}
-            .position{
-				image {
-					width: 70upx;
-					height: 45upx;
-					padding-left: 30upx;
-					z-index: 2;
-				}
-				.address{
-					
-					position:relative;
-					top:-1.5rem;
-					right:-2rem;
-				}
-			}
-			.top-header {
+			.username {
 				position:relative;
-				left:2.5rem;
+				left:2rem;
 				color: black;
-			}
-			.top-bottom {
-				display: flex;
-				flex-wrap: nowrap;
-				padding-left: 15upx;
-				padding-top: 10upx;
+				padding-top:10upx;
 			}
 		}
 		.main {
