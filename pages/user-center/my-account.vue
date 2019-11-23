@@ -215,7 +215,9 @@
 			UserInfo() {
 				return this.$store.state.UserInfo
 			},
-            
+            estateToken(){
+				return this.$store.state.estateToken
+			}
 		},
 		methods: { 
 		    async getLocation() {
