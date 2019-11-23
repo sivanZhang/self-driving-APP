@@ -26,9 +26,9 @@
 				    <radio-group   @change="radioChange">
 				    	
 						<label>
-					    <radio value="男" :checked="checked" />男</label>
+					    <radio color="#DF5000" value="男" :checked="checked" />男</label>
 						<label>
-				       <radio value="女" :checked="checked1" />女</label>
+				       <radio  color="#DF5000" value="女" :checked="checked1" />女</label>
 				    </radio-group>
 				</view> 
 				
@@ -50,7 +50,7 @@
 			</view>
 		</view>
 		<view style="padding: 15upx;">
-			<button type="primary" @tap="save">保存</button>
+			<button class="but" type="primary" @tap="save">保存</button>
 
 		</view>
 	</view>
@@ -315,9 +315,13 @@
 					width:2.5rem;
 					
 				}
+				
 			}
 		}
-
+        .but{
+			background-color:#DF5000;
+			border-radius: 50upx;
+		}
 		.uni-changeimage {
 
 			// background: #fff;

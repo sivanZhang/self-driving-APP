@@ -146,7 +146,7 @@
 			.i {
 				width: 120rpx;
 				height: 120rpx;
-				border-radius: 8px;
+				border-radius: 10px;
 				box-shadow: 1px 1px 2px #F2F2F2;
 				border: 1.5px solid #F2F2F2;
 				left:30%;
