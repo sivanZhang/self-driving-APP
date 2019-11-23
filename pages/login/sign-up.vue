@@ -52,7 +52,7 @@
 		methods: {
 			// 获取手机验证码
 			getCode() {
-				let reg = /^1(3|4|5|7|8)\d{9}$/
+				let reg = /^1(3|4|5|7|8|9)\d{9}$/
 				if (!reg.test(this.formData.phone)) {
 					uni.showToast({
 						title: '请输入正确的手机号',
