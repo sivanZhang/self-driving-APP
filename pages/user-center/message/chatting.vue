@@ -173,7 +173,7 @@
 				scrollTop:0,//设置竖向滚动条位置
 				scrollToView:'',//设置哪个方向可滚动，则在哪个方向滚动到该元素
 				msgList:[],//发送者信息列表
-				msgList1:'',//接收者信息列表
+				msgList1:[],//接收者信息列表
 				msgImgList:[],
 				myuid:0,
 				
@@ -222,8 +222,11 @@
 			this.groupid = option.id;
 			this.groupname = option.name;
 			this.mumbers = option.mumbers;
+			uni.setNavigationBarTitle({
+			    title: this.groupname
+			});
 			this.getMsgList();//加载初始页面消息
-			this.screenMsg();
+			// this.screenMsg();
 			//语音自然播放结束
 			this.AUDIO.onEnded((res)=>{
 				this.playMsgid=null;
@@ -243,7 +246,7 @@
 			this.scrollTop = 9999999;
 			setInterval(()=>{
 				this.screenMsg();
-			},4000)
+			},1000)
 		},
 		methods:{
 			//发送事件
@@ -270,18 +273,6 @@
                 Created_Chatting({entity:this.entity,instance:this.instance,content:this.textMsg}).then(({ data })=>{
 					if(data.status == 0){
 						this.screenMsg();
-						// var that = this;
-                        // uni.getStorage({
-                        //       key: 'storage_key',
-                        //       success: function (res) {
-						// 	  console.log('successnierong');
-						// 	  console.log(res.data)
-						// 	  that.setData({
-						// 		  msgList :res.data
-						// 	  })
-                        //      }
-						// });
-						// this.msgList = this.msgList + data.msg;
 					}	
 				})
 			},
@@ -296,15 +287,28 @@
 					this.instance = this.groupid
 				}
 				 	Look_ChatHistory({entity:this.entity,instance:this.instance}).then(({ data })=>{
-					 this.msgList = data.msg;
+						this.msgList = data.msg;
+						// const datalist = data.msg;
+						// // this.msgList1 = data.msg;
+						// //同步获取历史聊天记录数据
+						// try {
+						//     this.msgList = uni.getStorageSync('storage_key');
+						// } catch (e) {
+						//     // error
+						// }
+						// //同步存储之前的和最新的一条数据
+						// this.msgList1 = this.msgList.concat(datalist);
+						// this.msgList = this.msgList1;
+						// try {
+						//     uni.setStorageSync('storage_key', this.msgList);
+						// } catch (e) {
+						//     // error
+						// }
+					 this.$nextTick(function() {
+					 	//滚动到底
+					 	this.scrollToView = 'msg'+this.msgList[this.msgList.length-1].id;
+					 });
 				})
-				this.$nextTick(function() {
-					//滚动到底
-					console.log("1111111")
-					// var length = this.msgList.length
-					this.scrollToView = 'msg'+this.msgList[this.msgList.length-1].id;
-					console.log(this.scrollToView)
-				});
 			},
 			//替换表情符号为图片 
 			replaceEmoji(str){
@@ -376,14 +380,11 @@
 				Look_ChatHistory({entity:this.entity,instance:this.instance}).then(({ data })=>{
 					 this.msgList = data.msg;
 					 //同步获取历史聊天数据
-				// 	 uni.setStorage({
-                //           key: 'storage_key',
-                //           data: this.msgList,
-                //          success: function (res) {
-				// 			console.log('success');
-				// 			console.log(res)
-                //          }
-                //  });
+					 try {
+					     uni.setStorageSync('storage_key', this.msgList);
+					 } catch (e) {
+					     // error
+					 }
 				})
 				// 消息列表
 				let list = this.msgList
@@ -491,35 +492,6 @@
 					this.hideDrawer();
 				}
 			},
-			// 发送文字消息
-			// sendText(){
-			// 	this.hideDrawer();//隐藏抽屉
-			// 	if(!this.textMsg){
-			// 		return;
-			// 	}
-			// 	let content = this.replaceEmoji(this.textMsg);
-			// 	let msg = {text:content}
-			// 	this.sendMsg(msg,'text');
-			// 	this.textMsg = '';//清空输入框
-			// },
-			
-			
-			// 发送消息
-			//sendMsg(content,type){
-				//实际应用中，此处应该提交长连接，模板仅做本地处理。
-				//var nowDate = new Date();
-				//let lastid = this.msgList[this.msgList.length-1].msg.id;
-				//lastid++;
-				//let msg = {type:'user',msg:{id:lastid,time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,userinfo:{uid:0,username:"大黑哥",face:"/static/image/face.jpg"},content:content}}
-				// user发送消息
-				//this.screenMsg(msg);
-				// system发送消息
-					//lastid = this.msgList[this.msgList.length-1].msg.id;
-				//	lastid++;
-				//	msg = {type:'user',msg:{id:lastid,time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,userinfo:{uid:1,username:"售后客服008",face:"/static/image/p10.jpg"},content:content}}
-					// 本地模拟发送消息
-					//this.screenMsg(msg);
-			//},
 			
 			// 添加文字消息到列表
 			addTextMsg(msg){
