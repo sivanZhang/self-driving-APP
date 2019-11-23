@@ -25,9 +25,9 @@
 				<view>
 					<radio-group @change="radioChange">
 						<label >
-							<radio color="#DF5000" value="男" :checked="checked" />男</label>
+							<radio style="transform:scale(0.7)" color="#DF5000" value="男" :checked="checked" />男</label>
 						<label>
-							<radio color="#DF5000" value="女" :checked="checked1" />女</label>
+							<radio style="transform:scale(0.7)" color="#DF5000" value="女" :checked="checked1" />女</label>
 					</radio-group>
 				</view>
 
@@ -257,14 +257,14 @@
 				 
 			 }
 				.us {
-					display: flex;
-					width: 15%;
+					
+					width: 16%; 
 					position: relative;
 				}
 				.in{
 					position:relative;
 					height:5%;
-					display:flex;
+					
 				}
 
 			}

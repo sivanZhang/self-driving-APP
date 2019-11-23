@@ -9,11 +9,11 @@
 				<view class="so-plate-type">
 					<radio-group @change="typeChange">
 						<label>
-							<radio color="#DF5000"  value="1" :checked="type===1" />
+							<radio style="transform:scale(0.7)" color="#DF5000"  value="1" :checked="type===1" />
 							普通车牌
 						</label>
 						<label>
-							<radio  color="#DF5000"  value="2" :checked="type===2" />
+							<radio style="transform:scale(0.7)"  color="#DF5000"  value="2" :checked="type===2" />
 							新能源车牌
 						</label>
 					</radio-group>
