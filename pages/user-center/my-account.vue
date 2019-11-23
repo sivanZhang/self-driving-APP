@@ -156,18 +156,18 @@
 			return {
 				imgurl:'https://tl.chidict.com'+'/'+this.$store.state.UserInfo.background_image,
 				noticeData: [],
-				
 			};
 		},
 
 		computed: {
-			UserInfo() {
-				return this.$store.state.UserInfo
+			UserInfo(){
+				return this.$store.state.UserInfo ||uni.getStorageSync('UserInfo')
+			},
+			estateToken(){
+				return this.$store.state.estateToken ||uni.getStorageSync('estateToken')
 			}
-
 		},
 		methods: {
-			
 			//上传返回图片
 			myUpload(rsp) {
 				console.log(rsp)
@@ -212,10 +212,8 @@
 			},
 		},
 		onLoad() {
-			
-			const Token = this.$store.state.estateToken || uni.getStorageSync('estateToken');
-			if (!Token) {
-				uni.navigateTo({
+			if (!this.estateToken) {
+				uni.redirectTo({
 					url: "/pages/login/login-page"
 				})
 			}
