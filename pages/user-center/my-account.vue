@@ -36,8 +36,8 @@
 							<image src="/static/icons/men.png"></image>
 						</view>
 						<view class="username" @tap="target('/pages/user-center/personalCenter/personalCenter')">
-							<span v-if="username">{{username}}</span>
-							<span v-if="!username">{{UserInfo.phone}}</span>
+							<span v-if="UserInfo.username">{{UserInfo.username}}</span>
+							<span v-if="!UserInfo.username">{{UserInfo.phone}}</span>
 						</view>
 					</view>
 					<view class="position">
@@ -70,7 +70,9 @@
 				</view>
 				<view class="uni-content-box">
 					<view class="uni-content-image">
-						<image class="img" src="/static/image/journey/start.png" />
+						<image class="img" v-show="stop" @tap="track" src="/static/image/journey/start.png" />
+						<image class="img" v-show="!stop" @tap="closetrack" src="/static/icons/open.png" />
+						
 					</view>
 				</view>
 				<view class="uni-content-box">
@@ -119,15 +121,15 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
-			<view class="section">
+			<!-- <view class="section">
 				<view>
 					<image class="icon" src="/static/icons/invited.png"></image>
 					邀请好友
 				</view>
 				<view>
 					<uni-icon type="arrowright"></uni-icon>
-				</view>
-			</view>
+				</view> -->
+				
 				<view class="section"  @tap="target('/pages/user-center/giftcenter')">
 					<view>
 						<image class="icon" src="../../static/image/journey/gift.png"></image>
@@ -172,6 +174,10 @@
 	import {
 		GET_Notice
 	} from '@/api/notice'
+	import {
+		Track_Share,Record_Track,Close_Track
+	} from '@/api/track.js'
+	
 	// import uniBadge from "@/components/uni-badge/uni-badge.vue"
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
 	// #ifdef APP-PLUS
@@ -194,6 +200,15 @@
 				address: {},
 				type: '',
 				name:null,
+				stop:true,
+				open:'',
+				close:'',
+				id:'',
+				longitude:'',
+				latitude:'',
+				record:[],
+				newrecord:[],
+				locationinfo:''
 			};
 		},
 		computed: {
@@ -219,11 +234,13 @@
 					type: 'gcj02',
 					geocode: true,
 					success: (res) => {
-						console.log(res)
+						// console.log(res)
+						this.locationinfo = res
 						this.hasLocation = true;
 						this.location = formatLocation(res.longitude, res.latitude);
 					    this.address = res.address
 						this.name = res.address.poiName
+						// console.log(this.locationinfo)
 					},
 					fail: (err) => {
 						console.log((err))
@@ -295,7 +312,7 @@
 					}
 				}
 			},
-			async getLocationTest() {
+			getLocationTest() {
 			    if(this.hasLocation === true){
 					let SI = setInterval(()=> {
 			           this.doGetLocation();
@@ -321,6 +338,66 @@
 					url
 				})
 			},
+			track(){
+				this.doGetLocation();
+				if(this.hasLocation === true){
+					this.open = 1;
+					Track_Share({tag:this.open}).then(({ data })=>{
+						if (data.status === 0){
+							this.stop = false
+							this.id = data.car_track_id
+							// uni.showToast({
+							// 	title: data.msg,
+							// 	icon: "none",
+							// })
+							let SI = setInterval(()=> {
+								this.recordtrack()
+							    console.log(1111)
+							    if(this.stop = true){
+							        clearInterval(SI)
+							    }
+							},1000)
+						}
+						console.log(data)
+					})
+				} else{
+					uni.showToast({
+						title: "请开启定位服务",
+						icon: "none",
+					})
+				}
+			},
+			recordtrack(){
+				let SI = setInterval(()=> {
+				    this.doGetLocation();
+					if(this.hasLocation === true){
+						this.longitude = formatLocation(this.locationinfo.longitude)
+						this.latitude = formatLocation(this.locationinfo.latitude)
+						this.newrecord=[this.longitude,this.latitude]
+						this.record = this.record.push(this.newrecord)
+						Record_Track({track_id:this.id,method:'put',record:this.record}).then(({ data })=>{
+						   uni.showToast({
+							title: data.msg,
+							icon: "none",
+						   })
+						})
+						if(this.stop = true){
+						    clearInterval(SI)
+						}
+					}
+				},1000)
+			},
+			closetrack(){
+				this.close = 0;
+				Close_Track({track_id:this.id,tag:this.close,method:'put'}).then(({ data })=>{
+					this.stop = true
+					uni.showToast({
+						title: data.msg,
+						icon: "none",
+					})
+					console.log(data)
+				})
+			}
 		},
 		onLoad() { 
 			const Token = this.$store.state.estateToken || uni.getStorageSync('estateToken');
@@ -376,7 +453,7 @@
 				// 	margin-left:320upx;
 				// }
 				.left{
-					padding-top:40upx;
+					padding-top:36upx;
 					left:4%;
 					// display:flex;
 					// flex-direction: column;
@@ -402,8 +479,8 @@
 				}
 				.rank{
 					position:absolute;
-					padding-top:100upx;
-					padding-left:470upx;
+					padding-top:91upx;
+					padding-left:425upx;
 					display:flex;
 					flex-wrap: wrap;
 					.showrank{
@@ -426,17 +503,17 @@
 						flex-direction: column;
 						background-color:#DF5000;
 						height:100upx;
+						width:150upx;
 						image{
-							width:90upx;
+							width:98upx;
 							height:45upx;
-							padding-left:40upx;
+							padding-left:52upx;
 						}
 						.lookrank{
 							color:#FFFFFF;
 							padding-top:2upx;
 							// font-size:32upx;
-							padding-left:9upx;
-							padding-right:9upx;
+							padding-left:22upx;
 						}
 					}
 				}
@@ -458,33 +535,33 @@
 					border: 1.5px solid #F2F2F2;
 				}
 				.top{
-					padding-top:10upx;
+					padding-top:12upx;
 					padding-left:10upx;
 					color:#848689;
 					.information{
 						display:flex;
 						image {
-							width: 65upx;
-							height: 35upx;
-							padding-left: 30upx;
+							width: 62upx;
+							height: 28upx;
+							padding-left: 34upx;
 							z-index: 2;
 						}
 						.username {
 							position:relative;
-							padding-top:10upx;
+							padding-top:6upx;
 							left:0.3rem;
 						}
 					}
 					.position{
 						padding-top:5upx;
 						image {
-							width: 70upx;
-							height: 40upx;
+							width: 66upx;
+							height: 32upx;
 							padding-left: 30upx;
 							z-index: 2;
 						}
 						.address{
-							padding-top:18upx;
+							padding-top:14upx;
 							position:relative;
 							top:-1.5rem;
 							left:2rem;
