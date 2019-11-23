@@ -2,50 +2,49 @@
 	<view id="editProfile">
 		<!-- 编辑资料 -->
 		<view class="header">
-			
+
 			<!-- <image @tap="target('/pages/user-center/personalCenter/portrait')"   class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image> -->
 			<!-- <image @tap="target('/pages/user-center/personalCenter/portrait?image='+encodeURIComponent(JSON.stringify(this.thumbnail_portait)))"
 			 class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image> -->
-			 <image  class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
+			<image class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
 		</view>
 
 		<view class="body">
 			<view class="bodyList">
 				<view class="us">昵称：</view>
 				<view v-if="username == ''">
-					<input type="text" @tap="change" @input="onKeyInput"   />
+					<input class="in" type="text" @tap="change" @input="onKeyInput" />
 				</view>
 				<view else>
-					<input  disabled="true"     v-model="username" />
+					<input class="in" disabled="true" v-model="username" />
 				</view>
 			</view>
 
 			<view class="bodyList">
-				<view>性别：</view>
+				<view class="us">性别：</view>
 				<view>
-				    <radio-group   @change="radioChange">
-				    	
+					<radio-group @change="radioChange">
+						<label >
+							<radio color="#DF5000" value="男" :checked="checked" />男</label>
 						<label>
-					    <radio color="#DF5000" value="男" :checked="checked" />男</label>
-						<label>
-				       <radio  color="#DF5000" value="女" :checked="checked1" />女</label>
-				    </radio-group>
-				</view> 
-				
-		         
+							<radio color="#DF5000" value="女" :checked="checked1" />女</label>
+					</radio-group>
+				</view>
+
+
 			</view>
 			<view class="bodyList">
-				<view>车牌：</view>
+				<view class="us">车牌：</view>
 				<view>
-					<input   disabled="true" @tap="plateShow=true" v-model.trim="plateNo"></input>
+					<input class="inp" disabled="true" @tap="plateShow=true" v-model.trim="plateNo"></input>
 					<plate-input v-if="plateShow" :plate="plateNo" @export="setPlate" @close="plateShow=false"></plate-input>
 				</view>
 			</view>
-			
+
 			<view class="bodyList">
-				<view>个性签名：</view>
+				<view class="us">签名：</view>
 				<view>
-					<input type="text" v-model="signature" />
+					<input  type="text" v-model="signature" />
 				</view>
 			</view>
 		</view>
@@ -57,7 +56,6 @@
 </template>
 
 <script>
-	
 	import {
 		search_users,
 		update_users
@@ -66,22 +64,22 @@
 	import plateInput from '@/components/uni-plate-input/uni-plate-input.vue'
 	export default {
 		data() {
-			
+
 			return {
-				checked:false,
-				checked1:false,
+				checked: false,
+				checked1: false,
 				username: '',
-				name:'',
-				sex:'',
+				name: '',
+				sex: '',
 				signature: '',
 				birth: '',
 				method: 'put',
 				showUpImg: false,
 				thumbnail_portait: '',
-				car_number:null,
-				plateNo:'',
-				plateShow:false
-				
+				car_number: null,
+				plateNo: '',
+				plateShow: false
+
 			};
 		},
 		components: {
@@ -89,14 +87,14 @@
 			plateInput
 		},
 		computed: {
-			
+
 			UserInfo() {
 				return this.$store.state.UserInfo
 			}
 		},
-		onLoad(option){
+		onLoad(option) {
 			// this.search();	
-			
+
 		},
 		onShow() {
 			this.search();
@@ -104,24 +102,24 @@
 		},
 		methods: {
 			onKeyInput: function(event) {
-						console.log(event.target.value)
-						this.name = event.target.value;
-			        },
-			change(){
-				
+				console.log(event.target.value)
+				this.name = event.target.value;
+			},
+			change() {
+
 				uni.showToast({
 					title: '昵称只可以修改一次哦',
 					icon: "none",
 				});
 			},
-			radioChange(e){
+			radioChange(e) {
 				this.sex = e.detail.value;
 			},
-			setPlate(plate){
-							if(plate.length >= 7) this.plateNo = plate
-							this.plateShow = false
-							this.car_number = this.plateNo;
-						},
+			setPlate(plate) {
+				if (plate.length >= 7) this.plateNo = plate
+				this.plateShow = false
+				this.car_number = this.plateNo;
+			},
 			//查看用户信息
 			search() {
 				let data = '';
@@ -132,26 +130,24 @@
 					data
 				}) => {
 					this.thumbnail_portait = data.msg[0].thumbnail_portait;
-                   
+
 					this.plateNo = data.msg[0].car_number;
 					this.signature = data.msg[0].signature;
 					this.sex = data.msg[0].sex;
-			        if(this.sex == '男'){
+					if (this.sex == '男') {
 						this.checked = true;
-						}
-						else{
-							this.checked1 = true;
-						}
-					if(data.msg[0].username == ''){
-						console.log(data.msg[0].username);
+					} else {
+						this.checked1 = true;
 					}
-					else{
+					if (data.msg[0].username == '') {
+						console.log(data.msg[0].username);
+					} else {
 						this.username = data.msg[0].username;
-						
+
 					}
 				})
-				
-					
+
+
 			},
 
 
@@ -160,18 +156,18 @@
 					url
 				})
 			},
-			
-			
+
+
 			//保存
 			save(val) {
-				if(this.name == ''){
+				if (this.name == '') {
 					let data = {
 						userid: this.UserInfo.id,
 						sex: this.sex,
 						signature: this.signature,
-						carnum:this.plateNo,
+						carnum: this.plateNo,
 						method: 'put',
-					};			
+					};
 					update_users(data).then(res => {
 						uni.showToast({
 							title: res.data.msg,
@@ -186,19 +182,18 @@
 								url: '/pages/user-center/my-account',
 								animationDuration: 200
 							});
-					
+
 						}
 					})
-				}
-				else{
+				} else {
 					let data = {
 						userid: this.UserInfo.id,
 						sex: this.sex,
 						signature: this.signature,
-						carnum:this.plateNo,
-						username:this.name,
+						carnum: this.plateNo,
+						username: this.name,
 						method: 'put',
-					};			
+					};
 					update_users(data).then(res => {
 						uni.showToast({
 							title: res.data.msg,
@@ -213,72 +208,17 @@
 								url: '/pages/user-center/my-account',
 								animationDuration: 200
 							});
-					
+
 						}
 					})
-					
+
 				}
 
 
 			},
-			
+
 		},
-		onNavigationBarButtonTap(val) {
-			if(this.name == ''){
-				let data = {
-					userid: this.UserInfo.id,
-					sex: this.sex,
-					signature: this.signature,
-					carnum:this.plateNo,
-					method: 'put',
-				};			
-				update_users(data).then(res => {
-					uni.showToast({
-						title: res.data.msg,
-						icon: "none",
-					});
-					if (res.data.status == 0) {
-						uni.showToast({
-							title: res.data.msg,
-							icon: "none",
-						});
-						uni.switchTab({
-							url: '/pages/user-center/my-account',
-							animationDuration: 200
-						});
-				
-					}
-				})
-			}
-			else{
-				let data = {
-					userid: this.UserInfo.id,
-					sex: this.sex,
-					signature: this.signature,
-					carnum:this.plateNo,
-					username:this.name,
-					method: 'put',
-				};			
-				update_users(data).then(res => {
-					uni.showToast({
-						title: res.data.msg,
-						icon: "none",
-					});
-					if (res.data.status == 0) {
-						uni.showToast({
-							title: res.data.msg,
-							icon: "none",
-						});
-						uni.switchTab({
-							url: '/pages/user-center/my-account',
-							animationDuration: 200
-						});
-				
-					}
-				})
-				
-			}
-		},
+
 
 	}
 </script>
@@ -310,18 +250,33 @@
 				align-items: center;
 				padding: 50.25upx 41.666upx;
 				border-bottom: 2.083upx solid #c8c8cc;
-				.us{
+
+             label{
+				 position:relative;
+				 padding-right:1rem;
+				 
+			 }
+				.us {
 					display: flex;
-					width:2.5rem;
-					
+					width: 15%;
+					position: relative;
 				}
-				
+				.in{
+					position:relative;
+					height:5%;
+					display:flex;
+				}
+
 			}
 		}
-        .but{
-			background-color:#DF5000;
+
+		.but {
+			background-color: #DF5000;
 			border-radius: 50upx;
+			margin-top:7%;
+			position:relative;
 		}
+
 		.uni-changeimage {
 
 			// background: #fff;

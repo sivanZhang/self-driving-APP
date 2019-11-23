@@ -107,10 +107,19 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
-			<view class="section">
+			<!-- <view class="section">
 				<view>
 					<image class="icon" src="/static/icons/invited.png"></image>
 					邀请好友
+				</view>
+				<view>
+					<uni-icon type="arrowright"></uni-icon>
+				</view>
+			</view> -->
+			<view class="section"  @tap="target('/pages/user-center/giftcenter')">
+				<view>
+					<image class="icon" src="../../static/image/journey/gift.png"></image>
+					礼品中心
 				</view>
 				<view>
 					<uni-icon type="arrowright"></uni-icon>

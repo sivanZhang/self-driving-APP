@@ -17,22 +17,28 @@
 				"navigationBarTextStyle":"white"
 			}
 		},
-		
+		{
+			"path": "pages/user-center/giftcenter",
+			"style": {
+				"navigationBarTitleText": "礼品中心"
+				
+			}
+		},
 		
 		{
 			"path": "pages/user-center/personalCenter/editProfile",
 			"style": {
-				"navigationBarTitleText": "编辑资料",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"float": "right",
-							"text": "保存",
-							"width": "auto",
-							"fontSize": "38upx"
-						}]
-					}
-				}
+				"navigationBarTitleText": "编辑资料"
+				// "app-plus": {
+				// 	"titleNView": {
+				// 		"buttons": [{
+				// 			"float": "right",
+				// 			"text": "保存",
+				// 			"width": "auto",
+				// 			"fontSize": "38upx"
+				// 		}]
+				// 	}
+				// }
 			}
 		},
 		{
