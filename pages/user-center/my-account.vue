@@ -2,42 +2,58 @@
 	<!-- 我的首页 -->
 	<view id="MyAccount">
 		<view class="wall">
-			<!-- <image  @tap="changeImage()" src="/static/image/test1.jpg"></image> -->
+
 			<view class="header">
-			<cropper selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imgurl" avatarStyle="width:100vw;height:50vw;border-top-left-radius: 0px;border-top-right-radius: 0px;border-bottom-left-radius: 50%;border-bottom-right-radius: 50%;">
-			</cropper>
-			</view> 
-			<view class="wall-top" @tap="target('/pages/user-center/personalCenter/personalCenter')">
-				<view style="display: flex;">
-					<image   class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.thumbnail_portait"></image>
-					<view class="top" style="display:flex;padding-top:20upx;">
-						<view class="position">
-							<image src="../../static/image/position.png"></image>
-						</view>
-						<view class="top-header" >
-							<span style="font-weight: bold;"></span>{{UserInfo.username||'用户'+UserInfo.phone}}</span>
-							<!-- <view v-if="UserInfo.sex == '女'">
-								<image src="/static/icons/women.png"></image>
-							</view>
-							<view v-else>
-								<image src="/static/icons/men.png"></image>
-							</view> -->
-						</view>
-						<!-- 	<view class="top-bottom">
-							<view style="flex-wrap: wrap;padding-left: 5upx;">0关注</view>
-							<view style="flex-wrap: wrap;padding-left: 10upx">10粉丝</view>
-						</view> -->
+				<view class="left">
+					<view class="milage">
+						总里程数
 					</view>
-					<!-- <view style="padding-left: 170upx;padding-top: 35upx;font-size: 40upx;">
-						点击
-						<image src="../../static/icons/jiantou.png" style="width: 30upx;height: 50upx;"></image>
-					</view> -->
+					<view class="total">
+						<view class="number">14343.4</view>
+						<view class="kilometers">公里</view>
+					</view>
+				</view>
+				<!-- <image class="img" src="/static/image/journey/start.png" @tap="click"/>  -->
+				<view class="rank">
+					<view class="showrank">
+						<view class="name">名次</view>
+						<view class="num">7046</view>
+					</view>
+					<view class="look">
+						<image src="/static/icons/rank.png"></image>
+						<view class="lookrank">查看排行</view>
+					</view>
+				</view>
+			</view>
+			<view class="wall-top" >
+				<image   class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
+				<view class="top">
+					<view class="information">
+						<view v-if="UserInfo.sex == '女'">
+							<image src="/static/icons/women.png"></image>
+						</view>
+						<view v-else>
+							<image src="/static/icons/men.png"></image>
+						</view>
+						<view class="username" @tap="target('/pages/user-center/personalCenter/personalCenter')">
+							<span v-if="UserInfo.username">{{UserInfo.username}}</span>
+							<span v-if="!UserInfo.username">{{UserInfo.phone}}</span>
+						</view>
+					</view>
+					<view class="position">
+						<image @tap="getLocation"  src="../../static/image/position.png"></image>
+						<view class="address">
+							<view v-if="hasLocation === false">
+								获取定位
+							</view>
+							<view v-if="hasLocation === true">
+								{{address.province}}{{address.city}}{{address.district}}
+							</view>
+						</view>
+					</view>
 				</view>
 			</view>
 		</view>
-		<!-- //登录 -->
-		<!-- <view class="login">
-		</view> -->
 		<view class="main">
 			<view class="uni-content">
 				<view class="uni-content-box" @tap="target('/pages/foot/my-foot')">
@@ -51,6 +67,13 @@
 						<image src="/static/icons/dongtai.png" />
 					</view>
 					<view class="uni-content-text">动态</view>
+				</view>
+				<view class="uni-content-box">
+					<view class="uni-content-image">
+						<image class="img" v-show="stop" @tap="track" src="/static/image/journey/start.png" />
+						<image class="img" v-show="!stop" @tap="closetrack" src="/static/icons/open.png" />
+						
+					</view>
 				</view>
 				<view class="uni-content-box">
 					<view class="uni-content-image">
@@ -83,7 +106,7 @@
 				<view>
 					<image class="icon" src="/static/icons/save.png"></image>
 					我的收藏
-				</view>
+				</view> 
 				<view>
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
@@ -98,15 +121,24 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
-			<view class="section">
+			<!-- <view class="section">
 				<view>
 					<image class="icon" src="/static/icons/invited.png"></image>
 					邀请好友
 				</view>
 				<view>
 					<uni-icon type="arrowright"></uni-icon>
-				</view>
-			</view>
+				</view> -->
+				
+				<view class="section"  @tap="target('/pages/user-center/giftcenter')">
+					<view>
+						<image class="icon" src="../../static/image/journey/gift.png"></image>
+						礼品中心
+					</view>
+					<view>
+						<uni-icon type="arrowright"></uni-icon>
+					</view>		
+			    </view>
 			<view class="section" @tap="target('/pages/user-center/user-settings')">
 				<view>
 					<image class="icon" src="/static/icons/setting.png"></image>
@@ -129,87 +161,243 @@
 		<view class="foot">
 			版本:12.321.33
 		</view>
-		<uni-popup ref="popup" type="center" :show="true">
-			<view @tap="target('/pages/user-center/change-background')">更换相册封面</view>
-		</uni-popup>
 
 	</view>
 </template>
 
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
-	
+	// var wv;
+	import {
+		search_users
+	} from '@/api/usercenter'
 	import {
 		GET_Notice
 	} from '@/api/notice'
+	import {
+		Track_Share,Record_Track,Close_Track
+	} from '@/api/track.js'
+	
 	// import uniBadge from "@/components/uni-badge/uni-badge.vue"
-	import cropper from "@/components/cropper.vue";
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
-	import uniPopup from "@/components/uni-popup/uni-popup.vue"
+	// #ifdef APP-PLUS
+	import permision from "@/common/permission.js"
+	// #endif
+	import util from "@/common/util.js"
+	var formatLocation = util.formatLocation;
 	export default {
 		components: {
 			// uniBadge,
 			uniIcon,
-			uniPopup,
-			cropper
 		},
 		data() {
 			return {
-				imgurl:'https://tl.chidict.com'+'/'+this.$store.state.UserInfo.background_image,
 				noticeData: [],
+				thumbnail_portait: '',
+				username:'',
+				hasLocation: false,
+				location: {},
+				address: {},
+				type: '',
+				name:null,
+				stop:true,
+				open:'',
+				close:'',
+				id:'',
+				longitude:'',
+				latitude:'',
+				record:[],
+				newrecord:[],
+				locationinfo:''
 			};
 		},
-
 		computed: {
-			UserInfo(){
-				return this.$store.state.UserInfo ||uni.getStorageSync('UserInfo')
+			UserInfo() {
+				return this.$store.state.UserInfo
 			},
-			estateToken(){
-				return this.$store.state.estateToken ||uni.getStorageSync('estateToken')
-			}
+            
 		},
-		methods: {
-			//上传返回图片
-			myUpload(rsp) {
-				console.log(rsp)
-				const self = this;
-				self.imgurl = rsp.path; //更新头像方式一	
-				uni.uploadFile({
-					url: 'https://tl.chidict.com/users/portrait_backimage/',
-					filePath:rsp.path,  
-					name: 'backimage_file', 
-					header: {
-						"Content-Type": "multipart/form-data",
-						'Authorization': uni.getStorageSync('estateToken') || this.$store.state.estateToken,
-					},
+		methods: { 
+		    async getLocation() {
+				// #ifdef APP-PLUS
+				let status = await this.checkPermission();
+				// if (status !== 1) {
+				// 	console.log(status)
+				// 	return;
+				// }
+				// #endif
+				this.doGetLocation();
+				// this.chooseLocation()
+			},
+			doGetLocation() {
+				uni.getLocation({
+					type: 'gcj02',
+					geocode: true,
 					success: (res) => {
-						// let data = JSON.parse(res.data)
-						// this.msg = data.msg
-						// console.log(this.msg)
-						uni.showToast({
-							title: '修改成功',
-							icon: "none",
-						});
+						// console.log(res)
+						this.locationinfo = res
+						this.hasLocation = true;
+						this.location = formatLocation(res.longitude, res.latitude);
+					    this.address = res.address
+						this.name = res.address.poiName
+						// console.log(this.locationinfo)
 					},
-					fail: () => {
-						uni.showToast({
-							title: '修改失败'
+					fail: (err) => {
+						console.log((err))
+					}
+				})
+			},
+			async checkPermission() {
+				if (uni.getSystemInfoSync().platform == 'android') {
+				    // 判断平台
+					var context = plus.android.importClass("android.content.Context");
+					var locationManager = plus.android.importClass("android.location.LocationManager");
+					var main = plus.android.runtimeMainActivity();
+					var mainSvr = main.getSystemService(context.LOCATION_SERVICE);
+					if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+						uni.showModal({
+							title: '提示',
+							content: '请打开定位服务功能',
+							showCancel: true, // 显示取消按钮
+							success: function (res) {
+								if (res.confirm) {
+									if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+										var Intent = plus.android.importClass('android.content.Intent');
+										var Settings = plus.android.importClass('android.provider.Settings');
+										var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+										main.startActivity(intent); // 打开系统设置GPS服务页面
+										
+									} else {
+										this.doGetLocation();
+										console.log('GPS功能已开启');
+									}
+								} else if (res.cancel) {
+									console.log('用户点击取消');
+								}
+							}
+						});
+					} else {
+						this.doGetLocation();
+					}
+				} else {
+					var cllocationManger = plus.ios.import("CLLocationManager");
+					var enable = cllocationManger.locationServicesEnabled();
+					var status = cllocationManger.authorizationStatus();
+					plus.ios.deleteObject(cllocationManger);
+					console.log("enable:" + enable);
+					console.log("status:" + status);
+					if (enable && status != 2) {
+						console.log("手机系统的定位已经打开");
+					} else {
+						console.log("手机系统的定位没有打开");
+						uni.showModal({
+							title: '提示',
+							content: '请打开定位服务功能',
+							showCancel: true, // 不显示取消按钮
+							success: function (res) {
+								if (res.confirm) {
+									var UIApplication = plus.ios.import("UIApplication");
+									var application2 = UIApplication.sharedApplication();
+									var NSURL2 = plus.ios.import("NSURL");
+									var setting2 = NSURL2.URLWithString("App-Prefs:root=Privacy&path=LOCATION");
+									application2.openURL(setting2);
+									plus.ios.deleteObject(setting2);
+									plus.ios.deleteObject(NSURL2);
+									plus.ios.deleteObject(application2);
+								} else if (res.cancel) {
+									console.log('用户点击取消');
+								}
+							}
 						});
 					}
-				});
-				uni.reLaunch({
-					url:'/pages/login/login-page',
-					animationDuration: 200
-				});
-			//	rsp.avatar.imgSrc = rsp.path; //更新头像方式二
+				}
+			},
+			getLocationTest() {
+			    if(this.hasLocation === true){
+					let SI = setInterval(()=> {
+			           this.doGetLocation();
+			        },1000)
+				} else {
+					this.getLocation();
+				}
+			},
+			search(){
+				let data = '';
+				data=this.UserInfo.id;
+				search_users({
+					userid: data
+				}).then(({
+					data
+				}) => {
+					this.thumbnail_portait = data.msg[0].thumbnail_portait;
+					this.username = data.msg[0].username;
+				})
 			},
 			target(url) {
 				uni.navigateTo({
 					url
 				})
 			},
-			changeImage() {
-				this.$refs.popup.open()
+			track(){
+				this.doGetLocation();
+				if(this.hasLocation === true){
+					this.open = 1;
+					Track_Share({tag:this.open}).then(({ data })=>{
+						if (data.status === 0){
+							this.stop = false
+							this.id = data.car_track_id
+							// uni.showToast({
+							// 	title: data.msg,
+							// 	icon: "none",
+							// })
+							let SI = setInterval(()=> {
+								this.recordtrack()
+							    console.log(1111)
+							    if(this.stop = true){
+							        clearInterval(SI)
+							    }
+							},1000)
+						}
+						console.log(data)
+					})
+				} else{
+					uni.showToast({
+						title: "请开启定位服务",
+						icon: "none",
+					})
+				}
 			},
+			recordtrack(){
+				let SI = setInterval(()=> {
+				    this.doGetLocation();
+					if(this.hasLocation === true){
+						this.longitude = formatLocation(this.locationinfo.longitude)
+						this.latitude = formatLocation(this.locationinfo.latitude)
+						this.newrecord=[this.longitude,this.latitude]
+						this.record = this.record.push(this.newrecord)
+						Record_Track({track_id:this.id,method:'put',record:this.record}).then(({ data })=>{
+						   uni.showToast({
+							title: data.msg,
+							icon: "none",
+						   })
+						})
+						if(this.stop = true){
+						    clearInterval(SI)
+						}
+					}
+				},1000)
+			},
+			closetrack(){
+				this.close = 0;
+				Close_Track({track_id:this.id,tag:this.close,method:'put'}).then(({ data })=>{
+					this.stop = true
+					uni.showToast({
+						title: data.msg,
+						icon: "none",
+					})
+					console.log(data)
+				})
+			}
 		},
 		onLoad() {
 			if (!this.estateToken) {
@@ -217,8 +405,27 @@
 					url: "/pages/login/login-page"
 				})
 			}
-
-		}
+			   //     // #ifdef APP-PLUS
+			   //      wv = plus.webview.create("","custom-webview",{
+			   //          plusrequire:"none", //禁止远程网页使用plus的API，有些使用mui制作的网页可能会监听plus.key，造成关闭页面混乱，可以通过这种方式禁止
+			   //           'uni-app': 'none', //不加载uni-app渲染层框架，避免样式冲突
+			   //          top:uni.getSystemInfoSync().statusBarHeight,//放置在titleNView下方。如果还想在webview上方加个地址栏的什么的，可以继续降低TOP值
+						// height:100,
+			   //      })
+			   //      wv.loadURL("/hybrid/html/background.html")
+			   //      var currentWebview = this.$mp.page.$getAppWebview() //获取当前页面的webview对象
+			   //      currentWebview.append(wv);//一定要append到当前的页面里！！！才能跟随当前页面一起做动画，一起关闭
+			   //      setTimeout(function() {
+			   //          console.log(wv.getStyle())
+			   //      }, 1000);//如果是首页的onload调用时需要延时一下，二级页面无需延时，可直接获取
+			   //      // #endif
+			this.getLocationTest();
+		},
+		onShow: function(){
+			this.doGetLocation();
+			this.search();
+		},
+		
 	};
 </script>
 
@@ -229,81 +436,170 @@
 			height: 360rpx;
 			position: relative;
 			background: #fff;
-
+			.header {
+				padding-left:30upx;
+				padding-top:50upx;
+				display: flex;
+				flex-wrap: wrap;
+				// flex-direction: column;
+				// align-items: center;
+				// justify-content: center;
+				// .img {
+				// 	position:absolute;
+				// 	width: 100upx;
+				// 	height: 100upx;
+				// 	margin-top:100upx;
+				// 	margin-left:320upx;
+				// }
+				.left{
+					padding-top:36upx;
+					left:4%;
+					// display:flex;
+					// flex-direction: column;
+					.milage{
+						font-size:30upx;
+						border-bottom: 10upx solid #DF5000;
+						width:120upx;
+					}
+					.total{
+						display:flex;
+						// flex-wrap: wrap;
+						padding-top:-10upx;
+						.number{
+							font-size:90upx;
+							// width:230upx;
+							letter-spacing: -6upx;
+						}
+						.kilometers{
+							font-size:30upx;
+							padding-left:8upx;
+							margin-top:70upx;}
+					}
+				}
+				.rank{
+					position:absolute;
+					padding-top:91upx;
+					padding-left:425upx;
+					display:flex;
+					flex-wrap: wrap;
+					.showrank{
+						padding-left:20upx;
+						padding-right:10upx;
+						padding-top:8upx;
+						background-color:#4D4D4D;
+						height:100upx;
+						width:100upx;
+						color:#FFFFFF;
+						.name{}
+						.num{
+							padding-top:7upx;
+							font-weight: bold;
+						}
+					}
+					.look{
+						padding-top:8upx;
+						display:flex;					
+						flex-direction: column;
+						background-color:#DF5000;
+						height:100upx;
+						width:150upx;
+						image{
+							width:98upx;
+							height:45upx;
+							padding-left:52upx;
+						}
+						.lookrank{
+							color:#FFFFFF;
+							padding-top:2upx;
+							// font-size:32upx;
+							padding-left:22upx;
+						}
+					}
+				}
+			}
 			.wall-top {
-				position: relative;
+				display:flex;
+				position: absolute;
 				z-index: 2;
 				left: 12upx;
-				bottom: 90upx;
+				top:290upx;
 				font-size: 32upx;
-
 				.i {
- 				    width: 130rpx;
+					position:relative;
+					left:3%;
+					width: 130rpx;
 					height: 130rpx;
 					border-radius: 50%;
 					box-shadow: 1px 1px 2px #F2F2F2;
 					border: 1.5px solid #F2F2F2;
 				}
-			}
-
-			.header {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-			}
-            .position{
-				image {
-					width: 70upx;
-					height: 45upx;
-					padding-left: 30upx;
-					z-index: 2;
+				.top{
+					padding-top:12upx;
+					padding-left:10upx;
+					color:#848689;
+					.information{
+						display:flex;
+						image {
+							width: 62upx;
+							height: 28upx;
+							padding-left: 34upx;
+							z-index: 2;
+						}
+						.username {
+							position:relative;
+							padding-top:6upx;
+							left:0.3rem;
+						}
+					}
+					.position{
+						padding-top:5upx;
+						image {
+							width: 66upx;
+							height: 32upx;
+							padding-left: 30upx;
+							z-index: 2;
+						}
+						.address{
+							padding-top:14upx;
+							position:relative;
+							top:-1.5rem;
+							left:2rem;
+							// right:-2rem;
+						}
+					}
 				}
 			}
-			.top-header {
-				display: flex;
-				padding-left: 15upx;
-				color: #FFFFFF;
-			}
-
-			.top-bottom {
-				display: flex;
-				flex-wrap: nowrap;
-				padding-left: 15upx;
-				padding-top: 10upx;
-			}
 		}
-
+		
 		.main {
 			height: 220upx;
-
 			.uni-content {
 				display: flex;
 				flex-wrap: wrap;
-				padding-left: 40upx;
+				padding-left: 0upx;
 				padding-top: 85upx;
-				padding-right: 40upx;
+				padding-right: 5upx;
 			}
-
 			.uni-content-box {
 				display: flex;
 				flex-direction: column;
 				align-items: center;
-				width: 25%;
+				width: 20%;
 				box-sizing: border-box;
 			}
-
 			.uni-content-image {
 				display: flex;
 				justify-content: center;
 				align-items: center;
-
+		        .img{
+					width: 100upx;
+					height: 100upx;
+				}
 				image {
 					width: 70upx;
 					height: 70upx;
 				}
 			}
-
 			.uni-content-text {
 				font-size: 26upx;
 				color: #333;
@@ -311,16 +607,13 @@
 				padding-bottom: 10px;
 			}
 		}
-
 		.badge {
 			background-color: #e60000 !important;
 			font-size: 25upx !important;
 		}
-
 		.content {
 			position: relative;
 			top: -2.5rpx;
-
 			.section {
 				padding: 0 41.666upx;
 				// height: 125upx;
@@ -329,10 +622,8 @@
 				align-items: center;
 				justify-content: space-between;
 				// border-bottom: 2.083upx solid #c8c8cc;
-
 				&>view:nth-child(1) {
 					// font-weight: bold;
-
 					.icon {
 						width: 62.5upx;
 						height: 62.5upx;
@@ -340,20 +631,17 @@
 						margin-right: 37.5upx;
 					}
 				}
-
 				&>view:nth-child(2) {
 					color: #c8c8cc;
 					display: flex;
 					align-items: center;
 				}
 			}
-
 			.profile {
 				padding: 0 31.25rpx;
 				width: 100%;
 				display: flex;
 				align-items: flex-end;
-
 				image {
 					width: 125rpx;
 					height: 125rpx;
@@ -361,7 +649,6 @@
 				}
 			}
 		}
-
 		.foot {
 			padding-top: 40upx;
 			opacity: 0.5;

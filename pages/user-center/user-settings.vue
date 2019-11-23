@@ -2,6 +2,14 @@
 	<!-- 设置界面 -->
 	<view id="setting">
 		<view>
+			<view class="settingList" @tap="target('/pages/user-center/personalCenter/portrait?image='+encodeURIComponent(JSON.stringify(this.thumbnail_portait)))">
+				<view>头像</view>
+				<image 
+				 class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
+				<view>
+					<uni-icon class="ico" type="arrowright"></uni-icon>
+				</view>
+			</view>
 			<view class="settingList" @tap="target('/pages/user-center/personalCenter/editProfile')">
 				<view>编辑个人信息</view>
 				<view>
@@ -40,12 +48,46 @@
 </template>
 
 <script>
+	import {
+		search_users,
+	} from '@/api/usercenter';
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
 	export default {
+		data() {
+			
+			return {
+			
+				thumbnail_portait: '',
+				
+			};
+		},
+		computed: {
+			
+			UserInfo() {
+				return this.$store.state.UserInfo
+			}
+		},
+		onShow() {
+			this.search();
+		
+		},
 		components: {
 			uniIcon,
 		},
 		methods: {
+			//查看用户信息
+			search() {
+				let data = '';
+				data = this.UserInfo.id;
+				search_users({
+					userid: data
+				}).then(({
+					data
+				}) => {
+					this.thumbnail_portait = data.msg[0].thumbnail_portait;
+			       
+				})
+			},
 			target(url) {
 				uni.navigateTo({
 					url
@@ -84,7 +126,7 @@
 		.settingList {
 			background-color: #FFFFFF;
 			padding: 0 41.666upx;
-			height: 118upx;
+			height: 130upx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
@@ -97,6 +139,20 @@
 			}
 
 			&>view:nth-child(2) {
+				color: #c8c8cc;
+				display: flex;
+				align-items: center;
+			}
+			.i {
+				width: 120rpx;
+				height: 120rpx;
+				border-radius: 10px;
+				box-shadow: 1px 1px 2px #F2F2F2;
+				border: 1.5px solid #F2F2F2;
+				left:30%;
+				position:relative;
+			}
+			.ico{
 				color: #c8c8cc;
 				display: flex;
 				align-items: center;
@@ -117,7 +173,7 @@
 
 			 &>view{
 				padding: 0 41.666upx;
-				height: 118upx;
+				height: 130upx;
 				border-bottom: 2.083upx solid #c8c8cc;
 				display: flex;
 				align-items: center;

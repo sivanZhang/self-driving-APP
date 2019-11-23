@@ -243,8 +243,12 @@
 				 
 				  if(data.status == 0){
 					  this.RewardList = [...data.msg];
-					  console.log("----------")
-					   console.log(this.RewardList)
+
+					  
+
+					  // console.log("----------")
+					  //  console.log(this.RewardList)
+
 				  }
 			  })
 			},

@@ -2,246 +2,224 @@
 	<view id="editProfile">
 		<!-- 编辑资料 -->
 		<view class="header">
-			<!-- <cropper  selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imageurl" avatarStyle="width:185rpx;height:185rpx;border-radius:50%;box-shadow: 1px 1px 2px #F2F2F2;border: 1.5px solid #F2F2F2;">
-		</cropper> --> 
-			<image @tap="target('/pages/user-center/personalCenter/portrait')"   class="i" :src="'https://tl.chidict.com'+'/'+UserInfo.thumbnail_portait"></image>
+
+			<!-- <image @tap="target('/pages/user-center/personalCenter/portrait')"   class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image> -->
+			<!-- <image @tap="target('/pages/user-center/personalCenter/portrait?image='+encodeURIComponent(JSON.stringify(this.thumbnail_portait)))"
+			 class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image> -->
+			<image class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
 		</view>
-  
+
 		<view class="body">
 			<view class="bodyList">
-				<view>昵称：</view>
-				<view>
-					<input type="text" v-model="username" />  
+				<view class="us">昵称：</view>
+				<view v-if="username == ''">
+					<input class="in" type="text" @tap="change" @input="onKeyInput" />
+				</view>
+				<view else>
+					<input class="in" disabled="true" v-model="username" />
 				</view>
 			</view>
 
 			<view class="bodyList">
-				<view>性别：</view>
+				<view class="us">性别：</view>
 				<view>
-					<picker @change="bindPickerChange" :value="index" :range="array" range-key="name">
-						<view class="uni-input" v-model="sex">{{array[index].name}}</view>
-					</picker>
+					<radio-group @change="radioChange">
+						<label >
+							<radio style="transform:scale(0.7)" color="#DF5000" value="男" :checked="checked" />男</label>
+						<label>
+							<radio style="transform:scale(0.7)" color="#DF5000" value="女" :checked="checked1" />女</label>
+					</radio-group>
 				</view>
+
+
 			</view>
 			<view class="bodyList">
-				<view>生日：</view>
+				<view class="us">车牌：</view>
 				<view>
-					<!-- <input type="text" /> -->
-					<picker mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChange">
-						<view class="uni-input" v-model="birth">{{date}}</view>
-					</picker>
+					<input class="inp" disabled="true" @tap="plateShow=true" v-model.trim="plateNo"></input>
+					<plate-input v-if="plateShow" :plate="plateNo" @export="setPlate" @close="plateShow=false"></plate-input>
 				</view>
 			</view>
+
 			<view class="bodyList">
-				<view>常住地：</view>
+				<view class="us">签名：</view>
 				<view>
-					<input type="text" v-model="area" />
-				</view>
-			</view>
-			<view class="bodyList">
-				<view>签名：</view>
-				<view>
-					<input type="text" v-model="signature" />
+					<input  type="text" v-model="signature" />
 				</view>
 			</view>
 		</view>
 		<view style="padding: 15upx;">
-			<button type="primary" @tap="save">保存</button>
-			
+			<button class="but" type="primary" @tap="save">保存</button>
+
 		</view>
 	</view>
 </template>
 
 <script>
 	import {
-		post_file,
+		search_users,
 		update_users
 	} from '@/api/usercenter';
 	import cropper from "@/components/cropper.vue";
-	
+	import plateInput from '@/components/uni-plate-input/uni-plate-input.vue'
 	export default {
 		data() {
-			const currentDate = this.getDate({
-				format: true
-			})
+
 			return {
-				imageurl:'https://tl.chidict.com'+'/'+this.$store.state.UserInfo.thumbnail_portait,
-				username:this.$store.state.UserInfo.username,
-				sex:this.$store.state.UserInfo.sex,    
-				area:110100,
-				signature: '',  
-				birth: '',  
+				checked: false,
+				checked1: false,
+				username: '',
+				name: '',
+				sex: '',
+				signature: '',
+				birth: '',
 				method: 'put',
 				showUpImg: false,
-				date: currentDate,
-				array: [{name:'男'},{name: '女'}],
-				index: 0,
+				thumbnail_portait: '',
+				car_number: null,
+				plateNo: '',
+				plateShow: false
+
 			};
 		},
 		components: {
-			cropper
+			cropper,
+			plateInput
 		},
 		computed: {
-			startDate() {
-				return this.getDate('start');
-			},
-			endDate() {
-				return this.getDate('end');
-			},
+
 			UserInfo() {
 				return this.$store.state.UserInfo
 			}
 		},
-		
+		onLoad(option) {
+			// this.search();	
+
+		},
+		onShow() {
+			this.search();
+
+		},
 		methods: {
+			onKeyInput: function(event) {
+				console.log(event.target.value)
+				this.name = event.target.value;
+			},
+			change() {
+
+				uni.showToast({
+					title: '昵称只可以修改一次哦',
+					icon: "none",
+				});
+			},
+			radioChange(e) {
+				this.sex = e.detail.value;
+			},
+			setPlate(plate) {
+				if (plate.length >= 7) this.plateNo = plate
+				this.plateShow = false
+				this.car_number = this.plateNo;
+			},
+			//查看用户信息
+			search() {
+				let data = '';
+				data = this.UserInfo.id;
+				search_users({
+					userid: data
+				}).then(({
+					data
+				}) => {
+					this.thumbnail_portait = data.msg[0].thumbnail_portait;
+
+					this.plateNo = data.msg[0].car_number;
+					this.signature = data.msg[0].signature;
+					this.sex = data.msg[0].sex;
+					if (this.sex == '男') {
+						this.checked = true;
+					} else {
+						this.checked1 = true;
+					}
+					if (data.msg[0].username == '') {
+						console.log(data.msg[0].username);
+					} else {
+						this.username = data.msg[0].username;
+
+					}
+				})
+
+
+			},
+
+
 			target(url) {
 				uni.navigateTo({
 					url
 				})
 			},
-			bindPickerChange: function(e) {
-				console.log('picker发送选择改变，携带值为：' + e.target.value)
-				this.index = e.target.value
-			},
-			//上传返回图片
-			// myUpload(rsp) {
-				
-			// 	console.log(rsp)
-			// 	const self = this;
-			// 	self.imageurl = rsp.path; //更新头像方式一	
-			// 	uni.uploadFile({
-			// 		url: 'https://tl.chidict.com/appfile/appfile/',
-			// 		filePath:rsp.path,  
-			// 		name: 'file', 
-			// 		header: {
-			// 			"Content-Type": "multipart/form-data",
-			// 			'Authorization': uni.getStorageSync('estateToken') || this.$store.state.estateToken,
-			// 		},
-			// 		success: (res) => {
-			// 			let data = JSON.parse(res.data)
-			// 			this.msg = data.msg
-			// 			console.log(this.msg)
-			// 			uni.showToast({
-			// 				title: '上传成功',
-			// 				icon: "none",
-			// 			});
-			// 		},
-			// 		fail: () => {
-			// 			uni.showToast({
-			// 				title: '上传失败'
-			// 			});
-			// 		}
-			// 	});
-			// 	rsp.avatar.imgSrc = rsp.path; //更新头像方式二
-			// },
+
+
 			//保存
 			save(val) {
-				let data = {
-					userid: this.$store.state.UserInfo.id,
-					username: this.username,
-					sex: this.sex,
-					signature: this.signature,
-					area: this.area,
-					method: 'put',
-				};
-				
-				update_users(data).then(res => {
-					console.log(res)
-					uni.showToast({
-						title: res.data.msg,
-						icon: "none",
-					});
-					if (res.data.status === 0) {
-						const {
-							username,
-							sex,
-							thumbnail_portait,
-							id,
-						} = res.data
-						this.$store.commit("setToken", `JWT ${res.data.token}`);
-						this.$store.commit("setUserInfo", {
-							username,
-							sex,
-							thumbnail_portait,
-							id,
-						});
-
-					} else {
+				if (this.name == '') {
+					let data = {
+						userid: this.UserInfo.id,
+						sex: this.sex,
+						signature: this.signature,
+						carnum: this.plateNo,
+						method: 'put',
+					};
+					update_users(data).then(res => {
 						uni.showToast({
 							title: res.data.msg,
 							icon: "none",
-						})
-					}
-				})
-				// uni.reLaunch({
-				// 	url:'/pages/login/login-page',
-				// 	animationDuration: 200
-				// });
-			},  
-			
-			onNavigationBarButtonTap(val) {
-				let data = {
-					userid: this.$store.state.UserInfo.id,
-					username: this.username,
-					sex: this.sex,
-					signature: this.signature,
-					area: this.area,
-					method: 'put',
-				};
-				
-				update_users(data).then(res => {
-					console.log(res)
-					uni.showToast({
-						title: res.data.msg,
-						icon: "none",
-					});
-					if (res.data.status === 0) {
-						const {
-							username,
-							sex,
-							thumbnail_portait,
-							id,
-						} = res.data
-						this.$store.commit("setToken", `JWT ${res.data.token}`);
-						this.$store.commit("setUserInfo", {
-							username,
-							sex,
-							thumbnail_portait,
-							id,
 						});
-				
-					} else {
+						if (res.data.status == 0) {
+							uni.showToast({
+								title: res.data.msg,
+								icon: "none",
+							});
+							uni.switchTab({
+								url: '/pages/user-center/my-account',
+								animationDuration: 200
+							});
+
+						}
+					})
+				} else {
+					let data = {
+						userid: this.UserInfo.id,
+						sex: this.sex,
+						signature: this.signature,
+						carnum: this.plateNo,
+						username: this.name,
+						method: 'put',
+					};
+					update_users(data).then(res => {
 						uni.showToast({
 							title: res.data.msg,
 							icon: "none",
-						})
-					}
-				})
-				uni.reLaunch({
-					url:'/pages/login/login-page',
-					animationDuration: 200
-				});
-			},
-			//选择出生日期
-			bindDateChange: function(e) {
-				this.date = e.target.value
-			},
-			getDate(type) {
-				const date = new Date();
-				let year = date.getFullYear();
-				let month = date.getMonth() + 1;
-				let day = date.getDate();
+						});
+						if (res.data.status == 0) {
+							uni.showToast({
+								title: res.data.msg,
+								icon: "none",
+							});
+							uni.switchTab({
+								url: '/pages/user-center/my-account',
+								animationDuration: 200
+							});
 
-				if (type === 'start') {
-					year = year - 60;
-				} else if (type === 'end') {
-					year = year + 2;
+						}
+					})
+
 				}
-				month = month > 9 ? month : '0' + month;;
-				day = day > 9 ? day : '0' + day;
-				return `${year}/${month}/${day}`;
-			}
-		}
+
+
+			},
+
+		},
+
+
 	}
 </script>
 
@@ -256,6 +234,7 @@
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
+
 			.i {
 				width: 185rpx;
 				height: 185rpx;
@@ -271,7 +250,31 @@
 				align-items: center;
 				padding: 50.25upx 41.666upx;
 				border-bottom: 2.083upx solid #c8c8cc;
+
+             label{
+				 position:relative;
+				 padding-right:1rem;
+				 
+			 }
+				.us {
+					
+					width: 16%; 
+					position: relative;
+				}
+				.in{
+					position:relative;
+					height:5%;
+					
+				}
+
 			}
+		}
+
+		.but {
+			background-color: #DF5000;
+			border-radius: 50upx;
+			margin-top:7%;
+			position:relative;
 		}
 
 		.uni-changeimage {

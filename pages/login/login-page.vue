@@ -11,7 +11,8 @@
 			<view class="inputs">
 				<view class="left">
 					<image src="/static/icons/user.png"></image>
-					<input type="digit" v-model="PhoneNumber" placeholder="手机号" placeholder-style="color:#ffffff;">
+					<input type="number" v-model="PhoneNumber" placeholder="手机号" maxlength="11" 
+					pattern="[0-9]*"  oninput="value=value.replace(/[^\d.]/g,'')" placeholder-style="color:#ffffff;">
 				</view>
 				<view class="left">
 					<image src="/static/icons/password.png"></image>
@@ -185,7 +186,7 @@
 		// }
 		.links {
 			text-align: center;
-			margin-left: 260upx;
+			margin-left: 240upx;
 			margin-top: 30upx;
 			display: flex;
 			color: #FFFFFF;

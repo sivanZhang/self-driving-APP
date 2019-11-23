@@ -7,9 +7,10 @@
 		</view>
 		<view class="userList">
 			<!-- <form :model="GroupForm" ref="GroupForm"> -->
-			<view class="list" v-for="(item,index) of followlist" :key="index">
+			<view class="list" v-for="(item,index) of followlist" :key="index" @tap="change(item)">
 				<view class="listimage">
 					<image src="../../../static/image/face.jpg"></image>
+					<!-- <image :src="'https://tl.chidict.com'+'/'+item.user_protrait"></image> -->
 				</view>
 				<view class="userlist1">
 					<view class="listuser">{{item.user_name}}</view>
@@ -35,7 +36,7 @@
 		searchFollow
 	} from '@/api/usercenter'
 	import {
-		createdChatting
+		createdGroupsChatting
 	} from '@/api/chatting.js'
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
 	export default {
@@ -47,70 +48,93 @@
 				user_name: '',
 				followlist: [],
 				mumbers: '',
-				mumbers1:'',
 				checkbox1: '',
+				num: [],
+				checked: false,
+				groupid: '',
+				groupname: '',
 				// GroupForm: {},
 			}
 		},
-		created() {
+		onLoad() {
 			this.search()
 		},
+		computed: {
+			// UserInfo() {
+			// 	return this.$store.state.UserInfo
+			// }
+		},
 		methods: {
-			checkboxChange: function(e) {
-				console.log(e)
+			change(item) {
+				this.num.push(item.user_id);
+				this.mumbers = this.num.map(item => item).join(',')
+				this.checkboxChange(item.user_id);
+			},
+			checkboxChange(e) {
 				var items = this.followlist;
-					values = e.detail.value;
-					this.mumbers = String(values);
-				this.mumbers = values.map(item => item).join(",");
+				var values = String(e);
+				// console.log(values)
 				for (var i = 0, lenI = items.length; i < lenI; ++i) {
 					const item = items[i]
-					if (values.indexOf(item.value) >= 0) {
+					if (values.includes(item.user_id)) {
+						// if (values.indexOf(item.user_id) >= 0) {
 						this.$set(item, 'checked', true)
-					} else {
-						this.$set(item, 'checked', false)
-					}
+						}
+					// } else {
+					// 	this.$set(item, 'checked', false)
+					// }
 				}
 			},
 			assure() {
-							// let name,numbers;
-							// this.followlist.forEach(item =>{
-							// 	name = item.user_name;
-							// 	numbers = item.user_id;
-							// 	console.log(numbers)
-							// })
-							console.log("-------")
-							console.log(this.mumbers)
-							createdChatting({
-								member_ids: this.mumbers
-							}).then(res => {
-								if (res.data.status == 0) {
-									console.log(res.data.msg)
-								} else {
-									console.log(res.data.msg)
-								}
-			
-							})
-						},
+				let data = '';
+				data = this.$store.state.UserInfo.id;
+				createdGroupsChatting({
+					member_ids: this.mumbers
+				}).then(res => {
+					if (res.data.status == 0) {
+						// this.mumbers = '';
+						this.groupid = res.data.msg.groupid;
+						this.groupname = res.data.msg.groupname;
+						uni.navigateTo({
+							url: '/pages/user-center/message/chatting?id=' + this.groupid + '&mumbers=' + this.mumbers + '&name=' + this.groupname
+						});
+					}
+				});
+			},
 			search() {
 				searchFollow({
 					followfans: ''
-				}).then(res => {
-					this.followlist = res.data.msg.follow_lst;
+				}).then(({
+					data
+				}) => {
+					this.followlist = data.msg.follow_info;
 				})
 
 			},
 			//导航栏的确认按钮（创建群聊）
 			onNavigationBarButtonTap(val) {
-				console.log(val)
-				uni.showLoading({
-					title: '正在创建群聊'
-				})
-				setTimeout(function() {
-					uni.hideLoading();
-					uni.navigateTo({
-						url: "/pages/user-center/message/chatting"
-					});
-				}, 2000);
+				// console.log(val)
+				let data = '';
+				data = this.$store.state.UserInfo.id;
+				// createdGroupsChatting({
+				// 	member_ids: this.mumbers
+				// }).then(res => {
+				// 	if (res.data.status == 0) {
+				// 		// this.mumbers = '';
+				// 		this.groupid = res.data.msg.groupid;
+				// 		this.groupname = res.data.msg.groupname;
+				// 		uni.showLoading({
+				// 			title: '正在创建群聊'
+				// 		})
+				// 		setTimeout(function() {
+				// 			uni.hideLoading();
+							uni.navigateTo({
+								url: '/pages/user-center/message/chatting?id=' + this.groupid + '&mumbers=' + this.mumbers + '&name=' + this.groupname
+							});
+				// 		}, 2000);
+				// 	}
+				// });
+
 			},
 		},
 

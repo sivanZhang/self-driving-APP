@@ -9,12 +9,12 @@
 		<view class="content">
 			<view class="item">
 				<image src="/static/icons/phone.png"></image>
-				<input type="text" v-model="formData.phone" placeholder="手机号" placeholder-style="color:#ffffff;"/>
+				<input type="number" v-model="formData.phone" pattern="[0-9]*" oninput="value=value.replace(/[^\d.]/g,'')" maxlength="11" placeholder="手机号" placeholder-style="color:#ffffff;"/>
 			</view>
 			<view class="code-warp">
 				<image src="/static/icons/code.png"></image>
 				<input type="number" v-model.number="formData.code" placeholder="验证码" placeholder-style="color:#ffffff;"/>
-				<button type="default" :disabled="codeButtonType" @click="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
+				<button type="default" plain="true" :disabled="codeButtonType" @click="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
 			</view>
 			<view class="item">
 				<image src="/static/icons/user.png"></image>
@@ -22,7 +22,7 @@
 			</view>
 			<view class="item">
 				<image src="/static/icons/password.png"></image>
-				<input type="text" v-model="formData.password" placeholder="密码" placeholder-style="color:#ffffff;"/>
+				<input type="password" v-model="formData.password" placeholder="密码" placeholder-style="color:#ffffff;"/>
 			</view>
 		</view>
 		<button class="submit" @tap="signup">注册</button>
@@ -46,13 +46,13 @@
 					username: '',
 				},
 				codeButtonType: false,
-				secondCount: 30,
+				secondCount: 60,
 			}
 		},
 		methods: {
 			// 获取手机验证码
 			getCode() {
-				let reg = /^1(3|4|5|7|8)\d{9}$/
+				let reg = /^1(3|4|5|7|8|9)\d{9}$/
 				if (!reg.test(this.formData.phone)) {
 					uni.showToast({
 						title: '请输入正确的手机号',
@@ -76,7 +76,7 @@
 						if (this.secondCount === 0) {
 							clearInterval(timeCount)
 							this.codeButtonType = false
-							this.secondCount = 30
+							this.secondCount = 60
 						}
 					}, 1000)
 				}).catch((err) => {
@@ -107,8 +107,15 @@
 				let checkRes =graceChecker.check(this.formData, rule)
 				if(checkRes){
 					Post_Signup(this.formData).then(res=>{
-						uni.showToast({ title: res.msg, icon: "none" });
-					})
+						uni.showToast({ title: res.data.msg, icon: "none" });
+							if (res.data.status == 0){
+								setTimeout(function(){
+									uni.navigateTo({
+										url: "/pages/login/login-page",
+									});
+								},1000)
+					        }
+				    })
 				}else{
 					uni.showToast({ title: graceChecker.error, icon: "none" });
 				}
@@ -157,8 +164,8 @@
 					right: 100upx;
 					margin-bottom:30upx;
 					padding: 10upx;
-					background-color: #DAC2A6;
 					z-index: 50;
+					color:#FFFFFF;
 				}
 			}
 			input {
@@ -173,12 +180,7 @@
 				}
 			}
 		}
-		// .signup-inp {
-		// 	border: 2.083rpx solid #C8C8CC;
-		// 	margin: 31.25rpx 0;
-		// 	padding: 12.5rpx 25rpx;
-		// 	text-align: left;
-		// }
+		
 		.submit {
 			width:90%;
 			background-color:#DF5000;
@@ -191,6 +193,7 @@
 			margin-top:80upx;
 			color: #FFFFFF;
 			border-radius: 50upx;
+			z-index: 50;
 		}
 	}
 </style>

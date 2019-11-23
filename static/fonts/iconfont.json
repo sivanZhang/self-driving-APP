@@ -132,6 +132,13 @@
       "unicode_decimal": 58885
     },
     {
+      "icon_id": "9148965",
+      "name": "通讯录",
+      "font_class": "weimingmingwenjianjia_tongxunlu",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
       "icon_id": "9512631",
       "name": "搜索",
       "font_class": "search",

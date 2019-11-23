@@ -9,10 +9,12 @@
 			<view  class="iconfont icon-jian"></view>
 		</view>
 		<view class="main">
-			<view class="main-body" @tap="target('/pages/user-center/editGroup/groupName')">
+			<view class="main-body" @tap="target1()">
+			<!-- <view class="main-body" @tap="target('/pages/user-center/editGroup/groupName?id=' + this.groupid + '&mumbers=' + this.mumbers + '&name=' + this.groupname)"> -->
 				<view>群聊名称</view>
 				<view class="main-name">
-					<view>嗨自驾</view>
+					<view>{{groupname}}</view>
+					<!-- <view>嗨自驾</view> -->
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 				
@@ -23,7 +25,7 @@
 			</view>
 			</view>
 			<view style="padding: 0upx;">
-				<view class="main-body">
+				<view class="main-body" @tap="target('/pages/user-center/editGroup/LookHistory?id=' + this.groupid + '&mumbers=' + this.mumbers + '&name=' + this.groupname)">
 					<view>查找聊天记录</view>
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
@@ -41,6 +43,7 @@
 			<view style="padding-bottom: 20upx;" @tap="emptyhistory()">
 				<view class="main-body">
 					<view>清空聊天记录</view>
+					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
 		<view class="footer">
@@ -52,6 +55,7 @@
 </template>
 
 <script>
+import { EditGroupsChatting,Delete_ChatHistory,Look_ChatHistory} from '@/api/chatting'
     import uniIcon from "@/components/uni-icon/uni-icon.vue"
 	export default {
 		components: {
@@ -59,13 +63,28 @@
 		},
 		data() {
 			return {
-
+                  groupname:'',
+				  groupid:'',
+				  mumbers:'',
 			};
+		},
+		onLoad(option){
+            this.groupid = option.id;
+			this.groupname = option.name;
+			this.mumbers = option.mumbers;
+			// console.log("chuanzhi")
+			// console.log(option)
+			// console.log(this.groupname)
 		},
 		methods: {
 			target(url){
 				uni.navigateTo({
-					url
+					url:url
+				});
+			},
+			target1(){
+				uni.navigateTo({
+						url: '/pages/user-center/editGroup/groupName?id=' + this.groupid + '&mumbers=' + this.mumbers + '&name=' + this.groupname
 				});
 			},
 			//清空聊天记录

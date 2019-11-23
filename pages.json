@@ -14,25 +14,39 @@
 			"style": {
 				"navigationBarTitleText": "头像",
 				"navigationBarBackgroundColor": "#3B4144",
-				"navigationBarTextStyle":"white"
+				"navigationBarTextStyle":"white",
+				"app-plus": {
+								// 将回弹属性关掉    
+								"bounce":"none"
+							}
 			}
 		},
-		
+		{
+			"path": "pages/user-center/giftcenter",
+			"style": {
+				"navigationBarTitleText": "礼品中心"
+				
+			}
+		},
 		
 		{
 			"path": "pages/user-center/personalCenter/editProfile",
 			"style": {
 				"navigationBarTitleText": "编辑资料",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"float": "right",
-							"text": "保存",
-							"width": "auto",
-							"fontSize": "38upx"
-						}]
-					}
-				}
+				"app-plus": { 
+								// 将回弹属性关掉    
+								"bounce":"none"
+							}
+				// "app-plus": {
+				// 	"titleNView": {
+				// 		"buttons": [{
+				// 			"float": "right",
+				// 			"text": "保存",
+				// 			"width": "auto",
+				// 			"fontSize": "38upx"
+				// 		}]
+				// 	}
+				// }
 			}
 		},
 		{
@@ -60,9 +74,10 @@
 		{
 			"path": "pages/login/forgot-password",
 			"style": {
-				"navigationBarTitleText": "Reset Password",
+				"navigationStyle": "custom",
 				 "app-plus": { 
-				 	// 将回弹属性关掉
+					"titleNView": false,
+				 	// 将回弹属性关掉    
 				 	"bounce":"none"
 				 }
 			}
@@ -87,6 +102,7 @@
 			"path": "pages/user-center/my-account",
 			"style": {
 				"navigationStyle": "custom"
+				
 			},
 			"app-plus": {
 				"titleNView": false
@@ -176,7 +192,15 @@
 			}
 		}, {
 			"path": "pages/login/sign-up",
-			"style": {}
+			"style": {
+               // "navigationBarTitleText": "注册为新用户",
+				"navigationStyle": "custom",
+				 "app-plus": { 
+					"titleNView": false,
+				 	// 将回弹属性关掉    
+				 	"bounce":"none"
+				 }
+			}
 		},
 		{
 			"path": "pages/user-center/browser-history",
@@ -187,6 +211,8 @@
 			"style": {
 				"navigationBarTitleText": "通知",
 				"app-plus": {
+					// 将回弹属性关掉    
+					"bounce":"none",
 					"titleNView": {
 						"buttons": [{
 							"text": "\ue623", //添加群聊
@@ -210,7 +236,11 @@
 		{
 			"path": "pages/user-center/personalCenter/personalCenter",
 			"style": {
-				"navigationBarTitleText": "个人主页"
+				"navigationBarTitleText": "个人主页",
+				"app-plus": {
+					// 将回弹属性关掉
+					"bounce":"none"
+				}
 			}
 		},
 		
@@ -274,7 +304,44 @@
 		{
 			"path": "pages/user-center/message/chatting",
 			"style": {
+				// "navigationStyle": "custom",
 				// "navigationBarTitleText": "发起群聊",
+				"app-plus": {
+					// "titleNView":false,
+					"titleNView":
+					{
+						"buttons": [{
+							"text": "\ue708",
+							"fontSrc": "/static/fonts/iconfont.ttf",
+							"fontSize": "22px",
+							"float": "right"
+						}]
+					},
+					// 将回弹属性关掉    
+					"bounce":"none"
+				}
+			}
+		},
+		{
+			"path": "pages/user-center/message/addressList",
+			"style": {
+				// "navigationBarTitleText": "通讯录",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue708",
+							"fontSrc": "/static/fonts/iconfont.ttf",
+							"fontSize": "22px",
+							"float": "right"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/user-center/message/groupList",
+			"style": {
+				// "navigationBarTitleText": "群组",
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
@@ -291,6 +358,12 @@
 			"path": "pages/user-center/editGroup/modifychatting",
 			"style": {
 				"navigationBarTitleText": "聊天信息"
+			}
+		},
+		{
+			"path": "pages/user-center/editGroup/LookHistory",
+			"style": {
+				"navigationBarTitleText": "查找聊天记录"
 			}
 		},
 		{

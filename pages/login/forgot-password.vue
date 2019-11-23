@@ -1,32 +1,46 @@
 <template>
-	<view id="sign-up">
-		<text>修改密码</text>
-		<input class="signup-inp" type="text" v-model="formData.phone" placeholder="手机号" />
-		<view class="code-warp">
-			<input class="signup-inp" type="number" v-model.number="formData.code" placeholder="验证码" />
-			<button type="default" :disabled="codeButtonType" @click="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
+<!-- #ifdef H5 --> 
+<view id="forgot-password">  
+			<!-- #endif -->
+			<!-- #ifndef H5 -->
+		<view id="forgot-password"  :style="{backgroundImage: 'url('+imageURL+')',backgroundSize:'cover',backgroundPosition:'center'}"> 
+		<!-- #endif -->
+		<text class="text">找回密码</text>
+		<view class="content">
+			<view class="item">
+				<image src="/static/icons/phone.png"></image>
+				<input type="number" v-model="formData.phone" oninput="value=value.replace(/[^\d.]/g,'')" pattern="[0-9]*" placeholder="手机号" placeholder-style="color:#ffffff;"
+				 maxlength="11"/>
+			</view>
+			<view class="code-warp">
+				<image src="/static/icons/code.png"></image>
+				<input type="number" v-model.number="formData.code" placeholder="验证码" placeholder-style="color:#ffffff;"/>
+				<button type="defalut" plain="true" :disabled="codeButtonType" @tap="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
+			</view>
+			<view class="item">
+				<image src="/static/icons/password.png"></image>
+				<input type="password" v-model="formData.password" placeholder="新密码" placeholder-style="color:#ffffff;"/>
+			</view>
 		</view>
-		<input class="signup-inp" type="text" v-model="formData.username" placeholder="用户名" />
-		<input type="text" class="signup-inp" v-model="formData.password" placeholder="密码" />
-		<button type="primary" @tap="signup">注册</button>
+		<button class="submit" @tap="assure">确定</button>
 	</view>
 </template>
 
 <script>
 	import graceChecker from "@/utils/graceChecker"
-	import { Put_Password, Get_PhoneCode } from "@/api/login";
+	import { Put_Password, Get_PhoneCode } from "@/api/login.js";
 	export default {
 		data() {
 			return {
+				imageURL: '/static/image/background.jpg',
+				oldNum:0,
 				formData: {
 					phone: '',
-					password: '',
 					code: '',
-					username: '',
-					method:'put'
+					password:''
 				},
 				codeButtonType: false,
-				secondCount: 30,
+				secondCount: 60,
 			}
 		},
 		methods: {
@@ -56,21 +70,16 @@
 						if (this.secondCount === 0) {
 							clearInterval(timeCount)
 							this.codeButtonType = false
-							this.secondCount = 30
+							this.secondCount = 60
 						}
 					}, 1000)
 				}).catch((err) => {
 					this.codeButtonType = false
 				})
 			},
-			//注册
-			signup() {
-				const rule = [{
-						name: "password",
-						checkType: "string",
-						checkRule: "6,16",
-						errorMsg: "密码最少输入6位"
-					},
+			//保存修改密码
+			assure () {
+				const rule = [
 					{
 						name: "code",
 						checkType: "reg",
@@ -87,7 +96,14 @@
 				let checkRes =graceChecker.check(this.formData, rule)
 				if(checkRes){
 					Put_Password(this.formData).then(res=>{
-						uni.showToast({ title: res.msg, icon: "none" });
+						uni.showToast({ title: res.data.msg, icon: "none" });
+							if (res.data.status == 0){
+							setTimeout(function(){
+								uni.navigateTo({
+									url: "/pages/login/login-page",
+								});
+							},1000)
+					    }
 					})
 				}else{
 					uni.showToast({ title: graceChecker.error, icon: "none" });
@@ -98,29 +114,76 @@
 </script>
 
 <style lang="scss">
-	#sign-up {
-		text-align: center;
-		padding: 250rpx 31.25rpx 0;
-
-		.code-warp {
-			position: relative;
-
-			button {
-				position: absolute;
-				right: 20.833rpx;
-				top: 5px;
-				padding: 0;
+	#forgot-password {
+		min-height:100vh;
+			/* #ifdef H5 */  
+			background-image: url(~@/static/image/background.jpg) ;
+			background-size: cover;
+			background-position: center;
+			/* #endif */
+			.text{
+			    position: relative;
+				top:200upx;
+				left:280upx;
+				font-size:50upx;
+				color: #FFFFFF;
+			}
+		    .content{
+				margin-top:600upx;
+				color:#FFFFFF;
+				image{
+					height: 40upx;
+					width: 40upx;
+				}
+				.item{
+					align-items: center;
+					margin-top:50upx;
+					margin-left:80upx;
+					display:flex;
+				}
+				.code-warp {
+					align-items: center;
+					display:flex;
+					margin-top:50upx;
+					margin-left:80upx;
+					position: relative;
+				
+					button {
+						color:#FFFFFF;
+						position: absolute;
+						right: 100upx;
+						margin-bottom:30upx;
+						padding: 10upx;
+						padding-bottom:12upx;
+						z-index: 50;
+					}
+				}
+				input {
+					display: block;
+					outline: none;
+					padding: 12.5upx 25upx;
+					font-size: 29.166upx;
+					width:480upx;
+					border-bottom: 2upx solid #c8c8cc;
+					&+input {
+						margin-top: 25upx;
+					}
+				}
+			}
+			.submit {
+				width:90%;
+				background-color:#DF5000;
+				font-size: 32upx;
+				padding-top:10upx;
+				text-align: center;
+				font-family: "OpenSans-SemiBold";
+				height: 100upx;
+				margin-left:38upx;
+				margin-top:80upx;
+				color: #FFFFFF;
+				border-radius: 50upx;
+				z-index: 50;
 			}
 		}
-
-		.signup-inp {
-			border: 2.083rpx solid #C8C8CC;
-			margin: 31.25rpx 0;
-			padding: 12.5rpx 25rpx;
-			text-align: left;
-		}
-	}
 </style>
-
-
 
