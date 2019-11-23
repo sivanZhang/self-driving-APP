@@ -14,7 +14,11 @@
 			"style": {
 				"navigationBarTitleText": "头像",
 				"navigationBarBackgroundColor": "#3B4144",
-				"navigationBarTextStyle":"white"
+				"navigationBarTextStyle":"white",
+				"app-plus": {
+								// 将回弹属性关掉    
+								"bounce":"none"
+							}
 			}
 		},
 		{
@@ -30,7 +34,6 @@
 			"style": {
 				"navigationBarTitleText": "编辑资料",
 				"app-plus": { 
-								"titleNView": false,
 								// 将回弹属性关掉    
 								"bounce":"none"
 							}
