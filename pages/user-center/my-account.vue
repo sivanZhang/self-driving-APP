@@ -29,15 +29,15 @@
 				<image class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
 				<view class="top">
 					<view class="information">
-						<view v-if="UserInfo.sex == '女'">
+						<view v-if="sex == '女'">
 							<image src="/static/icons/women.png"></image>
 						</view>
 						<view v-else>
 							<image src="/static/icons/men.png"></image>
 						</view>
 						<view class="username" @tap="target('/pages/user-center/personalCenter/personalCenter')">
-							<span v-if="UserInfo.username">{{UserInfo.username}}</span>
-							<span v-if="!UserInfo.username">{{UserInfo.phone}}</span>
+							<span v-if="username">{{username}}</span>
+							<span v-if="!username">{{UserInfo.phone}}</span>
 						</view>
 					</view>
 					<view class="position">
@@ -201,6 +201,7 @@
 				location: {},
 				address: {},
 				type: '',
+				sex:'',
 				name: null,
 				stop: true,
 				open: '',
@@ -217,6 +218,9 @@
 			UserInfo() {
 				return this.$store.state.UserInfo
 			},
+		    estateToken(){
+						return this.$store.state.estateToken
+					}
             
 		},
 		methods: {
@@ -333,6 +337,7 @@
 				}) => {
 					this.thumbnail_portait = data.msg[0].thumbnail_portait;
 					this.username = data.msg[0].username;
+					this.sex = data.msg[0].sex;
 				})
 			},
 			target(url) {
@@ -418,9 +423,8 @@
 			}
 		},
 		onLoad() { 
-			const Token = this.$store.state.estateToken || uni.getStorageSync('estateToken');
-			if (!Token) {
-				uni.navigateTo({
+			if (!this.estateToken) {
+				    uni.redirectTo({
 					url: "/pages/login/login-page"
 				})
 			}
@@ -459,18 +463,15 @@
 <style lang="scss">
 	#MyAccount {
 		overflow-x: hidden;
-
 		.wall {
 			height: 360rpx;
 			position: relative;
 			background: #fff;
-
 			.header {
-				padding-left: 30upx;
-				padding-top: 50upx;
+				padding-left:30upx;
+				padding-top:50upx;
 				display: flex;
 				flex-wrap: wrap;
-
 				// flex-direction: column;
 				// align-items: center;
 				// justify-content: center;
@@ -486,144 +487,123 @@
 					padding-left:14upx;
 					// display:flex;
 					// flex-direction: column;
-					.milage {
-						font-size: 30upx;
+					.milage{
+						font-size:30upx;
 						border-bottom: 10upx solid #DF5000;
-						width: 120upx;
+						width:120upx;
 					}
-
-					.total {
-						display: flex;
+					.total{
+						display:flex;
 						// flex-wrap: wrap;
-						padding-top: -10upx;
-
-						.number {
-							font-size: 90upx;
+						padding-top:-10upx;
+						.number{
+							font-size:90upx;
 							// width:230upx;
 							letter-spacing: -6upx;
 						}
-
-						.kilometers {
-							font-size: 30upx;
-							padding-left: 8upx;
-							margin-top: 70upx;
-						}
+						.kilometers{
+							font-size:30upx;
+							padding-left:8upx;
+							margin-top:70upx;}
 					}
 				}
-
-				.rank {
-					position: absolute;
-					padding-top: 91upx;
-					padding-left: 425upx;
-					display: flex;
+				.rank{
+					position:absolute;
+					padding-top:91upx;
+					padding-left:425upx;
+					display:flex;
 					flex-wrap: wrap;
-
-					.showrank {
-						padding-left: 20upx;
-						padding-right: 10upx;
-						padding-top: 8upx;
-						background-color: #4D4D4D;
-						height: 100upx;
-						width: 100upx;
-						color: #FFFFFF;
-
-						.name {}
-
-						.num {
-							padding-top: 7upx;
+					.showrank{
+						padding-left:20upx;
+						padding-right:10upx;
+						padding-top:8upx;
+						background-color:#4D4D4D;
+						height:100upx;
+						width:100upx;
+						color:#FFFFFF;
+						.name{}
+						.num{
+							padding-top:7upx;
 							font-weight: bold;
 						}
 					}
-
-					.look {
-						padding-top: 8upx;
-						display: flex;
+					.look{
+						padding-top:8upx;
+						display:flex;					
 						flex-direction: column;
-						background-color: #DF5000;
-						height: 100upx;
-						width: 150upx;
-
-						image {
-							width: 98upx;
-							height: 45upx;
-							padding-left: 52upx;
+						background-color:#DF5000;
+						height:100upx;
+						width:150upx;
+						image{
+							width:98upx;
+							height:45upx;
+							padding-left:52upx;
 						}
-
-						.lookrank {
-							color: #FFFFFF;
-							padding-top: 2upx;
+						.lookrank{
+							color:#FFFFFF;
+							padding-top:2upx;
 							// font-size:32upx;
-							padding-left: 22upx;
+							padding-left:22upx;
 						}
 					}
 				}
 			}
-
 			.wall-top {
-				display: flex;
+				display:flex;
 				position: absolute;
 				z-index: 2;
 				left: 25upx;
 				top:290upx;
 				font-size: 32upx;
-
 				.i {
-					position: relative;
-					left: 3%;
+					position:relative;
+					left:3%;
 					width: 130rpx;
 					height: 130rpx;
 					border-radius: 50%;
 					box-shadow: 1px 1px 2px #F2F2F2;
 					border: 1.5px solid #F2F2F2;
 				}
-
-				.top {
-					padding-top: 12upx;
-					padding-left: 10upx;
-					color: #848689;
-
-					.information {
-						display: flex;
-
+				.top{
+					padding-top:12upx;
+					padding-left:10upx;
+					color:#848689;
+					.information{
+						display:flex;
 						image {
 							width: 62upx;
 							height: 28upx;
 							padding-left: 34upx;
 							z-index: 2;
 						}
-
 						.username {
-							position: relative;
-							padding-top: 6upx;
-							left: 0.3rem;
+							position:relative;
+							padding-top:6upx;
+							left:0.3rem;
 						}
 					}
-
-					.position {
-						padding-top: 5upx;
-
+					.position{
+						padding-top:5upx;
 						image {
 							width: 66upx;
 							height: 32upx;
 							padding-left: 30upx;
 							z-index: 2;
 						}
-
-						.address {
-							padding-top: 14upx;
-							position: relative;
-							top: -1.5rem;
-							left: 2rem;
+						.address{
+							padding-top:14upx;
+							position:relative;
+							top:-1.5rem;
+							left:2rem;
 							// right:-2rem;
 						}
 					}
 				}
 			}
 		}
-
+		
 		.main {
 			height: 220upx;
-
 			.uni-content {
 				display: flex;
 				flex-wrap: wrap;
@@ -631,7 +611,6 @@
 				padding-top: 85upx;
 				padding-right: 5upx;
 			}
-
 			.uni-content-box {
 				display: flex;
 				flex-direction: column;
@@ -639,23 +618,19 @@
 				width: 20%;
 				box-sizing: border-box;
 			}
-
 			.uni-content-image {
 				display: flex;
 				justify-content: center;
 				align-items: center;
-
-				.img {
+		        .img{
 					width: 100upx;
 					height: 100upx;
 				}
-
 				image {
 					width: 70upx;
 					height: 70upx;
 				}
 			}
-
 			.uni-content-text {
 				font-size: 26upx;
 				color: #333;
@@ -663,16 +638,13 @@
 				padding-bottom: 10px;
 			}
 		}
-
 		.badge {
 			background-color: #e60000 !important;
 			font-size: 25upx !important;
 		}
-
 		.content {
 			position: relative;
 			top: -2.5rpx;
-
 			.section {
 				padding: 0 41.666upx;
 				// height: 125upx;
@@ -680,10 +652,8 @@
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-
 				// border-bottom: 2.083upx solid #c8c8cc;
 				&>view:nth-child(1) {
-
 					// font-weight: bold;
 					.icon {
 						width: 62.5upx;
@@ -692,20 +662,17 @@
 						margin-right: 37.5upx;
 					}
 				}
-
 				&>view:nth-child(2) {
 					color: #c8c8cc;
 					display: flex;
 					align-items: center;
 				}
 			}
-
 			.profile {
 				padding: 0 31.25rpx;
 				width: 100%;
 				display: flex;
 				align-items: flex-end;
-
 				image {
 					width: 125rpx;
 					height: 125rpx;
@@ -713,7 +680,6 @@
 				}
 			}
 		}
-
 		.foot {
 			padding-top: 40upx;
 			opacity: 0.5;
