@@ -67,7 +67,9 @@
 				"app-plus": {
 					"titleNView": false,
 					// 将回弹属性关掉
-					"bounce":"none"
+					"bounce":"none",
+					"animationType": "slide-in-top",
+					"animationDuration": 300
 				}
 			}
 		},
