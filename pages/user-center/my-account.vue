@@ -215,9 +215,7 @@
 			UserInfo() {
 				return this.$store.state.UserInfo
 			},
-            estateToken(){
-				return this.$store.state.estateToken
-			}
+            
 		},
 		methods: { 
 		    async getLocation() {
@@ -401,9 +399,10 @@
 				})
 			}
 		},
-		onLoad() {
-			if (!this.estateToken) {
-				uni.redirectTo({
+		onLoad() { 
+			const Token = this.$store.state.estateToken || uni.getStorageSync('estateToken');
+			if (!Token) {
+				uni.navigateTo({
 					url: "/pages/login/login-page"
 				})
 			}
@@ -455,7 +454,7 @@
 				// }
 				.left{
 					padding-top:36upx;
-					left:4%;
+					padding-left:14upx;
 					// display:flex;
 					// flex-direction: column;
 					.milage{
@@ -523,7 +522,7 @@
 				display:flex;
 				position: absolute;
 				z-index: 2;
-				left: 12upx;
+				left: 25upx;
 				top:290upx;
 				font-size: 32upx;
 				.i {
