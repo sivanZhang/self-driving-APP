@@ -66,9 +66,8 @@
 				"navigationStyle": "custom", 
 				"app-plus": {
 					"titleNView": false,
-					// 将回弹属性关掉
 					"bounce":"none",
-					"animationType": "slide-in-top",
+					"animationType": "slide-in-bottom",
 					"animationDuration": 300
 				}
 			}
@@ -172,6 +171,46 @@
 				}
 			}
 		}, {
+			"path": "pages/team/releaseRouter/allRouterDetail",
+			"style": {
+				"navigationBarTitleText": "路线",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [ {
+							"text": "\ue623发布", //发布路线
+							"fontSrc": "/static/font/iconfont.ttf",
+							"fontSize": "20px",
+							"width":"auto"
+						},{
+							"text": "\ue635", //搜索
+							"fontSrc": "/static/fonts/iconfont.ttf",
+							"fontSize": "22px"
+
+						}]
+
+					}
+				}
+			}
+		}, {
+			"path": "pages/team/releaseRouter/releaseRouter",
+			"style": {
+				"navigationBarTitleText": "发布路线",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"type": "close",
+							"width": "auto"
+						},{
+							"type": "back",
+							"width": "auto",
+							"float":"left"
+
+						}]
+				
+					}
+			    }
+			}
+		},{
 			"path": "pages/circle/hi-circle",
 			"style": {}
 		}, {
@@ -580,7 +619,7 @@
 				"text": "行程"
 			},
 			{
-				"pagePath": "pages/team/from-team",
+				"pagePath": "pages/team/releaseRouter/allRouterDetail",
 				"iconPath": "static/icons/qizhi.png",
 				"selectedIconPath": "static/icons/aqizhi.png",
 				"text": "组队"

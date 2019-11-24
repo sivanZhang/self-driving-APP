@@ -94,19 +94,24 @@
 				})
 			},
 			LogOut() {
-				let self = this;
 				this.$store.commit("setToken");
 				this.$store.commit("setUserInfo");
-				uni.navigateTo({
-					url: "/pages/login/login-page"
-				})
 			},
 			togglePopup() {
 				uni.showActionSheet({
-				    itemList: ['退出登录'],
+				    itemList: ['切换账号','退出登录'],
 				    success: res=> {
 				        if(res.tapIndex===0){
 							this.LogOut()
+							uni.navigateTo({
+								url: "/pages/login/login-page"
+							})
+						}
+						if(res.tapIndex===1){
+							this.LogOut()
+							uni.switchTab({
+								url: "/pages/home/home-page"
+							})
 						}
 				    }
 				});

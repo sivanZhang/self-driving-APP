@@ -1,5 +1,5 @@
 <template>
-	<!-- 搭伴列表 -->
+	<!-- 搭伴(组队)列表 -->
 	<view id="team">
 		<block v-for="(item,index) of TeamList" :key="index">
 			<view class="container section">

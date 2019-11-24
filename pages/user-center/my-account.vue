@@ -25,8 +25,8 @@
 					</view>
 				</view>
 			</view>
-			<view class="wall-top" >
-				<image   class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
+			<view class="wall-top">
+				<image class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
 				<view class="top">
 					<view class="information">
 						<view v-if="UserInfo.sex == '女'">
@@ -41,7 +41,7 @@
 						</view>
 					</view>
 					<view class="position">
-						<image @tap="getLocation"  src="../../static/image/position.png"></image>
+						<image @tap="getLocation" src="../../static/image/position.png"></image>
 						<view class="address">
 							<view v-if="hasLocation === false">
 								获取定位
@@ -72,7 +72,7 @@
 					<view class="uni-content-image">
 						<image class="img" v-show="stop" @tap="track" src="/static/image/journey/start.png" />
 						<image class="img" v-show="!stop" @tap="closetrack" src="/static/icons/open.png" />
-						
+
 					</view>
 				</view>
 				<view class="uni-content-box">
@@ -106,7 +106,7 @@
 				<view>
 					<image class="icon" src="/static/icons/save.png"></image>
 					我的收藏
-				</view> 
+				</view>
 				<view>
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
@@ -129,16 +129,16 @@
 				<view>
 					<uni-icon type="arrowright"></uni-icon>
 				</view> -->
-				
-				<view class="section"  @tap="target('/pages/user-center/giftcenter')">
-					<view>
-						<image class="icon" src="../../static/image/journey/gift.png"></image>
-						礼品中心
-					</view>
-					<view>
-						<uni-icon type="arrowright"></uni-icon>
-					</view>		
-			    </view>
+
+			<view class="section" @tap="target('/pages/user-center/giftcenter')">
+				<view>
+					<image class="icon" src="../../static/image/journey/gift.png"></image>
+					礼品中心
+				</view>
+				<view>
+					<uni-icon type="arrowright"></uni-icon>
+				</view>
+			</view>
 			<view class="section" @tap="target('/pages/user-center/user-settings')">
 				<view>
 					<image class="icon" src="/static/icons/setting.png"></image>
@@ -159,7 +159,7 @@
 			</view>
 		</view>
 		<view class="foot">
-			版本:12.321.33
+			版本:12.321.33.22
 		</view>
 
 	</view>
@@ -175,9 +175,11 @@
 		GET_Notice
 	} from '@/api/notice'
 	import {
-		Track_Share,Record_Track,Close_Track
+		Track_Share,
+		Record_Track,
+		Close_Track
 	} from '@/api/track.js'
-	
+
 	// import uniBadge from "@/components/uni-badge/uni-badge.vue"
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
 	// #ifdef APP-PLUS
@@ -194,21 +196,21 @@
 			return {
 				noticeData: [],
 				thumbnail_portait: '',
-				username:'',
+				username: '',
 				hasLocation: false,
 				location: {},
 				address: {},
 				type: '',
-				name:null,
-				stop:true,
-				open:'',
-				close:'',
-				id:'',
-				longitude:'',
-				latitude:'',
-				record:[],
-				newrecord:[],
-				locationinfo:''
+				name: null,
+				stop: true,
+				open: '',
+				close: '',
+				id: '',
+				longitude: '',
+				latitude: '',
+				record: [],
+				newrecord: [],
+				locationinfo: ''
 			};
 		},
 		computed: {
@@ -217,8 +219,8 @@
 			},
             
 		},
-		methods: { 
-		    async getLocation() {
+		methods: {
+			async getLocation() {
 				// #ifdef APP-PLUS
 				let status = await this.checkPermission();
 				// if (status !== 1) {
@@ -238,7 +240,7 @@
 						this.locationinfo = res
 						this.hasLocation = true;
 						this.location = formatLocation(res.longitude, res.latitude);
-					    this.address = res.address
+						this.address = res.address
 						this.name = res.address.poiName
 						// console.log(this.locationinfo)
 					},
@@ -249,7 +251,7 @@
 			},
 			async checkPermission() {
 				if (uni.getSystemInfoSync().platform == 'android') {
-				    // 判断平台
+					// 判断平台
 					var context = plus.android.importClass("android.content.Context");
 					var locationManager = plus.android.importClass("android.location.LocationManager");
 					var main = plus.android.runtimeMainActivity();
@@ -259,14 +261,14 @@
 							title: '提示',
 							content: '请打开定位服务功能',
 							showCancel: true, // 显示取消按钮
-							success: function (res) {
+							success: function(res) {
 								if (res.confirm) {
 									if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER)) {
 										var Intent = plus.android.importClass('android.content.Intent');
 										var Settings = plus.android.importClass('android.provider.Settings');
 										var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 										main.startActivity(intent); // 打开系统设置GPS服务页面
-										
+
 									} else {
 										this.doGetLocation();
 										console.log('GPS功能已开启');
@@ -294,7 +296,7 @@
 							title: '提示',
 							content: '请打开定位服务功能',
 							showCancel: true, // 不显示取消按钮
-							success: function (res) {
+							success: function(res) {
 								if (res.confirm) {
 									var UIApplication = plus.ios.import("UIApplication");
 									var application2 = UIApplication.sharedApplication();
@@ -313,17 +315,17 @@
 				}
 			},
 			getLocationTest() {
-			    if(this.hasLocation === true){
-					let SI = setInterval(()=> {
-			           this.doGetLocation();
-			        },1000)
+				if (this.hasLocation === true) {
+					let SI = setInterval(() => {
+						this.doGetLocation();
+					}, 1000)
 				} else {
 					this.getLocation();
 				}
 			},
-			search(){
+			search() {
 				let data = '';
-				data=this.UserInfo.id;
+				data = this.UserInfo.id;
 				search_users({
 					userid: data
 				}).then(({
@@ -338,58 +340,74 @@
 					url
 				})
 			},
-			track(){
+			track() {
 				this.doGetLocation();
-				if(this.hasLocation === true){
+				if (this.hasLocation === true) {
 					this.open = 1;
-					Track_Share({tag:this.open}).then(({ data })=>{
-						if (data.status === 0){
+					Track_Share({
+						tag: this.open
+					}).then(({
+						data
+					}) => {
+						if (data.status === 0) {
 							this.stop = false
 							this.id = data.car_track_id
 							// uni.showToast({
 							// 	title: data.msg,
 							// 	icon: "none",
 							// })
-							let SI = setInterval(()=> {
+							let SI = setInterval(() => {
 								this.recordtrack()
-							    console.log(1111)
-							    if(this.stop = true){
-							        clearInterval(SI)
-							    }
-							},1000)
+								console.log(1111)
+								if (this.stop = true) {
+									clearInterval(SI)
+								}
+							}, 1000)
 						}
 						console.log(data)
 					})
-				} else{
+				} else {
 					uni.showToast({
 						title: "请开启定位服务",
 						icon: "none",
 					})
 				}
 			},
-			recordtrack(){
-				let SI = setInterval(()=> {
-				    this.doGetLocation();
-					if(this.hasLocation === true){
+			recordtrack() {
+				let SI = setInterval(() => {
+					this.doGetLocation();
+					if (this.hasLocation === true) {
 						this.longitude = formatLocation(this.locationinfo.longitude)
 						this.latitude = formatLocation(this.locationinfo.latitude)
-						this.newrecord=[this.longitude,this.latitude]
+						this.newrecord = [this.longitude, this.latitude]
 						this.record = this.record.push(this.newrecord)
-						Record_Track({track_id:this.id,method:'put',record:this.record}).then(({ data })=>{
-						   uni.showToast({
-							title: data.msg,
-							icon: "none",
-						   })
+						Record_Track({
+							track_id: this.id,
+							method: 'put',
+							record: this.record
+						}).then(({
+							data
+						}) => {
+							uni.showToast({
+								title: data.msg,
+								icon: "none",
+							})
 						})
-						if(this.stop = true){
-						    clearInterval(SI)
+						if (this.stop = true) {
+							clearInterval(SI)
 						}
 					}
-				},1000)
+				}, 1000)
 			},
-			closetrack(){
+			closetrack() {
 				this.close = 0;
-				Close_Track({track_id:this.id,tag:this.close,method:'put'}).then(({ data })=>{
+				Close_Track({
+					track_id: this.id,
+					tag: this.close,
+					method: 'put'
+				}).then(({
+					data
+				}) => {
 					this.stop = true
 					uni.showToast({
 						title: data.msg,
@@ -422,26 +440,37 @@
 			   //      // #endif
 			this.getLocationTest();
 		},
-		onShow: function(){
+		onShow: function() {
+
 			this.doGetLocation();
 			this.search();
 		},
-		
+		onReady() {
+			if (!this.estateToken) {
+				uni.redirectTo({
+					url: "/pages/login/login-page"
+				})
+			}
+		}
+
 	};
 </script>
 
 <style lang="scss">
 	#MyAccount {
 		overflow-x: hidden;
+
 		.wall {
 			height: 360rpx;
 			position: relative;
 			background: #fff;
+
 			.header {
-				padding-left:30upx;
-				padding-top:50upx;
+				padding-left: 30upx;
+				padding-top: 50upx;
 				display: flex;
 				flex-wrap: wrap;
+
 				// flex-direction: column;
 				// align-items: center;
 				// justify-content: center;
@@ -457,123 +486,144 @@
 					padding-left:14upx;
 					// display:flex;
 					// flex-direction: column;
-					.milage{
-						font-size:30upx;
+					.milage {
+						font-size: 30upx;
 						border-bottom: 10upx solid #DF5000;
-						width:120upx;
+						width: 120upx;
 					}
-					.total{
-						display:flex;
+
+					.total {
+						display: flex;
 						// flex-wrap: wrap;
-						padding-top:-10upx;
-						.number{
-							font-size:90upx;
+						padding-top: -10upx;
+
+						.number {
+							font-size: 90upx;
 							// width:230upx;
 							letter-spacing: -6upx;
 						}
-						.kilometers{
-							font-size:30upx;
-							padding-left:8upx;
-							margin-top:70upx;}
+
+						.kilometers {
+							font-size: 30upx;
+							padding-left: 8upx;
+							margin-top: 70upx;
+						}
 					}
 				}
-				.rank{
-					position:absolute;
-					padding-top:91upx;
-					padding-left:425upx;
-					display:flex;
+
+				.rank {
+					position: absolute;
+					padding-top: 91upx;
+					padding-left: 425upx;
+					display: flex;
 					flex-wrap: wrap;
-					.showrank{
-						padding-left:20upx;
-						padding-right:10upx;
-						padding-top:8upx;
-						background-color:#4D4D4D;
-						height:100upx;
-						width:100upx;
-						color:#FFFFFF;
-						.name{}
-						.num{
-							padding-top:7upx;
+
+					.showrank {
+						padding-left: 20upx;
+						padding-right: 10upx;
+						padding-top: 8upx;
+						background-color: #4D4D4D;
+						height: 100upx;
+						width: 100upx;
+						color: #FFFFFF;
+
+						.name {}
+
+						.num {
+							padding-top: 7upx;
 							font-weight: bold;
 						}
 					}
-					.look{
-						padding-top:8upx;
-						display:flex;					
+
+					.look {
+						padding-top: 8upx;
+						display: flex;
 						flex-direction: column;
-						background-color:#DF5000;
-						height:100upx;
-						width:150upx;
-						image{
-							width:98upx;
-							height:45upx;
-							padding-left:52upx;
+						background-color: #DF5000;
+						height: 100upx;
+						width: 150upx;
+
+						image {
+							width: 98upx;
+							height: 45upx;
+							padding-left: 52upx;
 						}
-						.lookrank{
-							color:#FFFFFF;
-							padding-top:2upx;
+
+						.lookrank {
+							color: #FFFFFF;
+							padding-top: 2upx;
 							// font-size:32upx;
-							padding-left:22upx;
+							padding-left: 22upx;
 						}
 					}
 				}
 			}
+
 			.wall-top {
-				display:flex;
+				display: flex;
 				position: absolute;
 				z-index: 2;
 				left: 25upx;
 				top:290upx;
 				font-size: 32upx;
+
 				.i {
-					position:relative;
-					left:3%;
+					position: relative;
+					left: 3%;
 					width: 130rpx;
 					height: 130rpx;
 					border-radius: 50%;
 					box-shadow: 1px 1px 2px #F2F2F2;
 					border: 1.5px solid #F2F2F2;
 				}
-				.top{
-					padding-top:12upx;
-					padding-left:10upx;
-					color:#848689;
-					.information{
-						display:flex;
+
+				.top {
+					padding-top: 12upx;
+					padding-left: 10upx;
+					color: #848689;
+
+					.information {
+						display: flex;
+
 						image {
 							width: 62upx;
 							height: 28upx;
 							padding-left: 34upx;
 							z-index: 2;
 						}
+
 						.username {
-							position:relative;
-							padding-top:6upx;
-							left:0.3rem;
+							position: relative;
+							padding-top: 6upx;
+							left: 0.3rem;
 						}
 					}
-					.position{
-						padding-top:5upx;
+
+					.position {
+						padding-top: 5upx;
+
 						image {
 							width: 66upx;
 							height: 32upx;
 							padding-left: 30upx;
 							z-index: 2;
 						}
-						.address{
-							padding-top:14upx;
-							position:relative;
-							top:-1.5rem;
-							left:2rem;
+
+						.address {
+							padding-top: 14upx;
+							position: relative;
+							top: -1.5rem;
+							left: 2rem;
 							// right:-2rem;
 						}
 					}
 				}
 			}
 		}
-		
+
 		.main {
 			height: 220upx;
+
 			.uni-content {
 				display: flex;
 				flex-wrap: wrap;
@@ -581,6 +631,7 @@
 				padding-top: 85upx;
 				padding-right: 5upx;
 			}
+
 			.uni-content-box {
 				display: flex;
 				flex-direction: column;
@@ -588,19 +639,23 @@
 				width: 20%;
 				box-sizing: border-box;
 			}
+
 			.uni-content-image {
 				display: flex;
 				justify-content: center;
 				align-items: center;
-		        .img{
+
+				.img {
 					width: 100upx;
 					height: 100upx;
 				}
+
 				image {
 					width: 70upx;
 					height: 70upx;
 				}
 			}
+
 			.uni-content-text {
 				font-size: 26upx;
 				color: #333;
@@ -608,13 +663,16 @@
 				padding-bottom: 10px;
 			}
 		}
+
 		.badge {
 			background-color: #e60000 !important;
 			font-size: 25upx !important;
 		}
+
 		.content {
 			position: relative;
 			top: -2.5rpx;
+
 			.section {
 				padding: 0 41.666upx;
 				// height: 125upx;
@@ -622,8 +680,10 @@
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
+
 				// border-bottom: 2.083upx solid #c8c8cc;
 				&>view:nth-child(1) {
+
 					// font-weight: bold;
 					.icon {
 						width: 62.5upx;
@@ -632,17 +692,20 @@
 						margin-right: 37.5upx;
 					}
 				}
+
 				&>view:nth-child(2) {
 					color: #c8c8cc;
 					display: flex;
 					align-items: center;
 				}
 			}
+
 			.profile {
 				padding: 0 31.25rpx;
 				width: 100%;
 				display: flex;
 				align-items: flex-end;
+
 				image {
 					width: 125rpx;
 					height: 125rpx;
@@ -650,6 +713,7 @@
 				}
 			}
 		}
+
 		.foot {
 			padding-top: 40upx;
 			opacity: 0.5;
