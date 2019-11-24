@@ -19,7 +19,7 @@
 						<view class="name">名次</view>
 						<view class="num">7046</view>
 					</view>
-					<view class="look">
+					<view class="look" @tap="recordtrack">
 						<image src="/static/icons/rank.png"></image>
 						<view class="lookrank">查看排行</view>
 					</view>
@@ -361,13 +361,13 @@
 							// 	title: data.msg,
 							// 	icon: "none",
 							// })
-							let SI = setInterval(() => {
-								this.recordtrack()
-								console.log(1111)
-								if (this.stop = true) {
-									clearInterval(SI)
-								}
-							}, 1000)
+							// let SI = setInterval(() => {
+							// 	this.recordtrack()
+							// 	console.log(1111)
+							// 	if (this.stop = true) {
+							// 		clearInterval(SI)
+							// 	}
+							// }, 1000)
 						}
 						console.log(data)
 					})
@@ -378,32 +378,23 @@
 					})
 				}
 			},
-			recordtrack() {
-				let SI = setInterval(() => {
+			recordtrack(){
+				let SI = setInterval(()=> {
 					this.doGetLocation();
-					if (this.hasLocation === true) {
-						this.longitude = formatLocation(this.locationinfo.longitude)
-						this.latitude = formatLocation(this.locationinfo.latitude)
-						this.newrecord = [this.longitude, this.latitude]
-						this.record = this.record.push(this.newrecord)
-						Record_Track({
-							track_id: this.id,
-							method: 'put',
-							record: this.record
-						}).then(({
-							data
-						}) => {
-							uni.showToast({
-								title: data.msg,
-								icon: "none",
-							})
-						})
-						if (this.stop = true) {
-							clearInterval(SI)
-						}
-					}
-				}, 1000)
-			},
+					this.longitude = this.locationinfo.longitude;
+					this.latitude = this.locationinfo.latitude;
+					this.record = [this.longitude,this.latitude]
+					this.newrecord = this.newrecord.concat([this.record])
+					console.log(this.newrecord)
+				},1000)
+					Record_Track({track_id:this.id,method:'put',record:"[[1,2],[3,4]]"}).then(({ data })=>{
+					   uni.showToast({
+						title: data.msg,
+						icon: "none",
+					   })
+					   console.log(data)
+					})
+		    },
 			closetrack() {
 				this.close = 0;
 				Close_Track({
@@ -445,6 +436,9 @@
 			this.getLocationTest();
 		},
 		onShow: function() {
+
+			this.doGetLocation();
+			this.search();
 			if (!this.estateToken) {
 				uni.redirectTo({
 					url: "/pages/login/login-page"
@@ -453,7 +447,6 @@
 			this.doGetLocation();
 			this.search();
 		},
-
 	};
 </script>
 
@@ -507,7 +500,7 @@
 				.rank{
 					position:absolute;
 					padding-top:91upx;
-					padding-left:425upx;
+					padding-left:426upx;
 					display:flex;
 					flex-wrap: wrap;
 					.showrank{
