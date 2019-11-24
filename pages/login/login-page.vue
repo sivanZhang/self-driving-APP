@@ -11,8 +11,8 @@
 			<view class="inputs">
 				<view class="left">
 					<image src="/static/icons/user.png"></image>
-					<input type="number" v-model="PhoneNumber" placeholder="手机号" maxlength="11" 
-					pattern="[0-9]*"  oninput="value=value.replace(/[^\d.]/g,'')" placeholder-style="color:#ffffff;">
+					<input type="number" v-model="PhoneNumber" placeholder="手机号" maxlength="11" pattern="[0-9]*" oninput="value=value.replace(/[^\d.]/g,'')"
+					 placeholder-style="color:#ffffff;">
 				</view>
 				<view class="left">
 					<image src="/static/icons/password.png"></image>
@@ -23,6 +23,11 @@
 			<view class="links">
 				<navigator url="/pages/login/forgot-password">找回密码</navigator>
 				<navigator url="/pages/login/sign-up"> 开始注册</navigator>
+			</view>
+			<view class="home-link">
+				<view class="link-btn" @tap="toHome">
+					<image src="../../static/icons/home.png" mode=""></image>
+				</view>
 			</view>
 		</view>
 </template>
@@ -53,6 +58,11 @@
 			// #endif
 		},
 		methods: {
+			toHome(){
+				uni.switchTab({
+					url: '/pages/home/home-page'
+				})
+			},
 			// getWindowSize() {
 			// 	uni.getSystemInfo({
 			// 		success: (res) => {
@@ -93,12 +103,11 @@
 					if (res.data.status === 0) {
 						this.$store.commit("setToken", `JWT ${res.data.token}`);
 						delete res.data.status
-						delete res.data.token 
-						this.$store.commit("setUserInfo", {...res.data});
-						uni.switchTab({
-							url: "/pages/user-center/my-account",
-							animationType: 'pop-in',
-							animationDuration: 200
+						delete res.data.token
+						this.$store.commit("setUserInfo", { ...res.data
+						});
+						uni.navigateBack({
+							delta: 1
 						})
 					} else {
 						this.isLoading = false;
@@ -123,6 +132,26 @@
 		background-position: center;
 
 		/* #endif */
+		.home-link {
+			display: flex;
+			justify-content:center;
+			margin-top: 20.833rpx;
+			.link-btn {
+				background: rgba($color: #000000, $alpha: 0.5);
+				height: 82.5rpx;
+				width:82.5rpx;
+				border-radius: 50%;
+				padding: 15rpx;
+				display: flex;
+				justify-content:center;
+				align-items: center;
+				image {
+					height: 100%;
+					width:100%;
+				}
+			}
+		}
+
 		.logo {
 			// margin-top: 329.166upx auto 239.583upx;
 			// margin-left:239.583upx;
