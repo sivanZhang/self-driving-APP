@@ -106,8 +106,8 @@
 						delete res.data.token
 						this.$store.commit("setUserInfo", { ...res.data
 						});
-						uni.navigateBack({
-							delta: 1
+						uni.switchTab({
+							url:'/pages/user-center/my-account'
 						})
 					} else {
 						this.isLoading = false;

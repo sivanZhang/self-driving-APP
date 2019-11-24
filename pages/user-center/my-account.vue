@@ -438,17 +438,14 @@
 			this.getLocationTest();
 		},
 		onShow: function() {
-
-			this.doGetLocation();
-			this.search();
-		},
-		onReady() {
 			if (!this.estateToken) {
 				uni.redirectTo({
 					url: "/pages/login/login-page"
 				})
 			}
-		}
+			this.doGetLocation();
+			this.search();
+		},
 
 	};
 </script>
