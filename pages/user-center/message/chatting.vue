@@ -1,4 +1,5 @@
 <template>
+	<!-- 聊天界面 -->
 	<view>
 		<view class="content" @touchstart="hideDrawer" >
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop"
@@ -286,24 +287,22 @@
 					this.entity = 1;
 					this.instance = this.groupid
 				}
-				 	Look_ChatHistory({entity:this.entity,instance:this.instance}).then(({ data })=>{
-						this.msgList = data.msg;
-						// const datalist = data.msg;
-						// // this.msgList1 = data.msg;
-						// //同步获取历史聊天记录数据
-						// try {
-						//     this.msgList = uni.getStorageSync('storage_key');
-						// } catch (e) {
-						//     // error
-						// }
-						// //同步存储之前的和最新的一条数据
-						// this.msgList1 = this.msgList.concat(datalist);
-						// this.msgList = this.msgList1;
-						// try {
-						//     uni.setStorageSync('storage_key', this.msgList);
-						// } catch (e) {
-						//     // error
-						// }
+				 	Receive_Chatting({entity:this.entity,instance:this.instance}).then(({ data })=>{
+						// this.msgList = data.msg;
+						const datalist = data.msg;
+						//同步获取历史聊天记录数据
+						try {
+						    this.msgList = uni.getStorageSync('storage_key');
+						} catch (e) {
+						    // error
+						}
+						//同步存储之前的和最新的一条数据
+						this.msgList = this.msgList.concat(datalist);
+						try {
+						    uni.setStorageSync('storage_key', this.msgList);
+						} catch (e) {
+						    // error
+						}
 					 this.$nextTick(function() {
 					 	//滚动到底
 					 	this.scrollToView = 'msg'+this.msgList[this.msgList.length-1].id;

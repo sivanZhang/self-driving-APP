@@ -1,4 +1,5 @@
 <template>
+	<!-- 城市列表插件 -->
   <view class="demo">
     <ss-select-city :hotCitys="hotCitys" v-model="value" @on-select="onSelect"></ss-select-city>
   </view>

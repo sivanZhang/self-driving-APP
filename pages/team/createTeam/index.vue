@@ -1,4 +1,5 @@
 <template>
+	<!-- 创建搭伴 -->
 	<view id="createTeam">
 		<view class="body">
 			<form @submit="formSubmit" @reset="formReset">

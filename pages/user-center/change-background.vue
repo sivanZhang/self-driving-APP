@@ -1,4 +1,5 @@
 <template>
+	<!-- 更换封面 -->
 	<view class="content">
 		<cropper selWidth="660rpx" selHeight="660rpx" @upload="myUpload" :avatarSrc="imgurl" avatarStyle="width:100vw;height:100vw;">
 		</cropper>

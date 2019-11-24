@@ -1,6 +1,6 @@
 <template>
     <view id="groupList">
-        <!-- 群聊 -->
+        <!-- 群聊列表 -->
         <view class="search">
 			<uni-icon type="search" @tap="searchGroupName"></uni-icon>
 			<input type="text" v-model="groupName" placeholder="搜索" @change="searchGroupName" />

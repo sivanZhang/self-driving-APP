@@ -29,11 +29,11 @@
 		},
 		components: {},
 		methods:{
-		
+			
 		},
-		//导航栏按钮事件
+		//导航栏右侧的按钮事件
 		onNavigationBarButtonTap(val) {
-			console.log(val.index);
+			// console.log(val.index);
 			if (val.index == 0) { //添加
 				console.log("第一个按钮")
 			};
@@ -41,7 +41,30 @@
 				console.log("第二个按钮")
 			};
 			
-		}
+		},
+		//导航栏左侧返回按钮事件
+		//  onBackPress(options) {
+		//         console.log('from:' + options.from);
+		// 		if (options.from === 'navigateBack') {
+		// 		                // return false;
+		// 						uni.showModal({
+		// 						    content: '保留此次编辑?',
+		// 							confirmText:'保留',
+		// 							cancelText:'不保留',
+		// 						    success: function (res) {
+		// 						        if (res.confirm) {
+		// 						            console.log('用户点击确定');
+		// 						        } else if (res.cancel) {
+		// 						            console.log('用户点击取消');
+		// 						        }
+		// 						    },
+		// 							fail:function(res){
+		// 								console.log("-------")
+		// 							}
+		// 						});
+		// 		            }
+			
+		//     }
 	}
 </script>
 
