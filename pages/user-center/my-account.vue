@@ -9,7 +9,7 @@
 						总里程数
 					</view>
 					<view class="total">
-						<view class="number">14343.4</view>
+						<view class="number">{{isLogin?randomNumber:"----"}}</view>
 						<view class="kilometers">公里</view>
 					</view>
 				</view>
@@ -17,7 +17,7 @@
 				<view class="rank">
 					<view class="showrank">
 						<view class="name">名次</view>
-						<view class="num">7046</view>
+						<view class="num">{{isLogin?10000-randomNumber:"----"}}</view>
 					</view>
 					<view class="look">
 						<image src="/static/icons/rank.png"></image>
@@ -26,7 +26,8 @@
 				</view>
 			</view>
 			<view class="wall-top">
-				<image class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
+				<image v-if="isLogin" class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
+				<image v-else class="i" src="/static/icons/zhuce.png"></image>
 				<view class="top">
 					<view class="information">
 						<view v-if="sex == '女'">
@@ -35,10 +36,12 @@
 						<view v-else>
 							<image src="/static/icons/men.png"></image>
 						</view>
-						<view class="username" @tap="target('/pages/user-center/personalCenter/personalCenter')">
-							<span v-if="username">{{username}}</span>
-							<span v-if="!username">{{UserInfo.phone}}</span>
-						</view>
+						<template v-if="isLogin">
+							<view class="username" @tap="target('/pages/user-center/personalCenter/personalCenter')">
+								<span>{{username||UserInfo.phone}}</span>
+							</view>
+						</template>
+						<navigator class="username" v-else url="/pages/login/login-page">登录 / 注册</navigator>
 					</view>
 					<view class="position">
 						<image @tap="getLocation" src="../../static/image/position.png"></image>
@@ -56,13 +59,13 @@
 		</view>
 		<view class="main">
 			<view class="uni-content">
-				<view class="uni-content-box" @tap="target('/pages/foot/my-foot')">
+				<view class="uni-content-box" @tap="isLogin?target('/pages/foot/my-foot'):toLogin()">
 					<view class="uni-content-image">
 						<image src="/static/icons/zuji.png" />
 					</view>
 					<view class="uni-content-text">车迹</view>
 				</view>
-				<view class="uni-content-box" @tap="target('/pages/activity/activity')">
+				<view class="uni-content-box" @tap="isLogin?target('/pages/activity/activity'):toLogin()">
 					<view class="uni-content-image">
 						<image src="/static/icons/dongtai.png" />
 					</view>
@@ -82,7 +85,7 @@
 					<view class="uni-content-text">悬赏</view>
 				</view>
 				<view class="uni-content-box">
-					<view class="uni-content-image" @tap="target('/pages/user-center/message/mymessage')">
+					<view class="uni-content-image" @tap="isLogin?target('/pages/user-center/message/mymessage'):toLogin()">
 						<image src="/static/icons/xiaoxi.png" />
 					</view>
 					<view class="uni-content-text">通知</view>
@@ -90,7 +93,7 @@
 			</view>
 		</view>
 		<view class="content">
-			<view class="section" @tap="target('/pages/journey/journey')">
+			<view class="section" @tap="isLogin?target('/pages/journey/journey'):toLogin()">
 				<view>
 					<image class="icon" src="/static/icons/mydriving.png"></image>
 					正在进行的自驾之旅
@@ -112,7 +115,7 @@
 				</view>
 			</view>
 
-			<view class="section" @tap="target('/pages/user-center/browser-history')">
+			<view class="section" @tap="isLogin?target('/pages/user-center/browser-history'):toLogin()">
 				<view>
 					<image class="icon" src="/static/icons/viewhistory.png"></image>
 					浏览历史
@@ -130,7 +133,7 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view> -->
 
-			<view class="section" @tap="target('/pages/user-center/giftcenter')">
+			<view class="section" @tap="isLogin?target('/pages/user-center/giftcenter'):toLogin()">
 				<view>
 					<image class="icon" src="../../static/image/journey/gift.png"></image>
 					礼品中心
@@ -139,7 +142,7 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
-			<view class="section" @tap="target('/pages/user-center/user-settings')">
+			<view class="section" @tap="isLogin?target('/pages/user-center/user-settings'):toLogin()">
 				<view>
 					<image class="icon" src="/static/icons/setting.png"></image>
 					设置
@@ -219,10 +222,12 @@
 			UserInfo() {
 				return this.$store.state.UserInfo
 			},
-		    estateToken(){
-						return this.$store.state.estateToken
-					}
-            
+            isLogin(){
+				return this.$store.state.estateToken || uni.getStorageSync('estateToken')
+			},
+			randomNumber(){
+				return Math.floor(Math.random()*(10000-10+1)+10)
+			}
 		},
 		methods: {
 			async getLocation() {
@@ -346,6 +351,11 @@
 					url
 				})
 			},
+			toLogin(){
+				uni.navigateTo({
+					url:"/pages/login/login-page"
+				})
+			},
 			track() {
 				this.doGetLocation();
 				if (this.hasLocation === true) {
@@ -415,11 +425,6 @@
 			}
 		},
 		onLoad() { 
-			if (!this.estateToken) {
-				    uni.redirectTo({
-					url: "/pages/login/login-page"
-				})
-			}
 			   //     // #ifdef APP-PLUS
 			   //      wv = plus.webview.create("","custom-webview",{
 			   //          plusrequire:"none", //禁止远程网页使用plus的API，有些使用mui制作的网页可能会监听plus.key，造成关闭页面混乱，可以通过这种方式禁止
@@ -437,14 +442,6 @@
 			this.getLocationTest();
 		},
 		onShow: function() {
-
-			this.doGetLocation();
-			this.search();
-			if (!this.estateToken) {
-				uni.redirectTo({
-					url: "/pages/login/login-page"
-				})
-			}
 			this.doGetLocation();
 			this.search();
 		},
@@ -479,9 +476,10 @@
 					// display:flex;
 					// flex-direction: column;
 					.milage{
+						text-align: center;
 						font-size:30upx;
 						border-bottom: 10upx solid #DF5000;
-						width:120upx;
+						width:130upx;
 					}
 					.total{
 						display:flex;
@@ -505,14 +503,14 @@
 					display:flex;
 					flex-wrap: wrap;
 					.showrank{
-						padding-left:20upx;
-						padding-right:10upx;
+						
+						padding:0 10upx;
 						padding-top:8upx;
 						background-color:#4D4D4D;
 						height:100upx;
 						width:100upx;
 						color:#FFFFFF;
-						.name{}
+						text-align: center;
 						.num{
 							padding-top:7upx;
 							font-weight: bold;
