@@ -11,7 +11,7 @@
 				</view>
 			</block>
 		</view>
-		<!--tabbar-->
+
 		<!--header-->
 		<view class="tui-header">
 			<view class="tui-category" hover-class="opcity" :hover-stay-time="150" @tap="classify">
@@ -60,8 +60,8 @@
 
 		<view class="tui-product-category">
 			<view class="tui-category-item" v-for="(item,index) in category" :key="index" :data-key="item.name" @tap="more">
-				<image :src="'../../static/image/mall/category/'+item.img" class="tui-category-img" mode="scaleToFill"></image>
-				<view class="tui-category-name">{{item.name}}</view>
+				<image :src="'https://tl.chidict.com' + '/'+item.picture" class="tui-category-img" mode="scaleToFill"></image>
+				<view class="tui-category-name">{{item.specifications[0].name}}</view>
 			</view>
 		</view>
 
@@ -82,17 +82,15 @@
 				<tui-icon name="arrowright" :size="20" color="#555"></tui-icon>
 			</view>
 			<view class="tui-new-box">
-				<view class="tui-new-item" :class="[index!=0 && index!=1 ?'tui-new-mtop':'']" v-for="(item,index) in newProduct"
-				 :key="index" @tap="detail">
-					<image :src="'../../static/image/mall/new/'+(item.type==1?'new':'discount')+'.png'" class="tui-new-label" v-if="item.isLabel"></image>
-					<view class="tui-title-box">
-						<view class="tui-new-title">{{item.name}}</view>
+				<view class="tui-new-item" v-for="(item,index) in category" :key="index"  @tap="detail" >
+					<view class="tui-title-box"  >
+						<view class="tui-new-title">{{item.specifications[0].name}}</view>
 						<view class="tui-new-price">
-							<text class="tui-new-present">￥{{item.present}}</text>
-							<text class="tui-new-original">￥{{item.original}}</text>
+							<text class="tui-new-present">￥{{item.specifications[0].price}}</text>
 						</view>
+					<image :src="'https://tl.chidict.com' + '/'+item.picture" class="tui-new-img"></image>
 					</view>
-					<image :src="'../../static/image/mall/new/'+item.pic" class="tui-new-img"></image>
+					
 				</view>
 			</view>
 		</view>
@@ -103,38 +101,39 @@
 			</view>
 			<view class="tui-product-list">
 				<view class="tui-product-container">
-					<block v-for="(item,index) in productList" :key="index" v-if="(index+1)%2!=0">
+					<block v-for="(item,index) in productList" :key="index" >
 						<!--商品列表-->
 						<view class="tui-pro-item" hover-class="hover" :hover-start-time="150" @tap="detail">
-							<image :src="'../../static/image/mall/product/'+item.img+'.jpg'" class="tui-pro-img" mode="widthFix" />
+							<view class="tui-pro-tit">{{item.content}}</view>
+							<view>{{item.id}}</view>
 							<view class="tui-pro-content">
 								<view class="tui-pro-tit">{{item.name}}</view>
 								<view>
 									<view class="tui-pro-price">
-										<text class="tui-sale-price">￥{{item.sale}}</text>
-										<text class="tui-factory-price">￥{{item.factory}}</text>
+										<text class="tui-sale-price">￥{{item.price}}</text>
+										<text >虚拟币价格：￥{{item.coin}}</text>
 									</view>
-									<view class="tui-pro-pay">{{item.payNum}}人付款</view>
+									<view class="tui-pro-pay">{{item.num}}个</view>
 								</view>
 							</view>
 						</view>
-						<!--商品列表-->
-						<!-- <template is="productItem" data="{{item,index:index}}" /> -->
-					</block>
+						</block>
+					
 				</view>
 				<view class="tui-product-container">
-					<block v-for="(item,index) in productList" :key="index" v-if="(index+1)%2==0">
+					<block v-for="(item,index) in productList" :key="index" >
 						<!--商品列表-->
 						<view class="tui-pro-item" hover-class="hover" :hover-start-time="150" @tap="detail">
-							<image :src="'../../static/image/mall/product/'+item.img+'.jpg'" class="tui-pro-img" mode="widthFix" />
+							<view>{{item.id}}</view>
+							<view class="tui-pro-tit">{{item.content}}</view>
 							<view class="tui-pro-content">
 								<view class="tui-pro-tit">{{item.name}}</view>
 								<view>
 									<view class="tui-pro-price">
-										<text class="tui-sale-price">￥{{item.sale}}</text>
-										<text class="tui-factory-price">￥{{item.factory}}</text>
+										<text class="tui-sale-price">￥{{item.price}}</text>
+										<text >虚拟币价格：￥{{item.coin}}</text>
 									</view>
-									<view class="tui-pro-pay">{{item.payNum}}人付款</view>
+									<view class="tui-pro-pay">{{item.num}}个</view>
 								</view>
 							</view>
 						</view>
@@ -143,8 +142,8 @@
 					</block>
 				</view>
 			</view>
-		</view>
-
+		</view>  
+  
 		<!--加载loadding-->
 		<tui-loadmore :visible="loadding" :index="3" type="red"></tui-loadmore>
 		<!-- <tui-nomore visible="{{!pullUpOn}}"></tui-nomore> -->
@@ -157,6 +156,7 @@
 	import tuiTag from "@/components/gift/tag"
 	import tuiLoadmore from "@/components/gift/loadmore"
 	import tuiNomore from "@/components/gift/nomore"
+	import { query_GiftDetail,look_GiftDetail } from '@/api/giftcenter';
 	export default {
 		components: {
 			tuiIcon,
@@ -166,6 +166,7 @@
 		},
 		data() {
 			return {
+				id:'',
 				current: 0,
 				tabbar: [{
 					icon: "home",
@@ -196,157 +197,43 @@
 					"4.jpg",
 					"5.jpg"
 				],
-				category: [{
-					img: "1.jpg",
-					name: "短袖T恤"
-				}, {
-					img: "2.jpg",
-					name: "足球"
-				}, {
-					img: "3.jpg",
-					name: "运动鞋"
-				}, {
-					img: "4.png",
-					name: "中老年"
-				}, {
-					img: "5.png",
-					name: "甜美风"
-				}, {
-					img: "6.jpg",
-					name: "鱼尾裙"
-				}, {
-					img: "7.jpg",
-					name: "相机配件"
-				}, {
-					img: "8.jpg",
-					name: "护肤套装"
-				}, {
-					img: "9.jpg",
-					name: "单肩包"
-				}, {
-					img: "10.jpg",
-					name: "卫衣"
-				}],
-				newProduct: [{
-					name: "时尚舒适公主裙高街修身长裙",
-					present: 198,
-					original: 298,
-					pic: "1.jpg",
-					type: 1,
-					isLabel: true
-				}, {
-					name: "高街修身雪纺衫",
-					present: 398,
-					original: 598,
-					pic: "2.jpg",
-					type: 2,
-					isLabel: true
-				}, {
-					name: "轻奢商务上衣",
-					present: 99,
-					original: 199,
-					pic: "3.jpg",
-					type: 1,
-					isLabel: true
-				}, {
-					name: "品质牛皮婚鞋牛皮婚鞋品质就是好",
-					present: 99,
-					original: 199,
-					pic: "5.jpg",
-					type: 1,
-					isLabel: true
-				}, {
-					name: "轻奢时尚大包限时新品推荐",
-					present: 99,
-					original: 199,
-					pic: "6.jpg",
-					type: 1,
-					isLabel: false
-				}, {
-					name: "高街修身长裙",
-					present: 999,
-					original: 1299,
-					pic: "4.jpg",
-					type: 2,
-					isLabel: true
-				}],
-				productList: [{
-						img: 1,
-						name: "欧莱雅（LOREAL）奇焕光彩粉嫩透亮修颜霜 30ml（欧莱雅彩妆 BB霜 粉BB 遮瑕疵 隔离）",
-						sale: 599,
-						factory: 899,
-						payNum: 2342
-					},
-					{
-						img: 2,
-						name: "德国DMK进口牛奶  欧德堡（Oldenburger）超高温处理全脂纯牛奶1L*12盒",
-						sale: 29,
-						factory: 69,
-						payNum: 999
-					},
-					{
-						img: 3,
-						name: "【第2支1元】柔色尽情丝柔口红唇膏女士不易掉色保湿滋润防水 珊瑚红",
-						sale: 299,
-						factory: 699,
-						payNum: 666
-					},
-					{
-						img: 4,
-						name: "百雀羚套装女补水保湿护肤品",
-						sale: 1599,
-						factory: 2899,
-						payNum: 236
-					},
-					{
-						img: 5,
-						name: "百草味 肉干肉脯 休闲零食 靖江精制猪肉脯200g/袋",
-						sale: 599,
-						factory: 899,
-						payNum: 2399
-					},
-					{
-						img: 6,
-						name: "短袖睡衣女夏季薄款休闲家居服短裤套装女可爱韩版清新学生两件套 短袖粉色长颈鹿 M码75-95斤",
-						sale: 599,
-						factory: 899,
-						payNum: 2399
-					},
-					{
-						img: 1,
-						name: "欧莱雅（LOREAL）奇焕光彩粉嫩透亮修颜霜",
-						sale: 599,
-						factory: 899,
-						payNum: 2342
-					},
-					{
-						img: 2,
-						name: "德国DMK进口牛奶",
-						sale: 29,
-						factory: 69,
-						payNum: 999
-					},
-					{
-						img: 3,
-						name: "【第2支1元】柔色尽情丝柔口红唇膏女士不易掉色保湿滋润防水 珊瑚红",
-						sale: 299,
-						factory: 699,
-						payNum: 666
-					},
-					{
-						img: 4,
-						name: "百雀羚套装女补水保湿护肤品",
-						sale: 1599,
-						factory: 2899,
-						payNum: 236
-					}
-				],
+				category:[],
+				productList:[],
+				
 				pageIndex: 1,
 				loadding: false,
 				pullUpOn: true
 			}
 		},
+		onLoad() {
+		    this.getcategory();
+			this.getproductList();
+		},
 		methods: {
+			//获取礼品列表
+			getcategory(){
+			  query_GiftDetail().then(({ data }) =>{
+				 
+				  if(data.status == 0){
+					  this.category = [...data.msg];
+					   console.log(this.category)
+					   
+				  }
+			  })
+			},
+			//获取礼品规格
+			getproductList(){
+				this.id=1;
+				
+			  look_GiftDetail({id:this.id}).then(({ data }) =>{
+				 console.log(data)
+				  if(data.status == 0){
+					  this.productList = [...data.msg];
+					   console.log(this.productList)
+					   
+				  }
+			  })
+			},
 			tabbarSwitch: function(e) {
 				let index = e.currentTarget.dataset.index;
 				this.current = index;
@@ -386,6 +273,11 @@
 				uni.navigateTo({
 					url: '../news-search/news-search'
 				})
+			}
+		},
+		computed: {
+			UserInfo() {
+				return this.$store.state.UserInfo
 			}
 		},
 		onPullDownRefresh: function() {
@@ -717,12 +609,17 @@
 	}
 
 	.tui-category-img {
-		height: 80rpx;
-		width: 80rpx;
+		height: 90rpx;
+		width: 110rpx;
 		display: block;
 	}
 
 	.tui-category-name {
+		display: flex;
+		align-items: center;
+		text-align: center;
+		justify-content: space-between;
+		flex-direction: column;
 		line-height: 24rpx;
 	}
 
@@ -763,12 +660,15 @@
 		align-items: center;
 		justify-content: space-between;
 		flex-wrap: wrap;
+		
 	}
 
 	.tui-new-item {
-		width: 49%;
+		width: 30%;
 		height: 200rpx;
-		padding: 0 20rpx;
+		padding-bottom:20rpx;
+		padding-left:20rpx;
+		margin-bottom:10rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
@@ -783,20 +683,26 @@
 
 	.tui-title-box {
 		font-size: 24rpx;
+		
 	}
 
 	.tui-new-title {
-		line-height: 32rpx;
-		word-break: break-all;
+		top:0.5rem;
+		left:1rem;
+		position:relative;
+		line-height: 32rpx; 
+		word-break: break-all; 
 		overflow: hidden;
 		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
+		display: flex;
+		align-items: center;
+		 -webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;
 	}
 
 	.tui-new-price {
 		padding-top: 18rpx;
+		padding-left:18rpx;
 	}
 
 	.tui-new-present {
@@ -815,7 +721,7 @@
 
 	.tui-new-img {
 		width: 160rpx;
-		height: 160rpx;
+		height: 120rpx;
 		display: block;
 		flex-shrink: 0;
 	}
@@ -835,7 +741,7 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		box-sizing: border-box;
-		/* padding-top: 20rpx; */
+		 padding-top: 20rpx;
 	}
 
 	.tui-product-container {
