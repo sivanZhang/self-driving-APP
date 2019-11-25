@@ -19,7 +19,7 @@
 						<view class="name">名次</view>
 						<view class="num">7046</view>
 					</view>
-					<view class="look" @tap="recordtrack">
+					<view class="look">
 						<image src="/static/icons/rank.png"></image>
 						<view class="lookrank">查看排行</view>
 					</view>
@@ -211,7 +211,8 @@
 				latitude: '',
 				record: [],
 				newrecord: [],
-				locationinfo: ''
+				locationinfo: '',
+				SI:''
 			};
 		},
 		computed: {
@@ -357,17 +358,11 @@
 						if (data.status === 0) {
 							this.stop = false
 							this.id = data.car_track_id
-							// uni.showToast({
-							// 	title: data.msg,
-							// 	icon: "none",
-							// })
-							// let SI = setInterval(() => {
-							// 	this.recordtrack()
-							// 	console.log(1111)
-							// 	if (this.stop = true) {
-							// 		clearInterval(SI)
-							// 	}
-							// }, 1000)
+							uni.showToast({
+								title: data.msg,
+								icon: "none",
+							})
+						    this.recordtrack();
 						}
 						console.log(data)
 					})
@@ -379,23 +374,29 @@
 				}
 			},
 			recordtrack(){
-				let SI = setInterval(()=> {
+				this.SI = setInterval(()=> {
 					this.doGetLocation();
 					this.longitude = this.locationinfo.longitude;
 					this.latitude = this.locationinfo.latitude;
-					this.record = [this.longitude,this.latitude]
-					this.newrecord = this.newrecord.concat([this.record])
-					console.log(this.newrecord)
+					this.record = [this.longitude,this.latitude];
+					this.newrecord = this.newrecord.concat('['+this.record+']');
+					console.log('['+this.newrecord+']')
+					if ((this.newrecord).length > 9)
+					{
+						//console.log(this.newrecord)
+						Record_Track({track_id:this.id,method:'put',record:'['+this.newrecord+']'}).then(({ data })=>{
+						   uni.showToast({
+							title: data.msg,
+							icon: "none",
+						   })
+						   //console.log(data)
+						})
+						this.newrecord=[]
+					}
 				},1000)
-					Record_Track({track_id:this.id,method:'put',record:"[[1,2],[3,4]]"}).then(({ data })=>{
-					   uni.showToast({
-						title: data.msg,
-						icon: "none",
-					   })
-					   console.log(data)
-					})
 		    },
 			closetrack() {
+				clearInterval(this.SI)
 				this.close = 0;
 				Close_Track({
 					track_id: this.id,
