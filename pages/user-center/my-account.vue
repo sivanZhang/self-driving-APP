@@ -73,8 +73,8 @@
 				</view>
 				<view class="uni-content-box">
 					<view class="uni-content-image">
-						<image class="img" v-show="stop" @tap="isLogin?track:toLogin()" src="/static/image/journey/start.png" />
-						<image class="img2" v-show="!stop" @tap="isLogin?closetrack:toLogin()" src="/static/icons/open.jpg" />
+						<image class="img" v-show="stop" @tap="isLogin?track():toLogin()" src="/static/image/journey/start.png" />
+						<image class="img2" v-show="!stop" @tap="isLogin?closetrack():toLogin()" src="/static/icons/open.jpg" />
 
 					</view>
 				</view>
@@ -178,10 +178,10 @@
 		GET_Notice
 	} from '@/api/notice'
 	import {
-		Track_Share,
-		Record_Track,
-		Close_Track
-	} from '@/api/track.js'
+		CarTrack_Share,
+		Record_CarTrack,
+		Close_CarTrack
+	} from '@/api/cartrack.js'
 
 	// import uniBadge from "@/components/uni-badge/uni-badge.vue"
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
@@ -360,7 +360,7 @@
 				this.doGetLocation();
 				if (this.hasLocation === true) {
 					this.open = 1;
-					Track_Share({
+					CarTrack_Share({
 						tag: this.open
 					}).then(({
 						data
@@ -394,7 +394,7 @@
 					if ((this.newrecord).length > 9)
 					{
 						//console.log(this.newrecord)
-						Record_Track({track_id:this.id,method:'put',record:'['+this.newrecord+']'}).then(({ data })=>{
+						Record_CarTrack({track_id:this.id,method:'put',record:'['+this.newrecord+']'}).then(({ data })=>{
 						   uni.showToast({
 							title: data.msg,
 							icon: "none",
@@ -409,7 +409,7 @@
 				clearInterval(this.SI)
 				this.newrecord=[]
 				this.close = 0;
-				Close_Track({
+				Close_CarTrack({
 					track_id: this.id,
 					tag: this.close,
 					method: 'put'
