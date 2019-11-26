@@ -10,7 +10,7 @@
 					</view>
 					<view class="total">
 						<view class="number">{{isLogin?randomNumber:"---"}}</view>
-						<view class="kilometers">公里</view>
+						<view class="kilometers">公里</view>  
 					</view>
 				</view>
 				<!-- <image class="img" src="/static/image/journey/start.png" @tap="click"/>  -->
