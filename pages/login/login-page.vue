@@ -11,11 +11,11 @@
 			<view class="inputs">
 				<view class="left">
 					<image src="/static/icons/user.png"></image>
-					<!-- <input type="number" v-model="PhoneNumber" placeholder="手机号" maxlength="11" pattern="[0-9]*" oninput="value=value.replace(/[^\d.]/g,'')"
-					 placeholder-style="color:#ffffff;"> -->
-					<input class="pr-s" disabled="true" @tap="key" placeholder-style="color:#ffffff;" maxlength="11" placeholder="手机号" v-model="PhoneNumber"/>
+					<input type="number" v-model="PhoneNumber" placeholder="手机号" maxlength="11" pattern="[0-9]*" oninput="value=value.replace(/[^\d.]/g,'')"
+					 placeholder-style="color:#ffffff;">
+					<!-- <input class="pr-s" disabled="true" @tap="key" placeholder-style="color:#ffffff;" maxlength="11" placeholder="手机号" v-model="PhoneNumber"/>
 				    <tki-float-keyboard ref="keyb" :mode="keyMode" :type="keyType" :title="keyTitle" @del="keyDel" 
-					@val="keyVal" @show="keyShow" @hide="keyHide"></tki-float-keyboard>
+					@val="keyVal" @show="keyShow" @hide="keyHide"></tki-float-keyboard> -->
 				</view>
 				<view class="left">
 					<image src="/static/icons/password.png"></image>
@@ -39,8 +39,8 @@
 	import {
 		POST_LOGIN
 	} from '@/api/login'
-	import tkiFloatKeyboard from 
-	"@/components/tki-float-keyboard/tki-float-keyboard.vue"
+	// import tkiFloatKeyboard from 
+	// "@/components/tki-float-keyboard/tki-float-keyboard.vue"
 	export default {
 		data() {
 			return {
@@ -49,13 +49,13 @@
 				Password: "",
 				isLoading: false,
 				// winSize: {},
-				keyMode:'number',
-				keyType:0,
-				keyTitle:"嗨自驾数字键盘",
+				// keyMode:'number',
+				// keyType:0,
+				// keyTitle:"嗨自驾数字键盘",
 			};
 		},
 		components:{
-					tkiFloatKeyboard
+					// tkiFloatKeyboard
 				},
 		onLoad() {
 			// this.getWindowSize();
@@ -69,35 +69,35 @@
 			// #endif
 		},
 		methods: {
-			// 显示键盘
-			showKey(){
-				this.$refs.keyb._keyShow()
-			},
-			// 隐藏键盘
-			hideKey(){
-				this.$refs.keyb._keyHide()
-			},
-			// 键盘退格
-			keyDel(){
-				let d = this.PhoneNumber
-				this.PhoneNumber = d.substring(0,d.length-1)
-			},
-			// 键盘输入值
-			keyVal(v){
-				this.PhoneNumber = this.PhoneNumber + v
-			},
-			// 显示键盘后的回调
-			keyShow(h){
-				console.log(h)
-			},
-			// 隐藏键盘后的回调
-			keyHide(){
-			},
-			// 数字键盘
-			key(){
-				this.keyMode = "number"
-				this.showKey()
-			},
+			// // 显示键盘
+			// showKey(){
+			// 	this.$refs.keyb._keyShow()
+			// },
+			// // 隐藏键盘
+			// hideKey(){
+			// 	this.$refs.keyb._keyHide()
+			// },
+			// // 键盘退格
+			// keyDel(){
+			// 	let d = this.PhoneNumber
+			// 	this.PhoneNumber = d.substring(0,d.length-1)
+			// },
+			// // 键盘输入值
+			// keyVal(v){
+			// 	this.PhoneNumber = this.PhoneNumber + v
+			// },
+			// // 显示键盘后的回调
+			// keyShow(h){
+			// 	console.log(h)
+			// },
+			// // 隐藏键盘后的回调
+			// keyHide(){
+			// },
+			// // 数字键盘
+			// key(){
+			// 	this.keyMode = "number"
+			// 	this.showKey()
+			// },
 			toHome(){
 				uni.switchTab({
 					url: '/pages/home/home-page'
