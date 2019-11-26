@@ -9,7 +9,7 @@
 						总里程数
 					</view>
 					<view class="total">
-						<view class="number">{{isLogin?randomNumber:"----"}}</view>
+						<view class="number">{{isLogin?randomNumber:"---"}}</view>
 						<view class="kilometers">公里</view>
 					</view>
 				</view>
@@ -17,7 +17,7 @@
 				<view class="rank">
 					<view class="showrank">
 						<view class="name">名次</view>
-						<view class="num">{{isLogin?10000-randomNumber:"----"}}</view>
+						<view class="num">{{isLogin?10000-randomNumber:"--"}}</view>
 					</view>
 					<view class="look">
 						<image src="/static/icons/rank.png"></image>
