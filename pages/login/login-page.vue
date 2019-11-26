@@ -149,7 +149,7 @@
 						let BackUrl = this.$store.state.redirect.Redirect
 						if (BackUrl) {
 							this.$store.commit("redirect/SetRedirect", "")
-							uni.navigateTo({
+							uni.redirectTo({
 								url: BackUrl
 							})
 						} else {
