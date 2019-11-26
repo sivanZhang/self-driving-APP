@@ -67,22 +67,11 @@
 
 		<view class="tui-product-box tui-pb-20 tui-bg-white">
 			<view class="tui-group-name" @tap="more">
-				<text>新人专享</text>
-				<tui-icon name="arrowright" :size="20" color="#555"></tui-icon>
-			</view>
-			<view class="tui-activity-box" @tap="detail">
-				<image src="../../static/image/mall/activity/activity_1.jpg" class="tui-activity-img" mode="widthFix"></image>
-				<image src="../../static/image/mall/activity/activity_2.jpg" class="tui-activity-img" mode="widthFix"></image>
-			</view>
-		</view>
-
-		<view class="tui-product-box tui-pb-20 tui-bg-white">
-			<view class="tui-group-name" @tap="more">
 				<text>热门推荐</text>
 				<tui-icon name="arrowright" :size="20" color="#555"></tui-icon>
 			</view>
 			<view class="tui-new-box">
-				<view class="tui-new-item" v-for="(item,index) in category" :key="index"  @tap="detail(index)" >
+				<view class="tui-new-item" v-for="(item,index) in category" :key="index"  @tap="detail" >
 					<view class="tui-title-box"  >
 						<view class="tui-new-title">{{item.specifications[0].name}},{{item.specifications[0].content}}</view>
 						
@@ -115,7 +104,7 @@
 		},
 		data() {
 			return {
-				id:null,
+				id:'',
 				current: 0,
 				tabbar: [{
 					icon: "home",
@@ -163,8 +152,7 @@
 				 
 				  if(data.status == 0){
 					  this.category = [...data.msg];
-					   console.log(this.category)
-					   
+					  
 				  }
 			  })
 			},
@@ -187,11 +175,15 @@
 				}
 			},
 			detail: function(e) {
-				var that = this;
 				console.log(e);
-				uni.navigateTo({
-					url: '../productDetail/productDetail'
-				})
+				let key = e.currentTarget.dataset.key ;
+				console.log(key);
+					uni.navigateTo({
+						url: '../giftcenter/giftDetail?id=' + key
+					})
+				
+				
+				
 			},
 			classify: function() {
 				uni.navigateTo({
@@ -201,6 +193,7 @@
 			},
 			more: function(e) {
 				let key = e.currentTarget.dataset.key || "";
+				console.log(e);
 				uni.navigateTo({
 					url: '../productList/productList?searchKey=' + key
 				})

@@ -10,13 +10,28 @@
 			}
 		},
 		{
-			"path": "pages/user-center/giftcenter",
+			"path": "pages/user-center/giftcenter/giftcenter",
 			"style": {
 				"navigationBarTitleText": "礼品中心"
 				
 			}
 		},
-		
+		{
+			"path": "pages/user-center/giftcenter/giftDetail",
+			"style": {
+				"navigationBarTitleText": "礼品中心",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/user-center/track",
+			"style": {
+				"navigationBarTitleText": "车迹展示"
+				
+			}
+		},
 		{
 			"path": "pages/user-center/personalCenter/portrait",
 			"style": {

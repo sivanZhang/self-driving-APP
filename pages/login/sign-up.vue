@@ -10,10 +10,14 @@
 			<view class="item">
 				<image src="/static/icons/phone.png"></image>
 				<input type="number" v-model="formData.phone" pattern="[0-9]*" oninput="value=value.replace(/[^\d.]/g,'')" maxlength="11" placeholder="手机号" placeholder-style="color:#ffffff;"/>
+		       <!-- <input class="pr-s" disabled="true" @tap="keyphone" placeholder-style="color:#ffffff;" maxlength="11" placeholder="手机号" v-model="formData.phone"/>
+		        <tki-float-keyboard ref="keyb" :mode="keyMode" :type="keyType" :title="keyTitle" @del="keyDel" 
+		        @val="keyVal" @show="keyShow" @hide="keyHide"></tki-float-keyboard> -->	
 			</view>
 			<view class="code-warp">
 				<image src="/static/icons/code.png"></image>
 				<input type="number" v-model.number="formData.code" placeholder="验证码" placeholder-style="color:#ffffff;"/>
+				<!-- <input class="pr-s" disabled="true" @tap="keycode" placeholder-style="color:#ffffff;" maxlength="4" placeholder="验证码" v-model.number="formData.code"/> -->
 				<button type="default" plain="true" :disabled="codeButtonType" @click="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
 			</view>
 			<view class="item">
@@ -35,6 +39,8 @@
 		Get_PhoneCode,
 		Post_Signup
 	} from "@/api/login.js"
+	// import tkiFloatKeyboard from
+	// "@/components/tki-float-keyboard/tki-float-keyboard.vue"
 	export default {
 		data() {
 			return {
@@ -47,9 +53,60 @@
 				},
 				codeButtonType: false,
 				secondCount: 60,
+				// keyMode:'number',
+				// keyType:0,
+				// keyTitle:"嗨自驾数字键盘",
+				// key:true
 			}
 		},
+		components:{
+					// tkiFloatKeyboard
+				},
 		methods: {
+			// // 显示键盘
+			// showKey(){
+			// 	this.$refs.keyb._keyShow()
+			// },
+			// // 隐藏键盘
+			// hideKey(){
+			// 	this.$refs.keyb._keyHide()
+			// },
+			// // 键盘退格
+			// keyDel(){
+			// 	if(this.key=="true"){
+			// 		let d = this.formData.phone
+			// 		this.formData.phone = d.substring(0,d.length-1)
+			//     } else{
+			// 		let d = this.formData.code
+			// 		this.formData.code = d.substring(0,d.length-1)
+			// 	}
+			// },
+			// // 键盘输入值
+			// keyVal(v){
+			// 	if(this.key =="true"){
+			// 		this.formData.phone = this.formData.phone + v
+			// 	} else {
+			// 		this.formData.code = this.formData.code + v
+			// 	}
+			// },
+			// // 显示键盘后的回调
+			// keyShow(h){
+			// 	console.log(h)
+			// },
+			// // 隐藏键盘后的回调
+			// keyHide(){
+			// },
+			// // 数字键盘
+			// keyphone(){
+			// 	this.key="true"
+			// 	this.keyMode = "number"
+			// 	this.showKey()
+			// },
+			// keycode(){
+			// 	this.key="false"
+			// 	this.keyMode = "number"
+			// 	this.showKey()
+			// },
 			// 获取手机验证码
 			getCode() {
 				let reg = /^1(3|4|5|7|8|9)\d{9}$/
