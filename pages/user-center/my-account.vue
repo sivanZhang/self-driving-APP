@@ -10,7 +10,7 @@
 					</view>
 					<view class="total">
 						<view class="number">{{isLogin?randomNumber:"---"}}</view>
-						<view class="kilometers">公里</view>  
+						<view class="kilometers">公里</view>
 					</view>
 				</view>
 				<!-- <image class="img" src="/static/image/journey/start.png" @tap="click"/>  -->
@@ -166,7 +166,12 @@
 		<view class="foot">
 			版本:12.321.33.22
 		</view>
+		<uni-popup ref="popup" type="bottom">
+			<map style="width: 100%; height: 300px;" :polyline='polyline' :latitude="latitude" :longitude="longitude" scale="16"
+			 show-location="true">
+			</map>
 
+		</uni-popup>
 	</view>
 </template>
 
@@ -182,10 +187,12 @@
 	import {
 		CarTrack_Share,
 		Record_CarTrack,
-		Close_CarTrack
+		Close_CarTrack,
+		Show_CarTrack
 	} from '@/api/cartrack.js'
 
 	// import uniBadge from "@/components/uni-badge/uni-badge.vue"
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
 	// #ifdef APP-PLUS
 	import permision from "@/common/permission.js"
@@ -196,6 +203,7 @@
 		components: {
 			// uniBadge,
 			uniIcon,
+			uniPopup
 		},
 		data() {
 			return {
@@ -205,8 +213,19 @@
 				hasLocation: false,
 				location: {},
 				address: {},
+				
+				polyline: [{ //指定一系列坐标点，从数组第一项连线至最后一项
+					points: [
+							{latitude: 34.34129,longitude: 108.93984},{latitude: 34.3413,longitude: 108.93984},
+					],
+					color: "#0000AA", //线的颜色
+					width: 2, //线的宽度
+					dottedLine: true, //是否虚线
+					arrowLine: true, //带箭头的线 开发者工具暂不支持该属性
+				}],
+
 				type: '',
-				sex:'',
+				sex: '',
 				name: null,
 				stop: true,
 				open: '',
@@ -217,18 +236,18 @@
 				record: [],
 				newrecord: [],
 				locationinfo: '',
-				SI:''
+				SI: ''
 			};
 		},
 		computed: {
 			UserInfo() {
 				return this.$store.state.UserInfo
 			},
-            isLogin(){
+			isLogin() {
 				return this.$store.state.estateToken || uni.getStorageSync('estateToken')
 			},
-			randomNumber(){
-				return Math.floor(Math.random()*(10000-10+1)+10)
+			randomNumber() {
+				return Math.floor(Math.random() * (10000 - 10 + 1) + 10)
 			}
 		},
 		methods: {
@@ -353,13 +372,14 @@
 					url
 				})
 			},
-			toLogin(){
+			toLogin() {
 				uni.navigateTo({
-					url:"/pages/login/login-page"
+					url: "/pages/login/login-page"
 				})
 			},
 			track() {
 				this.doGetLocation();
+				this.$refs.popup.open();
 				if (this.hasLocation === true) {
 					this.open = 1;
 					CarTrack_Share({
@@ -374,7 +394,7 @@
 								title: data.msg,
 								icon: "none",
 							})
-						    this.recordtrack();
+							this.recordtrack();
 						}
 						console.log(data)
 					})
@@ -385,31 +405,44 @@
 					})
 				}
 			},
-			recordtrack(){
-				this.SI = setInterval(()=> {
+			recordtrack() {
+				this.SI = setInterval(() => {
 					this.doGetLocation();
 					this.longitude = this.locationinfo.longitude;
 					this.latitude = this.locationinfo.latitude;
-					this.record = [this.longitude,this.latitude];
-					this.newrecord = this.newrecord.concat('['+this.record+']');
-					console.log('['+this.newrecord+']')
-					if ((this.newrecord).length > 9)
-					{
+					this.record = [this.longitude, this.latitude];
+					this.newrecord = this.newrecord.concat('[' + this.record + ']');
+					console.log('[' + this.newrecord + ']')
+				       
+					if ((this.newrecord).length > 9) {
 						//console.log(this.newrecord)
-						Record_CarTrack({track_id:this.id,method:'put',record:'['+this.newrecord+']'}).then(({ data })=>{
-						   uni.showToast({
-							title: data.msg,
-							icon: "none",
-						   })
-						   //console.log(data)
+						Record_CarTrack({
+							track_id: this.id,
+							method: 'put',
+							record: '[' + this.newrecord + ']'
+						}).then(({
+							data
+						}) => {
+							uni.showToast({
+								title: data.msg,
+								icon: "none",
+							})
+							//console.log(data)
 						})
-						this.newrecord=[]
+						this.newrecord = []
+						// Show_CarTrack({id:this.id}).then(({ data })=>{
+						//    uni.showToast({
+						// 	title: data.msg,
+						// 	icon: "none",
+						//    })
+						//    //console.log(data)
+						// })
 					}
-				},1000)
-		    },
+				}, 1000)
+			},
 			closetrack() {
 				clearInterval(this.SI)
-				this.newrecord=[]
+				this.newrecord = []
 				this.close = 0;
 				Close_CarTrack({
 					track_id: this.id,
@@ -427,21 +460,21 @@
 				})
 			}
 		},
-		onLoad() { 
-			   //     // #ifdef APP-PLUS
-			   //      wv = plus.webview.create("","custom-webview",{
-			   //          plusrequire:"none", //禁止远程网页使用plus的API，有些使用mui制作的网页可能会监听plus.key，造成关闭页面混乱，可以通过这种方式禁止
-			   //           'uni-app': 'none', //不加载uni-app渲染层框架，避免样式冲突
-			   //          top:uni.getSystemInfoSync().statusBarHeight,//放置在titleNView下方。如果还想在webview上方加个地址栏的什么的，可以继续降低TOP值
-						// height:100,
-			   //      })
-			   //      wv.loadURL("/hybrid/html/background.html")
-			   //      var currentWebview = this.$mp.page.$getAppWebview() //获取当前页面的webview对象
-			   //      currentWebview.append(wv);//一定要append到当前的页面里！！！才能跟随当前页面一起做动画，一起关闭
-			   //      setTimeout(function() {
-			   //          console.log(wv.getStyle())
-			   //      }, 1000);//如果是首页的onload调用时需要延时一下，二级页面无需延时，可直接获取
-			   //      // #endif
+		onLoad() {
+			//     // #ifdef APP-PLUS
+			//      wv = plus.webview.create("","custom-webview",{
+			//          plusrequire:"none", //禁止远程网页使用plus的API，有些使用mui制作的网页可能会监听plus.key，造成关闭页面混乱，可以通过这种方式禁止
+			//           'uni-app': 'none', //不加载uni-app渲染层框架，避免样式冲突
+			//          top:uni.getSystemInfoSync().statusBarHeight,//放置在titleNView下方。如果还想在webview上方加个地址栏的什么的，可以继续降低TOP值
+			// height:100,
+			//      })
+			//      wv.loadURL("/hybrid/html/background.html")
+			//      var currentWebview = this.$mp.page.$getAppWebview() //获取当前页面的webview对象
+			//      currentWebview.append(wv);//一定要append到当前的页面里！！！才能跟随当前页面一起做动画，一起关闭
+			//      setTimeout(function() {
+			//          console.log(wv.getStyle())
+			//      }, 1000);//如果是首页的onload调用时需要延时一下，二级页面无需延时，可直接获取
+			//      // #endif
 			this.getLocationTest();
 		},
 		onShow: function() {
@@ -454,15 +487,18 @@
 <style lang="scss">
 	#MyAccount {
 		overflow-x: hidden;
+
 		.wall {
 			height: 360rpx;
 			position: relative;
 			background: #fff;
+
 			.header {
-				padding-left:30upx;
-				padding-top:50upx;
+				padding-left: 30upx;
+				padding-top: 50upx;
 				display: flex;
 				flex-wrap: wrap;
+
 				// flex-direction: column;
 				// align-items: center;
 				// justify-content: center;
@@ -473,129 +509,150 @@
 				// 	margin-top:100upx;
 				// 	margin-left:320upx;
 				// }
-				.left{
-					padding-top:36upx;
-					padding-left:14upx;
+				.left {
+					padding-top: 36upx;
+					padding-left: 14upx;
+
 					// display:flex;
 					// flex-direction: column;
-					.milage{
+					.milage {
 						text-align: center;
-						font-size:30upx;
+						font-size: 30upx;
 						border-bottom: 10upx solid #DF5000;
-						width:130upx;
+						width: 130upx;
 					}
-					.total{
-						display:flex;
+
+					.total {
+						display: flex;
 						// flex-wrap: wrap;
-						padding-top:-10upx;
-						.number{
-							font-size:90upx;
+						padding-top: -10upx;
+
+						.number {
+							font-size: 90upx;
 							// width:230upx;
 							letter-spacing: -6upx;
 						}
-						.kilometers{
-							font-size:30upx;
-							padding-left:8upx;
-							margin-top:70upx;}
+
+						.kilometers {
+							font-size: 30upx;
+							padding-left: 8upx;
+							margin-top: 70upx;
+						}
 					}
 				}
-				.rank{
-					position:absolute;
-					padding-top:91upx;
-					padding-left:426upx;
-					display:flex;
+
+				.rank {
+					position: absolute;
+					padding-top: 91upx;
+					padding-left: 426upx;
+					display: flex;
 					flex-wrap: wrap;
-					.showrank{
-						
-						padding:0 10upx;
-						padding-top:8upx;
-						background-color:#4D4D4D;
-						height:100upx;
-						width:100upx;
-						color:#FFFFFF;
+
+					.showrank {
+
+						padding: 0 10upx;
+						padding-top: 8upx;
+						background-color: #4D4D4D;
+						height: 100upx;
+						width: 100upx;
+						color: #FFFFFF;
 						text-align: center;
-						.num{
-							padding-top:7upx;
+
+						.num {
+							padding-top: 7upx;
 							font-weight: bold;
 						}
 					}
-					.look{
-						padding-top:8upx;
-						display:flex;					
+
+					.look {
+						padding-top: 8upx;
+						display: flex;
 						flex-direction: column;
-						background-color:#DF5000;
-						height:100upx;
-						width:150upx;
-						image{
-							width:98upx;
-							height:45upx;
-							padding-left:52upx;
+						background-color: #DF5000;
+						height: 100upx;
+						width: 150upx;
+
+						image {
+							width: 98upx;
+							height: 45upx;
+							padding-left: 52upx;
 						}
-						.lookrank{
-							color:#FFFFFF;
-							padding-top:2upx;
+
+						.lookrank {
+							color: #FFFFFF;
+							padding-top: 2upx;
 							// font-size:32upx;
-							padding-left:22upx;
+							padding-left: 22upx;
 						}
 					}
 				}
 			}
+
 			.wall-top {
-				display:flex;
+				display: flex;
 				position: absolute;
 				z-index: 2;
 				left: 25upx;
-				top:290upx;
+				top: 290upx;
 				font-size: 32upx;
+
 				.i {
-					position:relative;
-					left:3%;
+					position: relative;
+					left: 3%;
 					width: 130rpx;
 					height: 130rpx;
 					border-radius: 50%;
 					box-shadow: 1px 1px 2px #F2F2F2;
 					border: 1.5px solid #F2F2F2;
 				}
-				.top{
-					padding-top:12upx;
-					padding-left:10upx;
-					color:#848689;
-					.information{
-						display:flex;
+
+				.top {
+					padding-top: 12upx;
+					padding-left: 10upx;
+					color: #848689;
+
+					.information {
+						display: flex;
+
 						image {
 							width: 62upx;
 							height: 28upx;
 							padding-left: 34upx;
 							z-index: 2;
 						}
+
 						.username {
-							position:relative;
-							padding-top:6upx;
-							left:0.3rem;
+							position: relative;
+							padding-top: 6upx;
+							left: 0.3rem;
 						}
 					}
-					.position{
-						padding-top:5upx;
+
+					.position {
+						padding-top: 5upx;
+
 						image {
 							width: 66upx;
 							height: 32upx;
 							padding-left: 30upx;
 							z-index: 2;
 						}
-						.address{
-							padding-top:16upx;
-							position:relative;
-							top:-1.5rem;
-							left:2rem;
+
+						.address {
+							padding-top: 16upx;
+							position: relative;
+							top: -1.5rem;
+							left: 2rem;
 							// right:-2rem;
 						}
 					}
 				}
 			}
 		}
-		
+
 		.main {
 			height: 220upx;
+
 			.uni-content {
 				display: flex;
 				flex-wrap: wrap;
@@ -603,6 +660,7 @@
 				padding-top: 85upx;
 				padding-right: 5upx;
 			}
+
 			.uni-content-box {
 				display: flex;
 				flex-direction: column;
@@ -610,24 +668,29 @@
 				width: 20%;
 				box-sizing: border-box;
 			}
+
 			.uni-content-image {
 				display: flex;
 				justify-content: center;
 				align-items: center;
-		        .img{
+
+				.img {
 					width: 80upx;
 					height: 80upx;
 				}
-				.img2{
-					margin-top:-10upx;
+
+				.img2 {
+					margin-top: -10upx;
 					width: 90upx;
 					height: 100upx;
 				}
+
 				image {
 					width: 70upx;
 					height: 70upx;
 				}
 			}
+
 			.uni-content-text {
 				font-size: 26upx;
 				color: #333;
@@ -635,13 +698,16 @@
 				padding-bottom: 10px;
 			}
 		}
+
 		.badge {
 			background-color: #e60000 !important;
 			font-size: 25upx !important;
 		}
+
 		.content {
 			position: relative;
 			top: -2.5rpx;
+
 			.section {
 				padding: 0 41.666upx;
 				// height: 125upx;
@@ -649,8 +715,10 @@
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
+
 				// border-bottom: 2.083upx solid #c8c8cc;
 				&>view:nth-child(1) {
+
 					// font-weight: bold;
 					.icon {
 						width: 62.5upx;
@@ -659,17 +727,20 @@
 						margin-right: 37.5upx;
 					}
 				}
+
 				&>view:nth-child(2) {
 					color: #c8c8cc;
 					display: flex;
 					align-items: center;
 				}
 			}
+
 			.profile {
 				padding: 0 31.25rpx;
 				width: 100%;
 				display: flex;
 				align-items: flex-end;
+
 				image {
 					width: 125rpx;
 					height: 125rpx;
@@ -677,6 +748,7 @@
 				}
 			}
 		}
+
 		.foot {
 			padding-top: 40upx;
 			opacity: 0.5;
