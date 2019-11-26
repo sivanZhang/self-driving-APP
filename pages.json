@@ -227,6 +227,20 @@
 					}
 			    }
 			}
+		}, {
+			"path": "pages/team/releaseRouter/signalRouterDetail",
+			"style": {
+				"navigationBarTitleText": "路线详情",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"type": "close",
+							"width": "auto"
+						}]
+				
+					}
+			    }
+			}
 		},{
 			"path": "pages/circle/hi-circle",
 			"style": {}
