@@ -74,7 +74,7 @@
 				<view class="uni-content-box">
 					<view class="uni-content-image">
 						<image class="img" v-show="stop" @tap="track" src="/static/image/journey/start.png" />
-						<image class="img" v-show="!stop" @tap="closetrack" src="/static/icons/open.png" />
+						<image class="img2" v-show="!stop" @tap="closetrack" src="/static/icons/open.jpg" />
 
 					</view>
 				</view>
@@ -407,6 +407,7 @@
 		    },
 			closetrack() {
 				clearInterval(this.SI)
+				this.newrecord=[]
 				this.close = 0;
 				Close_Track({
 					track_id: this.id,
@@ -580,7 +581,7 @@
 							z-index: 2;
 						}
 						.address{
-							padding-top:14upx;
+							padding-top:16upx;
 							position:relative;
 							top:-1.5rem;
 							left:2rem;
@@ -612,7 +613,12 @@
 				justify-content: center;
 				align-items: center;
 		        .img{
-					width: 100upx;
+					width: 80upx;
+					height: 80upx;
+				}
+				.img2{
+					margin-top:-10upx;
+					width: 90upx;
 					height: 100upx;
 				}
 				image {
