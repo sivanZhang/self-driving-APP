@@ -78,13 +78,14 @@
 
 		<view class="tui-product-box tui-pb-20 tui-bg-white">
 			<view class="tui-group-name" @tap="more">
-				<text>新品推荐</text>
+				<text>热门推荐</text>
 				<tui-icon name="arrowright" :size="20" color="#555"></tui-icon>
 			</view>
 			<view class="tui-new-box">
 				<view class="tui-new-item" v-for="(item,index) in category" :key="index"  @tap="detail" >
 					<view class="tui-title-box"  >
-						<view class="tui-new-title">{{item.specifications[0].name}}</view>
+						<view class="tui-new-title">{{item.specifications[0].name}},{{item.specifications[0].content}}</view>
+						
 						<view class="tui-new-price">
 							<text class="tui-new-present">￥{{item.specifications[0].price}}</text>
 						</view>
@@ -94,60 +95,8 @@
 				</view>
 			</view>
 		</view>
-
-		<view class="tui-product-box">
-			<view class="tui-group-name">
-				<text>热门推荐</text>
-			</view>
-			<view class="tui-product-list">
-				<view class="tui-product-container">
-					<block v-for="(item,index) in productList" :key="index" >
-						<!--商品列表-->
-						<view class="tui-pro-item" hover-class="hover" :hover-start-time="150" @tap="detail">
-							<view class="tui-pro-tit">{{item.content}}</view>
-							<view>{{item.id}}</view>
-							<view class="tui-pro-content">
-								<view class="tui-pro-tit">{{item.name}}</view>
-								<view>
-									<view class="tui-pro-price">
-										<text class="tui-sale-price">￥{{item.price}}</text>
-										<text >虚拟币价格：￥{{item.coin}}</text>
-									</view>
-									<view class="tui-pro-pay">{{item.num}}个</view>
-								</view>
-							</view>
-						</view>
-						</block>
-					
-				</view>
-				<view class="tui-product-container">
-					<block v-for="(item,index) in productList" :key="index" >
-						<!--商品列表-->
-						<view class="tui-pro-item" hover-class="hover" :hover-start-time="150" @tap="detail">
-							<view>{{item.id}}</view>
-							<view class="tui-pro-tit">{{item.content}}</view>
-							<view class="tui-pro-content">
-								<view class="tui-pro-tit">{{item.name}}</view>
-								<view>
-									<view class="tui-pro-price">
-										<text class="tui-sale-price">￥{{item.price}}</text>
-										<text >虚拟币价格：￥{{item.coin}}</text>
-									</view>
-									<view class="tui-pro-pay">{{item.num}}个</view>
-								</view>
-							</view>
-						</view>
-						<!--商品列表-->
-						<!-- <template is="productItem" data="{{item,index:index}}" /> -->
-					</block>
-				</view>
-			</view>
-		</view>  
-  
 		<!--加载loadding-->
 		<tui-loadmore :visible="loadding" :index="3" type="red"></tui-loadmore>
-		<!-- <tui-nomore visible="{{!pullUpOn}}"></tui-nomore> -->
-		<!--加载loadding-->
 		<view class="tui-safearea-bottom"></view>
 	</view>
 </template>
@@ -166,7 +115,7 @@
 		},
 		data() {
 			return {
-				id:'',
+				id:null,
 				current: 0,
 				tabbar: [{
 					icon: "home",
@@ -198,8 +147,6 @@
 					"5.jpg"
 				],
 				category:[],
-				productList:[],
-				
 				pageIndex: 1,
 				loadding: false,
 				pullUpOn: true
@@ -207,7 +154,7 @@
 		},
 		onLoad() {
 		    this.getcategory();
-			this.getproductList();
+			
 		},
 		methods: {
 			//获取礼品列表
@@ -221,19 +168,7 @@
 				  }
 			  })
 			},
-			//获取礼品规格
-			getproductList(){
-				this.id=1;
-				
-			  look_GiftDetail({id:this.id}).then(({ data }) =>{
-				 console.log(data)
-				  if(data.status == 0){
-					  this.productList = [...data.msg];
-					   console.log(this.productList)
-					   
-				  }
-			  })
-			},
+			
 			tabbarSwitch: function(e) {
 				let index = e.currentTarget.dataset.index;
 				this.current = index;
@@ -280,32 +215,7 @@
 				return this.$store.state.UserInfo
 			}
 		},
-		onPullDownRefresh: function() {
-			let loadData = JSON.parse(JSON.stringify(this.productList));
-			loadData = loadData.splice(0, 10)
-			this.productList = loadData;
-			this.pageIndex = 1;
-			this.pullUpOn = true;
-			this.loadding = false
-			uni.stopPullDownRefresh()
-		},
-		onReachBottom: function() {
-			if (!this.pullUpOn) return;
-			this.loadding = true;
-			if (this.pageIndex == 4) {
-				this.loadding = false;
-				this.pullUpOn = false
-			} else {
-				let loadData = JSON.parse(JSON.stringify(this.productList));
-				loadData = loadData.splice(0, 10)
-				if (this.pageIndex == 1) {
-					loadData = loadData.reverse();
-				}
-				this.productList = this.productList.concat(loadData);
-				this.pageIndex = this.pageIndex + 1;
-				this.loadding = false
-			}
-		}
+		
 	}
 </script>
 
@@ -688,7 +598,6 @@
 
 	.tui-new-title {
 		top:0.5rem;
-		left:1rem;
 		position:relative;
 		line-height: 32rpx; 
 		word-break: break-all; 
