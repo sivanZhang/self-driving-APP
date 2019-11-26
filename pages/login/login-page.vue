@@ -54,11 +54,11 @@
 			document.onLong = function(e) {
 				var e = e || window.event;
 				e.preventDefault();
-			};
+			}
 			// #endif
 		},
 		methods: {
-			toHome(){
+			toHome() {
 				uni.switchTab({
 					url: '/pages/home/home-page'
 				})
@@ -106,9 +106,18 @@
 						delete res.data.token
 						this.$store.commit("setUserInfo", { ...res.data
 						});
-						uni.switchTab({
-							url:'/pages/user-center/my-account'
-						})
+						let BackUrl = this.$store.state.redirect.Redirect
+						if (BackUrl) {
+							this.$store.commit("redirect/SetRedirect", "")
+							uni.navigateTo({
+								url: BackUrl
+							})
+						} else {
+							uni.switchTab({
+								url: '/pages/user-center/my-account'
+							})
+						}
+
 					} else {
 						this.isLoading = false;
 						uni.showToast({
@@ -134,20 +143,22 @@
 		/* #endif */
 		.home-link {
 			display: flex;
-			justify-content:center;
+			justify-content: center;
 			margin-top: 20.833rpx;
+
 			.link-btn {
 				background: rgba($color: #000000, $alpha: 0.5);
 				height: 82.5rpx;
-				width:82.5rpx;
+				width: 82.5rpx;
 				border-radius: 50%;
 				padding: 15rpx;
 				display: flex;
-				justify-content:center;
+				justify-content: center;
 				align-items: center;
+
 				image {
 					height: 100%;
-					width:100%;
+					width: 100%;
 				}
 			}
 		}

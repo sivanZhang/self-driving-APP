@@ -59,13 +59,13 @@
 		</view>
 		<view class="main">
 			<view class="uni-content">
-				<view class="uni-content-box" @tap="isLogin?target('/pages/foot/my-foot'):toLogin()">
+				<view class="uni-content-box" @tap="target('/pages/foot/my-foot')">
 					<view class="uni-content-image">
 						<image src="/static/icons/zuji.png" />
 					</view>
 					<view class="uni-content-text">车迹</view>
 				</view>
-				<view class="uni-content-box" @tap="isLogin?target('/pages/activity/activity'):toLogin()">
+				<view class="uni-content-box" @tap="target('/pages/activity/activity')">
 					<view class="uni-content-image">
 						<image src="/static/icons/dongtai.png" />
 					</view>
@@ -85,7 +85,7 @@
 					<view class="uni-content-text">悬赏</view>
 				</view>
 				<view class="uni-content-box">
-					<view class="uni-content-image" @tap="isLogin?target('/pages/user-center/message/mymessage'):toLogin()">
+					<view class="uni-content-image" @tap="target('/pages/user-center/message/mymessage')">
 						<image src="/static/icons/xiaoxi.png" />
 					</view>
 					<view class="uni-content-text">通知</view>
@@ -93,7 +93,7 @@
 			</view>
 		</view>
 		<view class="content">
-			<view class="section" @tap="isLogin?target('/pages/journey/journey'):toLogin()">
+			<view class="section" @tap="target('/pages/journey/journey')">
 				<view>
 					<image class="icon" src="/static/icons/mydriving.png"></image>
 					正在进行的自驾之旅
@@ -115,7 +115,7 @@
 				</view>
 			</view>
 
-			<view class="section" @tap="isLogin?target('/pages/user-center/browser-history'):toLogin()">
+			<view class="section" @tap="target('/pages/user-center/browser-history')">
 				<view>
 					<image class="icon" src="/static/icons/viewhistory.png"></image>
 					浏览历史
@@ -133,7 +133,7 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view> -->
 
-			<view class="section" @tap="isLogin?target('/pages/user-center/giftcenter'):toLogin()">
+			<view class="section" @tap="target('/pages/user-center/giftcenter')">
 				<view>
 					<image class="icon" src="../../static/image/journey/gift.png"></image>
 					礼品中心
@@ -142,7 +142,7 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
-			<view class="section" @tap="isLogin?target('/pages/user-center/user-settings'):toLogin()">
+			<view class="section" @tap="target('/pages/user-center/user-settings')">
 				<view>
 					<image class="icon" src="/static/icons/setting.png"></image>
 					设置
@@ -347,9 +347,15 @@
 				})
 			},
 			target(url) {
-				uni.navigateTo({
-					url
-				})
+				if(this.isLogin){
+					uni.navigateTo({
+						url
+					})
+				}else{
+					//为了将来返回页面
+					this.$store.commit("redirect/SetRedirect",url)
+					this.toLogin()
+				}
 			},
 			toLogin(){
 				uni.navigateTo({
