@@ -28,8 +28,8 @@
 				</view>
 				<!-- #endif -->
 				<swiper vertical autoplay circular interval="8000" class="tui-swiper">
-					<swiper-item v-for="(item,index) in hotSearch" :key="index" class="tui-swiper-item" @tap="search">
-						<view class="tui-hot-item">{{item}}</view>
+					<swiper-item v-for="(item,index) in category" :key="index" class="tui-swiper-item" @tap="search">
+						<view class="tui-hot-item">{{item.title}}</view>
 					</swiper-item>
 				</swiper>
 			</view>
@@ -38,10 +38,10 @@
 		<view class="tui-header-banner">
 			<view class="tui-hot-search">
 				<view>热搜</view>
-				<view class="tui-hot-tag" @tap="search">自热火锅</view>
-				<view class="tui-hot-tag" @tap="search">华为手机</view>
-				<view class="tui-hot-tag" @tap="search">有机酸奶</view>
-				<view class="tui-hot-tag" @tap="search">苹果手机</view>
+				<view class="tui-hot-tag" @tap="search">羽绒服</view>
+				<view class="tui-hot-tag" @tap="search">水杯</view>
+				<view class="tui-hot-tag" @tap="search">小米耳机</view>
+				<view class="tui-hot-tag" @tap="search">帐篷</view>
 			</view>
 			<view class="tui-banner-bg">
 				<view class="tui-primary-bg tui-route-left"></view>
@@ -50,8 +50,8 @@
 				<view class="tui-banner-box">
 					<swiper :indicator-dots="true" :autoplay="true" :interval="5000" :duration="150" class="tui-banner-swiper"
 					 :circular="true" indicator-color="rgba(255, 255, 255, 0.8)" indicator-active-color="#fff">
-						<swiper-item v-for="(item,index) in banner" :key="index" @tap.stop="detail">
-							<image :src="'../../static/image/mall/banner/'+item" class="tui-slide-image" mode="scaleToFill" />
+						<swiper-item v-for="(item,index) in category" :key="index" @tap.stop="detail">
+							<image :src="'https://tl.chidict.com' + '/'+item.picture" class="tui-slide-image" mode="scaleToFill" />
 						</swiper-item>
 					</swiper>
 				</view>
@@ -82,7 +82,7 @@
 				<tui-icon name="arrowright" :size="20" color="#555"></tui-icon>
 			</view>
 			<view class="tui-new-box">
-				<view class="tui-new-item" v-for="(item,index) in category" :key="index"  @tap="detail" >
+				<view class="tui-new-item" v-for="(item,index) in category" :key="index"  @tap="detail(index)" >
 					<view class="tui-title-box"  >
 						<view class="tui-new-title">{{item.specifications[0].name}},{{item.specifications[0].content}}</view>
 						
@@ -186,7 +186,9 @@
 					}
 				}
 			},
-			detail: function() {
+			detail: function(e) {
+				var that = this;
+				console.log(e);
 				uni.navigateTo({
 					url: '../productDetail/productDetail'
 				})
