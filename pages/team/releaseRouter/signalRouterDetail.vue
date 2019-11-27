@@ -6,7 +6,7 @@
 				<view class="detail">
 					<view class="content" @click="showMulLinkageThreePicker">
 						<view style="">出发地</view>
-						<input style="" :value="pickerText" :placeholder="departure"></input>
+						<input style="" :value="pickerText" :disabled="true" :placeholder="departure"/>
 					</view>
 					<view class="buttonlist">
 						<view class="button" v-if="change" @tap="qiehuanChange">
@@ -34,7 +34,7 @@
 					</view>
 					<view class="content" @click="showMulLinkageThreePicker1">
 						<view>目的地</view>
-						<input :value="pickerText1" :placeholder="destination"></input>
+						<input :value="pickerText1" disabled :placeholder="destination"></input>
 					</view>
 				</view>
 			</view>
