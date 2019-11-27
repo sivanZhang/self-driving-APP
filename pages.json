@@ -33,6 +33,13 @@
 			}
 		},
 		{
+			"path": "pages/user-center/rank/lookrank",
+			"style": {
+				"navigationBarTitleText": "里程排行榜"
+				
+			}
+		},
+		{
 			"path": "pages/user-center/personalCenter/portrait",
 			"style": {
 				"navigationBarTitleText": "头像",

@@ -1,7 +1,7 @@
 import Ajax from '../libs/http'
 //里程排行榜
-export function Track_Rank(payload) {
-    return Ajax.get('/track/rank/', payload)
+export function Track_Rank(params) {
+    return Ajax.get('/track/rank/', {params})
 };
 //开启行程共享
 export function Track_Share(payload) {

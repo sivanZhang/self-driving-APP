@@ -19,7 +19,7 @@
 						<view class="name">名次</view>
 						<view class="num">{{isLogin?10000-randomNumber:"--"}}</view>
 					</view>
-					<view class="look">
+					<view class="look" @tap="target('/pages/user-center/rank/lookrank')">
 						<image src="/static/icons/rank.png"></image>
 						<view class="lookrank">查看排行</view>
 					</view>
@@ -190,7 +190,6 @@
 		Close_CarTrack,
 		Show_CarTrack
 	} from '@/api/cartrack.js'
-
 	// import uniBadge from "@/components/uni-badge/uni-badge.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
