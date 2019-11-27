@@ -1,96 +1,107 @@
 <!doctype html>
 <html>
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-	<title>车迹展示</title>
+    <title>车迹展示</title>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
     <style>
-    html,
-    body,
-    #container {
-        width: 100%;
-        height: 100%;
-    }
-	
+        html, body, #container {
+            height: 100%;
+            width: 100%;
+        }
+
+        .input-card .btn{
+            margin-right: 1.2rem;
+            width: 9rem;
+        }
+
+        .input-card .btn:last-child{
+            margin-right: 0;
+        }
     </style>
-   
-    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" /> <script src="https://webapi.amap.com/maps?v=1.4.15&key=4f59b5834fb366bde9c97903d0963626&plugin=AMap.PolyEditor"></script>
-    <script src="https://webapi.amap.com/maps?v=1.4.15&key=4f59b5834fb366bde9c97903d0963626&plugin=AMap.Walking"></script>
-    <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
 </head>
 <body>
 <div id="container"></div>
+<div class="input-card">
+    <h4>轨迹回放控制</h4>
+    <div class="input-item">
+        <input type="button" class="btn" value="开始动画" id="start" onclick="startAnimation()"/>
+        <input type="button" class="btn" value="暂停动画" id="pause" onclick="pauseAnimation()"/>
+    </div>
+    <div class="input-item">
+        <input type="button" class="btn" value="继续动画" id="resume" onclick="resumeAnimation()"/>
+        <input type="button" class="btn" value="停止动画" id="stop" onclick="stopAnimation()"/>
+    </div>
+</div>
 
-<script type="text/javascript">
+<script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4f59b5834fb366bde9c97903d0963626"></script>
+
+<script>
+   
+    var marker, lineArr = [[116.478935,39.997761],[116.478939,39.997825],[116.478912,39.998549],[116.478912,39.998549],[116.478998,39.998555],[116.478998,39.998555],[116.479282,39.99856],[116.479658,39.998528],[116.480151,39.998453],[116.480784,39.998302],[116.480784,39.998302],[116.481149,39.998184],[116.481573,39.997997],[116.481863,39.997846],[116.482072,39.997718],[116.482362,39.997718],[116.483633,39.998935],[116.48367,39.998968],[116.484648,39.999861]];
+
     var map = new AMap.Map("container", {
-        center: [116.397559, 39.89621],
-        zoom: 18,
-		viewMode:'3D'
+        resizeEnable: true,
+        center: [116.397428, 39.90923],
+        zoom: 17
     });
 
-    // 当前示例的目标是展示如何根据规划结果绘制路线，因此walkOption为空对象
-    var walkingOption = {}
-
-    // 步行导航
-    var walking = new AMap.Walking(walkingOption)
-
-    //根据起终点坐标规划步行路线
-    walking.search([116.399028, 39.845042], [116.436281, 39.880719], function(status, result) {
-        // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
-        if (status === 'complete') {
-            if (result.routes && result.routes.length) {
-                drawRoute(result.routes[0])
-               
-            }
-        } else {
-            
-        } 
+    marker = new AMap.Marker({
+        map: map,
+        position: [116.478935,39.997761],
+        icon: "https://webapi.amap.com/images/car.png",
+        offset: new AMap.Pixel(-26, -13),
+        autoRotation: true,
+        angle:-90,
     });
 
-    function drawRoute (route) {
-        var path = parseRouteToPath(route)
+    // 绘制轨迹
+    var polyline = new AMap.Polyline({
+        map: map,
+        path: lineArr,
+        showDir:true,
+        strokeColor: "#28F",  //线颜色
+        // strokeOpacity: 1,     //线透明度
+        strokeWeight: 6,      //线宽
+        // strokeStyle: "solid"  //线样式
+    });
 
-        var startMarker = new AMap.Marker({
-            position: path[0],
-            content: '<img src="../../static/image/position.png" />', 
-            map: map,
-			offset: new AMap.Pixel(17, -37)
-        })
+    var passedPolyline = new AMap.Polyline({
+        map: map,
+        // path: lineArr,
+        strokeColor: "#AF5",  //线颜色
+        // strokeOpacity: 1,     //线透明度
+        strokeWeight: 6,      //线宽
+        // strokeStyle: "solid"  //线样式
+    });
 
-        
 
-        var routeLine = new AMap.Polyline({
-            path: path,
-            isOutline: true,
-            outlineColor: '#ffeeee',
-            borderWeight: 2,
-            strokeWeight: 5,
-            strokeColor: '#0091ff',
-            lineJoin: 'round'
-        })
+    marker.on('moving', function (e) {
+        passedPolyline.setPath(e.passedPath);
+    });
 
-        routeLine.setMap(map)
+    map.setFitView();
 
-        // 调整视野达到最佳显示区域
-        map.setFitView([ startMarker,routeLine ])
+    function startAnimation () {
+        marker.moveAlong(lineArr, 200);
     }
 
-    // 解析WalkRoute对象，构造成AMap.Polyline的path参数需要的格式
-    // WalkRoute对象的结构文档 https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkRoute
-    function parseRouteToPath(route) {
-        var path = []
+    function pauseAnimation () {
+        marker.pauseMove();
+    }
 
-        for (var i = 0, l = route.steps.length; i < l; i++) {
-            var step = route.steps[i]
+    function resumeAnimation () {
+        marker.resumeMove();
+    }
 
-            for (var j = 0, n = step.path.length; j < n; j++) {
-              path.push(step.path[j])
-            }
-        }
-
-        return path
+    function stopAnimation () {
+        marker.stopMove();
     }
 </script>
+
 </body>
 </html>

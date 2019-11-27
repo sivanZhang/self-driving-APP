@@ -1,7 +1,7 @@
 import Ajax from '../libs/http'
 //开启车迹
 export function CarTrack_Share(payload) {
-    return Ajax.post('/car/open/', payload)
+    return Ajax.post('/car/open/', payload) 
 };
 //记录车迹
 export function Record_CarTrack(payload) {
