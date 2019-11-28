@@ -272,7 +272,7 @@
 						this.location = formatLocation(res.longitude, res.latitude);
 						this.address = res.address
 						this.name = res.address.poiName
-						// console.log(this.locationinfo)
+						console.log(this.locationinfo)
 					},
 					fail: (err) => {
 						console.log((err))
@@ -411,7 +411,7 @@
 					this.latitude = this.locationinfo.latitude;
 					this.record = [this.longitude, this.latitude];
 					this.newrecord = this.newrecord.concat('[' + this.record + ']');
-					console.log('[' + this.newrecord + ']')
+					// console.log('[' + this.newrecord + ']')
 				       
 					if ((this.newrecord).length > 9) {
 						//console.log(this.newrecord)

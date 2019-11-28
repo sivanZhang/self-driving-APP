@@ -19,16 +19,19 @@
 						<view class="name">{{item.user_name}}</view>
 						<image src="/static/image/face.jpg"></image>
 						<view class="number">{{item.distance}}</view>
+						<view class="km">km</view>
 					</view>
 					<view class="part2" v-if="index==0">
 						<view class="name">{{item.user_name}}</view>
 						<image src="/static/image/face.jpg"></image>
 						<view class="number">{{item.distance}}</view>
+						<view class="km">km</view>
 					</view>
 					<view class="part3" v-if="index==2">
 						<view class="name">{{item.user_name}}</view>
 						<image src="/static/image/face.jpg"></image>
 						<view class="number">{{item.distance}}</view>
+						<view class="km">km</view>
 					</view>
 				</view>
 			</view>
@@ -79,10 +82,7 @@
 		methods: {
 			lookrank(){
 				let data = {
-					week:'',
-					month:'',
-					year:'',
-					total:''
+					year:''
 				}
 				Track_Rank(data).then(({
 					data
@@ -181,6 +181,9 @@
 						padding-left:30upx;
 						margin-top:150upx;
 					}
+					.km{
+						margin-left:60upx;
+					}
 					.part1{
 			            margin-left:130upx; 
 						margin-top:130upx;
@@ -190,7 +193,7 @@
 						margin-left:0upx;
 					}
 					.part3{
-						margin-top:200upx;
+						margin-top:220upx;
 						margin-left:130upx;
 					}
 			}
@@ -203,14 +206,14 @@
 					height:180upx;
 				}
 				.first{
-					margin-top:-310upx;
+					margin-top:-360upx;
 					margin-left:110upx;
 				}
 				.second{
-					margin-top:-270upx;
+					margin-top:-320upx;
 				}
 				.third{
-					margin-top:-230upx;
+					margin-top:-270upx;
 					margin-left:110upx;
 				}
 			}
@@ -220,7 +223,7 @@
 			height:auto;
 			width:94%;
 			margin-left:22upx;
-			margin-top:600upx;
+			margin-top:650upx;
 			position:absolute;
 			border-radius: 20upx;
 			.aui-news-item {
