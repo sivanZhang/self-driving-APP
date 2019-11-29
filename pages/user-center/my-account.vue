@@ -19,7 +19,7 @@
 						<view class="name">名次</view>
 						<view class="num">{{isLogin?10000-randomNumber:"--"}}</view>
 					</view>
-					<view class="look" @tap="target('/pages/user-center/rank/lookrank')">
+					<view class="look" @tap="isLogin?target('/pages/user-center/rank/lookrank'):toLogin()">
 						<image src="/static/icons/rank.png"></image>
 						<view class="lookrank">查看排行</view>
 					</view>
