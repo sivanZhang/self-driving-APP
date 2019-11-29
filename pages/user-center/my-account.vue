@@ -3,7 +3,7 @@
 	<view id="MyAccount">
 		<view class="wall">
 
-			<view class="header" @tap="target('/pages/user-center/track')">
+			<view class="header" @tap="target('/pages/user-center/track/alltrack')">
 				<view class="left">
 					<view class="milage">
 						总里程数
@@ -166,7 +166,6 @@
 		</view>
 		<view class="foot">
 			版本:12.321.33.22
-			<button class="but" type="primary" @tap="showline">展示</button>
 		</view>
 		<uni-popup ref="popup" type="bottom">
 			<map style="width: 100%; height: 300px;" :polyline='polylines' :latitude="latitude" :longitude="longitude" :markers="markers"  show-location="true" scale="17">
@@ -246,9 +245,9 @@
 				this.$refs.popup.open();
 				uni.request({
 					url: 'https://tl.chidict.com/car/track/',
-					data: {
-						id:208
-					},
+					// data: {
+					// 	id:108
+					// },
 					header: {
 						"Content-Type": "multipart/form-data",
 						'Authorization': uni.getStorageSync('estateToken') || this.$store.state.estateToken,
@@ -269,15 +268,14 @@
 						this.longitude=points[0].longitude;
 						this.polylines = [{
 							points,
-							color: "#0000AA", //线的颜色
-							width: 2, //线的宽度
-							dottedLine: true, //是否虚线
-							arrowLine: true, //带箭头的线 开发者工具暂不支持该属性
+							color: "#0A98D5", //线的颜色
+							width: 8, //线的宽度
+							arrowLine: true,//带箭头的线 开发者工具暂不支持该属性
+							
 						}];
 						this.markers = [{
-							// #ifndef APP-PLUS
+							
 							iconPath:'https://webapi.amap.com/images/car.png',
-							// #endif
 							latitude:points[0].latitude,
 							longitude:points[0].longitude,
 						},
@@ -382,6 +380,7 @@
 				}
 			},
 			getLocationTest() {
+				
 				if (this.hasLocation === true) {
 					let SI = setInterval(() => {
 						this.doGetLocation();
@@ -401,6 +400,7 @@
 					this.thumbnail_portait = data.msg[0].thumbnail_portait;
 					this.username = data.msg[0].username;
 					this.sex = data.msg[0].sex;
+					
 				})
 			},
 			target(url) {
@@ -459,10 +459,10 @@
 						}).then(({
 							data
 						}) => {
-							uni.showToast({
-								title: data.msg,
-								icon: "none",
-							})
+							// uni.showToast({
+							// 	title: data.msg,
+							// 	icon: "none",
+							// })
 							//console.log(data)
 							Show_CarTrack({id:this.id}).then(({ data })=>{
 							   uni.showToast({
@@ -485,15 +485,14 @@
 							   	this.longitude=points[0].longitude;
 							   	this.polylines = [{
 							   		points,
-							   		color: "#0000AA", //线的颜色
-							   		width: 2, //线的宽度
-							   		dottedLine: true, //是否虚线
-							   		arrowLine: true, //带箭头的线 开发者工具暂不支持该属性
+							   		color: "#0A98D5", //线的颜色
+							   		width: 8, //线的宽度
+							   		arrowLine: true,//带箭头的线 开发者工具暂不支持该属性
+							   		
 							   	}];
 							   	this.markers = [{
-							   		// #ifndef APP-PLUS
+							   		
 							   		iconPath:'https://webapi.amap.com/images/car.png',
-							   		// #endif
 							   		latitude:points[0].latitude,
 							   		longitude:points[0].longitude,
 							   	},
@@ -544,8 +543,13 @@
 			//          console.log(wv.getStyle())
 			//      }, 1000);//如果是首页的onload调用时需要延时一下，二级页面无需延时，可直接获取
 			//      // #endif
-			
-
+			         
+				 setTimeout(function() {
+			         uni.showToast({
+			         	title: "点击中间的按钮可以开始记录车迹哦",
+			         	icon: "none",
+			         })
+			     }, 1000);
 			this.getLocationTest();
 		},
 		onShow: function() {
@@ -564,7 +568,7 @@
 			height: 360rpx;
 			position: relative;
 			background: #fff;
-
+   
 			.header {
 				padding-left: 30upx;
 				padding-top: 50upx;

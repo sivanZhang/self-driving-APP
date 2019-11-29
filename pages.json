@@ -10,6 +10,21 @@
 			}
 		},
 		{
+			"path": "pages/user-center/track/alltrack",
+			"style": {
+				"navigationBarTitleText": "车迹统计"
+				
+			}
+		},
+		{
+			"path": "pages/user-center/track/signaltrack",
+			"style": {
+				"navigationBarTitleText": "车迹展示"
+				
+			}
+		},
+		
+		{
 			"path": "pages/user-center/giftcenter/giftcenter",
 			"style": {
 				"navigationBarTitleText": "礼品中心"
@@ -25,13 +40,7 @@
 				}
 			}
 		},
-		{
-			"path": "pages/user-center/track",
-			"style": {
-				"navigationBarTitleText": "车迹展示"
-				
-			}
-		},
+		
 		{
 			"path": "pages/user-center/rank/lookrank",
 			"style": {
