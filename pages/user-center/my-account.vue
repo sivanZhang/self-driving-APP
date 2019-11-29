@@ -241,50 +241,7 @@
 			}
 		},
 		methods: {
-			showline(){
-				this.$refs.popup.open();
-				uni.request({
-					url: 'https://tl.chidict.com/car/track/',
-					// data: {
-					// 	id:108
-					// },
-					header: {
-						"Content-Type": "multipart/form-data",
-						'Authorization': uni.getStorageSync('estateToken') || this.$store.state.estateToken,
-					},
-					success: (res) => {
-						console.log(res.data.msg[0].record);
-				        var track = res.data.msg[0].record;
-						var track1 = JSON.parse(track);
-						var points = []
-						     track1.forEach((item, index) => {
-						      points.splice(index, 0, {
-						       latitude: item[1],
-						       longitude: item[0]
-						      })
-						     })
-						console.log(points)
-						this.latitude=points[0].latitude;
-						this.longitude=points[0].longitude;
-						this.polylines = [{
-							points,
-							color: "#0A98D5", //线的颜色
-							width: 8, //线的宽度
-							arrowLine: true,//带箭头的线 开发者工具暂不支持该属性
-							
-						}];
-						this.markers = [{
-							
-							iconPath:'https://webapi.amap.com/images/car.png',
-							latitude:points[0].latitude,
-							longitude:points[0].longitude,
-						},
-						
-						];
-						
-					}
-				});
-			},
+			
 			async getLocation() {
 				// #ifdef APP-PLUS
 				let status = await this.checkPermission();
