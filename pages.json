@@ -35,6 +35,8 @@
 		{
 			"path": "pages/user-center/rank/lookrank",
 			"style": {
+				"navigationBarBackgroundColor":"#22262f",
+				"navigationBarTextStyle":"white",
 				"navigationBarTitleText": "里程排行榜"
 				
 			}

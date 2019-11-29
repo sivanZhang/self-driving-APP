@@ -255,10 +255,10 @@
 					},
 					success: (res) => {
 						console.log(res.data.msg[0].record);
-				        var a = res.data.msg[0].record;
-						var b = JSON.parse(a);
+				        var track = res.data.msg[0].record;
+						var track1 = JSON.parse(track);
 						var points = []
-						     b.forEach((item, index) => {
+						     track1.forEach((item, index) => {
 						      points.splice(index, 0, {
 						       latitude: item[1],
 						       longitude: item[0]
@@ -309,7 +309,7 @@
 						this.location = formatLocation(res.longitude, res.latitude);
 						this.address = res.address
 						this.name = res.address.poiName
-						// console.log(this.locationinfo)
+						console.log(this.locationinfo)
 					},
 					fail: (err) => {
 						console.log((err))
@@ -450,7 +450,6 @@
 					this.record = [this.longitude, this.latitude];
 					this.newrecord = this.newrecord.concat('[' + this.record + ']');
 					console.log('[' + this.newrecord + ']')
-					
 					if ((this.newrecord).length > 9) {
 						//console.log(this.newrecord)
 						Record_CarTrack({
