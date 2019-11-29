@@ -71,7 +71,7 @@
 				<tui-icon name="arrowright" :size="20" color="#555"></tui-icon>
 			</view>
 			<view class="tui-new-box">
-				<view class="tui-new-item" v-for="(item,index) in category" :key="index"  @tap="detail" >
+				<view class="tui-new-item" v-for="(item,index) in category" :key="index"  @tap="detail(item.id)" >
 					<view class="tui-title-box"  >
 						<view class="tui-new-title">{{item.specifications[0].name}},{{item.specifications[0].content}}</view>
 						
@@ -175,11 +175,10 @@
 				}
 			},
 			detail: function(e) {
-				console.log(e);
-				let key = e.currentTarget.dataset.key ;
-				console.log(key);
+				
+				
 					uni.navigateTo({
-						url: '../giftcenter/giftDetail?id=' + key
+						url: '../giftcenter/giftDetail?id=' + e
 					})
 				
 				

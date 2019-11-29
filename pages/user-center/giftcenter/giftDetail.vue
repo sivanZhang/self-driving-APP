@@ -7,16 +7,8 @@
 			
 		</view>
 
-		<!--banner-->
-		<view class="tui-banner-swiper" v-if="id">
-			<swiper :autoplay="true" :interval="5000" :duration="150" :circular="true" :style="{height:scrollH + 'px'}" @change="bannerChange">
-				<block v-for="(item,index) in banner" :key="index">
-					<swiper-item v-for="(item,index) in category" :key="index" @tap.stop="previewImage">
-						<image :src="'https://tl.chidict.com' + '/'+item.turns" class="tui-slide-image" :style="{height:scrollH+'px'}" />
-					</swiper-item>
-				</block>
-			</swiper>
-			<tui-tag type="translucent" shape="circleLeft" size="small">{{bannerIndex+1}}/{{banner.length}}</tui-tag>
+		<view class="tui-banner-swiper" v-for="(item,index) in category" :key="index" @tap.stop="previewImage">
+		<image :src="'https://tl.chidict.com' + '/'+item.picture" class="tui-slide-image" :style="{height:scrollH+'px'}" />	
 		</view>
 
 		<!--banner-->
@@ -335,17 +327,7 @@
 				opcity: 0,
 				iconOpcity: 0.5,
 				category:[],
-				banner: [
-					"https://www.thorui.cn/img/product/11.jpg",
-					"https://www.thorui.cn/img/product/2.png",
-					"https://www.thorui.cn/img/product/33.jpg",
-					"https://www.thorui.cn/img/product/4.png",
-					"https://www.thorui.cn/img/product/55.jpg",
-					"https://www.thorui.cn/img/product/6.png",
-					"https://www.thorui.cn/img/product/7.jpg",
-					"https://www.thorui.cn/img/product/8.jpg"
-				],
-				bannerIndex: 0,
+				picture:'',
 				topMenu: [{
 					icon: "message",
 					text: "消息",
@@ -399,7 +381,7 @@
 			// #ifdef MP-ALIPAY
 			my.hideAddToDesktopMenu();
 			// #endif
-
+            this.id = options.id ;
 			setTimeout(() => {
 				uni.getSystemInfo({
 					success: (res) => {
@@ -407,7 +389,7 @@
 						this.height = obj.top ? (obj.top + obj.height + 8) : (res.statusBarHeight + 44);
 						this.top = obj.top ? (obj.top + (obj.height - 32) / 2) : (res.statusBarHeight + 6);
 						this.scrollH = res.windowWidth
-						this.id = options.id ;
+						
 					}
 				})
 			}, 50)
@@ -416,11 +398,12 @@
 		methods: {
 			//获取礼品列表
 			getcategory(){
-			  query_GiftDetail().then(({ data }) =>{
+				
+			  query_GiftDetail({product_id:this.id}).then(({ data }) =>{
 				 
 				  if(data.status == 0){
 					  this.category = [...data.msg];
-					  
+					  this.picture =  data.msg[0].picture
 				  }
 			  })
 			},
@@ -428,10 +411,10 @@
 				this.bannerIndex = e.detail.current
 			},
 			previewImage: function(e) {
-				let index = e.currentTarget.dataset.index;
+				
 				uni.previewImage({
-					current: this.banner[index],
-					urls: this.banner
+					
+					urls:['https://tl.chidict.com' + '/'+this.picture],
 				})
 			},
 			back: function() {
