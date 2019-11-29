@@ -8,28 +8,29 @@
 			<!-- #endif -->
 		<view class="top">
 			<view class="section">
-				<button class="total" size="mini">总榜</button>
-				<button class="month" size="mini">月榜</button>
+				<button class="total" :style="{background:background,
+					color:color}" size="mini" @tap="lookrank_total">总榜</button>
+				<button class="month" size="mini" @tap="lookrank_month">月榜</button>
 			</view>
 		</view>
 		<view class="content">
 			<view class="rank_data">
 				<view v-for="(item,index) of List2" :key="index">
-					<view class="part1" v-if="index==1">
+					<view class="part2" v-if="index==1">
 						<view class="name">{{item.user_name}}</view>
-						<image src="/static/image/face.jpg"></image>
+						<image class="i2" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
 						<view class="number">{{item.distance}}</view>
 						<view class="km">km</view>
 					</view>
-					<view class="part2" v-if="index==0">
+					<view class="part1" v-if="index==0">
 						<view class="name">{{item.user_name}}</view>
-						<image src="/static/image/face.jpg"></image>
+						<image class="i1" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
 						<view class="number">{{item.distance}}</view>
 						<view class="km">km</view>
 					</view>
 					<view class="part3" v-if="index==2">
 						<view class="name">{{item.user_name}}</view>
-						<image src="/static/image/face.jpg"></image>
+						<image class="i3" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
 						<view class="number">{{item.distance}}</view>
 						<view class="km">km</view>
 					</view>
@@ -48,7 +49,7 @@
 						{{index+1}}
 					</view>
 					<view class="aui-news-item-hd">
-						<image src="/static/image/p10.jpg"></image>
+						<image class="i" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
 					</view>
 					<view class="aui-news-item-bd">
 						{{item.user_name}}
@@ -71,6 +72,9 @@
 		},
 		data() {
 			return {
+				background:'#262d37',
+			    color:'white',
+				thumbnail_portait:'',
 				imageURL: '/static/image/background_rank.gif',
 				List:[],
 				List2:[]
@@ -80,7 +84,7 @@
 			
 		},
 		methods: {
-			lookrank(){
+			lookrank_total(){
 				let data = {
 					year:''
 				}
@@ -88,11 +92,32 @@
 					data
 				}) => {
 					if(data.status === 0){
+						this.background = '#262d37'
+						this.color = 'white'
 						this.List = [...data.msg];
 					    this.List2 = this.List.slice(0,3)
-						console.log("----------")
+						this.thumbnail_portait = "0"
 						console.log(this.List)
-						console.log(this.List2)
+						console.log(this.thumbnail_portait)
+					}
+					console.log(data)
+				})
+			},
+			lookrank_month(){
+				let data = {
+					month:''
+				}
+				Track_Rank(data).then(({
+					data
+				}) => {
+					if(data.status === 0){
+						this.background = '#1d1e23'
+						this.color = '#4a4b50'
+						this.List = [...data.msg];
+					    this.List2 = this.List.slice(0,3)
+						this.thumbnail_portait = "0"
+						console.log(this.List)
+						console.log(this.thumbnail_portait)
 					}
 					console.log(data)
 				})
@@ -100,7 +125,7 @@
 
 		},
 		onLoad() {
-			this.lookrank()
+			this.lookrank_total()
 		},
 		onShow(){
 			
@@ -120,6 +145,16 @@
 		background-position: center;
 		background-attachment:fixed;
 		/* #endif */
+		.i1,.i2,.i3,.i {
+			position: relative;
+			left: 3%;
+			width: 130rpx;
+			height: 130rpx;
+			border-radius: 50%;
+			// box-shadow: 1px 1px 2px #F2F2F2;
+			border: 1.5px solid #F2F2F2;
+			background-color: #EFEFEF;
+		}
 		.top{
 			position:fixed;
 			z-index:10;
@@ -147,54 +182,63 @@
 					background:#262d37;
 					color:white;
 				}
-				.total{
-					
-				}
-				.month{
-					
-				}
 			}
 		}
 	    .content{
-			position: absolute;
+			// position: absolute;
 			margin-left:20upx;
 			color:white;
 			.rank_data{
 				display:flex;
 				flex-wrap: nowrap;
 				flex-direction: row;
-				justify-content:space-between;
-				display: -webkit-flex; /* Safari */
+				// justify-content:space-between;
+				// display: -webkit-flex; /* Safari */
 				font-size:32upx;
 				image{
 					width: 120upx;
 					height: 120upx;
 					border-radius: 50%;
 					margin-left:30upx;
-					z-index:99;
-					position:relative;
+					z-index:9;
+					// position:absolute;
 				}
 					.name{
-						padding-left:30upx;
+						// padding-left:30upx;
+						margin-top:120upx;
+						text-align: center;
 					}
 					.number{
-						padding-left:30upx;
-						margin-top:150upx;
+						// padding-left:30upx;
+						margin-top:170upx;
+						text-align: center;
 					}
 					.km{
-						margin-left:60upx;
+						// margin-left:60upx;
+						text-align: center;
 					}
 					.part1{
-			            margin-left:130upx; 
-						margin-top:130upx;
+						text-align: center;
+			            margin-left:290upx; 
+						margin-top:10upx;
+						.i1{
+							margin-left:-30upx;
+						}
 					}
 					.part2{
-						margin-top:210upx;
-						margin-left:0upx;
+						margin-top:170upx;
+						margin-left:-780upx;
+						.i2{
+							margin-left:325upx;
+						}
 					}
 					.part3{
-						margin-top:220upx;
-						margin-left:130upx;
+						text-align: center;
+						margin-top:200upx;
+						margin-left:100upx;
+						.i3{
+							margin-left:20upx;
+						}
 					}
 			}
 			.grade{
@@ -206,14 +250,14 @@
 					height:180upx;
 				}
 				.first{
-					margin-top:-360upx;
+					margin-top:-380upx;
 					margin-left:110upx;
 				}
 				.second{
-					margin-top:-320upx;
+					margin-top:-330upx;
 				}
 				.third{
-					margin-top:-270upx;
+					margin-top:-300upx;
 					margin-left:110upx;
 				}
 			}
@@ -223,7 +267,7 @@
 			height:auto;
 			width:94%;
 			margin-left:22upx;
-			margin-top:650upx;
+			margin-top:50upx;
 			position:absolute;
 			border-radius: 20upx;
 			.aui-news-item {
