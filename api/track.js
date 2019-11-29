@@ -16,7 +16,7 @@ export function Record_Track(payload) {
     return Ajax.post('/track/track/?put', payload)
 };
 //返回轨迹信息
-export function Show_Track(payload) {
-    return Ajax.get('/track/track/', payload)
+export function Show_Track(params) {
+    return Ajax.get('/track/track/', {params})
 };
 

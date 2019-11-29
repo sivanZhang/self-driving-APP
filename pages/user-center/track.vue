@@ -1,10 +1,15 @@
- <template>
-	
-		<web-view src="/hybrid/html/background.html" ></web-view>
-	
+<template>
+	<view>
+	<web-view src="/hybrid/html/background.html"></web-view>
+	</view>
 </template>
 <script>
-	</script>
-	<style scoped>
+	export default{
+		data(){
+			return{
+				
+			}
+		},
 		
-	</style>
+	}
+	</script>

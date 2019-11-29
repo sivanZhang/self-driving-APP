@@ -37,7 +37,7 @@
     </div>
 </div>
 
-<script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4f59b5834fb366bde9c97903d0963626"></script>
 
 <script>
@@ -101,7 +101,22 @@
     function stopAnimation () {
         marker.stopMove();
     }
+	
+	     $.ajax({
+	            url: "https://tl.chidict.com/car/open/",
+	            type: "POST",
+	            dataType: "json",
+	            data: { "tag":1 },
+	            success: function (data) {
+	                console.log('获取成功')
+	            }.bind(this),
+	            error: function (xhr, status, err) {
+	            }.bind(this)
+	        });
+	    
+
 </script>
+
 
 </body>
 </html>

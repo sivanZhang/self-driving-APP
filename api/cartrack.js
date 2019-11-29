@@ -12,6 +12,6 @@ export function Close_CarTrack(payload) {
     return Ajax.post('/car/open/?put', payload)
 };
 //返回车迹信息
-export function Show_CarTrack(payload) {
-    return Ajax.get('/car/track/', payload)
+export function Show_CarTrack(params) {
+    return Ajax.get('/car/track/', {params})
 };
