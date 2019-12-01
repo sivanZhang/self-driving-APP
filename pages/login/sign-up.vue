@@ -1,26 +1,27 @@
 <template>
+<!-- 注册页面 -->
 <!-- #ifdef H5 -->  
 			<view id="sign-up">  
 			<!-- #endif -->
 			<!-- #ifndef H5 -->
 			<view id="sign-up"  :style="{backgroundImage: 'url('+imageURL+')',backgroundSize:'cover',backgroundPosition:'center'}"> 
 			<!-- #endif -->
-		<text class="text">注册</text>
+		<text class="title">注册</text>
 		<view class="content">
-			<view class="item">
+			<view class="phone-number">
 				<image src="/static/icons/phone.png"></image>
 				<input type="number" v-model="formData.phone" pattern="[0-9]*" oninput="value=value.replace(/[^\d.]/g,'')" maxlength="11" placeholder="手机号" placeholder-style="color:#ffffff;"/>
 		       <!-- <input class="pr-s" disabled="true" @tap="keyphone" placeholder-style="color:#ffffff;" maxlength="11" placeholder="手机号" v-model="formData.phone"/>
 		        <tki-float-keyboard ref="keyb" :mode="keyMode" :type="keyType" :title="keyTitle" @del="keyDel" 
 		        @val="keyVal" @show="keyShow" @hide="keyHide"></tki-float-keyboard> -->	
 			</view>
-			<view class="code-warp">
+			<view class="verificate-code">
 				<image src="/static/icons/code.png"></image>
 				<input type="number" v-model.number="formData.code" placeholder="验证码" placeholder-style="color:#ffffff;"/>
 				<!-- <input class="pr-s" disabled="true" @tap="keycode" placeholder-style="color:#ffffff;" maxlength="4" placeholder="验证码" v-model.number="formData.code"/> -->
 				<button type="default" plain="true" :disabled="codeButtonType" @click="getCode()" size="mini">{{codeButtonType?secondCount+'秒后重新获取':'获取验证码'}}</button>
 			</view>
-			<view class="item">
+			<view class="username">
 				<image src="/static/icons/user.png"></image>
 				<input type="text" v-model="formData.username" placeholder="用户名" placeholder-style="color:#ffffff;"/>
 			</view>
@@ -189,7 +190,7 @@
 		background-size: cover;
 		background-position: center;
 		/* #endif */
-		.text{
+		.title{
 		    position: relative;
 			top:200upx;
 			left:320upx;
@@ -203,13 +204,13 @@
 				height: 40upx;
 				width: 40upx;
 			}
-			.item{
+			.phone-number,.username{
 				align-items: center;
 				margin-top:50upx;
 				margin-left:80upx;
 				display:flex;
 			}
-			.code-warp {
+			.verificate-code{
 				align-items: center;
 				display:flex;
 				margin-top:50upx;

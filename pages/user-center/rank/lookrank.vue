@@ -7,54 +7,54 @@
 		<view id="rank" :style="{backgroundImage: 'url('+imageURL+')',backgroundAttachment:'fixed',backgroundSize:'cover',backgroundPosition:'center'}">
 			<!-- #endif -->
 		<view class="top">
-			<view class="section">
-				<button class="total" :style="{background:background,
+			<view class="top-item">
+				<button class="top-item-total" :style="{background:background,
 					color:color}" size="mini" @tap="lookrank_total">总榜</button>
-				<button class="month" size="mini" @tap="lookrank_month">月榜</button>
+				<button class="top-item-month" size="mini" @tap="lookrank_month">月榜</button>
 			</view>
 		</view>
-		<view class="content">
-			<view class="rank_data">
+		<view class="main">
+			<view class="main-item-data">
 				<view v-for="(item,index) of List2" :key="index">
-					<view class="part2" v-if="index==1">
-						<view class="name">{{item.user_name}}</view>
-						<image class="i2" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
-						<view class="number">{{item.distance}}</view>
-						<view class="km">km</view>
+					<view class="main-item-second" v-if="index==1">
+						<view class="main-item-data-username">{{item.user_name}}</view>
+						<image class="second-avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
+						<view class="main-item-data-strokes">{{item.distance}}</view>
+						<view class="main-item-data-unit">km</view>
 					</view>
-					<view class="part1" v-if="index==0">
-						<view class="name">{{item.user_name}}</view>
-						<image class="i1" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
-						<view class="number">{{item.distance}}</view>
-						<view class="km">km</view>
+					<view class="main-item-first" v-if="index==0">
+						<view class="main-item-data-username">{{item.user_name}}</view>
+						<image class="first-avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
+						<view class="main-item-data-strokes">{{item.distance}}</view>
+						<view class="main-item-data-unit">km</view>
 					</view>
-					<view class="part3" v-if="index==2">
-						<view class="name">{{item.user_name}}</view>
-						<image class="i3" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
-						<view class="number">{{item.distance}}</view>
-						<view class="km">km</view>
+					<view class="main-item-third" v-if="index==2">
+						<view class="main-item-data-username">{{item.user_name}}</view>
+						<image class="third-avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
+						<view class="main-item-data-strokes">{{item.distance}}</view>
+						<view class="main-item-data-unit">km</view>
 					</view>
 				</view>
 			</view>
-			<view class="grade">
-				<image class="second" src="/static/icons/second.png"></image>
-				<image class="first" src="/static/icons/first.png"></image>
-				<image class="third" src="/static/icons/third.png"></image>
+			<view class="main-item-grade">
+				<image class="grade-second" src="/static/icons/second.png"></image>
+				<image class="grade-first" src="/static/icons/first.png"></image>
+				<image class="grade-third" src="/static/icons/third.png"></image>
 			</view>
 		</view>
 		<view class="card">
 			<view v-for="(item,index) of List" :key="index">
-				<view class="aui-news-item" v-if="index > 2">
-					<view class="aui-news-item-cd">
+				<view class="card-item" v-if="index > 2">
+					<view class="card-item-serial">
 						{{index+1}}
 					</view>
-					<view class="aui-news-item-hd">
-						<image class="i" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
+					<view class="card-item-avatar">
+						<image class="avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
 					</view>
-					<view class="aui-news-item-bd">
+					<view class="card-item-username">
 						{{item.user_name}}
 					</view>
-					<view class="aui-news-item-fr">{{item.distance}}km</view>
+					<view class="card-item-strokes">{{item.distance}}km</view>
 				</view>
 			</view>
 		</view>
@@ -145,7 +145,7 @@
 		background-position: center;
 		background-attachment:fixed;
 		/* #endif */
-		.i1,.i2,.i3,.i {
+		.first-avatar,.second-avatar,.third-avatar,.avatar{
 			position: relative;
 			left: 3%;
 			width: 130rpx;
@@ -164,7 +164,7 @@
 			width:100%;
 			color:#708090;
 			font-size:32upx;
-			.section{
+			.top-item{
 				display:flex;
 				flex-wrap: wrap;
 				width:90%;
@@ -184,11 +184,11 @@
 				}
 			}
 		}
-	    .content{
+	    .main{
 			// position: absolute;
 			margin-left:20upx;
 			color:white;
-			.rank_data{
+			.main-item-data{
 				display:flex;
 				flex-wrap: nowrap;
 				flex-direction: row;
@@ -203,45 +203,45 @@
 					z-index:9;
 					// position:absolute;
 				}
-					.name{
+					.main-item-data-username{
 						// padding-left:30upx;
 						margin-top:120upx;
 						text-align: center;
 					}
-					.number{
+					.main-item-data-strokes{
 						// padding-left:30upx;
 						margin-top:170upx;
 						text-align: center;
 					}
-					.km{
+					.main-item-data-unit{
 						// margin-left:60upx;
 						text-align: center;
 					}
-					.part1{
+					.main-item-first{
 						text-align: center;
 			            margin-left:290upx; 
 						margin-top:10upx;
-						.i1{
+						.first-avatar{
 							margin-left:-30upx;
 						}
 					}
-					.part2{
+					.main-item-second{
 						margin-top:170upx;
 						margin-left:-780upx;
-						.i2{
+						.second-avatar{
 							margin-left:325upx;
 						}
 					}
-					.part3{
+					.main-item-third{
 						text-align: center;
 						margin-top:200upx;
 						margin-left:100upx;
-						.i3{
+						.third-avatar{
 							margin-left:20upx;
 						}
 					}
 			}
-			.grade{
+			.main-item-grade{
 				position: absolute;
 				display:flex;
 				flex-wrap: nowrap;
@@ -249,14 +249,14 @@
 					width:170upx;
 					height:180upx;
 				}
-				.first{
+				.grade-first{
 					margin-top:-380upx;
 					margin-left:110upx;
 				}
-				.second{
+				.grade-second{
 					margin-top:-330upx;
 				}
-				.third{
+				.grade-third{
 					margin-top:-300upx;
 					margin-left:110upx;
 				}
@@ -270,7 +270,7 @@
 			margin-top:50upx;
 			position:absolute;
 			border-radius: 20upx;
-			.aui-news-item {
+			.card-item {
 			    padding: 20upx;
 			    position: relative;
 			    display: -webkit-box;
@@ -281,12 +281,12 @@
 			    align-items: center;
 			}
 			
-			.aui-news-item-cd {
+			.card-item-serial {
 			    margin-right: .4em;
 			    text-align: center;
 				font-size:35upx;
 			}
-			.aui-news-item-hd {
+			.card-item-avatar {
 			    margin-right: .8em;
 			    width: 90upx;
 			    height: 90upx;
@@ -295,21 +295,21 @@
 			    text-align: center;
 			}
 			
-			.aui-news-item-hd image {
+			.card-item-avatar image {
 			    width: 100%;
 			    max-height: 100%;
 				border-radius: 50%;
 				vertical-align: top;
 			}
 			
-			.aui-news-item-bd {
+			.card-item-username {
 			    -webkit-box-flex: 1;
 			    -webkit-flex: 1;
 			    flex: 1;
 			    min-width: 0;
 				font-size:35upx;
 			}
-			.aui-news-item:before {
+			.card-item:before {
 			    position: absolute;
 			    z-index: 2;
 			    -webkit-transform: scaleY(0.5);
@@ -318,7 +318,7 @@
 			    transform-origin: 0 100%;
 			}
 			
-			.aui-news-item-fr {
+			.card-item-strokes {
 			    text-align: right;
 			    font-size: 35upx;
 			}

@@ -1,4 +1,5 @@
 <template>
+	<!-- 登录页面 -->
 	<!-- #ifdef H5 -->
 	<view id="login">
 		<!-- #endif -->
@@ -9,15 +10,15 @@
 				嗨自驾, 自驾嗨
 			</view>
 			<view class="inputs">
-				<view class="left">
+				<view class="phone-number">
 					<image src="/static/icons/user.png"></image>
-					<input type="number" v-model="PhoneNumber" placeholder="手机号" maxlength="11" pattern="[0-9]*" oninput="value=value.replace(/[^\d.]/g,'')"
+					<input type="number" v-model="PhoneNumber" placeholder="手机号" maxlength="11" pattern="[0-9]*" 
 					 placeholder-style="color:#ffffff;">
 					<!-- <input class="pr-s" disabled="true" @tap="key" placeholder-style="color:#ffffff;" maxlength="11" placeholder="手机号" v-model="PhoneNumber"/>
 				    <tki-float-keyboard ref="keyb" :mode="keyMode" :type="keyType" :title="keyTitle" @del="keyDel" 
 					@val="keyVal" @show="keyShow" @hide="keyHide"></tki-float-keyboard> -->
 				</view>
-				<view class="left">
+				<view class="password">
 					<image src="/static/icons/password.png"></image>
 					<input type="password" v-model="Password" placeholder="密码" placeholder-style="color:#ffffff;">
 				</view>
@@ -229,7 +230,7 @@
 		.inputs {
 			margin-top: 700upx;
 			color: #FFFFFF;
-			.left {
+			.phone-number,.password {
 				display: flex;
 				align-items: center;
 				// font-weight: bold;
