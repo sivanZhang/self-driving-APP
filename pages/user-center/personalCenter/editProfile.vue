@@ -6,22 +6,22 @@
 			<!-- <image @tap="target('/pages/user-center/personalCenter/portrait')"   class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image> -->
 			<!-- <image @tap="target('/pages/user-center/personalCenter/portrait?image='+encodeURIComponent(JSON.stringify(this.thumbnail_portait)))"
 			 class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image> -->
-			<image class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
+			<image class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
 		</view>
 
 		<view class="body">
 			<view class="bodyList">
-				<view class="us">昵称：</view>
+				<view class="name">昵称：</view>
 				<view v-if="username == ''">
-					<input class="in" type="text" @tap="change" @input="onKeyInput" />
+					<input class="input-text" type="text" @tap="change" @input="onKeyInput" />
 				</view>
 				<view else>
-					<input class="in" disabled="true" v-model="username" />
+					<input class="input-text" disabled="true" v-model="username" />
 				</view>
 			</view>
 
 			<view class="bodyList">
-				<view class="us">性别：</view>
+				<view class="name">性别：</view>
 				<view>
 					<radio-group @change="radioChange">
 						<label >
@@ -34,22 +34,22 @@
 
 			</view>
 			<view class="bodyList">
-				<view class="us">车牌：</view>
+				<view class="name">车牌：</view>
 				<view>
-					<input class="inp" disabled="true" @tap="plateShow=true" v-model.trim="plateNo"></input>
+					<input  disabled="true" @tap="plateShow=true" v-model.trim="plateNo"></input>
 					<plate-input v-if="plateShow" :plate="plateNo" @export="setPlate" @close="plateShow=false"></plate-input>
 				</view>
 			</view>
 
 			<view class="bodyList">
-				<view class="us">签名：</view>
+				<view class="name">签名：</view>
 				<view>
 					<input  type="text" v-model="signature" />
 				</view>
 			</view>
 		</view>
-		<view style="padding: 15upx;">
-			<button class="but" type="primary" @tap="save">保存</button>
+		<view class="footer">
+			<button class="save" type="primary" @tap="save">保存</button>
 
 		</view>
 	</view>
@@ -235,7 +235,7 @@
 			align-items: center;
 			justify-content: center;
 
-			.i {
+			.img {
 				width: 185rpx;
 				height: 185rpx;
 				border-radius: 50%;
@@ -256,12 +256,15 @@
 				 padding-right:1rem;
 				 
 			 }
-				.us {
+			    .footer{
+				 padding: 15upx;
+			    }
+				.name {
 					
 					width: 16%; 
 					position: relative;
 				}
-				.in{
+				.input-text{
 					position:relative;
 					height:5%;
 					
@@ -270,7 +273,7 @@
 			}
 		}
 
-		.but {
+		.save {
 			background-color: #DF5000;
 			border-radius: 50upx;
 			margin-top:7%;

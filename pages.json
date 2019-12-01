@@ -10,6 +10,31 @@
 			}
 		},
 		{
+			"path": "pages/user-center/giftcenter/giftcenter",
+			"style": {
+				"navigationBarTitleText": "礼品中心"
+				
+			}
+		},
+		{
+			"path": "pages/user-center/giftcenter/coupon",
+			"style": {
+				"navigationBarTitleText": "领券中心"
+				
+			}
+		},
+		
+		{
+			"path": "pages/user-center/giftcenter/giftDetail",
+			"style": {
+				"navigationBarTitleText": "礼品详情",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+	
+		{
 			"path": "pages/user-center/track/alltrack",
 			"style": {
 				"navigationBarTitleText": "车迹统计"
@@ -23,23 +48,7 @@
 				
 			}
 		},
-		
-		{
-			"path": "pages/user-center/giftcenter/giftcenter",
-			"style": {
-				"navigationBarTitleText": "礼品中心"
-				
-			}
-		},
-		{
-			"path": "pages/user-center/giftcenter/giftDetail",
-			"style": {
-				"navigationBarTitleText": "礼品中心",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
+	
 		
 		{
 			"path": "pages/user-center/rank/lookrank",

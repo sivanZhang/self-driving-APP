@@ -5,7 +5,7 @@
 			<view class="settingList" @tap="target('/pages/user-center/personalCenter/portrait?image='+encodeURIComponent(JSON.stringify(this.thumbnail_portait)))">
 				<view>头像</view>
 				<image 
-				 class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
+				 class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
 				<view>
 					<uni-icon class="ico" type="arrowright"></uni-icon>
 				</view>
@@ -148,7 +148,7 @@
 				display: flex;
 				align-items: center;
 			}
-			.i {
+			.img {
 				width: 120rpx;
 				height: 120rpx;
 				border-radius: 10px;

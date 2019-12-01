@@ -2,8 +2,7 @@
 	<!-- 我的首页 -->
 	<view id="MyAccount">
 		<view class="wall">
-
-			<view class="header" @tap="target('/pages/user-center/track/alltrack')">
+			<view class="header" @tap="isLogin?target('/pages/user-center/track/alltrack'):toLogin()">
 				<view class="left">
 					<view class="milage">
 						总里程数
@@ -26,8 +25,8 @@
 				</view>
 			</view>
 			<view class="wall-top">
-				<image v-if="isLogin" class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
-				<image v-else class="i" src="/static/icons/zhuce.png"></image>
+				<image v-if="isLogin" class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
+				<image v-else class="img" src="/static/icons/zhuce.png"></image>
 				<view class="top">
 					<view class="information">
 						<view v-if="sex == '女'">
@@ -73,11 +72,8 @@
 				</view>
 				<view class="uni-content-box">
 					<view class="uni-content-image">
-
 						<image class="img" v-show="stop" @tap="isLogin?track():toLogin()" src="/static/image/journey/start.png" />
 						<image class="img2" v-show="!stop" @tap="isLogin?closetrack():toLogin()" src="/static/icons/open.jpg" />
-
-
 					</view>
 				</view>
 				<view class="uni-content-box">
@@ -139,7 +135,7 @@
 				<view>
 					<image class="icon" src="../../static/image/journey/gift.png"></image>
 					礼品中心
-					
+
 				</view>
 				<view>
 					<uni-icon type="arrowright"></uni-icon>
@@ -168,9 +164,9 @@
 			版本:12.321.33.22
 		</view>
 		<uni-popup ref="popup" type="bottom">
-			<map style="width: 100%; height: 300px;" :polyline='polylines' :latitude="latitude" :longitude="longitude" :markers="markers"  show-location="true" scale="17">
+			<map style="width: 100%; height: 300px;" :polyline='polylines' :latitude="latitude" :longitude="longitude" :markers="markers"
+			 show-location="true" scale="17">
 			</map>
-
 		</uni-popup>
 	</view>
 </template>
@@ -222,7 +218,7 @@
 				id: '',
 				longitude: '',
 				latitude: '',
-				markers:[],
+				markers: [],
 				record: [],
 				newrecord: [],
 				locationinfo: '',
@@ -241,7 +237,7 @@
 			}
 		},
 		methods: {
-			
+
 			async getLocation() {
 				// #ifdef APP-PLUS
 				let status = await this.checkPermission();
@@ -337,7 +333,6 @@
 				}
 			},
 			getLocationTest() {
-				
 				if (this.hasLocation === true) {
 					let SI = setInterval(() => {
 						this.doGetLocation();
@@ -357,7 +352,7 @@
 					this.thumbnail_portait = data.msg[0].thumbnail_portait;
 					this.username = data.msg[0].username;
 					this.sex = data.msg[0].sex;
-					
+
 				})
 			},
 			target(url) {
@@ -372,7 +367,6 @@
 			},
 			track() {
 				this.doGetLocation();
-
 				if (this.hasLocation === true) {
 					this.$refs.popup.open();
 					this.open = 1;
@@ -421,46 +415,37 @@
 							// 	icon: "none",
 							// })
 							//console.log(data)
-							Show_CarTrack({id:this.id}).then(({ data })=>{
-							   uni.showToast({
-								title: data.msg,
-								icon: "none",
-							   })
-							 
-							   	console.log(data.msg[0].record);
-							       var a = data.msg[0].record;
-							   	var b = JSON.parse(a);
-							   	var points = []
-							   	     b.forEach((item, index) => {
-							   	      points.splice(index, 0, {
-							   	       latitude: item[1],
-							   	       longitude: item[0]
-							   	      })
-							   	     })
-							   	console.log(points)
-							   	this.latitude=points[0].latitude;
-							   	this.longitude=points[0].longitude;
-							   	this.polylines = [{
-							   		points,
-							   		color: "#0A98D5", //线的颜色
-							   		width: 8, //线的宽度
-							   		arrowLine: true,//带箭头的线 开发者工具暂不支持该属性
-							   		
-							   	}];
-							   	this.markers = [{
-							   		
-							   		iconPath:'https://webapi.amap.com/images/car.png',
-							   		latitude:points[0].latitude,
-							   		longitude:points[0].longitude,
-							   	},
-							   	
-							   	];
-							   	
-							   
+							Show_CarTrack({
+								id: this.id
+							}).then(({
+								data
+							}) => {	
+								var track = data.msg[0].record;
+								var track1 = JSON.parse(track);
+								var points = []
+								track1.forEach((item, index) => {
+									points.splice(index, 0, {
+										latitude: item[1],
+										longitude: item[0]
+									})
+								})
+								this.latitude = points[0].latitude;
+								this.longitude = points[0].longitude;
+								this.polylines = [{
+									points,
+									color: "#0A98D5", //线的颜色
+									width: 8, //线的宽度
+									arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
+								}];
+								this.markers = [{
+									iconPath: 'https://webapi.amap.com/images/car.png',
+									latitude: points[0].latitude,
+									longitude: points[0].longitude,
+								}, ];
 							})
 						})
 						this.newrecord = []
-						
+
 					}
 				}, 1000)
 			},
@@ -482,7 +467,7 @@
 					})
 					console.log(data)
 				})
-				
+
 			}
 		},
 		onLoad() {
@@ -500,19 +485,19 @@
 			//          console.log(wv.getStyle())
 			//      }, 1000);//如果是首页的onload调用时需要延时一下，二级页面无需延时，可直接获取
 			//      // #endif
-			         
-				 setTimeout(function() {
-			         uni.showToast({
-			         	title: "点击中间的按钮可以开始记录车迹哦",
-			         	icon: "none",
-			         })
-			     }, 1000);
+
+			setTimeout(function() {
+				uni.showToast({
+					title: "点击中间的按钮可以开始记录车迹哦",
+					icon: "none",
+				})
+			}, 1000);
 			this.getLocationTest();
 		},
 		onShow: function() {
 			this.doGetLocation();
 			this.search();
-			
+
 		},
 	};
 </script>
@@ -525,7 +510,7 @@
 			height: 360rpx;
 			position: relative;
 			background: #fff;
-   
+
 			.header {
 				padding-left: 30upx;
 				padding-top: 50upx;
@@ -629,7 +614,7 @@
 				top: 290upx;
 				font-size: 32upx;
 
-				.i {
+				.img {
 					position: relative;
 					left: 3%;
 					width: 130rpx;

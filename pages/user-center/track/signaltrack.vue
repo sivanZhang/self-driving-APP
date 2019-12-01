@@ -30,22 +30,15 @@
 		methods:{
 			searchTrackList(){
 				Show_CarTrack({id:this.id}).then(({ data })=>{
-				   uni.showToast({
-					title: data.msg,
-					icon: "none",
-				   })
-				 
-				   	console.log(data.msg[0].record);
-				       var a = data.msg[0].record;
-				   	var b = JSON.parse(a);
+				       var track = data.msg[0].record;
+				   	var track1 = JSON.parse(track);
 				   	var points = []
-				   	     b.forEach((item, index) => {
+				   	     track1.forEach((item, index) => {
 				   	      points.splice(index, 0, {
 				   	       latitude: item[1],
 				   	       longitude: item[0]
 				   	      })
 				   	     })
-				   	console.log(points)
 				   	this.latitude=points[0].latitude;
 				   	this.longitude=points[0].longitude;
 				   	this.polylines = [{
@@ -55,8 +48,7 @@
 				   		arrowLine: true,//带箭头的线 开发者工具暂不支持该属性
 				   		
 				   	}];
-				   	this.markers = [{
-				   		
+				   	this.markers = [{			   		
 				   		iconPath:'https://webapi.amap.com/images/car.png',
 				   		latitude:points[0].latitude,
 				   		longitude:points[0].longitude,

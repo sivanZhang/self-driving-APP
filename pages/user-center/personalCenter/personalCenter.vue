@@ -2,7 +2,7 @@
 	<view id="personCenter">
 		<!-- 个人中心 -->
 		<view class="header">
-			<image  class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
+			<image  class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
 			<view class="header-top">
 				<span style="">{{username||'用户'+UserInfo.phone}}</span>
 				<view v-if="sex == '女'">
@@ -13,24 +13,24 @@
 				</view>
 			</view>
 			<view class="header-main">
-				<view style="padding: 15upx,0upx;">关注{{follow_count}}
-					<span style="padding:0upx 15upx;">|</span></view>
-				<view style="padding: 15upx,0upx;">粉丝{{fans_count}}
-					<span style="padding:0upx 15upx;">|</span></view>
-				<view style="padding: 15upx,0upx;">被赞与收藏0</view>
+				<view class="header-edge">关注{{follow_count}}
+					<span class="header-center">|</span></view>
+				<view class="header-edge">粉丝{{fans_count}}
+					<span class="header-center">|</span></view>
+				<view class="header-edge">被赞与收藏0</view>
 			</view>
-			<!-- <view class="header-footer" style="">
-				<button style="" type="text" @tap="target('/pages/user-center/personalCenter/editProfile')">编辑资料</button>
+			<!-- <view class="header-footer" >
+				<button  type="text" @tap="target('/pages/user-center/personalCenter/editProfile')">编辑资料</button>
 			</view> -->
 		</view>
 		<view class="middle">
 			<span>个人介绍:</span>
 			<view></view>
 		</view>
-		<view class="footer" style="">
-			<view style="width: 50%;text-align: center;">动态</view>
-			<view style="height: 100upx;">|</view>
-			<view style="width: 50%;text-align: center;">足迹</view>
+		<view class="footer" >
+			<view class="footer-edge">动态</view>
+			<view class="footer-center">|</view>
+			<view class="footer-edge">足迹</view>
 		</view>
 	</view>
 </template>
@@ -99,7 +99,7 @@
 			text-align: center;
 			// border-bottom: 2.083upx solid #c8c8cc;
 
-			.i {
+			.img {
 				width: 185rpx;
 				height: 185rpx;
 				border-radius: 50%;
@@ -124,6 +124,12 @@
 		.header-main {
 			display: flex;
 			justify-content: center;
+		    .header-edge{
+				padding:15upx 0upx;
+			}
+			.header-center{
+				padding:0upx 15upx;
+			}
 		}
 
 		.header-footer {
@@ -152,6 +158,13 @@
 			height: 100upx;
 			display: flex;
 			border-bottom: 2.083upx solid #c8c8cc;
+			.footer-edge{
+				width: 50%;
+				text-align: center;
+			}
+			.footer-center{
+				height: 100upx;
+			}
 		}
 	}
 </style>

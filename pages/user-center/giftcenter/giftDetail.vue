@@ -4,43 +4,46 @@
 			<view class="tui-header" :style="{paddingTop:top+'px', opacity:opcity}">
 				商品详情
 			</view>
-			
+			<view class="tui-header-icon" :style="{marginTop:top+'px'}">
+			<view class="tui-icon tui-icon-arrowleft tui-icon-back" :style="{color:opcity>=1?'#000':'#fff',background:'rgba(0, 0, 0,'+iconOpcity+')'}"
+			 @tap="back"></view>
+			<view class="tui-icon tui-icon-more-fill  tui-icon-ml" :style="{color:opcity>=1?'#000':'#fff',background:'rgba(0, 0, 0,'+iconOpcity+')',fontSize:'11px'}"
+			 @tap.stop="openMenu"></view>
+				
+			</view>
 		</view>
-
+            
 		<view class="tui-banner-swiper" v-for="(item,index) in category" :key="index" @tap.stop="previewImage">
-		<image :src="'https://tl.chidict.com' + '/'+item.picture" class="tui-slide-image" :style="{height:scrollH+'px'}" />	
+		<image :src="'https://tl.chidict.com' + '/'+item.picture" class="tui-slide-image" :style="{height:200+'px'}" />	
 		</view>
 
-		<!--banner-->
 
-		<view class="tui-pro-detail">
+		<view class="tui-pro-detail" v-for="(item,index) in product" :key="index">
 			<view class="tui-product-title tui-border-radius">
 				<view class="tui-pro-pricebox tui-padding">
-					<view class="tui-pro-price">
-						<view>￥<text class="tui-price">49</text>.00</view>
+					<view class="tui-pro-price" >
+						￥<text class="tui-price">{{item.price}}</text>
 						<tui-tag size="small" :plain="true" type="high-green" shape="circle">新品</tui-tag>
 					</view>
+					
 					<view class="tui-collection tui-size" @tap="collecting">
 						<view class="tui-icon tui-icon-collection" :class="['tui-icon-'+(collected?'like-fill':'like')]" :style="{color:collected?'#ff201f':'#333',fontSize:'20px'}"></view>
-						<view class="tui-scale" :class="[collected?'tui-icon-red':'']">收藏</view>
+						
 					</view>
 				</view>
-				<view class="tui-original-price tui-gray">
-					价格
-					<text class="tui-line-through">￥199.00</text>
-				</view>
+				
 				<view class="tui-pro-titbox">
-					<view class="tui-pro-title">谈判官明星同款耳坠韩国气质简约显脸瘦的耳环女百搭个性长款耳钉 个性水滴耳环【A2】</view>
+					<view style="font-size:13px;padding-top:5%;">虚拟币价格：{{item.coin }}</view>
+					<view class="tui-pro-title">{{item.name}}</view>
 					<button open-type="share" class="tui-share-btn tui-share-position">
 						<tui-tag type="gray" tui-tag-class="tui-tag-share tui-size" shape="circleLeft" size="small">
 							<view class="tui-icon tui-icon-partake" style="color:#999;font-size:15px"></view>
-							<!-- <tui-icon name="partake" color="#999" size="15"></tui-icon> -->
 							<text class="tui-share-text tui-gray">分享</text>
 						</tui-tag>
 					</button>
 				</view>
 				<view class="tui-padding">
-					<view class="tui-sub-title tui-size tui-gray">此商品将于2019-06-28,10点结束闪购特卖，时尚美饰联合专场</view>
+					<view class="tui-sub-title tui-size tui-gray">{{item.content}}</view>
 					<view class="tui-sale-info tui-size tui-gray">
 						<view>快递：0.00</view>
 						<view>月销2000</view>
@@ -56,7 +59,7 @@
 						<tui-tag size="small" type="red" shape="circle" tui-tag-class="tui-tag-coupon">满99减8</tui-tag>
 						<tui-tag size="small" type="red" shape="circle" tui-tag-class="tui-tag-coupon">满59减5</tui-tag>
 					</view>
-					<tui-icon name="more-fill" :size="20" class="tui-right tui-top40" color="#666"></tui-icon>
+					
 				</view>
 
 				<view class="tui-list-cell tui-last" @tap="showPopup">
@@ -67,25 +70,16 @@
 							<text>满1件，立减最低1件商品价格，包邮（限中国内地）</text>
 						</view>
 						<view class="tui-promotion-box">
-							<tui-tag size="small" type="red" :plain="true" tui-tag-class="tui-inline-block">满额返券</tui-tag>
-							<text>满2件，立减最低2件商品价格，包邮（限中国内地）</text>
-						</view>
-						<view class="tui-promotion-box">
 							<tui-tag size="small" type="red" :plain="true" tui-tag-class="tui-inline-block">特别赠品</tui-tag>
-							<text>满3件，立减最低3件商品价格，包邮（限中国内地）</text>
+							<text>满3件，赠送保修服务1年</text>
 						</view>
 					</view>
-					<tui-icon name="more-fill" :size="20" class="tui-right tui-top40" color="#666"></tui-icon>
 				</view>
 
 			</view>
 
 			<view class="tui-basic-info tui-mtop tui-radius-all">
-				<view class="tui-list-cell" @tap="showPopup">
-					<view class="tui-bold tui-cell-title">已选</view>
-					<view class="tui-selected-box">个性水滴耳环【A2】,1个，可选服务</view>
-					<tui-icon name="more-fill" :size="20" class="tui-right" color="#666"></tui-icon>
-				</view>
+				
 				<view class="tui-list-cell" @tap="showPopup">
 					<view class="tui-bold tui-cell-title">送至</view>
 					<view class="tui-addr-box">
@@ -307,15 +301,23 @@
 <script>
 	import tuiIcon from "@/components/gift/icon"
 	import tuiTag from "@/components/gift/tag"
-	import tuiLoadmore from "@/components/gift/loadmore"
+	import tuiBadge from "@/components/gift/badge"
 	import tuiNomore from "@/components/gift/nomore"
+	import tuiButton from "@/components/gift/button"
+	import tuiTopDropdown from "@/components/gift/top-dropdown"
+	import tuiBottomPopup from "@/components/gift/bottom-popup"
+	
 	import { query_GiftDetail,look_GiftDetail } from '@/api/giftcenter';
 	export default {
 		components: {
 			tuiIcon,
 			tuiTag,
-			tuiLoadmore,
+			tuiBadge,
 			tuiNomore,
+			tuiButton,
+			tuiTopDropdown,
+			tuiBottomPopup,
+			
 			
 		},
 		data() {
@@ -327,7 +329,7 @@
 				opcity: 0,
 				iconOpcity: 0.5,
 				category:[],
-				picture:'',
+				product:[],
 				topMenu: [{
 					icon: "message",
 					text: "消息",
@@ -394,6 +396,7 @@
 				})
 			}, 50)
 			 this.getcategory();
+			 this.getproduct();
 		},
 		methods: {
 			//获取礼品列表
@@ -407,9 +410,16 @@
 				  }
 			  })
 			},
-			bannerChange: function(e) {
-				this.bannerIndex = e.detail.current
+			getproduct(){
+				look_GiftDetail({product_id:this.id}).then(({ data }) =>{
+								 
+								  if(data.status == 0){
+									  this.product = [...data.msg];
+									  console.log(data)
+								  }
+				})
 			},
+			
 			previewImage: function(e) {
 				
 				uni.previewImage({
@@ -449,7 +459,7 @@
 			},
 			coupon(){
 				uni.navigateTo({
-					url: '../mall-extend/coupon/coupon'
+					url: '../../user-center/giftcenter/coupon'
 				})
 			}
 		},
@@ -465,8 +475,8 @@
 	}
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+@import "../../../hybrid/icon.css";
 	page {
 		background: #f7f7f7;
 	}
@@ -728,10 +738,11 @@
 	}
 
 	.tui-scale {
-		transform: scale(0.7);
+		transform: scale(1.2);
 		transform-origin: center center;
 		line-height: 24rpx;
-		font-weight: normal;
+		font-weight: 400;
+		
 	}
 
 	.tui-icon-collection {
@@ -847,8 +858,8 @@
 
 	.tui-promotion-box {
 		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
+		// overflow: hidden;
+		// text-overflow: ellipsis;
 		padding: 10rpx 0;
 		width: 74%;
 	}

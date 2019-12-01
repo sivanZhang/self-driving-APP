@@ -83,10 +83,7 @@
 			},
 			getTrackList(){
 				Show_CarTrack().then(({ data })=>{
-				  
 				 this.TrackList = data.msg;
-				    
-				   	
 				   
 				})
 			},
