@@ -4,7 +4,7 @@
 		<view class="header">
 			<image  class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
 			<view class="header-top">
-				<span style="">{{username||'用户'+UserInfo.phone}}</span>
+				<span >{{username||'用户'+UserInfo.phone}}</span>
 				<view v-if="sex == '女'">
 					<image src="/static/icons/women.png"></image>
 				</view> 

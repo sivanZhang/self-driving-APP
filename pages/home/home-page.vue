@@ -33,52 +33,49 @@
 			</view>
 		</view> 
 	</view>-->
-	<view class="page-body">
-		
-		<image style="width:2rem;height:2rem;position:relative;left:17rem;top:2rem;" src="../../static/image/journey/s.png"
-		 @click="shareInfo">
-		</image>
-	   
-		<view style="position:relative;width:100%;height:5rem;background-color:#DAC2A6;top:2.5rem;">
-			<image style="width:4rem;height:4rem;left:0.5rem;top:-1rem;position:relative;border-radius:50%;" src="../../static/image/journey/1.jpeg">
-			</image>
-		    <block v-for="(item,index) of RewardList" :key="index">
-			<view style="font-size:16px;top:-1rem;left:1.5rem;position:relative;white-space:pre-wrap;" class="t">{{item.lineinfo.creator_name}}</view>
-			</block>
-			<button style="position:relative;top:-4rem;left:3rem;width:4.5rem;height:2rem;line-height:2rem;" type="primary"
-			 plain="true">关注</button>
+	<view id="page-body">
+		<view class="header">
+			<image  class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" ></image>
+			<span class="header-right">{{username||'用户'+UserInfo.phone}}</span>
+			<view class="header-right">
+				<view class="header-top-center" v-if="followClick" @tap="follow">
+					<view  class="iconfont icon-jiahao"></view>
+					<view>关注</view>
+				</view>
+				<view  class="header-top-right"  v-else @tap="follow">
+					<view  class="iconfont icon-duigou"></view>
+					<view>已关注</view>
+				</view>
+			</view>
+			
 		</view>
 		
-		<view style="position:relative;width:100%;background-color:#DAC2A6;top:3.4rem;">
-			<view style="position:relative;font-size:16px;top:0.4rem;left:0.5rem;color:#009CF9">10月11日</view>
+	  
+		<view class="content">
+			<view >10月11日</view>
 			
-			<image style="width:3rem;height:3rem;position:relative;top:6rem;left:5rem;" src="../../static/image/journey/e.png"
-			 @click="chooseLocation">
-			</image>
+			<image class="getposition" src="../../static/image/position.png" @click="chooseLocation"></image>
 			<block v-if="hasLocation === false">
-				<view style="position:relative;left:12rem;top:4rem;">未选择位置</view>
+				<view >未选择位置</view>
 			</block>
 			<block v-if="hasLocation === true">
-				<view style="position:relative;left:12rem;top:4rem;width:7rem;">
+				<view >
 					{{locationAddress}}
 				</view>
 			</block>
-			<text style="position:relative;top:-3rem;left:7.5rem;font-size:15px;">我去了北京，看到了天安门</text>
-
-			<!-- <image style="position:relative;width:2rem;height:2rem;top:-2rem;left:-9rem;" src="../../static/img/sc.png" @click="galleryImgs"></image>
-		  <text style="position:relative;left:-11.5rem;top:-1rem;">上传图片</text> -->
-			<view class="uni-label" style="position:relative;top:-1rem;font-size:15px;left:0.3rem;">数量限制</view>
+			
+			<view class="uni-label" >数量限制</view>
 			<picker :range="count" @change="countChange" mode="selector">
-				<view class="uni-input" style="position:relative;background-color:#DAC2A6;top:-2.5rem;left:4.5rem;width:2rem;border:5px solid;border-color:#009CF9;text-align: center;font-size:15px;">{{count[countIndex]}}</view>
+				<view class="uni-input" >{{count[countIndex]}}</view>
 			</picker>
 
-			<view class="uni-uploader-info" style="position:relative;color:black;top:0rem;left:5rem;">{{imageList.length}}/{{count[countIndex]}}</view>
+			<view class="uni-uploader-info" >{{imageList.length}}/{{count[countIndex]}}</view>
 			<view class="uni-uploader-body">
 				<view class="uni-uploader__files">
 					<block v-for="(image,index) in imageList" :key="index">
 						<view class="uni-uploader__file">
 							<image class="uni-uploader__img" :src="image" :data-src="image" @tap="previewImage" mode="aspectFill"></image>
-							<image src="../../static/image/journey/de.png" class="remove" :data-index="index" @tap='deleteImage' style=" position:relative;width: 38upx;height: 38upx;top:-5.5rem;left:4.5rem;"></image>
+							<image src="../../static/image/journey/de.png" class="remove" :data-index="index" @tap='deleteImage' ></image>
 
 						</view>
 					</block>
@@ -90,49 +87,35 @@
 		</view>
 
       <view class="uni-padding-wrap" >
-      	<image style="width:4rem;height:4rem;left:0.5rem;top:-1rem;position:relative;border-radius:50%;"
-      	    src="../../static/image/journey/1.jpeg">
-      		</image>
-		<button style="position:relative;top:-2.8rem;left:3.2rem;width:4.5rem;height:2rem;line-height:2rem;" type="primary"
-		 plain="true">关注</button>	
-      		<text  style="position:relative;top:-6rem;left:6.5rem;font-size:15px;" class="t">张三</text>
-      		<text style="position:relative;top:-3.5rem;left:-1rem;font-size:16px;color:#009CF9;">10月10日</text>
-      		<text style="position:relative;top:-4rem;left:0rem;font-size:15px;">我去了北京</text>
-      		
-      	<image style="width:3rem;height:3rem;left:-8.5rem;top:-0.5rem;position:relative;"
-      	    src="../../static/image/journey/e.png" @click="chooseLocation">
-      		</image>  
+		  <view class="header-right">
+      	<image  class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" ></image>
+	         <image class="share"
+	             src="../../static/image/journey/s.png" @click="shareInfo">
+	         	</image> 
+	         </view>
+      		<image class="getposition" src="../../static/image/position.png" @click="chooseLocation"></image>
       		<block v-if="hasLocation === false">
-      			<view style="position:relative;left:0.9rem;top:-0.5rem;">未选择位置</view>
+      			<view >未选择位置</view>
       		</block>
       		<block v-if="hasLocation === true">
-      			<view style="position:relative;left:0.9rem;top:-0.5rem;width:5rem;">
+      			<view >
       				{{locationAddress}}
       			</view>
       		</block>
-      		<!-- <button type="primary" @tap="chooseLocation">选择位置</button> -->
-      		<image style="width:2rem;height:2rem;position:relative;left:17rem;top:-10.5rem;"
-      		    src="../../static/image/journey/s.png" @click="shareInfo">
-      			</image> 
-				
-      		<image style="width:3rem;height:4rem;position:relative;top:-3rem;left:4rem;" src="../../static/image/journey/1.jpg"></image>							
-      		<image style="width:3rem;height:4rem;position:relative;top:-3rem;left:4.5rem;" src="../../static/image/journey/2.jpg"></image>
-      			<image style="width:3rem;height:4rem;position:relative;top:-3rem;left:5rem;" src="../../static/image/journey/3.jpg"></image>
+      					
+      		<image class="picture" src="../../static/image/journey/1.jpg"></image>							
+      		<image class="picture" src="../../static/image/journey/2.jpg"></image>
+      		<image class="picture" src="../../static/image/journey/3.jpg"></image>
       			<div class="heart" id="like2" rel="like"></div>
-      			<text style="position:relative;left:3.5rem;top:-5rem;">点赞</text>
-      			<image style="width:2rem;height:2rem;position:relative;left:5.5rem;top:-5.5rem;" src="../../static/image/journey/l.png">
+      			<text >点赞</text>
+      			<image class="footer" src="../../static/image/journey/l.png">
       			</image>
-      			<text style="position:relative;left:6rem;top:-5rem;">评论</text>
-      			<image style="width:1.5rem;height:1.5rem;position:relative;left:8.5rem;top:-5.5rem;" src="../../static/image/journey/collection.png">
+      			<text >评论</text>
+      			<image class="footer" src="../../static/image/journey/collection.png">
       			</image>
-      			<text style="position:relative;left:9rem;top:-5rem; ">收藏</text>
+      			<text >收藏</text>
       </view>
-      <view style="width:50%;position:relative;background-color:#fff;height:2rem;line-height: 2rem;text-align:center;top:1rem;">
-		 搭伴
-	  </view>
-	  <view style="width:50%;position:relative;background-color:#fff;height:2rem;line-height: 2rem;text-align:center;left:52%;top:-1rem;">
-	  		 发消息 
-	  </view>
+      
 	</view>
 </template>
 
@@ -182,8 +165,10 @@
 	import share from "@/common/share.js";
 	var util = require('../../common/util.js');
 	var formatLocation = util.formatLocation;
-    
-	import { query_RewardDetail } from '@/api/offerReward';
+    import {
+    	search_users
+    } from '@/api/usercenter'
+	
 	import permision from "@/common/permission.js"
 	var sourceType = [
 		['camera'],
@@ -199,8 +184,10 @@
 	export default {
 		data() {
 			return {
-				RewardList: [],
 				
+				username:'',
+				thumbnail_portait: '',
+				followClick: true,
 				hasLocation: false,
 				location: {},
 				locationAddress: '',
@@ -231,27 +218,38 @@
 				
 		},
        onLoad(){
-		   this.getRewardList();
+		   
 		  
 	   },
-	   
+	   onShow(){
+		   this.search();
+	   },
+	   computed: {
+	   	UserInfo() {
+	   		return this.$store.state.UserInfo
+	   	},
+	  
+	   },
 		methods: {
-			
-			//获取悬赏详情列表
-			getRewardList(){
-			  query_RewardDetail().then(({ data }) =>{
-				 
-				  if(data.status == 0){
-					  this.RewardList = [...data.msg];
-
-					  
-
-					  // console.log("----------")
-					  //  console.log(this.RewardList)
-
-				  }
-			  })
+			follow() {
+				this.followClick = !this.followClick;
 			},
+			search() {
+				let data = '';
+				data = this.UserInfo.id;
+				search_users({
+					userid: data
+				}).then(({
+					data
+				}) => {
+					this.thumbnail_portait = data.msg[0].thumbnail_portait;
+					this.username = data.msg[0].username;
+					
+			
+				})
+			},
+			
+			
 			chooseLocation: function() {
 				uni.chooseLocation({
 					success: (res) => {
@@ -501,153 +499,237 @@
 	}
 </script>
 
-<style>
-	.page-body {
+<style scoped lang="scss">
+	#page-body {
+		padding-top:10%;
 		width: 100%;
-		height: 612px;
 		background-color: #3B4144;
 		overflow-x: hidden;
-	}
-
-	/* 上传 */
-	.uni-uploader {
-		flex: 1;
-		flex-direction: column;
-	}
-
-	.uni-uploader-head {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-	}
-
-	.uni-uploader-info {
-		color: #B2B2B2;
-	}
-
-	.uni-uploader-body {
-		margin-top: 16upx;
-	}
-
-	.uni-uploader__files {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-	}
-
-	.uni-uploader__file {
-		margin: 10upx;
-		width: 210upx;
-		height: 210upx;
-	}
-
-	.uni-uploader__img {
-		display: block;
-		width: 210upx;
-		height: 210upx;
-
-	}
-
-	.uni-uploader__input-box {
-		position: relative;
-		margin: 10upx;
-
-		width: 208upx;
-		height: 208upx;
-		border: 2upx solid #F2F2F2;
-	}
-
-	.uni-uploader__input-box:before,
-	.uni-uploader__input-box:after {
-		content: " ";
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		-webkit-transform: translate(-50%, -50%);
-		transform: translate(-50%, -50%);
-		background-color: #F2F2F2;
-	}
-
-	.uni-uploader__input-box:before {
-		width: 4upx;
-		height: 79upx;
-	}
-
-	.uni-uploader__input-box:after {
-		width: 79upx;
-		height: 4upx;
-	}
-
-	.uni-uploader__input-box:active {
-		border-color: #F2F2F2;
-	}
-
-	.uni-uploader__input-box:active:before,
-	.uni-uploader__input-box:active:after {
-		background-color: #F2F2F2;
-	}
-
-	.uni-uploader__input {
-		position: absolute;
-		z-index: 1;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		opacity: 0;
-	}
-	.uni-padding-wrap{
-		background-color:#DAC2A6;
-		width: 100%;
-		top: 4.5rem;
-		position: relative;
-	}
-	.heart {
-		background: url(http://demo.htmleaf.com/1511/201511131551/images/web_heart_animation.png);
-		height: 90px;
-		width: 90px;
-		position: relative;
-		top: -2rem;
-		left: 0rem;
-		background-size: 2900%;
-	}
-	
-	.heart:hover,
-	.heart:focus {
-		background-position: right;
-	}
-	
-	@-webkit-keyframes heartBlast {
-		from {
-			background-position: left;
+		.header{
+			padding:2%;
+			width:100%;
+			background-color: #DAC2A6;
+			display: flex;
+			position:relative;
+			.header-right{
+				padding-left:5%;
+				display: flex;
+				flex-wrap: wrap;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				
+				.header-top-center{
+					border: 1px solid #c8c8cc;
+					
+				}
+				.header-top-right{
+					border: 1px solid #DF5000;
+					color:#DF5000 ;
+				}
+			}
+			.img {
+				position: relative;
+				left: 3%;
+				width: 130rpx;
+				height: 130rpx;
+				border-radius: 50%;
+				box-shadow: 1px 1px 2px #F2F2F2;
+				border: 1.5px solid #F2F2F2;
+			}
 		}
-	
-		to {
-			background-position: right;
+		.content{
+			margin:2%;
+			padding:2%;
+			
+			background-color: #DAC2A6;
+			
+			position:relative;
+			.getposition{
+				width:50upx;
+				height:50upx;
+			}
+			.remove{
+				position:relative;
+				width: 38upx;
+				height: 38upx;
+				top:-7.5rem;
+				left:5.5rem;
+			}
 		}
-	}
-	
-	@keyframes heartBlast {
-		from {
-			background-position: left;
+		
+		/* 上传 */
+		.uni-uploader {
+			flex: 1;
+			flex-direction: column;
 		}
-	
-		to {
-			background-position: right;
+		
+		.uni-uploader-head {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
 		}
+		
+		.uni-uploader-info {
+			color: #B2B2B2;
+		}
+		
+		.uni-uploader-body {
+			margin-top: 16upx;
+		}
+		
+		.uni-uploader__files {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
+		
+		.uni-uploader__file {
+			margin: 10upx;
+			width: 210upx;
+			height: 210upx;
+		}
+		
+		.uni-uploader__img {
+			display: block;
+			width: 210upx;
+			height: 210upx;
+		
+		}
+		
+		.uni-uploader__input-box {
+			position: relative;
+			margin: 10upx;
+		
+			width: 208upx;
+			height: 208upx;
+			border: 2upx solid #F2F2F2;
+		}
+		
+		.uni-uploader__input-box:before,
+		.uni-uploader__input-box:after {
+			content: " ";
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			-webkit-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+			background-color: #F2F2F2;
+		}
+		
+		.uni-uploader__input-box:before {
+			width: 4upx;
+			height: 79upx;
+		}
+		
+		.uni-uploader__input-box:after {
+			width: 79upx;
+			height: 4upx;
+		}
+		
+		.uni-uploader__input-box:active {
+			border-color: #F2F2F2;
+		}
+		
+		.uni-uploader__input-box:active:before,
+		.uni-uploader__input-box:active:after {
+			background-color: #F2F2F2;
+		}
+		
+		.uni-uploader__input {
+			position: absolute;
+			z-index: 1;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			opacity: 0;
+		}
+		.uni-padding-wrap{
+			background-color:#DAC2A6;
+			margin:8% 2% 0% 2%;
+			padding:2%;
+			position: relative;
+			
+			.img{
+				position: relative;
+				top:-1.5rem;
+				width: 130rpx;
+				height: 130rpx;
+				border-radius: 50%;
+				box-shadow: 1px 1px 2px #F2F2F2;
+				border: 1.5px solid #F2F2F2;
+			}
+			.getposition{
+				width:50upx;
+				height:50upx;
+			}
+			.share{
+				margin-left:60%;
+				width:70upx;
+				height:70upx;
+			}
+			.picture{
+				margin-left:10%;
+				width:100upx;
+				height:120upx;
+			}
+			.footer{
+		       margin-left:15%;
+				width:60upx;
+				height:60upx;
+			}
+			.heart {
+				background: url(http://demo.htmleaf.com/1511/201511131551/images/web_heart_animation.png);
+				height: 90px;
+				width: 90px;
+				position: relative;
+				margin-right:15%;
+				top:3.5rem;
+				background-size: 2900%;
+			}
+			
+			.heart:hover,
+			.heart:focus {
+				background-position: right;
+			}
+			
+			@-webkit-keyframes heartBlast {
+				from {
+					background-position: left;
+				}
+			
+				to {
+					background-position: right;
+				}
+			}
+			
+			@keyframes heartBlast {
+				from {
+					background-position: left;
+				}
+			
+				to {
+					background-position: right;
+				}
+			}
+			
+			.heartAnimation {
+				-webkit-animation-name: heartBlast;
+				animation-name: heartBlast;
+				-webkit-animation-duration: .8s;
+				animation-duration: .8s;
+				-webkit-animation-iteration-count: 1;
+				animation-iteration-count: 1;
+				-webkit-animation-timing-function: steps(28);
+				animation-timing-function: steps(28);
+				background-position: right;
+			}
+		}
+		
 	}
+
 	
-	.heartAnimation {
-		-webkit-animation-name: heartBlast;
-		animation-name: heartBlast;
-		-webkit-animation-duration: .8s;
-		animation-duration: .8s;
-		-webkit-animation-iteration-count: 1;
-		animation-iteration-count: 1;
-		-webkit-animation-timing-function: steps(28);
-		animation-timing-function: steps(28);
-		background-position: right;
-	}
 </style>
 <!-- <style lang="scss" scoped>
 	#home {
