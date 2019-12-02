@@ -401,6 +401,8 @@
 			recordtrack() {
 				this.SI = setInterval(() => {
 					this.doGetLocation();
+					this.longitude = this.locationinfo.longitude;
+				    this.latitude = this.locationinfo.latitude;
 					this.record = [this.longitude, this.latitude];
 					// this.newrecord = this.newrecord.concat('[' + this.record + ']');
 					this.newrecord = '[' + this.record + ']';
