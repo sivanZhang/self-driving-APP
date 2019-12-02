@@ -97,6 +97,7 @@
 						this.List = [...data.msg];
 					    this.List2 = this.List.slice(0,3)
 						this.thumbnail_portait = "0"
+						console.log(bb)
 						console.log(this.List)
 						console.log(this.thumbnail_portait)
 					}

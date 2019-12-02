@@ -1,7 +1,7 @@
 <template>
 	<!-- 我的首页 -->
 	<view id="MyAccount">
-		<view class="top">
+		<view class="wall">
 			<view class="header" @tap="isLogin?target('/pages/user-center/track/alltrack'):toLogin()">
 				<view class="top-left">
 					<view class="milage">
@@ -49,7 +49,7 @@
 								获取定位
 							</view>
 							<view v-if="hasLocation === true">
-								{{address.province}}{{address.city}}{{address.district}}
+								{{address.province}}{{address.city}}{{address.district}}{{address.street}}{{address.streetNum}}
 							</view>
 						</view>
 					</view>
@@ -206,6 +206,11 @@
 				thumbnail_portait: '',
 				username: '',
 				hasLocation: false,
+				province:'',
+				city:'',
+				district:'',
+				street:'',
+				streetNum:'',
 				location: {},
 				address: {},
 				polylines: [],
@@ -396,8 +401,6 @@
 			recordtrack() {
 				this.SI = setInterval(() => {
 					this.doGetLocation();
-					this.longitude = this.locationinfo.longitude;
-					this.latitude = this.locationinfo.latitude;
 					this.record = [this.longitude, this.latitude];
 					// this.newrecord = this.newrecord.concat('[' + this.record + ']');
 					this.newrecord = '[' + this.record + ']';
@@ -407,7 +410,8 @@
 						Record_CarTrack({
 							track_id: this.id,
 							method: 'put',
-							record: '[' + this.newrecord + ']'
+							record: '[' + this.newrecord + ']',
+							// location:this.location
 						}).then(({
 							data
 						}) => {
@@ -507,7 +511,7 @@
 	#MyAccount {
 		overflow-x: hidden;
 
-		.top {
+		.wall {
 			height: 360rpx;
 			position: relative;
 			background: #fff;
@@ -662,7 +666,7 @@
 							position: relative;
 							top: -1.5rem;
 							left: 2rem;
-							// right:-2rem;
+							right:2rem;
 						}
 					}
 				}
