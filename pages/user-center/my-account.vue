@@ -1,9 +1,9 @@
 <template>
 	<!-- 我的首页 -->
 	<view id="MyAccount">
-		<view class="wall">
+		<view class="top">
 			<view class="header" @tap="isLogin?target('/pages/user-center/track/alltrack'):toLogin()">
-				<view class="left">
+				<view class="top-left">
 					<view class="milage">
 						总里程数
 					</view>
@@ -13,7 +13,7 @@
 					</view>
 				</view>
 				<!-- <image class="img" src="/static/image/journey/start.png" @tap="click"/>  -->
-				<view class="rank">
+				<view class="top-right">
 					<view class="showrank">
 						<view class="name">名次</view>
 						<view class="num">{{isLogin?10000-randomNumber:"--"}}</view>
@@ -399,9 +399,10 @@
 					this.longitude = this.locationinfo.longitude;
 					this.latitude = this.locationinfo.latitude;
 					this.record = [this.longitude, this.latitude];
-					this.newrecord = this.newrecord.concat('[' + this.record + ']');
+					// this.newrecord = this.newrecord.concat('[' + this.record + ']');
+					this.newrecord = '[' + this.record + ']';
 					console.log('[' + this.newrecord + ']')
-					if ((this.newrecord).length > 9) {
+					// if ((this.newrecord).length > 9) {
 						//console.log(this.newrecord)
 						Record_CarTrack({
 							track_id: this.id,
@@ -446,7 +447,7 @@
 						})
 						this.newrecord = []
 
-					}
+					// }
 				}, 1000)
 			},
 			closetrack() {
@@ -506,7 +507,7 @@
 	#MyAccount {
 		overflow-x: hidden;
 
-		.wall {
+		.top {
 			height: 360rpx;
 			position: relative;
 			background: #fff;
@@ -527,7 +528,7 @@
 				// 	margin-top:100upx;
 				// 	margin-left:320upx;
 				// }
-				.left {
+				.top-left {
 					padding-top: 36upx;
 					padding-left: 14upx;
 
@@ -559,7 +560,7 @@
 					}
 				}
 
-				.rank {
+				.top-right {
 					position: absolute;
 					padding-top: 91upx;
 					padding-left: 426upx;
