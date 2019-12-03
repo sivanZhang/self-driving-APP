@@ -8,7 +8,35 @@
 					"titleNView": false
 				}
 			}
+		}, 
+		{
+			"path": "pages/user-center/my-account",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}	
 		},
+		{
+			"path": "pages/user-center/track/alltrack",
+			"style": {
+				"navigationBarTitleText": "车迹"	,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [ {
+							"text": "\ue623", //分享
+							"fontSrc": "/static/font/iconfont.ttf",
+							"fontSize": "22px"
+						}]
+				
+					}
+				}		
+			}
+			
+		},
+		
+	    
 		{
 			"path": "pages/user-center/giftcenter/giftcenter",
 			"style": {
@@ -34,13 +62,7 @@
 			}
 		},
 	
-		{
-			"path": "pages/user-center/track/alltrack",
-			"style": {
-				"navigationBarTitleText": "车迹统计"
-				
-			}
-		},
+		
 		{
 			"path": "pages/user-center/track/signaltrack",
 			"style": {
@@ -143,16 +165,7 @@
 				// }
 			}
 		},
-		{
-			"path": "pages/user-center/my-account",
-			"style": {
-				"navigationStyle": "custom"
-				
-			},
-			"app-plus": {
-				"titleNView": false
-			}
-		},
+		
 		{
 			"path": "pages/notifications/new-list",
 			"style": {
