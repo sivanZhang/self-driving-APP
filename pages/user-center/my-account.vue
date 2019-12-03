@@ -2,6 +2,7 @@
 	<!-- 我的首页 -->
 	<view id="MyAccount">
 		<view class="wall">
+			<view style="margin-top:80upx;margin-left:20upx;font-size:35upx">{{longitude}}--{{latitude}}--{{speed}}</view>
 			<view class="header" @tap="isLogin?target('/pages/user-center/track/alltrack'):toLogin()">
 				<view class="top-left">
 					<view class="milage">
@@ -24,6 +25,7 @@
 					</view>
 				</view>
 			</view>
+			
 			<view class="wall-top">
 				<image v-if="isLogin" class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
 				<image v-else class="img" src="/static/icons/zhuce.png"></image>
@@ -49,7 +51,7 @@
 								获取定位
 							</view>
 							<view v-if="hasLocation === true">
-								{{address.province}}{{address.city}}{{address.district}}{{address.street}}{{address.streetNum}}
+								{{address.province}}{{address.city}}{{address.district}}{{address.street}}{{address.streetNum}}{{address.poiName}}
 							</view>
 						</view>
 					</view>
@@ -215,6 +217,7 @@
 				address: {},
 				polylines: [],
 				type: '',
+				speed:'',
 				sex: '',
 				name: null,
 				stop: true,
@@ -227,7 +230,8 @@
 				record: [],
 				newrecord: [],
 				locationinfo: '',
-				SI: ''
+				SI: '',
+				count:0
 			};
 		},
 		computed: {
@@ -263,9 +267,10 @@
 						this.locationinfo = res
 						this.hasLocation = true;
 						this.location = formatLocation(res.longitude, res.latitude);
+						this.speed = res.speed
 						this.address = res.address
 						this.name = res.address.poiName
-						console.log(this.locationinfo)
+						// console.log(this.locationinfo)
 					},
 					fail: (err) => {
 						console.log((err))
@@ -404,55 +409,61 @@
 					this.longitude = this.locationinfo.longitude;
 				    this.latitude = this.locationinfo.latitude;
 					this.record = [this.longitude, this.latitude];
-					// this.newrecord = this.newrecord.concat('[' + this.record + ']');
+					this.speed = this.locationinfo.speed;
 					this.newrecord = '[' + this.record + ']';
-					console.log('[' + this.newrecord + ']')
+					if(this.speed == 0){
+						this.count += 1;
+					}
+					// this.newrecord = this.newrecord.concat('[' + this.record + ']');
+					// this.newrecord = '[' + this.record + ']';
+					// console.log('[' + this.newrecord + ']')
 					// if ((this.newrecord).length > 9) {
 						//console.log(this.newrecord)
-						Record_CarTrack({
-							track_id: this.id,
-							method: 'put',
-							record: '[' + this.newrecord + ']',
-							// location:this.location
-						}).then(({
-							data
-						}) => {
-							// uni.showToast({
-							// 	title: data.msg,
-							// 	icon: "none",
-							// })
-							//console.log(data)
-							Show_CarTrack({
-								id: this.id
+						if((this.speed == 0 && this.count ==1)||this.speed != 0){
+							Record_CarTrack({
+								track_id: this.id,
+								method: 'put',
+								record: '[' + this.newrecord + ']',
+								// location:this.location
 							}).then(({
 								data
-							}) => {	
-								var track = data.msg[0].record;
-								var track1 = JSON.parse(track);
-								var points = []
-								track1.forEach((item, index) => {
-									points.splice(index, 0, {
-										latitude: item[1],
-										longitude: item[0]
+							}) => {
+								// uni.showToast({
+								// 	title: data.msg,
+								// 	icon: "none",
+								// })
+								//console.log(data)
+								Show_CarTrack({
+									id: this.id
+								}).then(({
+									data
+								}) => {	
+									var track = data.msg[0].record;
+									var track1 = JSON.parse(track);
+									var points = []
+									track1.forEach((item, index) => {
+										points.splice(index, 0, {
+											latitude: item[1],
+											longitude: item[0]
+										})
 									})
+									this.latitude = points[0].latitude;
+									this.longitude = points[0].longitude;
+									this.polylines = [{
+										points,
+										color: "#0A98D5", //线的颜色
+										width: 8, //线的宽度
+										arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
+									}];
+									this.markers = [{
+										iconPath: 'https://webapi.amap.com/images/car.png',
+										latitude: points[0].latitude,
+										longitude: points[0].longitude,
+									}, ];
 								})
-								this.latitude = points[0].latitude;
-								this.longitude = points[0].longitude;
-								this.polylines = [{
-									points,
-									color: "#0A98D5", //线的颜色
-									width: 8, //线的宽度
-									arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
-								}];
-								this.markers = [{
-									iconPath: 'https://webapi.amap.com/images/car.png',
-									latitude: points[0].latitude,
-									longitude: points[0].longitude,
-								}, ];
 							})
-						})
-						this.newrecord = []
-
+							this.newrecord = []
+                        }
 					// }
 				}, 1000)
 			},
@@ -635,7 +646,7 @@
 					padding-top: 12upx;
 					padding-left: 10upx;
 					color: #848689;
-
+                    width:480upx;
 					.information {
 						display: flex;
 
@@ -682,7 +693,7 @@
 				display: flex;
 				flex-wrap: wrap;
 				padding-left: 0upx;
-				padding-top: 85upx;
+				padding-top: 120upx;
 				padding-right: 5upx;
 			}
 
