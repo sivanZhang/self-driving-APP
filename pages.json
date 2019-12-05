@@ -25,9 +25,10 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": [ {
-							"text": "\ue623", //分享
+							"text": "\ue635", //分享
 							"fontSrc": "/static/font/iconfont.ttf",
-							"fontSize": "22px"
+							"fontSize": "22px",
+							"float": "right"
 						}]
 				
 					}

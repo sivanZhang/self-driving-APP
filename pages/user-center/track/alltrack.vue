@@ -11,6 +11,7 @@
 			<cover-view class="start_point">{{start_point}}</cover-view>
 			<cover-view class="flow">至</cover-view>
 			<cover-view class="end_point">{{end_point}}</cover-view>
+			<cover-view class="rank">排名{{rank}}</cover-view>
 			</map>
 			
 			
@@ -25,6 +26,7 @@
 			 <cover-view class="start_point">{{create_point}}</cover-view>
 			 <cover-view class="flow">至</cover-view>
 			 <cover-view class="end_point">{{over_point}}</cover-view>
+			 <cover-view class="rank">排名{{rank}}</cover-view>
 			</map>
 		</view>
 
@@ -65,6 +67,7 @@
 				start_date:null,
 				end_date:null,
 				mileage:0,
+				rank:0,
 				id: '',
 				TrackList: [],
 				showtoday: true,
@@ -137,6 +140,7 @@
 					this.distance = data.msg[0].mileage;
 					this.create_point = data.msg[0].start_point;
 					this.over_point = data.msg[0].end_point;
+					this.rank = data.msg[0].rank;
 				})
 				
 			 },
@@ -175,6 +179,7 @@
 				this.mileage = data.msg[0].mileage;
 				this.start_point = data.msg[0].start_point;
 				this.end_point = data.msg[0].end_point;
+				this.rank = data.msg[0].rank;
 				})
 			},
 		},
@@ -231,6 +236,17 @@
 				font-size:45upx;
 				top:45%;
 				left:5%;
+			}
+			.rank{
+				top:10%;  
+				left:78%;
+				position:absolute;
+				font-size:45upx;
+				background-color: #4D4D4D;
+				color: #FFFFFF;
+				width: 120upx;
+				padding:2%;
+				text-align: center;
 			}
 		}
 
@@ -298,6 +314,7 @@
 					flex-direction: column;
 					align-items: center;
 				}
+				
 			}
 		}
 
