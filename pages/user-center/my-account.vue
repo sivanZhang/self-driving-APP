@@ -9,7 +9,7 @@
 						总里程数
 					</view>
 					<view class="total">
-						<view class="number">{{isLogin?randomNumber:"---"}}</view>
+						<view class="number" >{{distance}}</view>
 						<view class="kilometers">公里</view>
 					</view>
 				</view>
@@ -17,7 +17,7 @@
 				<view class="top-right">
 					<view class="showrank">
 						<view class="name">名次</view>
-						<view class="num">{{isLogin?10000-randomNumber:"--"}}</view>
+						<view class="num">{{index}}</view>
 					</view>
 					<view class="look" @tap="target('/pages/user-center/rank/lookrank')">
 						<image src="/static/icons/rank.png"></image>
@@ -50,9 +50,16 @@
 							<view v-if="hasLocation === false">
 								获取定位
 							</view>
+							<!-- #ifdef MP-WEIXIN -->
 							<view v-if="hasLocation === true">
-								{{address.province}}{{address.city}}{{address.district}}{{address.street}}{{address.streetNum}}{{address.poiName}}
+								定位失败
 							</view>
+							<!-- #endif -->
+							<!-- #ifdef APP-PLUS -->
+							<view v-if="hasLocation === true">
+								{{address.province}}{{address.city}}{{address.district}}{{address.street}}
+							</view>
+							<!-- #endif -->
 						</view>
 					</view>
 				</view>
@@ -195,6 +202,9 @@
 	import permision from "@/common/permission.js"
 	// #endif
 	import util from "@/common/util.js"
+	import {
+		Track_Rank,
+	} from '@/api/track.js'
 	var formatLocation = util.formatLocation;
 	export default {
 		components: {
@@ -208,19 +218,12 @@
 				thumbnail_portait: '',
 				username: '',
 				hasLocation: false,
-				province: '',
-				city: '',
-				district: '',
-				street: '',
-				streetNum: '',
 				location: {},
 				address: {},
 				polylines: [],
-				
 				type: '',
 				speed: '',
 				sex: '',
-				name: null,
 				stop: true,
 				open: '',
 				close: '',
@@ -235,7 +238,9 @@
 				test:[],
 				newtest:[],
 				SI: '',
-				count: 0
+				count: 0,
+				distance:'',
+				index:''
 			};
 		},
 		computed: {
@@ -250,7 +255,24 @@
 			}
 		},
 		methods: {
-
+            lookrank_total(){
+            	let data = {
+            		year:''
+            	}
+            	Track_Rank(data).then(({
+            		data
+            	}) => {
+            		if(data.status === 0){
+						[...data.msg].map((item,index) =>{
+							if (item.user_name == this.username){
+								this.index = index + 1;
+								this.distance = item.distance;
+							}
+						});
+            		}
+            		console.log(data)
+            	})
+            },
 			async getLocation() {
 				// #ifdef APP-PLUS
 				let status = await this.checkPermission();
@@ -534,11 +556,12 @@
 				})
 			}, 1000);
 			this.getLocationTest();
+			this.lookrank_total();
 		},
 		onShow: function() {
 			this.doGetLocation();
 			this.search();
-
+			this.lookrank_total();
 		},
 	};
 </script>
@@ -591,12 +614,12 @@
 					.total {
 						display: flex;
 						// flex-wrap: wrap;
-						padding-top: -10upx;
+						padding-top: -8upx;
 
 						.number {
-							font-size: 90upx;
+							font-size: 84upx;
 							// width:230upx;
-							letter-spacing: -6upx;
+							letter-spacing: -10upx;
 						}
 
 						.kilometers {
@@ -696,20 +719,21 @@
 					}
 
 					.position {
-						padding-top: 5upx;
-
+						padding-top: 6upx;
+						display: flex;
 						image {
-							width: 66upx;
-							height: 32upx;
+							margin-top: 7upx;
+							width: 64upx;
+							height: 33upx;
 							padding-left: 30upx;
 							z-index: 2;
 						}
 
 						.address {
-							padding-top: 16upx;
+							padding-top: 15upx;
 							position: relative;
-							top: -1.5rem;
-							left: 2rem;
+							top:-0.5rem;
+							left: 0.3rem;
 							right: 2rem;
 						}
 					}
