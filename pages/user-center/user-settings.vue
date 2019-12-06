@@ -103,7 +103,7 @@
 				    success: res=> {
 				        if(res.tapIndex===0){
 							this.LogOut()
-							uni.navigateTo({
+							uni.reLaunch({
 								url: "/pages/login/login-page"
 							})
 						}

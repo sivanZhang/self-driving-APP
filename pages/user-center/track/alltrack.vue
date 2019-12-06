@@ -13,9 +13,7 @@
 			<cover-view class="end_point">{{end_point}}</cover-view>
 			<cover-view class="rank">排名{{rank}}</cover-view>
 			</map>
-			
-			
-			
+						
 		</view>	
 		<view class="header" v-else-if="showhistory">
 			<map  style="width: 100%; height: 350px;" :polyline='polyline' :latitude="latitude1"
@@ -87,22 +85,22 @@
 			}
 		},
 		onLoad(option) {
-			if(option.id.length!=0){
+			if(option.id !== ''){
 				this.id = option.id;
-				
 			}         
 		},
 		onShow() {
 			this.getTrackList();
 			this.showTrackList();
-			
 		},
+		
 		methods: {
+			
              showTrackList(){
 				 Show_CarTrack().then(({ data })=>{
 				 	 this.TrackList = data.msg;
-				 			   
-				 	})
+					 
+				 	})  
 			 },
 			 showTrack: function(e) {
 			 	console.log(e)
@@ -146,16 +144,15 @@
 					this.rank = data.msg[0].rank;
 				})
 			 },
-			 getTrackList() {				 
-				  if(this.id.length!=0){
+			 getTrackList() {				
+				  if(this.id !== '' ){
 					  Show_CarTrack({
 					  	id: this.id
 					  }).then(({
 					  	data
-					  }) => {
-					  	
+					  }) => {					  	
 					  	var track = data.msg[0].record;
-					  	if(track.length != 0){
+					  	if(track !== null ){
 					  		var track1 = JSON.parse(track);
 					  		var points = []
 					  		track1.forEach((item, index) => {
@@ -185,6 +182,41 @@
 					  this.end_point = data.msg[0].end_point;
 					  this.rank = data.msg[0].rank;
 					  })
+				  }else{
+					  Show_CarTrack().then(({ data })=>{
+					  	  	var trackrecord = data.msg[0].record;
+								if(trackrecord.length != 0){
+									var trackrecord1 = JSON.parse(trackrecord);
+									var points = []
+									trackrecord1.forEach((item, index) => {
+										points.splice(index, 0, {
+											latitude: item[1],
+											longitude: item[0]
+										})
+									})
+									this.latitude = points[0].latitude;
+									this.longitude = points[0].longitude;
+									this.polylines = [{
+										points,
+										color: "#0A98D5", //线的颜色
+										width: 8, //线的宽度
+										arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
+									}];
+									this.markers = [{
+										iconPath: 'https://webapi.amap.com/images/car.png',
+										latitude: points[0].latitude,
+										longitude: points[0].longitude,
+									}, ];
+								}
+				            this.start_date = data.msg[0].start_date;
+				            this.end_date = data.msg[0].end_date;
+				            this.mileage = data.msg[0].mileage;
+				            this.start_point = data.msg[0].start_point;
+				            this.end_point = data.msg[0].end_point;
+				            this.rank = data.msg[0].rank;
+							
+					  	})  
+					  
 				  }
 					
 				
@@ -209,8 +241,8 @@
 			}
 			.part{
 				position:relative;
-				top:16%;
-				left:13%;
+				top:15%;
+				left:17%;
 				
 			}
 			.part1{
