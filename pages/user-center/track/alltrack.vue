@@ -123,7 +123,7 @@
 								longitude: item[0]
 							})
 						})
-						
+				 		
 						this.latitude1 = points[0].latitude;
 						this.longitude1 = points[0].longitude;
 						this.polyline = [{
