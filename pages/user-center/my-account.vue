@@ -50,9 +50,16 @@
 							<view v-if="hasLocation === false">
 								获取定位
 							</view>
+							<!-- #ifdef MP-WEIXIN -->
 							<view v-if="hasLocation === true">
-								{{address.province}}{{address.city}}{{address.district}}{{address.street}}{{address.streetNum}}{{address.poiName}}
+								定位失败
 							</view>
+							<!-- #endif -->
+							<!-- #ifdef APP-PLUS -->
+							<view v-if="hasLocation === true">
+								{{address.province}}{{address.city}}{{address.district}}{{address.street}}
+							</view>
+							<!-- #endif -->
 						</view>
 					</view>
 				</view>
@@ -208,15 +215,9 @@
 				thumbnail_portait: '',
 				username: '',
 				hasLocation: false,
-				province: '',
-				city: '',
-				district: '',
-				street: '',
-				streetNum: '',
 				location: {},
 				address: {},
 				polylines: [],
-				
 				type: '',
 				speed: '',
 				sex: '',
@@ -268,7 +269,7 @@
 					altitude: true,
 					
 					success: (res) => {
-						// console.log(res)
+						console.log(res)
 						this.locationinfo = res
 						this.hasLocation = true;
 						this.location = formatLocation(res.longitude, res.latitude);
@@ -684,20 +685,21 @@
 					}
 
 					.position {
-						padding-top: 5upx;
-
+						padding-top: 6upx;
+						display: flex;
 						image {
-							width: 66upx;
-							height: 32upx;
+							margin-top: 7upx;
+							width: 64upx;
+							height: 33upx;
 							padding-left: 30upx;
 							z-index: 2;
 						}
 
 						.address {
-							padding-top: 16upx;
+							padding-top: 15upx;
 							position: relative;
-							top: -1.5rem;
-							left: 2rem;
+							top:-0.5rem;
+							left: 0.3rem;
 							right: 2rem;
 						}
 					}
