@@ -9,7 +9,7 @@
 						总里程数
 					</view>
 					<view class="total">
-						<view class="number">{{isLogin?randomNumber:"---"}}</view>
+						<view class="number" >{{distance}}</view>
 						<view class="kilometers">公里</view>
 					</view>
 				</view>
@@ -17,7 +17,7 @@
 				<view class="top-right">
 					<view class="showrank">
 						<view class="name">名次</view>
-						<view class="num">{{isLogin?10000-randomNumber:"--"}}</view>
+						<view class="num">{{index}}</view>
 					</view>
 					<view class="look" @tap="target('/pages/user-center/rank/lookrank')">
 						<image src="/static/icons/rank.png"></image>
@@ -202,6 +202,9 @@
 	import permision from "@/common/permission.js"
 	// #endif
 	import util from "@/common/util.js"
+	import {
+		Track_Rank,
+	} from '@/api/track.js'
 	var formatLocation = util.formatLocation;
 	export default {
 		components: {
@@ -221,7 +224,6 @@
 				type: '',
 				speed: '',
 				sex: '',
-				name: null,
 				stop: true,
 				open: '',
 				close: '',
@@ -235,7 +237,9 @@
 				test:[],
 				newtest:[],
 				SI: '',
-				count: 0
+				count: 0,
+				distance:'',
+				index:''
 			};
 		},
 		computed: {
@@ -250,7 +254,24 @@
 			}
 		},
 		methods: {
-
+            lookrank_total(){
+            	let data = {
+            		year:''
+            	}
+            	Track_Rank(data).then(({
+            		data
+            	}) => {
+            		if(data.status === 0){
+						[...data.msg].map((item,index) =>{
+							if (item.user_name == this.username){
+								this.index = index + 1;
+								this.distance = item.distance;
+							}
+						});
+            		}
+            		console.log(data)
+            	})
+            },
 			async getLocation() {
 				// #ifdef APP-PLUS
 				let status = await this.checkPermission();
@@ -269,7 +290,7 @@
 					altitude: true,
 					
 					success: (res) => {
-						console.log(res)
+						// console.log(res)
 						this.locationinfo = res
 						this.hasLocation = true;
 						this.location = formatLocation(res.longitude, res.latitude);
@@ -524,11 +545,12 @@
 				})
 			}, 1000);
 			this.getLocationTest();
+			this.lookrank_total();
 		},
 		onShow: function() {
 			this.doGetLocation();
 			this.search();
-
+			this.lookrank_total();
 		},
 	};
 </script>
@@ -580,12 +602,12 @@
 					.total {
 						display: flex;
 						// flex-wrap: wrap;
-						padding-top: -10upx;
+						padding-top: -8upx;
 
 						.number {
-							font-size: 90upx;
+							font-size: 84upx;
 							// width:230upx;
-							letter-spacing: -6upx;
+							letter-spacing: -10upx;
 						}
 
 						.kilometers {
