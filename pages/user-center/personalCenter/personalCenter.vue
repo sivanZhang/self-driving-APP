@@ -47,12 +47,16 @@
 				thumbnail_portait:'',
 				username:'',
 				sex:'',
+				id:'',
 			};
 		},
 		computed: {
 			UserInfo() {
 				return this.$store.state.UserInfo
-			}
+			},
+			isLogin() {
+				return this.$store.state.estateToken || uni.getStorageSync('estateToken')
+			},
 		},
 		onShow() {
 			this.searchUser();
@@ -77,14 +81,16 @@
 			},
 			//查看用户信息
 			searchUser(){
-				let data = '';
-				data=this.UserInfo.id;
-				search_users({userid: data}).then(({ data }) => {
-					this.thumbnail_portait = data.msg[0].thumbnail_portait;
-					this.sex = data.msg[0].sex;
-					this.username = data.msg[0].username;
-					
-				})
+				if(this.isLogin){
+					this.id = this.$store.state.UserInfo.id;
+						let data = '';
+						data=this.id;
+						search_users({userid: data}).then(({ data }) => {
+							this.thumbnail_portait = data.msg[0].thumbnail_portait;
+							this.sex = data.msg[0].sex;
+							this.username = data.msg[0].username;
+						})
+				}
 			},
 		},
 		

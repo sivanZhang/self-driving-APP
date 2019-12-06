@@ -109,7 +109,7 @@
 						}
 						if(res.tapIndex===1){
 							this.LogOut()
-							uni.switchTab({
+							uni.reLaunch({
 								url: "/pages/home/home-page"
 							})
 						}
@@ -118,11 +118,11 @@
 			},
 
 		},
-		onNavigationBarButtonTap() {
-			uni.reLaunch({
-				url: "/pages/home/home-page"
-			})
-		}
+		// onNavigationBarButtonTap() {
+		// 	uni.reLaunch({
+		// 		url: "/pages/home/home-page"
+		// 	})
+		// }
 	};
 </script>
 

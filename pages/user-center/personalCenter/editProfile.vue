@@ -78,8 +78,8 @@
 				thumbnail_portait: '',
 				car_number: null,
 				plateNo: '',
-				plateShow: false
-
+				plateShow: false,
+                id:'',
 			};
 		},
 		components: {
@@ -87,10 +87,12 @@
 			plateInput
 		},
 		computed: {
-
 			UserInfo() {
 				return this.$store.state.UserInfo
-			}
+			},
+			isLogin() {
+				return this.$store.state.estateToken || uni.getStorageSync('estateToken')
+			},
 		},
 		onLoad(option) {
 			// this.search();	
@@ -122,35 +124,32 @@
 			},
 			//查看用户信息
 			search() {
-				let data = '';
-				data = this.UserInfo.id;
-				search_users({
-					userid: data
-				}).then(({
-					data
-				}) => {
-					this.thumbnail_portait = data.msg[0].thumbnail_portait;
-
-					this.plateNo = data.msg[0].car_number;
-					this.signature = data.msg[0].signature;
-					this.sex = data.msg[0].sex;
-					if (this.sex == '男') {
-						this.checked = true;
-					} else {
-						this.checked1 = true;
-					}
-					if (data.msg[0].username == '') {
-						console.log(data.msg[0].username);
-					} else {
-						this.username = data.msg[0].username;
-
-					}
-				})
-
-
+				if(this.isLogin){
+					this.id = this.$store.state.UserInfo.id;
+						let data = '';
+						data = this.id;
+						search_users({
+							userid: data
+						}).then(({
+							data
+						}) => {
+							this.thumbnail_portait = data.msg[0].thumbnail_portait;
+							this.plateNo = data.msg[0].car_number;
+							this.signature = data.msg[0].signature;
+							this.sex = data.msg[0].sex;
+							if (this.sex == '男') {
+								this.checked = true;
+							} else {
+								this.checked1 = true;
+							}
+							if (data.msg[0].username == '') {
+								console.log(data.msg[0].username);
+							} else {
+								this.username = data.msg[0].username;
+							}
+						})
+				}
 			},
-
-
 			target(url) {
 				uni.navigateTo({
 					url

@@ -106,7 +106,7 @@
 				this.pxRatio = this.windowWidth / 750;
 
 				let style = this.avatarStyle;
-				console.log(style)
+				
 				this.imgStyle = style;
 				this.expWidth && (this.exportWidth = this.expWidth.indexOf('rpx') >= 0 ? parseInt(this.expWidth) * this.pxRatio :
 					parseInt(this.expWidth));

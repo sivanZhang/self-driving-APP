@@ -162,6 +162,7 @@
 	// 
 	// 		}
 	// 	}
+	
 	import share from "@/common/share.js";
 	var util = require('../../common/util.js');
 	var formatLocation = util.formatLocation;
@@ -184,7 +185,7 @@
 	export default {
 		data() {
 			return {
-				
+				id:'',
 				username:'',
 				thumbnail_portait: '',
 				followClick: true,
@@ -228,25 +229,29 @@
 	   	UserInfo() {
 	   		return this.$store.state.UserInfo
 	   	},
-	  
+	    isLogin() {
+	  	return this.$store.state.estateToken || uni.getStorageSync('estateToken')
+	    },
 	   },
 		methods: {
 			follow() {
 				this.followClick = !this.followClick;
 			},
 			search() {
-				let data = '';
-				data = this.UserInfo.id;
-				search_users({
-					userid: data
-				}).then(({
-					data
-				}) => {
-					this.thumbnail_portait = data.msg[0].thumbnail_portait;
-					this.username = data.msg[0].username;
-					
-			
-				})
+				
+				if( this.isLogin ){
+					this.id = this.$store.state.UserInfo.id;  				
+						let data = '';
+						data = this.id;
+						search_users({
+							userid: data
+						}).then(({
+							data
+						}) => {
+							this.thumbnail_portait = data.msg[0].thumbnail_portait;
+							this.username = data.msg[0].username;								
+						})
+				}				
 			},
 			
 			

@@ -87,13 +87,15 @@
 			}
 		},
 		onLoad(option) {
-			this.id = option.id;
-			console.log(this.id)
-           
+			if(option.id.length!=0){
+				this.id = option.id;
+				
+			}         
 		},
 		onShow() {
 			this.getTrackList();
 			this.showTrackList();
+			
 		},
 		methods: {
              showTrackList(){
@@ -110,31 +112,32 @@
 					id: e
 				}).then(({
 					data
-				}) => {
-					
+				}) => {				
 					var record = data.msg[0].record;
-					var record1 = JSON.parse(record);
-					var points = []
-					record1.forEach((item, index) => {
-						points.splice(index, 0, {
-							latitude: item[1],
-							longitude: item[0]
+					if(record.length != 0){
+						var record1 = JSON.parse(record);
+						var points = []
+						record1.forEach((item, index) => {
+							points.splice(index, 0, {
+								latitude: item[1],
+								longitude: item[0]
+							})
 						})
-					})
-					
-					this.latitude1 = points[0].latitude;
-					this.longitude1 = points[0].longitude;
-					this.polyline = [{
-						points,
-						color: "#0A98D5", //线的颜色
-						width: 8, //线的宽度
-						arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
-					}];
-					this.markers = [{
-						iconPath: 'https://webapi.amap.com/images/car.png',
-						latitude: points[0].latitude,
-						longitude: points[0].longitude,
-					}, ];
+						
+						this.latitude1 = points[0].latitude;
+						this.longitude1 = points[0].longitude;
+						this.polyline = [{
+							points,
+							color: "#0A98D5", //线的颜色
+							width: 8, //线的宽度
+							arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
+						}];
+						this.markers = [{
+							iconPath: 'https://webapi.amap.com/images/car.png',
+							latitude: points[0].latitude,
+							longitude: points[0].longitude,
+						}, ];
+					}
 					this.create_date = data.msg[0].start_date;
 					this.over_date = data.msg[0].end_date;
 					this.distance = data.msg[0].mileage;
@@ -142,45 +145,50 @@
 					this.over_point = data.msg[0].end_point;
 					this.rank = data.msg[0].rank;
 				})
-				
 			 },
-			 getTrackList() {
-				 
-				Show_CarTrack({
-					id: this.id
-				}).then(({
-					data
-				}) => {
-
-					var track = data.msg[0].record;
-					var track1 = JSON.parse(track);
-					var points = []
-					track1.forEach((item, index) => {
-						points.splice(index, 0, {
-							latitude: item[1],
-							longitude: item[0]
-						})
-					})
-					this.latitude = points[0].latitude;
-					this.longitude = points[0].longitude;
-					this.polylines = [{
-						points,
-						color: "#0A98D5", //线的颜色
-						width: 8, //线的宽度
-						arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
-					}];
-					this.markers = [{
-						iconPath: 'https://webapi.amap.com/images/car.png',
-						latitude: points[0].latitude,
-						longitude: points[0].longitude,
-					}, ];
-				this.start_date = data.msg[0].start_date;	
-				this.end_date = data.msg[0].end_date;
-				this.mileage = data.msg[0].mileage;
-				this.start_point = data.msg[0].start_point;
-				this.end_point = data.msg[0].end_point;
-				this.rank = data.msg[0].rank;
-				})
+			 getTrackList() {				 
+				  if(this.id.length!=0){
+					  Show_CarTrack({
+					  	id: this.id
+					  }).then(({
+					  	data
+					  }) => {
+					  	
+					  	var track = data.msg[0].record;
+					  	if(track.length != 0){
+					  		var track1 = JSON.parse(track);
+					  		var points = []
+					  		track1.forEach((item, index) => {
+					  			points.splice(index, 0, {
+					  				latitude: item[1],
+					  				longitude: item[0]
+					  			})
+					  		})
+					  		this.latitude = points[0].latitude;
+					  		this.longitude = points[0].longitude;
+					  		this.polylines = [{
+					  			points,
+					  			color: "#0A98D5", //线的颜色
+					  			width: 8, //线的宽度
+					  			arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
+					  		}];
+					  		this.markers = [{
+					  			iconPath: 'https://webapi.amap.com/images/car.png',
+					  			latitude: points[0].latitude,
+					  			longitude: points[0].longitude,
+					  		}, ];
+					  	}
+					  this.start_date = data.msg[0].start_date;	
+					  this.end_date = data.msg[0].end_date;
+					  this.mileage = data.msg[0].mileage;
+					  this.start_point = data.msg[0].start_point;
+					  this.end_point = data.msg[0].end_point;
+					  this.rank = data.msg[0].rank;
+					  })
+				  }
+					
+				
+				
 			},
 		},
 	}

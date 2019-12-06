@@ -2,7 +2,7 @@
 	<!-- 我的首页 -->
 	<view id="MyAccount">
 		<view class="wall">
-			<view class="record">{{longitude}}--{{latitude}}--{{speed}}</view>
+			<view class="record" >{{longitude}}--{{latitude}}--{{speed}}</view>
 			<view class="header" @tap="isLogin?target('/pages/user-center/track/alltrack?id='+this.id):toLogin()">
 				<view class="top-left">
 					<view class="milage">
@@ -224,7 +224,8 @@
 				stop: true,
 				open: '',
 				close: '',
-				id: '',
+				id:'',
+				user_id: '',
 				longitude: '',
 				latitude: '',
 				markers: [],
@@ -275,7 +276,7 @@
 						this.speed = res.speed
 						this.address = res.address
 						this.name = res.address.poiName
-						// console.log(this.locationinfo)
+						console.log(this.locationinfo)
 					},
 					fail: (err) => {
 						console.log((err))
@@ -357,18 +358,23 @@
 				}
 			},
 			search() {
-				let data = '';
-				data = this.UserInfo.id;
-				search_users({
-					userid: data
-				}).then(({
-					data
-				}) => {
-					this.thumbnail_portait = data.msg[0].thumbnail_portait;
-					this.username = data.msg[0].username;
-					this.sex = data.msg[0].sex;
-
-				})
+				if(this.isLogin){
+					this.user_id = this.$store.state.UserInfo.id;
+						let data = '';
+						data = this.user_id;
+						search_users({
+							userid: data
+						}).then(({
+							data
+						}) => {
+							this.thumbnail_portait = data.msg[0].thumbnail_portait;
+							this.username = data.msg[0].username;
+							this.sex = data.msg[0].sex;
+						
+						}).catch(function(err){
+							// console.log(err);
+						})
+				}				
 			},
 			target(url) {
 				if (this.isLogin) {
@@ -431,17 +437,17 @@
 						//console.log(this.newrecord)
 						Record_CarTrack({
 							track_id: this.id,
-							method: 'put',
+							method: 'put',  
 							record: '[' + this.newrecord + ']',
 							test: '[' + this.newtest + ']',
 						}).then(({
 							data
 						}) => {
-							uni.showToast({
-								title: data.msg,
-								icon: "none",
-							})
-							console.log(data)
+							// uni.showToast({
+							// 	title: data.msg,
+							// 	icon: "none",
+							// })
+							// console.log(data)
 							Show_CarTrack({
 								id: this.id
 							}).then(({
@@ -450,29 +456,34 @@
 								var track = data.msg[0].record;
 								console.log("2:从后端接收的");
 								console.log(track)
-								var track1 = JSON.parse(track);
-								var points = []
-								track1.forEach((item, index) => {
-									points.splice(index, 0, {
-										latitude: item[1],
-										longitude: item[0]
-									})    
-								})
+								if(track.length != 0){
+									var track1 = JSON.parse(track);
+									var points = []
+									track1.forEach((item, index) => {
+										points.splice(index, 0, {
+											latitude: item[1],
+											longitude: item[0]
+										})    
+									})
+									
+									this.latitude = points[0].latitude;
+									this.longitude = points[0].longitude;
+									this.polylines = [{
+										points,
+										color: "#0A98D5", //线的颜色
+										width: 8, //线的宽度
+										arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
+									}];
+									this.markers = [{
+										iconPath: 'https://webapi.amap.com/images/car.png',
+										latitude: points[0].latitude,
+										longitude: points[0].longitude,
+									}, ];
+								}
 								
-								this.latitude = points[0].latitude;
-								this.longitude = points[0].longitude;
-								this.polylines = [{
-									points,
-									color: "#0A98D5", //线的颜色
-									width: 8, //线的宽度
-									arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
-								}];
-								this.markers = [{
-									iconPath: 'https://webapi.amap.com/images/car.png',
-									latitude: points[0].latitude,
-									longitude: points[0].longitude,
-								}, ];
-							})
+							}).catch(function(err){
+					
+				             })
 						})
 						this.newrecord = []
 						this.newtest = []
@@ -545,6 +556,7 @@
 				margin-top: 80upx;
 				margin-left: 20upx;
 				font-size: 35upx;
+				position:relative;
 			}
 
 			.header {
