@@ -125,6 +125,15 @@
 				// }
 			}
 		},
+		{
+			"path": "pages/user-center/track/lookLocation",
+			"style": {
+				"navigationBarTitleText": "查看经纬度"
+				// "app-plus": {
+				// 	"titleNView": false
+				// }
+			}
+		},
 		
 		
 		{

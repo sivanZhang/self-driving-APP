@@ -65,6 +65,10 @@
 				</view>
 			</view>
 		</view>
+		<view style="padding-top: 25upx;">
+			<button type="primary" @tap="target1('/pages/user-center/message/addressList')">日志查看位置</button>
+		</view>
+		<!-- <button @tap="target('')">日志查看位置</button> -->
 		<view class="main">
 			<view class="uni-content">
 				<view class="uni-content-box" @tap="target('/pages/foot/my-foot')">
@@ -240,7 +244,8 @@
 				SI: '',
 				count: 0,
 				distance:'',
-				index:''
+				index:'',
+				// location:[]
 			};
 		},
 		computed: {
@@ -409,6 +414,11 @@
 					this.toLogin()
 				}
 			},
+			target1(url){
+				uni.navigateTo({
+					url:'/pages/user-center/track/lookLocation'
+				})
+			},
 			toLogin() {
 				uni.navigateTo({
 					url: "/pages/login/login-page"
@@ -447,69 +457,80 @@
 					this.doGetLocation();
 					this.longitude = this.locationinfo.longitude;
 					this.latitude = this.locationinfo.latitude;
+					this.speed = this.locationinfo.speed;
 					this.record = [this.longitude, this.latitude];
 					this.test = JSON.stringify(this.locationinfo);
-					this.newtest = this.newtest.concat(this.test);
-					console.log(this.newtest)
-					this.newrecord = this.newrecord.concat('[' + this.record + ']');				
-					console.log("1:前端记录发给后端的");
-					console.log('[' + this.newrecord + ']')		
-					
-					if ((this.newrecord).length > 9 ) {
-						//console.log(this.newrecord)
-						Record_CarTrack({
-							track_id: this.id,
-							method: 'put',  
-							record: '[' + this.newrecord + ']',
-							test: '[' + this.newtest + ']',
-						}).then(({
-							data
-						}) => {
-							// uni.showToast({
-							// 	title: data.msg,
-							// 	icon: "none",
-							// })
-							// console.log(data)
-							Show_CarTrack({
-								id: this.id
-							}).then(({
-								data
-							}) => {
-								var track = data.msg[0].record;
-								console.log("2:从后端接收的");
-								console.log(track)
-								if(track.length != 0){
-									var track1 = JSON.parse(track);
-									var points = []
-									track1.forEach((item, index) => {
-										points.splice(index, 0, {
-											latitude: item[1],
-											longitude: item[0]
-										})    
-									})
+					var time = new Date();
+					var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours()
+					+ ':' + time.getMinutes() + ':' + time.getSeconds();
+					this.record1 = time1 + '--'+this.record + '--speed--' +this.speed;
+					// this.newtest = this.newtest.concat(this.test);
+					// console.log(this.newtest)
+					this.newrecord = this.newrecord.concat('['
+					 + this.record1 + ']');				
+					// console.log("1:前端记录发给后端的");
+					// console.log('[' + this.newrecord + ']')	
+					//同步获取位置信息
+					 try {
+					     uni.setStorageSync('storage_key', this.newrecord);
+					 } catch (e) {
+					     // error
+					 }	
+					// if ((this.newrecord).length > 9 ) {
+					// 	//console.log(this.newrecord)
+					// 	Record_CarTrack({
+					// 		track_id: this.id,
+					// 		method: 'put',  
+					// 		record: '[' + this.newrecord + ']',
+					// 		test: '[' + this.newtest + ']',
+					// 	}).then(({
+					// 		data
+					// 	}) => {
+					// 		// uni.showToast({
+					// 		// 	title: data.msg,
+					// 		// 	icon: "none",
+					// 		// })
+					// 		// console.log(data)
+					// 		Show_CarTrack({
+					// 			id: this.id
+					// 		}).then(({
+					// 			data
+					// 		}) => {
+					// 			var track = data.msg[0].record;
+					// 			console.log("2:从后端接收的");
+					// 			console.log(track)
+					// 			if(track.length != 0){
+					// 				var track1 = JSON.parse(track);
+					// 				var points = []
+					// 				track1.forEach((item, index) => {
+					// 					points.splice(index, 0, {
+					// 						latitude: item[1],
+					// 						longitude: item[0]
+					// 					})    
+					// 				})
 									
-									this.latitude = points[0].latitude;
-									this.longitude = points[0].longitude;
-									this.polylines = [{
-										points,
-										color: "#0A98D5", //线的颜色
-										width: 8, //线的宽度
-										arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
-									}];
-									this.markers = [{
-										iconPath: 'https://webapi.amap.com/images/car.png',
-										latitude: points[0].latitude,
-										longitude: points[0].longitude,
-									}, ];
-								}
+					// 				this.latitude = points[0].latitude;
+					// 				this.longitude = points[0].longitude;
+					// 				this.polylines = [{
+					// 					points,
+					// 					color: "#0A98D5", //线的颜色
+					// 					width: 8, //线的宽度
+					// 					arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
+					// 				}];
+					// 				this.markers = [{
+					// 					iconPath: 'https://webapi.amap.com/images/car.png',
+					// 					latitude: points[0].latitude,
+					// 					longitude: points[0].longitude,
+					// 				}, ];
+					// 			}
 								
-							}).catch(function(err){
+					// 		}).catch(function(err){
 					
-				             })
-						})
-						this.newrecord = []
-						this.newtest = []
-					}
+				    //          })
+					// 	})
+					// 	this.newrecord = []
+					// 	this.newtest = []
+					// }
 				}, 1000)
 			},
 			closetrack() {
