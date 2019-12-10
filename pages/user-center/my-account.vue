@@ -68,10 +68,10 @@
 				</view>
 			</view>
 		</view>
-		<view style="padding-top: 25upx;">
-			<button type="primary" @tap="target1('/pages/user-center/message/addressList')">日志查看位置</button>
+		<view style="padding-top: 45upx;">
+			<button type="primary" @tap="target1()">日志查看位置</button>
 		</view>
-		<!-- <button @tap="target('')">日志查看位置</button> -->
+		
 		<view class="main">
 			<view class="uni-content">
 				<view class="uni-content-box" @tap="target('/pages/foot/my-foot')">
