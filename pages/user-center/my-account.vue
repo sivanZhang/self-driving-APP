@@ -57,7 +57,10 @@
 							<!-- #endif -->
 							<!-- #ifdef APP-PLUS -->
 							<view v-if="hasLocation === true">
-								{{address.province}}{{address.city}}{{address.district}}{{address.street}}
+								{{address.province?address.province:""}}
+								{{address.city?address.city:""}}
+								{{address.district?address.district:""}}
+								{{address.street?address.street:""}}
 							</view>
 							<!-- #endif -->
 						</view>
@@ -463,7 +466,7 @@
 					var time = new Date();
 					var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours()
 					+ ':' + time.getMinutes() + ':' + time.getSeconds();
-					this.record1 = time1 + '--'+this.record + '--speed--' +this.speed;
+					this.record1 = time1 + '--'+this.record + '--' +this.speed;
 					// this.newtest = this.newtest.concat(this.test);
 					// console.log(this.newtest)
 					this.newrecord = this.newrecord.concat('['
