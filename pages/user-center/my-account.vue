@@ -454,7 +454,7 @@
 					})
 				}
 			},
-			
+			  
 			recordtrack() {
 				this.SI = setInterval(() => {
 					this.doGetLocation();
@@ -479,6 +479,7 @@
 					 } catch (e) {
 					     // error
 					 }	
+					
 					// if ((this.newrecord).length > 9 ) {
 					// 	//console.log(this.newrecord)
 					// 	Record_CarTrack({
@@ -536,6 +537,14 @@
 					// }
 				}, 1000)
 			},
+			locate(){
+				var watchId = plus.geolocation.watchPosition( function ( p ) {  
+				        console.log( "监听位置变化信息:" );  
+				        console.log( JSON.stringify(p) );  
+				    }, function ( e ) {  
+				        console.log( "监听位置变化信息失败："+e.message );  
+				    }, {'enableHighAccuracy':true,'geocode': false} );  
+			},
 			closetrack() {
 				clearInterval(this.SI)
 				this.newrecord = []
@@ -557,6 +566,7 @@
 
 			}
 		},
+		
 		onLoad() {
 			//     // #ifdef APP-PLUS
 			//      wv = plus.webview.create("","custom-webview",{
@@ -572,20 +582,25 @@
 			//          console.log(wv.getStyle())
 			//      }, 1000);//如果是首页的onload调用时需要延时一下，二级页面无需延时，可直接获取
 			//      // #endif
-
+       
 			setTimeout(function() {
 				uni.showToast({
 					title: "点击中间的按钮可以开始记录车迹哦",
 					icon: "none",
 				})
 			}, 1000);
+			this.locate();
 			this.getLocationTest();
 			this.lookrank_total();
 		},
+		
+        
 		onShow: function() {
+			
 			this.doGetLocation();
 			this.search();
 			this.lookrank_total();
+			
 		},
 	};
 </script>
