@@ -594,7 +594,7 @@
 			this.lookrank_total();
 		},
 		
-        
+         
 		onShow: function() {
 			
 			this.doGetLocation();
