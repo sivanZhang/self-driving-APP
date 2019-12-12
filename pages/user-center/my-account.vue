@@ -92,7 +92,7 @@
 						<image class="img2" v-show="!stop" @tap="isLogin?closetrack():toLogin()" src="/static/icons/open.jpg" />
 					</view>
 				</view>
-				<view class="uni-content-box">
+				<view class="uni-content-box" @tap="target('/pages/user-center/track/look')">
 					<view class="uni-content-image">
 						<image src="/static/icons/xuanshang2.png" />
 					</view>
@@ -248,6 +248,7 @@
 				count: 0,
 				distance:'',
 				index:'',
+				
 				// location:[]
 			};
 		},
@@ -309,9 +310,40 @@
 						console.log(this.locationinfo)
 					},
 					fail: (err) => {
-						console.log((err))
+						console.log(err)
+						try {
+							var time = new Date();
+							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours()
+							+ ':' + time.getMinutes() + ':' + time.getSeconds();
+							var c = '这是fail里的err内容'+':'+JSON.stringify(err) + '--'+ time1
+						    var old = uni.getStorageSync('log_ge' );
+							console.log(old)					
+						    uni.setStorageSync('log_ge', c.concat(old));
+							
+						} catch (e) {
+						    // error
+						}
+					},
+					complete: (a) => {
+						console.log(a)
+						try {
+							var time = new Date();
+							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours()
+							+ ':' + time.getMinutes() + ':' + time.getSeconds();
+							var c ='这是complete里的内容'+':'+ time1+ '--'+JSON.stringify(a)
+						    var old = uni.getStorageSync('log_ge' );
+							console.log(old)					
+						    uni.setStorageSync('log_ge', c.concat(old));
+							
+						} catch (e) {
+						    // error
+						}
+						
 					}
 				})
+				
+				
+				
 			},
 			async checkPermission() {
 				if (uni.getSystemInfoSync().platform == 'android') {
@@ -475,7 +507,10 @@
 					// console.log('[' + this.newrecord + ']')	
 					//同步获取位置信息
 					 try {
-					     uni.setStorageSync('storage_key', this.newrecord);
+					  //    var old = uni.getStorageSync('log_geo' );
+						 // console.log(old);
+					     uni.setStorageSync('log_geo', this.newrecord);
+						 
 					 } catch (e) {
 					     // error
 					 }	
@@ -538,12 +573,42 @@
 				}, 1000)
 			},
 			locate(){
+				
 				var watchId = plus.geolocation.watchPosition( function ( p ) {  
 				        console.log( "监听位置变化信息:" );  
-				        console.log( JSON.stringify(p) );  
+				        // console.log( JSON.stringify(p) );  
+						var f = JSON.stringify(p);
+						
+						try {
+							var time = new Date();
+							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours()
+							+ ':' + time.getMinutes() + ':' + time.getSeconds();
+							var lo ='这是监听位置变化信息的内容'+':'+ time1+ '--'+f
+						    var old = uni.getStorageSync('log_g' );
+							console.log(old)					
+						    uni.setStorageSync('log_g', lo.concat(old));
+							   
+						} catch (e) {
+						    // error
+						}
 				    }, function ( e ) {  
 				        console.log( "监听位置变化信息失败："+e.message );  
+						var g = e.message;
+						
+						try {
+							var time = new Date();
+							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours()
+							+ ':' + time.getMinutes() + ':' + time.getSeconds();
+							var lo ='这是监听位置变化信息的内容'+':'+ time1+ '--'+g
+						    var old = uni.getStorageSync('log_g' );
+							console.log(old)					
+						    uni.setStorageSync('log_g', lo.concat(old));
+							
+						} catch (e) {
+						    // error
+						}				
 				    }, {'enableHighAccuracy':true,'geocode': false} );  
+					
 			},
 			closetrack() {
 				clearInterval(this.SI)

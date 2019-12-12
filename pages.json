@@ -71,7 +71,14 @@
 				
 			}
 		},
-	
+	   {
+		"path": "pages/user-center/track/look",
+		"style": {
+			"navigationBarTitleText": "位置信息"
+			
+		}
+	   },
+		
 		
 		{
 			"path": "pages/user-center/rank/lookrank",
