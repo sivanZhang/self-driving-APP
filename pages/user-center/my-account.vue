@@ -2,7 +2,7 @@
 	<!-- 我的首页 -->
 	<view id="MyAccount">
 		<view class="wall">
-			<view class="record" >{{longitude}}--{{latitude}}--{{speed}}</view>
+			<!-- <view class="record" >{{longitude}}--{{latitude}}--{{speed}}</view> -->
 			<view class="header" @tap="isLogin?target('/pages/user-center/track/alltrack?id='+this.id):toLogin()">
 				<view class="top-left">
 					<view class="milage">
@@ -68,9 +68,9 @@
 				</view>
 			</view>
 		</view>
-		<view style="padding-top: 45upx;">
+		<!-- <view style="padding-top: 45upx;">
 			<button type="primary" @tap="target1()">日志查看位置</button>
-		</view>
+		</view> -->
 		
 		<view class="main">
 			<view class="uni-content">
@@ -248,7 +248,7 @@
 				count: 0,
 				distance:'',
 				index:'',
-				
+				new_record:[],
 				// location:[]
 			};
 		},
@@ -317,7 +317,7 @@
 							+ ':' + time.getMinutes() + ':' + time.getSeconds();
 							var c = '这是fail里的err内容'+':'+JSON.stringify(err) + '--'+ time1
 						    var old = uni.getStorageSync('log_ge' );
-							console.log(old)					
+											
 						    uni.setStorageSync('log_ge', c.concat(old));
 							
 						} catch (e) {
@@ -332,7 +332,7 @@
 							+ ':' + time.getMinutes() + ':' + time.getSeconds();
 							var c ='这是complete里的内容'+':'+ time1+ '--'+JSON.stringify(a)
 						    var old = uni.getStorageSync('log_ge' );
-							console.log(old)					
+												
 						    uni.setStorageSync('log_ge', c.concat(old));
 							
 						} catch (e) {
@@ -449,11 +449,11 @@
 					this.toLogin()
 				}
 			},
-			target1(url){
-				uni.navigateTo({
-					url:'/pages/user-center/track/lookLocation'
-				})
-			},
+			// target1(url){
+			// 	uni.navigateTo({
+			// 		url:'/pages/user-center/track/lookLocation'
+			// 	})
+			// },
 			toLogin() {
 				uni.navigateTo({
 					url: "/pages/login/login-page"
@@ -488,6 +488,9 @@
 			},
 			  
 			recordtrack() {
+				// this.doGetLocation();
+				// this.speed = this.locationinfo.speed;
+				
 				this.SI = setInterval(() => {
 					this.doGetLocation();
 					this.longitude = this.locationinfo.longitude;
@@ -501,7 +504,7 @@
 					this.record1 = time1 + '--'+this.record + '--' +this.speed;
 					this.newtest = this.newtest.concat(this.test);
 					// console.log(this.newtest)
-					var record2 = '['+ this.record + ']';
+					this.new_record = this.new_record.concat('['+ this.record + ']');
 					// console.log('['+ record2 + ']')
 					this.newrecord = this.newrecord.concat('['
 					 + this.record1 + ']');				
@@ -517,12 +520,20 @@
 					     // error
 					 }	
 					
-					// if ((this.newrecord).length > 9 ) {
-					// 	//console.log(this.newrecord)
-						Record_CarTrack({
+					if(this.speed == 0 || 'null'){
+						this.count +=1;
+						
+					}
+					console.log(this.speed)
+					console.log(this.count)
+					
+					// if((this.speed == 0 && this.count == 1) || (this.speed != 0 && record2.length > 9))
+					console.log('['+ this.new_record + ']')
+					if((this.count == 1 && (this.speed == null||0)) || ( (this.new_record).length > 9 && (this.speed != null || 0) ))
+					{Record_CarTrack({
 							track_id: this.id,
 							method: 'put',  
-							record: '[' + record2 + ']',
+							record:  '[' + this.new_record + ']' ,
 							test: '[' + this.newtest + ']',
 						}).then(({
 							data
@@ -569,9 +580,9 @@
 					
 				             })
 						})
-						record2 = []
+						this.new_record = []
 						this.newtest = []
-					//}
+						}
 				}, 1000)
 			},
 			locate(){
@@ -586,8 +597,7 @@
 							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours()
 							+ ':' + time.getMinutes() + ':' + time.getSeconds();
 							var lo ='这是监听位置变化信息的内容'+':'+ time1+ '--'+f
-						    var old = uni.getStorageSync('log_g' );
-							console.log(old)					
+						    var old = uni.getStorageSync('log_g' );					
 						    uni.setStorageSync('log_g', lo.concat(old));
 							   
 						} catch (e) {
@@ -602,8 +612,7 @@
 							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours()
 							+ ':' + time.getMinutes() + ':' + time.getSeconds();
 							var lo ='这是监听位置变化信息的内容'+':'+ time1+ '--'+g
-						    var old = uni.getStorageSync('log_g' );
-							console.log(old)					
+						    var old = uni.getStorageSync('log_g' );					
 						    uni.setStorageSync('log_g', lo.concat(old));
 							
 						} catch (e) {
@@ -614,7 +623,7 @@
 			},
 			closetrack() {
 				clearInterval(this.SI)
-				var record2 = []
+				this.new_record = []
 				this.close = 0;
 				Close_CarTrack({
 					track_id: this.id,
@@ -656,7 +665,7 @@
 					icon: "none",
 				})
 			}, 1000);
-			this.locate();
+			// this.locate();
 			this.getLocationTest();
 			this.lookrank_total();
 		},

@@ -81,7 +81,9 @@
 		},
 		onNavigationBarButtonTap(val) {
 			if (val.index == 0) {
-				console.log(val)
+				uni.navigateTo({
+					url:'/pages/user-center/track/lookLocation'
+				})
 			}
 		},
 		onLoad(option) {
@@ -260,7 +262,7 @@
 			}
 			.start_point{
 				position:relative;
-				font-size:45upx;
+				font-size:30upx;
 				top:35%;
 				left:5%;
 				
@@ -273,7 +275,7 @@
 			}
 			.end_point{
 				position:relative;
-				font-size:45upx;
+				font-size:30upx;
 				top:45%;
 				left:5%;
 			}
