@@ -249,6 +249,7 @@
 				distance:'',
 				index:'',
 				new_record:[],
+				list:''
 				// location:[]
 			};
 		},
@@ -272,14 +273,16 @@
             		data
             	}) => {
             		if(data.status === 0){
-						[...data.msg].map((item,index) =>{
-							if (item.user_name == this.username){
-								this.index = index + 1;
-								this.distance = item.distance;
-							}
-						});
+						this.list = data.user_rank;
+						this.index = this.list.rank;
+						this.distance = this.list.mileage;
+						// [...data.msg].map((item,index) =>{
+						// 	if (item.user_name == this.username){
+						// 		this.index = index + 1;
+						// 		this.distance = item.distance;
+						// 	}
+						// });
             		}
-            		console.log(data)
             	})
             },
 			async getLocation() {
@@ -364,7 +367,6 @@
 										var Settings = plus.android.importClass('android.provider.Settings');
 										var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 										main.startActivity(intent); // 打开系统设置GPS服务页面
-
 									} else {
 										this.doGetLocation();
 										console.log('GPS功能已开启');
@@ -639,7 +641,6 @@
 					})
 					console.log(data)
 				})
-
 			}
 		},
 		
@@ -684,25 +685,21 @@
 <style lang="scss">
 	#MyAccount {
 		overflow-x: hidden;
-
 		.wall {
 			height: 360rpx;
 			position: relative;
 			background: #fff;
-
 			.record {
 				margin-top: 80upx;
 				margin-left: 20upx;
 				font-size: 35upx;
 				position:relative;
 			}
-
 			.header {
 				padding-left: 30upx;
 				padding-top: 50upx;
 				display: flex;
 				flex-wrap: wrap;
-
 				// flex-direction: column;
 				// align-items: center;
 				// justify-content: center;
@@ -716,7 +713,6 @@
 				.top-left {
 					padding-top: 36upx;
 					padding-left: 14upx;
-
 					// display:flex;
 					// flex-direction: column;
 					.milage {
@@ -725,18 +721,15 @@
 						border-bottom: 10upx solid #DF5000;
 						width: 130upx;
 					}
-
 					.total {
 						display: flex;
 						// flex-wrap: wrap;
 						padding-top: -8upx;
-
 						.number {
 							font-size: 84upx;
 							// width:230upx;
 							letter-spacing: -10upx;
 						}
-
 						.kilometers {
 							font-size: 30upx;
 							padding-left: 8upx;
@@ -744,16 +737,13 @@
 						}
 					}
 				}
-
 				.top-right {
 					position: absolute;
 					padding-top: 91upx;
 					padding-left: 426upx;
 					display: flex;
 					flex-wrap: wrap;
-
 					.showrank {
-
 						padding: 0 10upx;
 						padding-top: 8upx;
 						background-color: #4D4D4D;
@@ -761,13 +751,11 @@
 						width: 100upx;
 						color: #FFFFFF;
 						text-align: center;
-
 						.num {
 							padding-top: 7upx;
 							font-weight: bold;
 						}
 					}
-
 					.look {
 						padding-top: 8upx;
 						display: flex;
@@ -775,13 +763,11 @@
 						background-color: #DF5000;
 						height: 100upx;
 						width: 150upx;
-
 						image {
 							width: 98upx;
 							height: 45upx;
 							padding-left: 52upx;
 						}
-
 						.lookrank {
 							color: #FFFFFF;
 							padding-top: 2upx;
@@ -791,7 +777,6 @@
 					}
 				}
 			}
-
 			.wall-top {
 				display: flex;
 				position: absolute;
@@ -799,7 +784,6 @@
 				left: 25upx;
 				top: 290upx;
 				font-size: 32upx;
-
 				.img {
 					position: relative;
 					left: 3%;
@@ -809,30 +793,25 @@
 					box-shadow: 1px 1px 2px #F2F2F2;
 					border: 1.5px solid #F2F2F2;
 				}
-
 				.top {
 					padding-top: 12upx;
 					padding-left: 10upx;
 					color: #848689;
 					width: 480upx;
-
 					.information {
 						display: flex;
-
 						image {
 							width: 62upx;
 							height: 28upx;
 							padding-left: 34upx;
 							z-index: 2;
 						}
-
 						.username {
 							position: relative;
 							padding-top: 6upx;
 							left: 0.3rem;
 						}
 					}
-
 					.position {
 						padding-top: 6upx;
 						display: flex;
@@ -843,7 +822,6 @@
 							padding-left: 30upx;
 							z-index: 2;
 						}
-
 						.address {
 							padding-top: 15upx;
 							position: relative;
@@ -855,10 +833,8 @@
 				}
 			}
 		}
-
 		.main {
 			height: 220upx;
-
 			.uni-content {
 				display: flex;
 				flex-wrap: wrap;
@@ -866,7 +842,6 @@
 				padding-top: 120upx;
 				padding-right: 5upx;
 			}
-
 			.uni-content-box {
 				display: flex;
 				flex-direction: column;
@@ -874,29 +849,24 @@
 				width: 20%;
 				box-sizing: border-box;
 			}
-
 			.uni-content-image {
 				display: flex;
 				justify-content: center;
 				align-items: center;
-
 				.img {
 					width: 80upx;
 					height: 80upx;
 				}
-
 				.img2 {
 					margin-top: -10upx;
 					width: 90upx;
 					height: 100upx;
 				}
-
 				image {
 					width: 70upx;
 					height: 70upx;
 				}
 			}
-
 			.uni-content-text {
 				font-size: 26upx;
 				color: #333;
@@ -904,16 +874,13 @@
 				padding-bottom: 10px;
 			}
 		}
-
 		.badge {
 			background-color: #e60000 !important;
 			font-size: 25upx !important;
 		}
-
 		.content {
 			position: relative;
 			top: -2.5rpx;
-
 			.section {
 				padding: 0 41.666upx;
 				// height: 125upx;
@@ -921,10 +888,8 @@
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-
 				// border-bottom: 2.083upx solid #c8c8cc;
 				&>view:nth-child(1) {
-
 					// font-weight: bold;
 					.icon {
 						width: 62.5upx;
@@ -933,20 +898,17 @@
 						margin-right: 37.5upx;
 					}
 				}
-
 				&>view:nth-child(2) {
 					color: #c8c8cc;
 					display: flex;
 					align-items: center;
 				}
 			}
-
 			.profile {
 				padding: 0 31.25rpx;
 				width: 100%;
 				display: flex;
 				align-items: flex-end;
-
 				image {
 					width: 125rpx;
 					height: 125rpx;
@@ -954,7 +916,6 @@
 				}
 			}
 		}
-
 		.foot {
 			padding-top: 40upx;
 			opacity: 0.5;
