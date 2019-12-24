@@ -59,14 +59,15 @@
 			</view>
 		</view>
 		<view class="bottom">
+			<!-- <view class="bottom-background"></view> -->
 			<view class="bottom-item">
-				<view class="bottom-item-rank">222</view>
+				<view class="bottom-item-rank">{{rank}}</view>
 				<view class="bottom-item-avatar">
-					<image class="avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
+					<image class="avatar" :src="'https://tl.chidict.com'+'/'+image"></image>
 				</view>
 				<view class="bottom-item-user">
-					<view class="bottom-item-username">ieyawiaopu</view>
-					<view class="bottom-item-kilometers">3131km</view>
+					<view class="bottom-item-username">{{username}}</view>
+					<view class="bottom-item-kilometers">{{distance}}km</view>
 				</view>
 				<button size="mini" class="bottom-item-share" @click="shareInfo">和好友比一比</button>
 			</view>
@@ -75,9 +76,6 @@
 </template>
 <script>
 	import share from "@/common/share.js";
-	import {
-		search_users
-	} from '@/api/usercenter'
 	import uniCard from "@/components/uni-card/uni-card"
 	import {
 		Track_Rank,
@@ -95,29 +93,16 @@
 				List:[],
 				List2:[],
 				distance:'',
-				index:'',
+				rank:'',
 				username:'',
+				info:'',
+				image:''
 			};
 		},
 		computed: {
 			
 		},
 		methods: {
-			search() {
-				this.user_id = this.$store.state.UserInfo.id;
-					let data = '';
-					data = this.user_id;
-					search_users({
-						userid: data
-					}).then(({
-						data
-					}) => {
-						this.thumbnail_portait = data.msg[0].thumbnail_portait;
-						this.username = data.msg[0].username;
-					}).catch(function(err){
-						// console.log(err);
-					})				
-			},
 			lookrank_total(){
 				let data = {
 					year:''
@@ -126,14 +111,18 @@
 					data
 				}) => {
 					if(data.status === 0){
-						this.background = '#262d37'
-						this.color = 'white'
+						this.background = '#262d37';
+						this.color = 'white';
 						this.List = [...data.msg];
 					    this.List2 = this.List.slice(0,3)
-						this.thumbnail_portait = "0"
-						// console.log(bb)
-						console.log(this.List)
-						console.log(this.thumbnail_portait)
+						// console.log(data)
+						// this.thumbnail_portait = "0"
+						this.info = data.user_rank;
+						this.rank = this.info.rank;
+						this.username = this.info.user_name;
+						this.distance = this.info.mileage;
+						this.image = this.info.user__thumbnail_portait;
+						// console.log(this.image)
 					}
 					console.log(data)
 				})
@@ -150,9 +139,11 @@
 						this.color = '#4a4b50'
 						this.List = [...data.msg];
 					    this.List2 = this.List.slice(0,3)
-						this.thumbnail_portait = "0"
-						console.log(this.List)
-						console.log(this.thumbnail_portait)
+				        this.info = data.user_rank;
+				        this.rank = this.info.rank;
+				        this.username = this.info.user_name;
+				        this.distance = this.info.mileage;
+				        console.log(this.info)
 					}
 					console.log(data)
 				})
@@ -259,7 +250,6 @@
 		},
 		onLoad() {
 			this.lookrank_total();
-			this.search();
 		},
 		onShow(){
 			
@@ -460,13 +450,13 @@
 		.bottom{
 			position:fixed;
 			z-index:10;
-			background-color: #22262f;
-			opacity: 0.6;
+			background:rgba(34,38,47,0.6);
 			color:#FFFFFF;
 			width:94%;
 			height:120upx;
 			margin-left:22upx;
-			margin-top:86%;
+			// margin-top:86%;
+			bottom: 0upx;
 			font-size:32upx;
 			.bottom-item {
 				display: flex;
@@ -474,6 +464,7 @@
 				// padding-top: 120upx;
 				image{
 					opacity: 1;
+					z-index:11;
 					margin-top: 20upx;
 					width: 80upx;
 					height: 80upx;
@@ -496,9 +487,9 @@
 				}
 				button{
 					border-radius: 50upx;
-					margin-top: 28upx;
+					top: 28upx;
 					color:#FFFFFF;
-					margin-left:130upx;
+					left:110upx;
 					height: 70upx;
 					background:linear-gradient(to right, #C80808,#E56D00);
 				}
