@@ -274,7 +274,7 @@
 					display: flex;
 					justify-content: center;
 					align-items: center;
-					border-radius: 18%;
+					 border-radius: 50px;
 				}
 			}
 		}
