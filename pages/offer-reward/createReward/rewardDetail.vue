@@ -266,7 +266,7 @@
 			}
 
 			.header-top-right {
-				width: 15%;
+				width: 20%;
 
 				.header-right {
 					font-size: 24upx;
