@@ -27,8 +27,7 @@
 						</view>
 						<view class="place-list">
 							<view class="place" v-for="(row,index) of item.via_list" :key="index">
-								<view>
-								<!-- <view @tap="target('/pages/team/releaseRouter/signalRouterDetail?id='+item.id)"> -->
+								<view @tap="target('/pages/team/releaseRouter/signalRouterDetail?id='+item.id)">
 									<view style="align-items: center;">
 										<view class="place-left" v-if="row.sort == -1">
 											<text>{{row.area_name}}</text>
@@ -41,7 +40,6 @@
 									<view v-if="show">
 										<text style="font-size: 22upx;">{{row.area_name}}-</text>
 									</view>
-
 								</view>
 							</view>
 							<view class="place-point" @tap="placePoint">
@@ -59,7 +57,7 @@
 					</view>
 				</view>
 				<view class="footer" v-if="item.creator_id == UserInfo.id"> 
-					<view class="footer-left" @tap="target('/pages/team/releaseRouter/signalRouterDetail?id='+item.id)">修改</view>
+					<view class="footer-left" @tap="target('/pages/team/releaseRouter/signalRouterChange?id='+item.id)">修改</view>
 					<view class="footer-right" @tap="deleteRouter(item.id)">删除</view>
 				</view>
 				<view class="footer" v-else>
