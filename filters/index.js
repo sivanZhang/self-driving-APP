@@ -26,7 +26,28 @@ export function dateHMSFormat(date) {
       return ''
     }
   }
-
+//格式化分享路线
+export function shareFormat(date) {
+    switch (date) {
+    	case 0:
+    		return "关闭";
+    	case 1:
+    		return "开启";
+    }
+}
+//格式化路线状态
+export function statusFormat(date) {
+    switch (date) {
+        case 0:
+            return "草稿";
+        case 1:
+            return "已提交";
+        case 2:
+            return "进行中的路线";
+        case 3:
+            return "完成的路线";
+    }
+}
 // export function dateTimeFormat(date) {
 // 	if (date) {
 // 		const TIME = new Date(date * 1000)
