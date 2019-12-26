@@ -8,22 +8,22 @@
 		<block>
 			<view class="container section">
 				<view class="detail">
-					<view class="content" @click="showMulLinkageThreePicker">
-						<view style="">出发地</view>
-						<input disabled :value="pickerText" placeholder="北京市"></input>
+					<view class="content" @click="chooseSetOutCity">
+						<view>出发地</view>
+						<input disabled :value="SetOutCity" placeholder="北京市"/>
 					</view>
 					<view class="buttonlist">
-						<view class="button" v-if="change" @tap="qiehuanChange">
-							<span>------------------------------------</span>
+						<view class="button" v-if="change" @tap="ChangeCity">
+							<span>---------------------------------------</span>
 							<image src="../../../static/icons/qiehuan.png"></image>
 							<span>--</span>
 						</view>
-						<view class="button" v-else @tap="qiehuanChange">
-							<span>------------------------------------</span>
+						<view class="button" v-else @tap="ChangeCity">
+							<span>---------------------------------------</span>
 							<image src="../../../static/icons/qiehuanchange.png"></image>
 							<span>--</span>
 						</view>
-						<view class="button" v-if="change1" @tap="addChange">
+						<view class="button" v-if="addCity" @tap="addChange">
 							<image src="../../../static/icons/add.png"></image>
 							<span>--</span>
 						</view>
@@ -32,13 +32,15 @@
 							<span>--</span>
 						</view>
 					</view>
-					<view class="content" v-if="change1== false">
+					<view class="content" v-if="addCity == false">
 						<view>途经点</view>
-						<input :value="pickerText2" />
+						<view v-for="(item,index) in PassageCity" :key="index">
+                           <input v-model="PassageCity[index].peers" :disabled="true" @tap="choosePassageCity(index)" placeholder="输入途经点"/>
+						</view>
 					</view>
-					<view class="content" @click="showMulLinkageThreePicker1">
+					<view class="content" @click="chooseDestinationCity">
 						<view>目的地</view>
-						<input disabled :value="pickerText1" placeholder="北京市"></input>
+						<input disabled :value="DestinationCity" placeholder="北京市"/>
 					</view>
 				</view>
 			</view>
@@ -49,7 +51,7 @@
 							<picker mode="date" fields="day" :value="date" :start="startDate" :end="endDate" @change="bindDateChange($event,1)">
 								<view class="group" >
 									<image src="../../../static/icons/date.png" mode="aspectFit"></image>
-									<input type="text" :value="date1" placeholder="出发日期" disabled />
+									<input type="text" :value="startdate" placeholder="出发日期" disabled />
 								</view>
 							</picker>
 						</view>
@@ -57,7 +59,7 @@
 							<picker mode="date" fields="day" :value="date" :start="startDate" :end="endDate" @change="bindDateChange($event,2)">
 								<view class="group">
 									<image src="../../../static/icons/date.png" mode="aspectFit"></image>
-									<input type="text" :value="date2" placeholder="返回日期" disabled />
+									<input type="text" :value="enddate" placeholder="返回日期" disabled />
 								</view>
 							</picker>
 						</view>
@@ -73,12 +75,9 @@
 			<button class="submit common-btn" :loading="isLoading" @tap="submit">发布</button>
 			
 		</block>
-		<!-- 出发地 -->
+		<!-- 城市插件 -->
 		<mpvue-city-picker :themeColor="themeColor" ref="mpvueCityPicker" :pickerValueDefault="cityPickerValueDefault"
 		 @onCancel="onCancel" @onConfirm="onConfirm"></mpvue-city-picker>
-		<!-- 目的地 -->
-		<mpvue-city-picker :themeColor="themeColor" ref="mpvueCityPicker1" :pickerValueDefault="cityPickerValueDefault"
-		 @onCancel="onCancel" @onConfirm="onConfirm1"></mpvue-city-picker>
 	</view>
 </template>
 
@@ -94,20 +93,26 @@
 			})
 			return {
 				//选择城市
-				cityPickerValueDefault: [0, 0, 1],
+				cityPickerValueDefault: [0, 0, 0],
 				themeColor: '#007AFF',
-				pickerText: '', //显示出发地名称
-				pickerTextID: '', //显示出发地ID
-				pickerText1: '', //显示目的地名称
-				pickerText1ID: '', //显示目的地ID
-				pickerValueDefault: [0],
+				SetOutCity: '', //显示出发地名称
+				SetOutCityID: '', //显示出发地ID
+				DestinationCity: '', //显示目的地名称
+				DestinationCityID: '', //显示目的地ID
+				// pickerValueDefault: [0],
+				PassageCity: [//显示途经地名称和ID
+					{peers:''}
+				],
+				PassageCityID:[
+					{id:''}
+				],
 				//按钮
 				change: true,
-				change1: true,
+				addCity: true,
 				//时间
 				date: currentDate,
-				date1: "",
-				date2: "",
+				startdate: "",
+				enddate: "",
 				//说明
 				content:"",
 				isLoading: false,
@@ -131,10 +136,7 @@
 			}
 		},
 		onLoad() {
-			//选择城市
-			if (this.$refs.mpvueCityPicker.showPicker) {
-				this.$refs.mpvueCityPicker.pickerCancel()
-			}
+
 		},
 		methods: {
 			bindTextAreaBlur(e){
@@ -143,13 +145,18 @@
 			//发布
 			submit(){
 				this.isLoading = true;
+				var areasID="";
+				areasID = this.PassageCityID.map((item,index)=>{
+					return item.id;
+				}).join(",");
 				let data = {
 					content : this.content,
-					start:this.date1,
-					end:this.date2,
-					departure:this.pickerTextID,
-					destination:this.pickerText1ID,
-					status:1
+					start:this.startdate,
+					end:this.enddate,
+					departure:this.SetOutCityID,
+					destination:this.DestinationCityID,
+					status:1,
+                    areas:areasID
 				}
 				createRouterDetail(data).then(({ data })=>{
 					if(data.status == 0){
@@ -167,8 +174,8 @@
 			},
 			//选择时间
 			bindDateChange(e, type) {
-				type == 1 && (this.date1 = e.target.value.replace(/-/g,'/'));
-				type == 2 && (this.date2 = e.target.value.replace(/-/g,'/'));
+				type == 1 && (this.startdate = e.target.value.replace(/-/g,'/'));
+				type == 2 && (this.enddate = e.target.value.replace(/-/g,'/'));
 			},
 			getDate(type) {
 				const date = new Date();
@@ -186,33 +193,46 @@
 				return `${year}-${month}-${day}`;
 			},
 			//切换出发地目的地
-			qiehuanChange() {
+			ChangeCity() {
 				this.change = !this.change
 			},
 			//添加途经地点
 			addChange() {
-				this.change1 = !this.change1
+				this.addCity = false;
+				this.PassageCity.push({peers:''});
 			},
-			//选择城市
+			//取消选择城市
 			onCancel(e) {
 				console.log(e)
 			},
 			// 出发地城市选择
-			showMulLinkageThreePicker() {
-				this.$refs.mpvueCityPicker.show()
+			chooseSetOutCity(){
+			  this.mode = 'SetOutCity';
+			  this.$refs.mpvueCityPicker.show();
+			},
+			//途经点城市选择
+			choosePassageCity(e){
+			   this.cityid = e
+			   this.mode = 'PassageCity';
+			   this.$refs.mpvueCityPicker.show();
+			},
+			//目的地城市选择
+			chooseDestinationCity(){
+			   this.mode = 'DestinationCity';
+			   this.$refs.mpvueCityPicker.show();
 			},
 			onConfirm(e) {
-				this.pickerText = e.label;
-				this.pickerTextID = e.cityCode;
-			},
-			// 目的地城市选择
-			showMulLinkageThreePicker1() {
-				this.$refs.mpvueCityPicker1.show()
-			},
-			onConfirm1(e) {
-				this.pickerText1 = e.label;
-				this.pickerText1ID = e.cityCode;
-			},
+				if(this.mode == 'SetOutCity'){
+					this.SetOutCity = e.label;
+				    this.SetOutCityID = e.cityCode;
+				}else if(this.mode == 'PassageCity'){
+					this.PassageCity[this.cityid].peers = e.label;
+					this.PassageCityID[this.cityid].id= e.cityCode;
+				}else if(this.mode == 'DestinationCity'){
+					this.DestinationCity = e.label;
+				    this.DestinationCityID = e.cityCode;
+				}
+			}
 		},
 		onNavigationBarButtonTap(val) {
 			if (val.index == 0) {
