@@ -32,7 +32,7 @@
 							<span>--</span>
 						</view>
 					</view>
-					<view class="content" v-if="addCity == false">
+					<view class="content">
 						<view>途经点</view>
 						<view v-for="(item,index) in PassageCity" :key="index">
                            <input v-model="PassageCity[index].peers" :disabled="true" @tap="choosePassageCity(index)" placeholder="输入途经点"/>
