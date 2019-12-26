@@ -4,7 +4,7 @@ export function addConcern(data) {
     return Ajax.post('/followfans/followfans/',data);
 }
 //取消关注
-export function DeleteConcern(data) {
+export function deleteConcern(data) {
     return Ajax.post('/followfans/followfans/?delete',data);
 }
 //查看关注
