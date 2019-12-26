@@ -59,6 +59,7 @@
 				</view>
 				<view class="footer">
 					<view class="footer-left" :style="{ color: activeColor}" @tap="target('/pages/team/createTeam/index')">组队</view>
+					<!-- <view v-if="item.creator_id == UserInfo.id" class="footer-right" @tap="changeRouter">修改</view> -->
 					<view class="footer-right">保存</view>
 				</view>
 			</view>
