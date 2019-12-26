@@ -1,4 +1,5 @@
 <template>
+	<!-- 领券中心 -->
 	<view class="container">
 		<image src="https://www.thorui.cn/wx/static/images/mall/coupon/banner_coupon.png" mode="widthFix" class="tui-coupon-banner"></image>
 		<view class="tui-coupon-list">

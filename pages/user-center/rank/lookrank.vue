@@ -124,7 +124,7 @@
 						this.image = this.info.user__thumbnail_portait;
 						// console.log(this.image)
 					}
-					console.log(data)
+					// console.log(data)
 				})
 			},
 			lookrank_month(){
@@ -143,9 +143,9 @@
 				        this.rank = this.info.rank;
 				        this.username = this.info.user_name;
 				        this.distance = this.info.mileage;
-				        console.log(this.info)
+				        // console.log(this.info)
 					}
-					console.log(data)
+					// console.log(data)
 				})
 			},
 			shareInfo() {

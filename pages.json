@@ -52,18 +52,36 @@
 				
 			}
 		},
-		
 		{
 			"path": "pages/user-center/giftcenter/giftDetail",
 			"style": {
 				"navigationBarTitleText": "礼品详情",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"backgroundColorTop": "#fcfcfc",
+				"backgroundColorBottom": "#fcfcfc",
+				"disableScroll": true,
 				"app-plus": {
-					"titleNView": false
+					"bounce": "none"
+					// "titleNView": false
 				}
 			}
 		},
-	
-		
+		{
+			"path": "pages/user-center/giftcenter/giftCategory",
+			"style": {
+				"navigationBarTitleText": "礼品分类",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"backgroundColorTop": "#fcfcfc",
+				"backgroundColorBottom": "#fcfcfc",
+				"disableScroll": true,
+				"app-plus": {
+					"bounce": "none"
+					// "titleNView": false
+				}
+			}
+		},
 		{
 			"path": "pages/user-center/track/signaltrack",
 			"style": {

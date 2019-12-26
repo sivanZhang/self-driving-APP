@@ -1,4 +1,5 @@
 <template>
+	<!-- 礼品中心 -->
 	<view class="container">
 		<!--tabbar-->
 		<view class="tui-tabbar">
@@ -11,7 +12,6 @@
 				</view>
 			</block>
 		</view>
-
 		<!--header-->
 		<view class="tui-header">
 			<view class="tui-category" hover-class="opcity" :hover-stay-time="150" @tap="classify">
@@ -28,21 +28,14 @@
 				</view>
 				<!-- #endif -->
 				<swiper vertical autoplay circular interval="8000" class="tui-swiper">
-					<swiper-item v-for="(item,index) in category" :key="index" class="tui-swiper-item" @tap="search">
+					<swiper-item v-for="(item,index) in GiftList" :key="index" class="tui-swiper-item" @tap="search">
 						<view class="tui-hot-item">{{item.title}}</view>
 					</swiper-item>
 				</swiper>
 			</view>
 		</view>
-		<!--header-->
+		<!--header-banner-->
 		<view class="tui-header-banner">
-			<view class="tui-hot-search">
-				<view>热搜</view>
-				<view class="tui-hot-tag" @tap="search">羽绒服</view>
-				<view class="tui-hot-tag" @tap="search">水杯</view>
-				<view class="tui-hot-tag" @tap="search">小米耳机</view>
-				<view class="tui-hot-tag" @tap="search">帐篷</view>
-			</view>
 			<view class="tui-banner-bg">
 				<view class="tui-primary-bg tui-route-left"></view>
 				<view class="tui-primary-bg tui-route-right"></view>
@@ -50,7 +43,7 @@
 				<view class="tui-banner-box">
 					<swiper :indicator-dots="true" :autoplay="true" :interval="5000" :duration="150" class="tui-banner-swiper"
 					 :circular="true" indicator-color="rgba(255, 255, 255, 0.8)" indicator-active-color="#fff">
-						<swiper-item v-for="(item,index) in category" :key="index" @tap.stop="detail">
+						<swiper-item v-for="(item,index) in GiftList" :key="index" @tap.stop="detail(item.id)">
 							<image :src="'https://tl.chidict.com' + '/'+item.picture" class="tui-slide-image" mode="scaleToFill" />
 						</swiper-item>
 					</swiper>
@@ -59,21 +52,25 @@
 		</view>
 
 		<view class="tui-product-category">
-			<view class="tui-category-item" v-for="(item,index) in category" :key="index" :data-key="item.name" @tap="more">
-				<image :src="'https://tl.chidict.com' + '/'+item.picture" class="tui-category-img" mode="scaleToFill"></image>
-				<view class="tui-category-name">{{item.specifications[0].name}}</view>
+			<view class="tui-category-item" @tap="yearList">
+				<image src="/static/image/test1.jpg" class="tui-category-img" mode="scaleToFill"></image>
+				<view class="tui-category-name">本年度礼品榜</view>
+			</view>
+			<view class="tui-category-item" @tap="monthList">
+				<image src="/static/image/test1.jpg" class="tui-category-img" mode="scaleToFill"></image>
+				<view class="tui-category-name">本月礼品榜</view>
 			</view>
 		</view>
 
 		<view class="tui-product-box tui-pb-20 tui-bg-white">
 			<view class="tui-group-name" @tap="more">
-				<text>热门推荐</text>
+				<text>查看更多礼品</text>
 				<tui-icon name="arrowright" :size="20" color="#555"></tui-icon>
 			</view>
 			<view class="tui-new-box">
-				<view class="tui-new-item" v-for="(item,index) in category" :key="index"  @tap="detail(item.id)" >
+				<view class="tui-new-item" v-for="(item,index) in GiftList" :key="index"  @tap="detail(item.id)" >
 					<view class="tui-title-box"  >
-						<view class="tui-new-title">{{item.specifications[0].name}},{{item.specifications[0].content}}</view>
+						<view class="tui-new-title">{{item.title}},{{item.category}}类</view>
 						
 						<view class="tui-new-price">
 							<text class="tui-new-present">￥{{item.specifications[0].price}}</text>
@@ -94,7 +91,7 @@
 	import tuiTag from "@/components/gift/tag"
 	import tuiLoadmore from "@/components/gift/loadmore"
 	import tuiNomore from "@/components/gift/nomore"
-	import { query_GiftDetail,look_GiftDetail } from '@/api/giftcenter';
+	import { look_GiftDetail,look_GiftSpecifications } from '@/api/giftcenter';
 	export default {
 		components: {
 			tuiIcon,
@@ -110,15 +107,7 @@
 					icon: "home",
 					text: "首页",
 					size: 21
-				}, {
-					icon: "category",
-					text: "分类",
-					size: 24
-				}, {
-					icon: "cart",
-					text: "购物车",
-					size: 22
-				}, {
+				},{
 					icon: "people",
 					text: "我的",
 					size: 24
@@ -135,23 +124,23 @@
 					"4.jpg",
 					"5.jpg"
 				],
-				category:[],
+				GiftList:[],
 				pageIndex: 1,
 				loadding: false,
 				pullUpOn: true
 			}
 		},
 		onLoad() {
-		    this.getcategory();
+		    this.getGiftList();
 			
 		},
 		methods: {
 			//获取礼品列表
-			getcategory(){
-			  query_GiftDetail().then(({ data }) =>{
+			getGiftList(){
+			  look_GiftDetail().then(({ data }) =>{
 				 
 				  if(data.status == 0){
-					  this.category = [...data.msg];
+					  this.GiftList = [...data.msg];
 					  
 				  }
 			  })
@@ -174,21 +163,23 @@
 					}
 				}
 			},
-			detail: function(e) {
-				
-				
-					uni.navigateTo({
-						url: '../giftcenter/giftDetail?id=' + e
-					})
-				
-				
-				
+			detail: function(e) {	
+				uni.navigateTo({
+					url: '../giftcenter/giftDetail?id=' + e
+				})	
+				console.log(e)	
 			},
 			classify: function() {
 				uni.navigateTo({
-					url: '/pages/navbar-2/navbar-2'
+					url: '../giftcenter/giftCategory'
 				})
 
+			},
+			monthList(){
+				console.log("这是本月礼品榜")
+			},
+			yearList(){
+				console.log("这是本年度礼品榜")
 			},
 			more: function(e) {
 				let key = e.currentTarget.dataset.key || "";
@@ -463,7 +454,7 @@
 	/* #endif */
 
 	/* #ifdef H5 */
-	>>>.tui-banner-swiper .uni-swiper-dot {
+	.tui-banner-swiper .uni-swiper-dot {
 		width: 8rpx;
 		height: 8rpx;
 		display: inline-flex;
@@ -471,7 +462,7 @@
 		justify-content: space-between;
 	}
 
-	>>>.tui-banner-swiper .uni-swiper-dot::before {
+	.tui-banner-swiper .uni-swiper-dot::before {
 		content: '';
 		flex-grow: 1;
 		background: rgba(255, 255, 255, 0.8);
@@ -479,11 +470,11 @@
 		overflow: hidden;
 	}
 
-	>>>.tui-banner-swiper .uni-swiper-dot-active::before {
+	.tui-banner-swiper .uni-swiper-dot-active::before {
 		background: #fff;
 	}
 
-	>>>.tui-banner-swiper .uni-swiper-dot.uni-swiper-dot-active {
+	.tui-banner-swiper .uni-swiper-dot.uni-swiper-dot-active {
 		width: 16rpx;
 	}
 
@@ -497,13 +488,13 @@
 		align-items: center;
 		justify-content: space-between;
 		flex-wrap: wrap;
-		font-size: 24rpx;
+		font-size: 34upx;
 		color: #555;
 		margin-bottom: 20rpx;
 	}
 
 	.tui-category-item {
-		width: 20%;
+		width: 40%;
 		height: 118rpx;
 		display: flex;
 		align-items: center;
@@ -513,8 +504,8 @@
 	}
 
 	.tui-category-img {
-		height: 90rpx;
-		width: 110rpx;
+		height: 80rpx;
+		width: 120rpx;
 		display: block;
 	}
 
@@ -522,6 +513,7 @@
 		display: flex;
 		align-items: center;
 		text-align: center;
+		padding-top: 10upx;
 		justify-content: space-between;
 		flex-direction: column;
 		line-height: 24rpx;
