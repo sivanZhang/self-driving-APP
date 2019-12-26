@@ -54,14 +54,17 @@
 							<span style="font-weight: bold;">时间安排：</span>
 							{{ item.start_date | dateFormat }}--{{ item.end_date | dateFormat }}
 							</view>
-						    <view v-if="item.creator_id == UserInfo.id" @tap="deleteRouter(item.id)"><span style="color: #848689;">删除</span></view>
+						    <!-- <view v-if="item.creator_id == UserInfo.id" @tap="deleteRouter(item.id)"><span style="color: #848689;">删除</span></view> -->
 						</view>
 					</view>
 				</view>
-				<view class="footer">
-					<view class="footer-left" :style="{ color: activeColor}" @tap="target('/pages/team/createTeam/index')">组队</view>
-					<view v-if="item.creator_id == UserInfo.id" class="footer-right" @tap="target('/pages/team/releaseRouter/signalRouterDetail?id='+item.id)">修改</view>
-					<view v-else class="footer-right">保存</view>
+				<view class="footer" v-if="item.creator_id == UserInfo.id"> 
+					<view class="footer-left" @tap="target('/pages/team/releaseRouter/signalRouterDetail?id='+item.id)">修改</view>
+					<view class="footer-right" @tap="deleteRouter(item.id)">删除</view>
+				</view>
+				<view class="footer" v-else>
+					<view class="footer-left" @tap="target('/pages/team/createTeam/index')">组队</view>
+					<view  class="footer-right">保存</view>
 				</view>
 			</view>
 
