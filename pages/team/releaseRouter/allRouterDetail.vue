@@ -27,7 +27,8 @@
 						</view>
 						<view class="place-list">
 							<view class="place" v-for="(row,index) of item.via_list" :key="index">
-								<view @tap="target('/pages/team/releaseRouter/signalRouterDetail?id='+item.id)">
+								<view>
+								<!-- <view @tap="target('/pages/team/releaseRouter/signalRouterDetail?id='+item.id)"> -->
 									<view style="align-items: center;">
 										<view class="place-left" v-if="row.sort == -1">
 											<text>{{row.area_name}}</text>
@@ -59,8 +60,8 @@
 				</view>
 				<view class="footer">
 					<view class="footer-left" :style="{ color: activeColor}" @tap="target('/pages/team/createTeam/index')">组队</view>
-					<!-- <view v-if="item.creator_id == UserInfo.id" class="footer-right" @tap="changeRouter">修改</view> -->
-					<view class="footer-right">保存</view>
+					<view v-if="item.creator_id == UserInfo.id" class="footer-right" @tap="target('/pages/team/releaseRouter/signalRouterDetail?id='+item.id)">修改</view>
+					<view v-else class="footer-right">保存</view>
 				</view>
 			</view>
 
