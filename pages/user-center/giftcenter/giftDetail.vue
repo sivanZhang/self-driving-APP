@@ -1,6 +1,7 @@
 <template>
+	<!-- 礼品详情页 -->
 	<view class="container">
-		<!--banner-->
+		<!--轮播图-->
 		<view class="tui-banner-swiper" v-for="(item,index) in GiftList" :key="index">
 			<swiper :autoplay="true" :interval="5000" :duration="150" :circular="true" :style="{height:scrollH + 'px'}" @change="bannerChange">
 				<block v-for="(item,index) in turns" :key="index">
@@ -9,8 +10,9 @@
 					</swiper-item>
 				</block>
 			</swiper>
-			<tui-tag type="translucent" shape="circleLeft" size="small">{{bannerIndex+1}}/{{turns.length}}</tui-tag>
-		<!--banner-->
+			<tui-tag type="translucent" shape="circleLeft" size="small">{{turnsIndex+1}}/{{turns.length}}</tui-tag>
+		<!--轮播图-->
+		<!--礼品信息-->
 			<view class="tui-pro-detail">
 				<view class="tui-product-title tui-border-radius">
 					<view class="tui-pro-pricebox tui-padding">
@@ -42,6 +44,7 @@
 				</view>
 			</view>
         </view>
+		<!--礼品信息-->
 		<!--底部操作栏-->
 		<view class="tui-operation">
 			<view class="tui-operation-left tui-col-5 tui-btnbox-6">
@@ -136,7 +139,7 @@
 				scrollH: 0, //滚动总高度
 				opcity: 0,
 				iconOpcity: 0.5,
-				bannerIndex: 0,
+				turnsIndex: 0,
 				popupShow: false,
 				value: 1,
 				collected: false,
@@ -220,9 +223,11 @@
 				this.content = item.content;
 				console.log(this.click)
 			},
+			//轮播图切换
 			bannerChange: function(e) {
-				this.bannerIndex = e.detail.current
+				this.turnsIndex = e.detail.current
 			},
+			//点击查看轮播图图片
 			previewImage: function(e) {
 				let index = e.currentTarget.dataset.index;
 				uni.previewImage({
@@ -230,9 +235,11 @@
 					urls: this.Image,
 				})
 			},
+			//显示底部弹出框
 			showPopup: function() {
 				this.popupShow = true;
 			},
+			//隐藏底部弹出框
 			hidePopup: function() {
 				this.popupShow = false;
 			},
