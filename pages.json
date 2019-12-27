@@ -10,15 +10,6 @@
 			}
 		}, 
 		{
-			"path": "pages/user-center/my-account",
-			"style": {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
-			}	
-		},
-		{
 			"path": "pages/user-center/track/alltrack",
 			"style": {
 				"navigationBarTitleText": "车迹"	,
@@ -31,13 +22,22 @@
 							"float": "right"
 						}]
 				
-					}
-				}		
-			}
-			
+					},
+					"bounce":"none"
+				}					
+			}			
+		},
+		{
+			"path": "pages/user-center/my-account",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}	
 		},
 		
-	    
+			    
 		{
 			"path": "pages/user-center/giftcenter/giftcenter",
 			"style": {

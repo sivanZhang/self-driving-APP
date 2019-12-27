@@ -9,7 +9,7 @@
 						总里程数
 					</view>
 					<view class="total">
-						<view class="number" >{{distance}}</view>
+						<view class="number">{{distance}}</view>
 						<view class="kilometers">公里</view>
 					</view>
 				</view>
@@ -71,7 +71,7 @@
 		<!-- <view style="padding-top: 45upx;">
 			<button type="primary" @tap="target1()">日志查看位置</button>
 		</view> -->
-		
+
 		<view class="main">
 			<view class="uni-content">
 				<view class="uni-content-box" @tap="target('/pages/foot/my-foot')">
@@ -234,7 +234,7 @@
 				stop: true,
 				open: '',
 				close: '',
-				id:'',
+				id: '',
 				user_id: '',
 				longitude: '',
 				latitude: '',
@@ -242,13 +242,13 @@
 				record: [],
 				newrecord: [],
 				locationinfo: '',
-				test:[],
-				newtest:[],
+				test: [],
+				newtest: [],
 				SI: '',
 				count: 0,
-				distance:'',
-				index:'',
-				new_record:[],
+				distance: '',
+				index: '',
+				new_record: [],
 				// location:[]
 			};
 		},
@@ -264,24 +264,24 @@
 			}
 		},
 		methods: {
-            lookrank_total(){
-            	let data = {
-            		year:''
-            	}
-            	Track_Rank(data).then(({
-            		data
-            	}) => {
-            		if(data.status === 0){
-						[...data.msg].map((item,index) =>{
-							if (item.user_name == this.username){
+			lookrank_total() {
+				let data = {
+					year: ''
+				}
+				Track_Rank(data).then(({
+					data
+				}) => {
+					if (data.status === 0) {
+						[...data.msg].map((item, index) => {
+							if (item.user_name == this.username) {
 								this.index = index + 1;
 								this.distance = item.distance;
 							}
 						});
-            		}
-            		console.log(data)
-            	})
-            },
+					}
+					console.log(data)
+				})
+			},
 			async getLocation() {
 				// #ifdef APP-PLUS
 				let status = await this.checkPermission();
@@ -298,7 +298,7 @@
 					type: 'gcj02',
 					geocode: true,
 					altitude: true,
-					
+
 					success: (res) => {
 						// console.log(res)
 						this.locationinfo = res
@@ -313,37 +313,37 @@
 						console.log(err)
 						try {
 							var time = new Date();
-							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours()
-							+ ':' + time.getMinutes() + ':' + time.getSeconds();
-							var c = '这是fail里的err内容'+':'+JSON.stringify(err) + '--'+ time1
-						    var old = uni.getStorageSync('log_ge' );
-											
-						    uni.setStorageSync('log_ge', c.concat(old));
-							
+							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
+								':' + time.getMinutes() + ':' + time.getSeconds();
+							var c = '这是fail里的err内容' + ':' + JSON.stringify(err) + '--' + time1
+							var old = uni.getStorageSync('log_ge');
+
+							uni.setStorageSync('log_ge', c.concat(old));
+
 						} catch (e) {
-						    // error
+							// error
 						}
 					},
 					complete: (a) => {
 						console.log(a)
 						try {
 							var time = new Date();
-							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours()
-							+ ':' + time.getMinutes() + ':' + time.getSeconds();
-							var c ='这是complete里的内容'+':'+ time1+ '--'+JSON.stringify(a)
-						    var old = uni.getStorageSync('log_ge' );
-												
-						    uni.setStorageSync('log_ge', c.concat(old));
-							
+							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
+								':' + time.getMinutes() + ':' + time.getSeconds();
+							var c = '这是complete里的内容' + ':' + time1 + '--' + JSON.stringify(a)
+							var old = uni.getStorageSync('log_ge');
+
+							uni.setStorageSync('log_ge', c.concat(old));
+
 						} catch (e) {
-						    // error
+							// error
 						}
-						
+
 					}
 				})
-				
-				
-				
+
+
+
 			},
 			async checkPermission() {
 				if (uni.getSystemInfoSync().platform == 'android') {
@@ -420,23 +420,23 @@
 				}
 			},
 			search() {
-				if(this.isLogin){
+				if (this.isLogin) {
 					this.user_id = this.$store.state.UserInfo.id;
-						let data = '';
-						data = this.user_id;
-						search_users({
-							userid: data
-						}).then(({
-							data
-						}) => {
-							this.thumbnail_portait = data.msg[0].thumbnail_portait;
-							this.username = data.msg[0].username;
-							this.sex = data.msg[0].sex;
-						
-						}).catch(function(err){
-							// console.log(err);
-						})
-				}				
+					let data = '';
+					data = this.user_id;
+					search_users({
+						userid: data
+					}).then(({
+						data
+					}) => {
+						this.thumbnail_portait = data.msg[0].thumbnail_portait;
+						this.username = data.msg[0].username;
+						this.sex = data.msg[0].sex;
+
+					}).catch(function(err) {
+						// console.log(err);
+					})
+				}
 			},
 			target(url) {
 				if (this.isLogin) {
@@ -486,140 +486,244 @@
 					})
 				}
 			},
-			  
+
 			recordtrack() {
-				// this.doGetLocation();
-				// this.speed = this.locationinfo.speed;
-				
-				this.SI = setInterval(() => {
-					this.doGetLocation();
-					this.longitude = this.locationinfo.longitude;
-					this.latitude = this.locationinfo.latitude;
-					this.speed = this.locationinfo.speed;
-					this.record = [this.longitude, this.latitude];
-					this.test = JSON.stringify(this.locationinfo);
-					var time = new Date();
-					var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours()
-					+ ':' + time.getMinutes() + ':' + time.getSeconds();
-					this.record1 = time1 + '--'+this.record + '--' +this.speed;
-					this.newtest = this.newtest.concat(this.test);
-					// console.log(this.newtest)
-					this.new_record = this.new_record.concat('['+ this.record + ']');
-					// console.log('['+ record2 + ']')
-					this.newrecord = this.newrecord.concat('['
-					 + this.record1 + ']');				
-					// console.log("1:前端记录发给后端的");
-					// console.log('[' + this.newrecord + ']')	
-					//同步获取位置信息
-					 try {
-					  //    var old = uni.getStorageSync('log_geo' );
-						 // console.log(old);
-					     uni.setStorageSync('log_geo', this.newrecord);
-						 
-					 } catch (e) {
-					     // error
-					 }	
+				this.doGetLocation();
+				this.speed = this.locationinfo.speed;
+				console.log(this.speed)
+				if (this.speed < 5) {
+                    this.SI = setInterval(() => {
+                    	this.doGetLocation();
+                    	this.longitude = this.locationinfo.longitude;
+                    	this.latitude = this.locationinfo.latitude;
+                    	this.speed = this.locationinfo.speed;
+                    	this.record = [this.longitude, this.latitude];
+                    	this.test = JSON.stringify(this.locationinfo);
+                    	var time = new Date();
+                    	var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
+                    		':' + time.getMinutes() + ':' + time.getSeconds();
+                    	this.record1 = time1 + '--' + this.record + '--' + this.speed;
+                    	this.newtest = this.newtest.concat(this.test);
+                    	// console.log(this.newtest)
+                    	this.new_record = this.new_record.concat('[' + this.record + ']');
+                    	// console.log('['+ record2 + ']')
+                    	this.newrecord = this.newrecord.concat('[' +
+                    		this.record1 + ']');
+                    	// console.log("1:前端记录发给后端的");
+                    	// console.log('[' + this.newrecord + ']')	
+                    	//同步获取位置信息
+                    	try {
+                    		//    var old = uni.getStorageSync('log_geo' );
+                    		// console.log(old);
+                    		uni.setStorageSync('log_geo', this.newrecord);
+                    
+                    	} catch (e) {
+                    		// error
+                    	}
+                    
+                    	if (this.speed == 0 || 'null') {
+                    		this.count += 1;
+                    
+                    	}
+                    	console.log(this.speed)
+                    	console.log(this.count)
+                    
+                    	// if((this.speed == 0 && this.count == 1) || (this.speed != 0 && record2.length > 9))
+                    	console.log('[' + this.new_record + ']')
+                    
+                    	if (((this.speed == null || 0) && this.count == 1) || ((this.speed != null || 0) && (this.new_record).length > 9)) {
+                    		Record_CarTrack({
+                    			track_id: this.id,
+                    			method: 'put',
+                    			record: '[' + this.new_record + ']',
+                    			test: '[' + this.newtest + ']',
+                    		}).then(({
+                    			data
+                    		}) => {
+                    			// uni.showToast({
+                    			// 	title: data.msg,
+                    			// 	icon: "none",
+                    			// })
+                    			// console.log(data)
+                    			Show_CarTrack({
+                    				id: this.id
+                    			}).then(({
+                    				data
+                    			}) => {
+                    				console.log(data)
+                    				var track = data.msg[0].record;
+                    				console.log("2:从后端接收的");
+                    				console.log(track)
+                    				if (track.length != 0) {
+                    					var track1 = JSON.parse(track);
+                    					var points = []
+                    					track1.forEach((item, index) => {
+                    						points.splice(index, 0, {
+                    							latitude: item[1],
+                    							longitude: item[0]
+                    						})
+                    					})
+                    
+                    					this.latitude = points[0].latitude;
+                    					this.longitude = points[0].longitude;
+                    					this.polylines = [{
+                    						points,
+                    						color: "#0A98D5", //线的颜色
+                    						width: 8, //线的宽度
+                    						arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
+                    					}];
+                    					this.markers = [{
+                    						iconPath: 'https://webapi.amap.com/images/car.png',
+                    						latitude: points[0].latitude,
+                    						longitude: points[0].longitude,
+                    					}, ];
+                    				}
+                    
+                    			}).catch(function(err) {
+                    
+                    			})
+                    		})
+                    		this.new_record = []
+                    		this.newtest = []
+                    	}
+                    }, 1000)
+				}else{
+					this.SI = setInterval(() => {
+						this.doGetLocation();
+						this.longitude = this.locationinfo.longitude;
+						this.latitude = this.locationinfo.latitude;
+						this.speed = this.locationinfo.speed;
+						this.record = [this.longitude, this.latitude];
+						this.test = JSON.stringify(this.locationinfo);
+						var time = new Date();
+						var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
+							':' + time.getMinutes() + ':' + time.getSeconds();
+						this.record1 = time1 + '--' + this.record + '--' + this.speed;
+						this.newtest = this.newtest.concat(this.test);
+						// console.log(this.newtest)
+						this.new_record = this.new_record.concat('[' + this.record + ']');
+						// console.log('['+ record2 + ']')
+						this.newrecord = this.newrecord.concat('[' +
+							this.record1 + ']');
+						// console.log("1:前端记录发给后端的");
+						// console.log('[' + this.newrecord + ']')	
+						//同步获取位置信息
+						try {
+							//    var old = uni.getStorageSync('log_geo' );
+							// console.log(old);
+							uni.setStorageSync('log_geo', this.newrecord);
 					
-					if(this.speed == 0 || 'null'){
-						this.count +=1;
-						
-					}
-					console.log(this.speed)
-					console.log(this.count)
+						} catch (e) {
+							// error
+						}
 					
-					// if((this.speed == 0 && this.count == 1) || (this.speed != 0 && record2.length > 9))
-					console.log('['+ this.new_record + ']')
-					if((this.count == 1 && (this.speed == null||0)) || ( (this.new_record).length > 9 && (this.speed != null || 0) ))
-					{Record_CarTrack({
-							track_id: this.id,
-							method: 'put',  
-							record:  '[' + this.new_record + ']' ,
-							test: '[' + this.newtest + ']',
-						}).then(({
-							data
-						}) => {
-							// uni.showToast({
-							// 	title: data.msg,
-							// 	icon: "none",
-							// })
-							// console.log(data)
-							Show_CarTrack({
-								id: this.id
+						if (this.speed == 0 || 'null') {
+							this.count += 1;
+					
+						}
+						console.log(this.speed)
+						console.log(this.count)
+					
+						// if((this.speed == 0 && this.count == 1) || (this.speed != 0 && record2.length > 9))
+						console.log('[' + this.new_record + ']')
+					
+						if (((this.speed == null || 0) && this.count == 1) || ((this.speed != null || 0) && (this.new_record).length > 9)) {
+							Record_CarTrack({
+								track_id: this.id,
+								method: 'put',
+								record: '[' + this.new_record + ']',
+								test: '[' + this.newtest + ']',
 							}).then(({
 								data
 							}) => {
-								var track = data.msg[0].record;
-								console.log("2:从后端接收的");
-								console.log(track)
-								if(track.length != 0){
-									var track1 = JSON.parse(track);
-									var points = []
-									track1.forEach((item, index) => {
-										points.splice(index, 0, {
-											latitude: item[1],
-											longitude: item[0]
-										})    
-									})
-									
-									this.latitude = points[0].latitude;
-									this.longitude = points[0].longitude;
-									this.polylines = [{
-										points,
-										color: "#0A98D5", //线的颜色
-										width: 8, //线的宽度
-										arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
-									}];
-									this.markers = [{
-										iconPath: 'https://webapi.amap.com/images/car.png',
-										latitude: points[0].latitude,
-										longitude: points[0].longitude,
-									}, ];
-								}
-								
-							}).catch(function(err){
+								// uni.showToast({
+								// 	title: data.msg,
+								// 	icon: "none",
+								// })
+								// console.log(data)
+								Show_CarTrack({
+									id: this.id
+								}).then(({
+									data
+								}) => {
+									console.log(data)
+									var track = data.msg[0].record;
+									console.log("2:从后端接收的");
+									console.log(track)
+									if (track.length != 0) {
+										var track1 = JSON.parse(track);
+										var points = []
+										track1.forEach((item, index) => {
+											points.splice(index, 0, {
+												latitude: item[1],
+												longitude: item[0]
+											})
+										})
 					
-				             })
-						})
-						this.new_record = []
-						this.newtest = []
+										this.latitude = points[0].latitude;
+										this.longitude = points[0].longitude;
+										this.polylines = [{
+											points,
+											color: "#0A98D5", //线的颜色
+											width: 8, //线的宽度
+											arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
+										}];
+										this.markers = [{
+											iconPath: 'https://webapi.amap.com/images/car.png',
+											latitude: points[0].latitude,
+											longitude: points[0].longitude,
+										}, ];
+									}
+					
+								}).catch(function(err) {
+					
+								})
+							})
+							this.new_record = []
+							this.newtest = []
 						}
-				}, 1000)
-			},
-			locate(){
+					}, 100)
+				}
 				
-				var watchId = plus.geolocation.watchPosition( function ( p ) {  
-				        console.log( "监听位置变化信息:" );  
-				        // console.log( JSON.stringify(p) );  
-						var f = JSON.stringify(p);
-						
-						try {
-							var time = new Date();
-							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours()
-							+ ':' + time.getMinutes() + ':' + time.getSeconds();
-							var lo ='这是监听位置变化信息的内容'+':'+ time1+ '--'+f
-						    var old = uni.getStorageSync('log_g' );					
-						    uni.setStorageSync('log_g', lo.concat(old));
-							   
-						} catch (e) {
-						    // error
-						}
-				    }, function ( e ) {  
-				        console.log( "监听位置变化信息失败："+e.message );  
-						var g = e.message;
-						
-						try {
-							var time = new Date();
-							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours()
-							+ ':' + time.getMinutes() + ':' + time.getSeconds();
-							var lo ='这是监听位置变化信息的内容'+':'+ time1+ '--'+g
-						    var old = uni.getStorageSync('log_g' );					
-						    uni.setStorageSync('log_g', lo.concat(old));
-							
-						} catch (e) {
-						    // error
-						}				
-				    }, {'enableHighAccuracy':true,'geocode': false} );  
-					
+			},
+			locate() {
+
+				var watchId = plus.geolocation.watchPosition(function(p) {
+					console.log("监听位置变化信息:");
+					// console.log( JSON.stringify(p) );  
+					var f = JSON.stringify(p);
+
+					try {
+						var time = new Date();
+						var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
+							':' + time.getMinutes() + ':' + time.getSeconds();
+						var lo = '这是监听位置变化信息的内容' + ':' + time1 + '--' + f
+						var old = uni.getStorageSync('log_g');
+						uni.setStorageSync('log_g', lo.concat(old));
+
+					} catch (e) {
+						// error
+					}
+				}, function(e) {
+					console.log("监听位置变化信息失败：" + e.message);
+					var g = e.message;
+
+					try {
+						var time = new Date();
+						var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
+							':' + time.getMinutes() + ':' + time.getSeconds();
+						var lo = '这是监听位置变化信息的内容' + ':' + time1 + '--' + g
+						var old = uni.getStorageSync('log_g');
+						uni.setStorageSync('log_g', lo.concat(old));
+
+					} catch (e) {
+						// error
+					}
+				}, {
+					'enableHighAccuracy': true,
+					'geocode': false
+				});
+
 			},
 			closetrack() {
 				clearInterval(this.SI)
@@ -642,7 +746,7 @@
 
 			}
 		},
-		
+
 		onLoad() {
 			//     // #ifdef APP-PLUS
 			//      wv = plus.webview.create("","custom-webview",{
@@ -658,7 +762,7 @@
 			//          console.log(wv.getStyle())
 			//      }, 1000);//如果是首页的onload调用时需要延时一下，二级页面无需延时，可直接获取
 			//      // #endif
-       
+
 			setTimeout(function() {
 				uni.showToast({
 					title: "点击中间的按钮可以开始记录车迹哦",
@@ -669,14 +773,12 @@
 			this.getLocationTest();
 			this.lookrank_total();
 		},
-		
-         
+
+
 		onShow: function() {
-			
 			this.doGetLocation();
 			this.search();
 			this.lookrank_total();
-			
 		},
 	};
 </script>
@@ -694,7 +796,7 @@
 				margin-top: 80upx;
 				margin-left: 20upx;
 				font-size: 35upx;
-				position:relative;
+				position: relative;
 			}
 
 			.header {
@@ -836,6 +938,7 @@
 					.position {
 						padding-top: 6upx;
 						display: flex;
+
 						image {
 							margin-top: 7upx;
 							width: 64upx;
@@ -847,7 +950,7 @@
 						.address {
 							padding-top: 15upx;
 							position: relative;
-							top:-0.5rem;
+							top: -0.5rem;
 							left: 0.3rem;
 							right: 2rem;
 						}

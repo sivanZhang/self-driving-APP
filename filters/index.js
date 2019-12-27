@@ -26,7 +26,15 @@ export function dateHMSFormat(date) {
       return ''
     }
   }
-
+//时间格式化 HH:mm:ss
+export function datehmsFormat(date) {
+    if (date) {
+      date *= 1000
+      return dayjs(date).format("HH:mm:ss")
+    } else {
+      return ''
+    }
+  }  
 // export function dateTimeFormat(date) {
 // 	if (date) {
 // 		const TIME = new Date(date * 1000)
