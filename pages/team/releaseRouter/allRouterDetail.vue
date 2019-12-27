@@ -30,15 +30,21 @@
 								<view @tap="target('/pages/team/releaseRouter/signalRouterDetail?id='+item.id)">
 									<view style="align-items: center;">
 										<view class="place-left" v-if="row.sort == -1">
-											<text>{{row.area_name}}</text>
+											<view>
+											<view>{{row.parent_name}}</view>
+											<view>{{row.area_name}}</view>
+											</view>
 											<image style="width:80upx ;height: 60upx;" src="../../../static/icons/youjiantou.png"></image>
 										</view>
 										<view class="place-left" v-if="row.sort == 0">
-											<text>{{row.area_name}}</text>
+											<view>{{row.parent_name}}</view>
+											<view>{{row.area_name}}</view>
 										</view>
 									</view>
 									<view v-if="show">
-										<text style="font-size: 22upx;">{{row.area_name}}-</text>
+										<view>{{row.parent_name}}</view>
+										<view>{{row.area_name}}</view>
+										<!-- <text style="font-size: 22upx;">{{row.parent_name}}{{row.area_name}}-</text> -->
 									</view>
 								</view>
 							</view>
@@ -52,21 +58,27 @@
 							<span style="font-weight: bold;">时间安排：</span>
 							{{ item.start_date | dateFormat }}--{{ item.end_date | dateFormat }}
 							</view>
-						    <!-- <view v-if="item.creator_id == UserInfo.id" @tap="deleteRouter(item.id)"><span style="color: #848689;">删除</span></view> -->
 						</view>
 					</view>
 				</view>
-				<view class="footer" v-if="item.creator_id == UserInfo.id"> 
-					<view class="footer-left" @tap="target('/pages/team/releaseRouter/signalRouterChange?id='+item.id)">修改</view>
-					<view class="footer-right" @tap="deleteRouter(item.id)">删除</view>
-				</view>
-				<view class="footer" v-else>
-					<view class="footer-left" @tap="target('/pages/team/createTeam/index')">组队</view>
-					<view  class="footer-right">保存</view>
+				<view class="footer">
+					<view class="footer-left" @tap="applyPartner(item.partner_id)">组队</view>
+					<view  class="footer-right" @tap="addCollect(item.id)">收藏</view>
 				</view>
 			</view>
-
 		</block>
+		<!-- //弹出路线窗口 -->
+		<uni-popup ref="popup" type="right" :custom="true" :show="true">
+			<view class="uni-logout">
+				<view @tap="target1('/pages/team/releaseRouter/releaseRouter')">发布路线</view>
+			</view>
+			<view class="uni-logout">
+				<view @tap="target1('/pages/team/releaseRouter/noPartnerAllRoutner')">未创建搭伴路线</view>
+			</view>
+			<view class="uni-logout">
+				<view @tap="target1('/pages/team/releaseRouter/myAllRouter')">我创建的路线</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -78,6 +90,13 @@
 	import {
 		addConcern
 	} from '@/api/followsFans'
+	import {
+		applyPartner
+	} from '@/api/partner'
+	import {
+		addCollect
+	} from '@/api/likeCollect'
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
 		data() {
 			return {
@@ -95,7 +114,33 @@
 		onShow() {
 			this.getRouterList();
 		},
+		components: {
+			uniPopup
+		},
 		methods: {
+			//添加收藏
+			addCollect(id){
+				addCollect({entity:4,instance:id}).then(({data})=>{
+					if(data.status == 0){
+					  uni.showToast({
+							title: '收藏成功',
+							duration: 2000
+						});
+				  }
+				})
+			},
+			//申请组队
+            applyPartner(partner_id){
+				// console.log(creator_id)
+              applyPartner({partner_id:partner_id}).then(({data })=>{
+				  if(data.status == 0){
+					  uni.showToast({
+							title: '申请成功',
+							duration: 2000
+						});
+				  }
+			  })
+			},
 			//添加关注
 			addConcern(id,key) {
 				this.RouterList.forEach((item,index)=>{
@@ -140,7 +185,7 @@
 			},
 			//获取所有的路线列表
 			getRouterList() {
-				queryRouterDetail().then(({
+				queryRouterDetail({partner:''}).then(({
 					data
 				}) => {
 					this.RouterList = data.msg;
@@ -152,14 +197,20 @@
 					url
 				});
 			},
+			//未创建搭伴的路线和我的路线页面跳转
+			target1(url){
+				this.target(url);
+				this.$refs.popup.close();
+			},
 		},
 		onNavigationBarButtonTap(val) {
 			console.log(val.index);
 			if (val.index == 0) {
 				console.log("第一个按钮");
-				uni.navigateTo({
-					url: '/pages/team/releaseRouter/releaseRouter'
-				});
+				this.$refs.popup.open()
+				// uni.navigateTo({
+				// 	url: '/pages/team/releaseRouter/releaseRouter'
+				// });
 			};
 			if (val.index == 1) {
 				// uni.reLaunch({
@@ -282,7 +333,7 @@
 
 				.place {
 					// width: 50%;
-					font-size: 40upx;
+					font-size: 35upx;
 
 				}
 
@@ -292,7 +343,7 @@
 				}
 
 				.place-point {
-					padding-left: 150upx;
+					// padding-left: 150upx;
 				}
 			}
 
@@ -323,6 +374,36 @@
 			}
 
 		}
+        .uni-popup {
+			position: absolute;
+			width: 100%;
+			display: flex;
+			justify-content: flex-end;
+			z-index: 998;
+			overflow: hidden;
+		}
 
+		.uni-logout {
+			background: #404040;
+			color: #fff;
+			display: flex;
+			width: 100%;
+
+			.iconfont {
+				padding: 0upx 10upx 0upx 20upx;
+			}
+
+
+			&>view {
+				width: 100%;
+				padding: 0upx 30upx 0upx 10upx;
+				height: 118upx;
+				border-bottom: 2.083upx solid #c8c8cc;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 32upx;
+			}
+		}
 	}
 </style>
