@@ -269,7 +269,7 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": [ {
-							"text": "\ue623发布", //发布路线
+							"text": "\ue623", //发布路线
 							"fontSrc": "/static/font/iconfont.ttf",
 							"fontSize": "20px",
 							"width":"auto"
@@ -292,11 +292,6 @@
 						"buttons": [{
 							"type": "close",
 							"width": "auto"
-						},{
-							"type": "back",
-							"width": "auto",
-							"float":"left"
-
 						}]
 				
 					}
@@ -329,6 +324,34 @@
 				
 					}
 			    }
+			}
+		}, {
+			"path": "pages/team/releaseRouter/noPartnerAllRoutner",
+			"style": {
+				"navigationBarTitleText": "未创建搭伴的路线"
+				// "app-plus": {
+				// 	"titleNView": {
+				// 		"buttons": [{
+				// 			"type": "close",
+				// 			"width": "auto"
+				// 		}]
+				
+				// 	}
+			 //    }
+			}
+		}, {
+			"path": "pages/team/releaseRouter/myAllRouter",
+			"style": {
+				"navigationBarTitleText": "我创建的路线"
+				// "app-plus": {
+				// 	"titleNView": {
+				// 		"buttons": [{
+				// 			"type": "close",
+				// 			"width": "auto"
+				// 		}]
+				
+				// 	}
+			 //    }
 			}
 		},{
 			"path": "pages/circle/hi-circle",
