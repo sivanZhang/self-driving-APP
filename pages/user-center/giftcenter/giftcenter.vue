@@ -70,7 +70,7 @@
 			<view class="tui-new-box">
 				<view class="tui-new-item" v-for="(item,index) in GiftList" :key="index"  @tap="detail(item.id)" >
 					<view class="tui-title-box"  >
-						<view class="tui-new-title">{{item.title}},{{item.category}}类</view>
+						<view class="tui-new-title">{{item.title}},{{item.category}}</view>
 						
 						<view class="tui-new-price">
 							<text class="tui-new-present">￥{{item.specifications[0].price}}</text>

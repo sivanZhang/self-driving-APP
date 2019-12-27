@@ -80,6 +80,9 @@
 	import {
 		Track_Rank,
 	} from '@/api/track.js'
+	import {
+		give_Gift
+	} from '@/api/giftcenter.js'
 	export default {
 		components: {
 			uniCard
@@ -250,6 +253,7 @@
 		},
 		onLoad() {
 			this.lookrank_total();
+			this.showGift();
 		},
 		onShow(){
 			

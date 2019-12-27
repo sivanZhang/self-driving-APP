@@ -13,3 +13,7 @@ export function look_GiftSpecifications(params){
 export function look_GiftCategory(params){
 	return Ajax.get('/product/category/',{params})
 }
+//按照年度，月度里程排行榜赠送礼物
+export function give_Gift(params){
+	return Ajax.post('/product/gift/',{params})
+}

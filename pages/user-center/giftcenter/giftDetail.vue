@@ -1,45 +1,50 @@
 <template>
-	<!-- 礼品详情 -->
-	<view class="container">        
-		<view class="tui-banner-swiper" v-for="(item,index) in GiftList" :key="index" @tap.stop="previewImage">
-			<image :src="'https://tl.chidict.com' + '/'+item.picture" class="tui-slide-image" :style="{height:200+'px'}" />	
+	<view class="container">
+		<!--banner-->
+		<view class="tui-banner-swiper" v-for="(item,index) in GiftList" :key="index">
+			<swiper :autoplay="true" :interval="5000" :duration="150" :circular="true" :style="{height:scrollH + 'px'}" @change="bannerChange">
+				<block v-for="(item,index) in turns" :key="index">
+					<swiper-item :data-index="index" @tap.stop="previewImage">
+						<image :src="'https://tl.chidict.com' + '/'+item" class="tui-slide-image" :style="{height:scrollH+'px'}" />
+					</swiper-item>
+				</block>
+			</swiper>
+			<tui-tag type="translucent" shape="circleLeft" size="small">{{bannerIndex+1}}/{{turns.length}}</tui-tag>
+		<!--banner-->
 			<view class="tui-pro-detail">
 				<view class="tui-product-title tui-border-radius">
 					<view class="tui-pro-pricebox tui-padding">
 						<view class="tui-pro-price" >
-							￥<text class="tui-price">{{!transform?item.specifications[0].price:price}}</text>
-							<tui-tag class="tui-btn" size="small" :plain="true" type="high-green" shape="circle">新品</tui-tag>
+							￥<text class="tui-price">{{!click?item.specifications[0].price:price}}</text>
+							<!-- <tui-tag class="tui-btn" size="small" :plain="true" type="high-green" shape="circle">新品</tui-tag> -->
 						</view>
 					</view>
-					
 					<view class="tui-pro-titbox">
-						<view class="tui-pro-title">虚拟币价格：{{!transform?item.specifications[0].coin:coin}}</view>
-						<view class="tui-pro-title">名称：{{!transform?item.title:name+'/'+content}}</view>
+						<view class="tui-pro-title">虚拟币价格：{{!click?item.specifications[0].coin:coin}}</view>
 						<view class="tui-pro-title">所属分类：{{item.category}}</view>
-						<view class="tui-pro-title">说明：
-							<view v-html="item.content"></view>
-						</view>
-						<view class="tui-pro-title">剩余库存：{{!transform?item.specifications[0].num:num}}</view>
+						<view class="tui-pro-title">剩余库存：{{!click?item.specifications[0].num:num}}</view>
 					</view>
-					<!-- <view class="tui-padding">
-						<view class="tui-sub-title tui-size tui-gray">{{item.content}}</view>
-					</view> -->
 				</view>
-
-				<!-- <view class="tui-basic-info tui-mtop tui-radius-all">
-					<view class="tui-list-cell tui-last">
+				<view class="tui-basic-info tui-mtop tui-radius-all">
+					<view class="tui-list-cell">
+						<view class="tui-bold tui-cell-title">已选</view>
+						<view class="tui-selected-box">{{!click?item.title:name}}【{{!click?item.title:content}}】,{{value}}个，可选服务</view>
+						<tui-icon name="more-fill" :size="20" class="tui-right" color="#666" @tap="showPopup"></tui-icon>
+					</view>
+					<view class="tui-list-cell">
 						<view class="tui-bold tui-cell-title">运费</view>
 						<view class="tui-selected-box">在线支付免运费</view>
 					</view>
-				</view> -->
-				<!-- <view class="tui-nomore-box">
-					<tui-nomore text="礼品详情" :visible="true" bgcolor="#f7f7f7"></tui-nomore>
-				</view> -->
+					<view class="tui-list-cell tui-last">
+						<view class="tui-bold tui-cell-title">说明</view>
+						<view class="tui-selected-box" v-html="item.content"></view>
+					</view>
+				</view>
 			</view>
         </view>
 		<!--底部操作栏-->
 		<view class="tui-operation">
-			<view class="tui-operation-left tui-col-5 tui-btnbox-4">
+			<view class="tui-operation-left tui-col-5 tui-btnbox-6">
 				<tui-button type="warning" shape="circle" size="mini" @click="showPopup">查看更多规格</tui-button>
 			</view>
 			<view class="tui-operation-right tui-right-flex tui-col-7 tui-btnbox-4">
@@ -51,9 +56,10 @@
 				</view>
 			</view>
 		</view>
+        <!--底部操作栏-->
 		<!--底部选择层-->
 		<tui-bottom-popup :show="popupShow" @close="hidePopup">
-			<view class="tui-popup-box" >
+			<view class="tui-popup-box">
 				<view class="tui-product-box tui-padding">
 					<image :src="'https://tl.chidict.com' + '/'+picture" class="tui-popup-img"></image>
 					<view class="tui-popup-price" v-for="(item,index) in Specifications" :key="index">
@@ -80,18 +86,24 @@
 								</view>
 							</view>
 						</view>
+						<view class="tui-number-box tui-bold tui-attr-title">
+							<view class="tui-attr-title">数量</view>
+							<tui-numberbox :max="10" :min="1" :value="value" @change="change"></tui-numberbox>
+						</view>
 					</view>
 				</scroll-view>
 				<view class="tui-operation tui-operation-right tui-right-flex tui-popup-btn">
 					<view class="tui-flex-1">
-						<tui-button type="red" shape="circle" @click="hidePopup">确定</tui-button>
+						<tui-button type="red" shape="circle" size="mini" @click="hidePopup">加入购物车</tui-button>
+					</view>
+					<view class="tui-flex-1">
+						<tui-button type="red" shape="circle" size="mini" @click="hidePopup">确定</tui-button>
 					</view>
 				</view>
-				<!-- <view class="tui-icon tui-icon-close-fill tui-icon-close" style="color: #999;font-size:20px" @tap="hidePopup"></view> -->
-				<tui-icon name="close-fill" color="#999" class="tui-icon-close" size="20" @tap="hidePopup"></tui-icon>
+				<view class="tui-icon tui-icon-close-fill tui-icon-close" style="color: #999;font-size:20px" @tap="hidePopup"></view>
 			</view>
 		</tui-bottom-popup>
-		<!--底部选择层 -->
+		<!--底部选择层-->
 
 	</view>
 </template>
@@ -104,7 +116,7 @@
 	import tuiButton from "@/components/gift/button"
 	import tuiTopDropdown from "@/components/gift/top-dropdown"
 	import tuiBottomPopup from "@/components/gift/bottom-popup"
-	
+	import tuiNumberbox from "@/components/gift/numberbox"
 	import { look_GiftDetail,look_GiftSpecifications } from '@/api/giftcenter';
 	export default {
 		components: {
@@ -115,29 +127,32 @@
 			tuiButton,
 			tuiTopDropdown,
 			tuiBottomPopup,
+			tuiNumberbox
 		},
 		data() {
 			return {
-				id:'',
-				dynamic:0,
 				height: 64, //header高度
 				top: 0, //标题图标距离顶部距离
 				scrollH: 0, //滚动总高度
 				opcity: 0,
 				iconOpcity: 0.5,
-				GiftList:[],
-				Specifications:[],
-				menuShow: false,
+				bannerIndex: 0,
 				popupShow: false,
 				value: 1,
 				collected: false,
-				picture:'',
+				click:false,
+				id:'',
+				dynamic:0,
+				GiftList:[],
+				Specifications:[],
+				picture:[],
 				price:'',
 				coin:'',
 				num :'',
 				name :'',
 				content:'',
-				transform:''
+				turns:[],
+				Image:[]
 			}
 		},
 		onLoad: function(options) {
@@ -151,7 +166,7 @@
 			// #ifdef MP-ALIPAY
 			my.hideAddToDesktopMenu();
 			// #endif
-            this.id = options.id ;
+			this.id = options.id ;
 			setTimeout(() => {
 				uni.getSystemInfo({
 					success: (res) => {
@@ -163,74 +178,69 @@
 					}
 				})
 			}, 50)
-			 this.getGiftList();
-			 this.getGiftSpecifications();
+			this.getGiftList();
+			this.getGiftSpecifications();
 		},
 		methods: {
 			//获取礼品列表
 			getGiftList(){
-				
-			  look_GiftDetail({product_id:this.id}).then(({ data }) =>{
-				 
-				  if(data.status == 0){
+			    look_GiftDetail({product_id:this.id}).then(({ data }) =>{
+				    if(data.status == 0){
 						this.GiftList = [...data.msg];
 						this.GiftList.map((item,index) =>{
 							this.picture = item.picture;
-							// console.log(this.picture)
+							this.turns = item.turns;
+							this.turns.map((tip,index)=>{
+								let image = 'https://tl.chidict.com' + '/'+ tip;
+								this.Image.push(image)
+							})	
 						});
-				  }
-			  })
+				    }  
+			    })
 			},
 			//获取礼品规格
 			getGiftSpecifications(){
-				
-				look_GiftSpecifications({product_id:this.id}).then(({ data }) =>{
-								 
-				    if(data.status == 0){
-					    this.Specifications = [...data.msg];
-					    console.log(data)
-				    }
+				look_GiftSpecifications({product_id:this.id}).then(({ data }) =>{				 
+					if(data.status == 0){
+						this.Specifications = [...data.msg];
+						console.log(data)
+					}
 				})
 			},
 			//类型：点击添加字体颜色，其他的删除class名称
 			getType: function (index,item) {
-				console.log(index);
-				console.log(item)
+				// console.log(index);
+				// console.log(item);
+				this.click = true;
 				this.dynamic = index;
 				this.price = item.price;
 				this.coin = item.coin;
 				this.num = item.num;
 				this.name = item.name;
 				this.content = item.content;
+				console.log(this.click)
+			},
+			bannerChange: function(e) {
+				this.bannerIndex = e.detail.current
 			},
 			previewImage: function(e) {
-				
+				let index = e.currentTarget.dataset.index;
 				uni.previewImage({
-					
-					urls:['https://tl.chidict.com' + '/'+this.picture],
+					current: this.Image[index],
+					urls: this.Image,
 				})
 			},
 			showPopup: function() {
 				this.popupShow = true;
-				this.transform = false;
 			},
 			hidePopup: function() {
 				this.popupShow = false;
-				this.transform = true;
 			},
 			change: function(e) {
 				this.value = e.value
 			},
-			submit(){
-				this.popupShow = false
-				uni.navigateTo({
-					url: '../mall-extend/submitOrder/submitOrder'
-				})
-			},
-			coupon(){
-				uni.navigateTo({
-					url: '../../user-center/giftcenter/coupon'
-				})
+			collecting: function() {
+				this.collected = !this.collected
 			}
 		},
 		onPageScroll(e) {
@@ -245,8 +255,10 @@
 	}
 </script>
 
-<style scoped lang="scss">
-@import "../../../hybrid/icon.css";
+<style>
+	/* icon 也可以使用组件*/
+	@import "../../../hybrid/icon.css";
+
 	page {
 		background: #f7f7f7;
 	}
@@ -255,52 +267,13 @@
 		padding-bottom: 110rpx;
 	}
     .colorChange {
-        background: #fcedea !important;
-        color: #e41f19;
-        font-weight: bold;
-        position: relative;
+		background: #fcedea !important;
+		color: #e41f19;
+		font-weight: bold;
+		position: relative;
 		border-radius: 40rpx;
 		border: 1rpx solid #e41f19;
-    }
-	.tui-header-box {
-		width: 100%;
-		position: fixed;
-		left: 0;
-		top: 0;
-		z-index: 9998;
 	}
-
-	.tui-header {
-		width: 100%;
-		font-size: 18px;
-		line-height: 18px;
-		font-weight: 500;
-		height: 32px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.tui-header-icon {
-		position: fixed;
-		top: 0;
-		left: 10px;
-		display: flex;
-		align-items: flex-start;
-		justify-content: space-between;
-		height: 32px;
-		transform: translateZ(0);
-		z-index: 99999;
-	}
-
-
-
-	.tui-header-icon .tui-badge {
-		background: #e41f19 !important;
-		position: absolute;
-		right: -4px;
-	}
-
 	.tui-icon-ml {
 		margin-left: 20rpx;
 	}
@@ -330,8 +303,9 @@
 	.tui-banner-swiper .tui-tag-class {
 		position: absolute;
 		color: #fff;
-		bottom: 30rpx;
+		top: 10rpx;
 		right: 0;
+		
 	}
 
 	.tui-slide-image {
@@ -455,7 +429,7 @@
 	}
 
 	.tui-mtop {
-		margin-top: 20upx;
+		margin-top: 26rpx;
 	}
 
 	.tui-pro-detail {
@@ -466,7 +440,6 @@
 	.tui-product-title {
 		background: #fff;
 		padding: 30rpx 0;
-		margin-top:100rpx;
 	}
 
 	.tui-pro-pricebox {
@@ -480,24 +453,23 @@
 	}
 
 	.tui-pro-price {
-		
 		display: flex;
 		align-items: center;
 	}
 
 	.tui-pro-price .tui-tag-class {
 		transform: scale(0.7);
-		transform-origin: center center;
+		/* transform-origin: center center; */
 		line-height: 24rpx;
 		font-weight: normal;
+		margin-left: 10upx;
+		margin-top: 500upx;
 	}
 
 	.tui-price {
 		font-size: 58rpx;
 	}
-    .tui-btn {
-		padding-left:10rpx;
-	}
+
 	.tui-original-price {
 		font-size: 26rpx;
 		line-height: 26rpx;
@@ -519,11 +491,10 @@
 	}
 
 	.tui-scale {
-		transform: scale(1.2);
+		transform: scale(0.7);
 		transform-origin: center center;
 		line-height: 24rpx;
-		font-weight: 400;
-		
+		font-weight: normal;
 	}
 
 	.tui-icon-collection {
@@ -536,7 +507,7 @@
 		font-size: 32rpx;
 		font-weight: 500;
 		position: relative;
-		padding: 20rpx 150rpx 0 30rpx;
+		padding: 0 150rpx 0 30rpx;
 		box-sizing: border-box;
 	}
 
@@ -587,7 +558,7 @@
 		position: relative;
 		display: flex;
 		align-items: center;
-		font-size: 32rpx;
+		font-size: 26rpx;
 		line-height: 26rpx;
 		padding: 36rpx 30rpx;
 		box-sizing: border-box;
@@ -606,9 +577,7 @@
 	.tui-bold {
 		font-weight: bold;
 	}
-    .tui-text{
-		display:flex;
-	}
+
 	.tui-list-cell::after {
 		content: '';
 		position: absolute;
@@ -642,8 +611,8 @@
 
 	.tui-promotion-box {
 		white-space: nowrap;
-		// overflow: hidden;
-		// text-overflow: ellipsis;
+		overflow: hidden;
+		text-overflow: ellipsis;
 		padding: 10rpx 0;
 		width: 74%;
 	}
@@ -747,9 +716,7 @@
 	}
 
 	.tui-nomore-box {
-		padding-top: 10upx;
-		font-size:32upx;
-		padding-left:30upx;
+		padding-top: 10rpx;
 	}
 
 	.tui-product-img {
@@ -805,7 +772,8 @@
 	.tui-operation-left {
 		display: flex;
 		align-items: center;
-		margin-left:30upx;
+		margin-top:13upx;
+		margin-left:20upx;
 	}
 
 	.tui-operation-item {
@@ -877,10 +845,10 @@
 	}
 
 	.tui-popup-btn {
-		width: 90%;
+		width: 100%;
 		position: absolute;
-		left: 35rpx;
-		bottom: 20rpx;
+		left: 0;
+		bottom: 0;
 	}
 
 	.tui-popup-btn .tui-btn-class {
@@ -903,8 +871,8 @@
 	}
 
 	.tui-popup-img {
-		height: 170rpx;
-		width: 220rpx;
+		height: 200rpx;
+		width: 300rpx;
 		border-radius: 24rpx;
 		display: block;
 	}
@@ -939,13 +907,11 @@
 	.tui-attr-title {
 		padding: 10rpx 0;
 		color: #333;
-		width:340rpx;
 	}
 
 	.tui-attr-box {
 		font-size: 0;
 		padding: 20rpx 0;
-		display:flex;
 	}
 
 	.tui-attr-item {
