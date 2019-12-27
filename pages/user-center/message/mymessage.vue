@@ -87,7 +87,7 @@
 	} from "@/api/chatting";
 	import {
 		searchFollow
-	} from '@/api/usercenter'
+	} from '@/api/followsFans'
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
 		components: {

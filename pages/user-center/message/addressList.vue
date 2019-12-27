@@ -32,7 +32,7 @@
 <script>
 	import {
 		searchFollow
-	} from '@/api/usercenter'
+	} from '@/api/followsFans'
 	import {
 		createdGroupsChatting
 	} from '@/api/chatting.js'
