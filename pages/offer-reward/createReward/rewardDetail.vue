@@ -7,7 +7,7 @@
 					<image src="../../../static/image/p10.jpg"></image>
 					<view>
 						<view class="header-name">张三</view>
-						<view style="padding-left:20upx">11-4 21：47</view>
+						<view class="header-time">11-4 21：47</view>
 					</view>
 				</view>
 				<view class="header-top-right">
@@ -23,18 +23,18 @@
 			</view>
 			<view class="header-body">
 				<view class="list">
-					<span style="font-weight: bold;padding-right: 15upx;">赏金:</span>1000元
-				</view>
-				<view style="padding:0upx 10upx;font-size: 32upx;">
-					<span style="font-weight: bold;padding-right: 15upx;">路线:</span>西安-北京
+					<span>赏金:</span>1000元
 				</view>
 				<view class="list">
-					<span style="font-weight: bold;padding-right: 15upx;">时间:</span>2019/11/11
+					<span>路线:</span>西安-北京
+				</view>
+				<view class="list">
+					<span>时间:</span>2019/11/11
 				</view>
 				<block>
 					<view class="forwardContent">
 						<view>
-							<span style="font-weight: bold;padding-right: 15upx;">悬赏内容:</span>谁和我一起去
+							<span>悬赏内容:</span>谁和我一起去
 						</view>
 					</view>
 				</block>
@@ -79,7 +79,7 @@
 			<block>
 				<view class="answer-content">
 					<view>
-						<span style="font-weight: bold;padding-right: 15upx;">回答内容:</span>我很喜欢这里
+						<span style="">回答内容:</span>我很喜欢这里
 					</view>
 				</view>
 			</block>
@@ -266,7 +266,7 @@
 			}
 
 			.header-top-right {
-				width: 15%;
+				width: 20%;
 
 				.header-right {
 					font-size: 24upx;
@@ -274,7 +274,7 @@
 					display: flex;
 					justify-content: center;
 					align-items: center;
-					border-radius: 18%;
+					 border-radius: 50px;
 				}
 			}
 		}
@@ -286,6 +286,9 @@
 			.list {
 				padding: 10upx 10upx;
 				font-size: 32upx;
+				.span{
+                  font-weight: bold;padding-right: 15upx;
+				}
 			}
 
 			.body-footer {
@@ -303,6 +306,9 @@
 				min-height: 100upx;
 				border: 2.083upx solid #ececec;
 				box-shadow: 0 6.25upx 6.25upx rgba(200, 200, 204, 0.8);
+				.span{
+					font-weight: bold;padding-right: 15upx;
+				}
 			}
 		}
 
@@ -363,6 +369,9 @@
 				min-height: 100upx;
 				border: 2.083upx solid #ececec;
 				box-shadow: 0 6.25upx 6.25upx rgba(200, 200, 204, 0.8);
+				.span{
+					font-weight: bold;padding-right: 15upx;
+				}
 			}
 		}
 

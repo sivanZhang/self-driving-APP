@@ -58,14 +58,31 @@
 				</view>
 			</view>
 		</view>
+		<view class="bottom">
+			<!-- <view class="bottom-background"></view> -->
+			<view class="bottom-item">
+				<view class="bottom-item-rank">{{rank}}</view>
+				<view class="bottom-item-avatar">
+					<image class="avatar" :src="'https://tl.chidict.com'+'/'+image"></image>
+				</view>
+				<view class="bottom-item-user">
+					<view class="bottom-item-username">{{username}}</view>
+					<view class="bottom-item-kilometers">{{distance}}km</view>
+				</view>
+				<button size="mini" class="bottom-item-share" @click="shareInfo">和好友比一比</button>
+			</view>
+		</view>
 	</view>
 </template>
-
 <script>
+	import share from "@/common/share.js";
 	import uniCard from "@/components/uni-card/uni-card"
 	import {
 		Track_Rank,
 	} from '@/api/track.js'
+	import {
+		give_Gift
+	} from '@/api/giftcenter.js'
 	export default {
 		components: {
 			uniCard
@@ -75,9 +92,14 @@
 				background:'#262d37',
 			    color:'white',
 				thumbnail_portait:'',
-				imageURL: '/static/image/background_rank.gif',
+				imageURL: '/static/image/background2.jpg',
 				List:[],
-				List2:[]
+				List2:[],
+				distance:'',
+				rank:'',
+				username:'',
+				info:'',
+				image:''
 			};
 		},
 		computed: {
@@ -92,16 +114,20 @@
 					data
 				}) => {
 					if(data.status === 0){
-						this.background = '#262d37'
-						this.color = 'white'
+						this.background = '#262d37';
+						this.color = 'white';
 						this.List = [...data.msg];
 					    this.List2 = this.List.slice(0,3)
-						this.thumbnail_portait = "0"
-						console.log(bb)
-						console.log(this.List)
-						console.log(this.thumbnail_portait)
+						// console.log(data)
+						// this.thumbnail_portait = "0"
+						this.info = data.user_rank;
+						this.rank = this.info.rank;
+						this.username = this.info.user_name;
+						this.distance = this.info.mileage;
+						this.image = this.info.user__thumbnail_portait;
+						// console.log(this.image)
 					}
-					console.log(data)
+					// console.log(data)
 				})
 			},
 			lookrank_month(){
@@ -116,17 +142,118 @@
 						this.color = '#4a4b50'
 						this.List = [...data.msg];
 					    this.List2 = this.List.slice(0,3)
-						this.thumbnail_portait = "0"
-						console.log(this.List)
-						console.log(this.thumbnail_portait)
+				        this.info = data.user_rank;
+				        this.rank = this.info.rank;
+				        this.username = this.info.user_name;
+				        this.distance = this.info.mileage;
+				        // console.log(this.info)
 					}
-					console.log(data)
+					// console.log(data)
 				})
-			}
+			},
+			shareInfo() {
+				let shareInfo = {
+					href: "https://uniapp.dcloud.io",
+					title: "分享测试",
+					desc: "分享测试",
+					imgUrl: "/static/logo.png"
+				};
+				let shareList = [{
+						icon: "/static/image/journey/sharemenu/wx.png",
+						text: "微信好友",
+					},
+					{
+						icon: "/static/image/journey/sharemenu/pyq.png",
+						text: "朋友圈"
+					},
+					{
+						icon: "/static/image/journey/sharemenu/weibo.png",
+						text: "微博"
+					},
+					{
+						icon: "/static/image/journey/sharemenu/qq.png",
+						text: "QQ"
+					},
+					{
+						icon: "/static/image/journey/sharemenu/copy.png",
+						text: "复制"
+					},
+					{
+						icon: "/static/image/journey/sharemenu/more.png",
+						text: "更多"
+					},
+				];
+				this.shareObj = share(shareInfo, shareList, function(index) {
+					console.log("点击按钮的序号: " + index);
+					let shareObj = {
+						href: shareInfo.href || "",
+						title: shareInfo.title || "",
+						summary: shareInfo.desc || "",
+						success: (res) => {
+							console.log("success:" + JSON.stringify(res));
+						},
+						fail: (err) => {
+							console.log("fail:" + JSON.stringify(err));
+						}
+					};
+					switch (index) {
+						case 0:
+							shareObj.provider = "weixin";
+							shareObj.scene = "WXSceneSession";
+							shareObj.type = 0;
+							shareObj.imageUrl = shareInfo.imgUrl || "";
+							uni.share(shareObj);
+							break;
+						case 1:
+							shareObj.provider = "weixin";
+							shareObj.scene = "WXSenceTimeline";
+							shareObj.type = 0;
+							shareObj.imageUrl = shareInfo.imgUrl || "";
+							uni.share(shareObj);
+							break;
+						case 2:
+							shareObj.provider = "sinaweibo";
+							shareObj.type = 0;
+							shareObj.imageUrl = shareInfo.imgUrl || "";
+							uni.share(shareObj);
+							break;
+						case 3:
+							shareObj.provider = "qq";
+							shareObj.type = 1;
+							shareObj.imageUrl = shareInfo.imgUrl || "";
+							uni.share(shareObj);
+							break;
+						case 4:
+							uni.setClipboardData({
+								data: shareInfo.href,
+								complete() {
+									uni.showToast({
+										title: "已复制到剪贴板"
+									})
+								}
+							})
+							break;
+						case 5:
+							plus.share.sendWithSystem({
+								type: "web",
+								title: shareInfo.title || "",
+								thumbs: [shareInfo.imgUrl || ""],
+								href: shareInfo.href || "",
+								content: shareInfo.desc || "",
+							})
+							break;
+					};
+				});
+				this.$nextTick(() => {
+					this.shareObj.alphaBg.show();
+					this.shareObj.shareMenu.show();
+				})
+			},
 
 		},
 		onLoad() {
-			this.lookrank_total()
+			this.lookrank_total();
+			this.showGift();
 		},
 		onShow(){
 			
@@ -141,7 +268,7 @@
 		min-height: 100vh;
 		position: relative;
 		/* #ifdef H5 */
-		background-image: url(~@/static/image/background_rank.gif);
+		background-image: url(~@/static/image/background2.jpg);
 		background-size: cover;
 		background-position: center;
 		background-attachment:fixed;
@@ -264,7 +391,7 @@
 			}
 		}
 	    .card{
-			background-color:#B3D4FC;
+			background-color:#C9D3FB;
 			height:auto;
 			width:94%;
 			margin-left:22upx;
@@ -322,6 +449,54 @@
 			.card-item-strokes {
 			    text-align: right;
 			    font-size: 35upx;
+			}
+		}
+		.bottom{
+			position:fixed;
+			z-index:10;
+			background:rgba(34,38,47,0.6);
+			color:#FFFFFF;
+			width:94%;
+			height:120upx;
+			margin-left:22upx;
+			// margin-top:86%;
+			bottom: 0upx;
+			font-size:32upx;
+			.bottom-item {
+				display: flex;
+				flex-wrap: wrap;
+				// padding-top: 120upx;
+				image{
+					opacity: 1;
+					z-index:11;
+					margin-top: 20upx;
+					width: 80upx;
+					height: 80upx;
+					border-radius: 50%;
+					line-height: 80upx;
+					text-align: center;
+					left:10upx;
+					border: 1.5px solid #F2F2F2;
+					
+				}
+				.bottom-item-rank{
+					padding-top: 30upx;
+					padding-left:15upx;
+				}
+				.bottom-item-user{
+					display: flex;
+					flex-direction: column;
+					padding-left:20upx;
+					padding-top:10upx;
+				}
+				button{
+					border-radius: 50upx;
+					top: 28upx;
+					color:#FFFFFF;
+					left:110upx;
+					height: 70upx;
+					background:linear-gradient(to right, #C80808,#E56D00);
+				}
 			}
 		}
 	}

@@ -37,8 +37,11 @@
 
 <script>
 	import {
-		searchFollow,search_users
+		search_users
 	} from '@/api/usercenter'
+	import {
+		searchFollow
+	} from '@/api/followsFans'
 	export default {
 		data() {
 			return {
