@@ -8,6 +8,6 @@ export function deleteConcern(data) {
     return Ajax.post('/followfans/followfans/?delete',data);
 }
 //查看关注
-export function getConcern(params){
+export function searchFollow(params){
 	return Ajax.get('/followfans/followfans/',{params})
 }
