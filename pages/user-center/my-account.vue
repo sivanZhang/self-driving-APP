@@ -779,7 +779,7 @@
 					icon: "none",
 				})
 			}, 1000);
-			this.locate();
+			this.locate(); 
 			this.getLocationTest();
 			this.lookrank_total();
 		},
