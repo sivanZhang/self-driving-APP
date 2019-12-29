@@ -83,6 +83,13 @@
 			}
 		},
 		{
+			"path": "pages/user-center/currency/currency",
+			"style": {
+				"navigationBarTitleText": "虚拟币"
+				
+			}
+		},
+		{
 			"path": "pages/user-center/track/signaltrack",
 			"style": {
 				"navigationBarTitleText": "车迹展示"

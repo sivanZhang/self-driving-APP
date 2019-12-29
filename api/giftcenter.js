@@ -17,3 +17,7 @@ export function look_GiftCategory(params){
 export function give_Gift(params){
 	return Ajax.post('/product/gift/',{params})
 }
+//查看月度和年度礼品榜
+export function get_GiftRank(params){
+	return Ajax.get('/product/gift/',{params})
+}

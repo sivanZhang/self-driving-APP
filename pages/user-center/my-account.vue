@@ -157,6 +157,15 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
+			<view class="section" @tap="target('/pages/user-center/currency/currency')">
+				<view>
+					<image class="icon" src="../../static/icons/xunibi.png"></image>
+					虚拟币
+				</view>
+				<view>
+					<uni-icon type="arrowright"></uni-icon>
+				</view>
+			</view>
 			<view class="section" @tap="target('/pages/user-center/user-settings')">
 				<view>
 					<image class="icon" src="/static/icons/setting.png"></image>
