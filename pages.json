@@ -83,6 +83,13 @@
 			}
 		},
 		{
+			"path": "pages/user-center/currency/currency",
+			"style": {
+				"navigationBarTitleText": "虚拟币"
+				
+			}
+		},
+		{
 			"path": "pages/user-center/track/signaltrack",
 			"style": {
 				"navigationBarTitleText": "车迹展示"
@@ -388,7 +395,15 @@
 		},
 		{
 			"path": "pages/user-center/browser-history",
-			"style": {}
+			"style": {
+				"navigationBarTitleText": "浏览历史"
+			}
+		},
+		{
+			"path": "pages/user-center/myCollect/myclooect",
+			"style": {
+				"navigationBarTitleText": "我的收藏"
+			}
 		},
 		{
 			"path": "pages/user-center/message/mymessage",

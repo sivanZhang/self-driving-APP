@@ -1,140 +1,28 @@
 <template>
 	<!-- 展示所有的未创建搭伴的路线详情 -->
 	<view id="noPartnerAllRoutner">
-		<block v-for="(item,index) of RouterList" :key="index">
-			<view class="container section">
-				<view class="detail">
-					<view class="content">
-						<view class="content-top">
-							<image src="../../../static/image/face.jpg"></image>
-							<view class="content-middle">
-								<h4>{{item.creator_name}}</h4>
-								<p>发布日期:{{item.create_date|dateFormat}}</p>
-							</view>
-							<view class="content-right">
-								<view class="content-right-follow" v-if="followClick" @tap="addConcern(item.id,index)">
-									<view style="font-size: 24upx;" class="iconfont icon-jiahao"></view>
-									<view>关注</view>
-								</view>
-								<view class="content-right-followover" v-else>
-									<view style="font-size: 24upx;" class="iconfont icon-duigou"></view>
-									<view>已关注</view>
-								</view>
-							</view>
-						</view>
-						<view class="place-list">
-							<view class="place" v-for="(row,index) of item.via_list" :key="index">
-								<view @tap="target('/pages/team/releaseRouter/signalRouterDetail?id='+item.id)">
-									<view style="align-items: center;">
-										<view class="place-left" v-if="row.sort == -1">
-											<view>
-											<view>{{row.parent_name}}</view>
-											<view>{{row.area_name}}</view>
-											</view>
-											<image style="width:80upx ;height: 60upx;" src="../../../static/icons/youjiantou.png"></image>
-										</view>
-										<view class="place-left" v-if="row.sort == 0">
-											<view>{{row.parent_name}}</view>
-											<view>{{row.area_name}}</view>
-										</view>
-									</view>
-									<view v-if="show">
-										<view>{{row.parent_name}}</view>
-										<view>{{row.area_name}}</view>
-										<!-- <text style="font-size: 22upx;">{{row.parent_name}}{{row.area_name}}-</text> -->
-									</view>
-								</view>
-							</view>
-							<view class="place-point" @tap="placePoint">
-								<image style="height:40upx;width: 40upx;" src="../../../static/image/position.png"></image>
-								<text>途经点</text>
-							</view>
-						</view>
-						<view class="place-list">
-							<view>
-							<span style="font-weight: bold;">时间安排：</span>
-							{{ item.start_date | dateFormat }}--{{ item.end_date | dateFormat }}
-							</view>
-						</view>
-					</view>
-				</view>
-				<view class="footer">
-					<view class="footer-left" >邀请创建组队</view>
-					<view  class="footer-right" @tap="addCollect(item.id)">收藏</view>
-				</view>
-			</view>
-		</block>
+		<routerDetail ref="routerDetail" :RouterList="RouterList" @getRouterList="getRouterList"/>
 	</view>
 </template>
 
 <script>
 	import {
 		queryRouterDetail,
-		deleteRouter
 	} from '@/api/router'
-	import {
-		addConcern
-	} from '@/api/followsFans'
-	import {
-		applyPartner
-	} from '@/api/partner'
-	import {
-		addCollect
-	} from '@/api/likeCollect'
+	import routerDetail from './components/routerDetail.vue'
 	export default {
 		data() {
 			return {
-				show: false,
 				RouterList: [],
-				followClick: true,
-				activeColor: '#fbb10e',
 			};
-		},
-		computed: {
-			UserInfo() {
-				return this.$store.state.UserInfo
-			},
 		},
 		onShow() {
 			this.getRouterList();
 		},
+		components: {
+			routerDetail
+		},
 		methods: {
-			//添加收藏
-			addCollect(id){
-				addCollect({entity:4,instance:id}).then(({data})=>{
-					if(data.status == 0){
-					  uni.showToast({
-							title: '收藏成功',
-							duration: 2000
-						});
-				  }
-				})
-			},
-			//申请组队
-            applyPartner(partner_id){
-				// console.log(creator_id)
-              applyPartner({partner_id:partner_id}).then(({data })=>{
-				  if(data.status == 0){
-					  uni.showToast({
-							title: '申请成功',
-							duration: 2000
-						});
-				  }
-			  })
-			},
-			//添加关注
-			addConcern(id,key) {
-				this.RouterList.forEach((item,index)=>{
-                  if(index == key){
-                   this.followClick = false;
-				addConcern({follow_ids:id}).then(({data})=>{
-				})}
-				})	
-			},
-			//展示途经点
-			placePoint() {
-				this.show = !this.show
-			},
 			//获取所有的路线列表
 			getRouterList() {
 				queryRouterDetail({not_partner:''}).then(({
@@ -143,15 +31,9 @@
 					this.RouterList = data.msg;
 				})
 			},
-			//页面跳转
-			target(url) {
-				uni.navigateTo({
-					url
-				});
-			},
 		},
 		onNavigationBarButtonTap(val) {
-			console.log(val.index);
+			// console.log(val.index);
 			if (val.index == 0) {
 				console.log("第一个按钮");
 			};
@@ -172,7 +54,7 @@
 </script>
 
 <style lang="scss">
-	#noPartnerAllRoutner {
+#noPartnerAllRoutner {
 
 		// background-color: #efefef;
 		// height: 100vh;
@@ -317,5 +199,5 @@
 			}
 
 		}
-	}
+}
 </style>

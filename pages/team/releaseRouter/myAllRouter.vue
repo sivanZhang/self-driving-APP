@@ -1,140 +1,34 @@
 <template>
     <!-- 展示我的所有的路线详情 -->
 	<view id="myAllRouter">
-		<block v-for="(item,index) of RouterList" :key="index">
-			<view class="container section">
-				<view class="detail">
-					<view class="content">
-						<view class="content-top">
-							<image src="../../../static/image/face.jpg"></image>
-							<view class="content-middle">
-								<h4>{{item.creator_name}}</h4>
-								<p>发布日期:{{item.create_date|dateFormat}}</p>
-							</view>
-							<!-- <view class="content-right">
-								<view class="content-right-follow" v-if="followClick" @tap="addConcern(item.id,index)">
-									<view style="font-size: 24upx;" class="iconfont icon-jiahao"></view>
-									<view>关注</view>
-								</view>
-								<view class="content-right-followover" v-else>
-									<view style="font-size: 24upx;" class="iconfont icon-duigou"></view>
-									<view>已关注</view>
-								</view>
-							</view> -->
-						</view>
-						<view class="place-list">
-							<view class="place" v-for="(row,index) of item.via_list" :key="index">
-								<view @tap="target('/pages/team/releaseRouter/signalRouterDetail?id='+item.id)">
-									<view style="align-items: center;">
-										<view class="place-left" v-if="row.sort == -1">
-											<view>
-											<view>{{row.parent_name}}</view>
-											<view>{{row.area_name}}</view>
-											</view>
-											<image style="width:80upx ;height: 60upx;" src="../../../static/icons/youjiantou.png"></image>
-										</view>
-										<view class="place-left" v-if="row.sort == 0">
-											<view>{{row.parent_name}}</view>
-											<view>{{row.area_name}}</view>
-										</view>
-									</view>
-									<view v-if="show">
-										<view>{{row.parent_name}}</view>
-										<view>{{row.area_name}}</view>
-										<!-- <text style="font-size: 22upx;">{{row.parent_name}}{{row.area_name}}-</text> -->
-									</view>
-								</view>
-							</view>
-							<view class="place-point" @tap="placePoint">
-								<image style="height:40upx;width: 40upx;" src="../../../static/image/position.png"></image>
-								<text>途经点</text>
-							</view>
-						</view>
-						<view class="place-list">
-							<view>
-							<span style="font-weight: bold;">时间安排：</span>
-							{{ item.start_date | dateFormat }}--{{ item.end_date | dateFormat }}
-							</view>
-						</view>
-					</view>
-				</view>
-				<view class="footer"> 
-					<view class="footer-left" @tap="target('/pages/team/releaseRouter/signalRouterChange?id='+item.id)">修改</view>
-					<view class="footer-right" @tap="deleteRouter(item.id)">删除</view>
-				</view>
-			</view>
-		</block>
+		<routerDetail ref="routerDetail" :RouterList="RouterList" @getRouterList="getRouterList"/>
 	</view>
 </template>
 <script>
 import {
 		queryRouterDetail,
-		deleteRouter
 	} from '@/api/router'
+	import routerDetail from './components/routerDetail.vue'
 export default {
     data() {
 			return {
-				show: false,
 				RouterList: [],
-				followClick: true,
-				activeColor: '#fbb10e',
 			};
         },
-        computed: {
-			UserInfo() {
-				return this.$store.state.UserInfo
-			},
+		components: {
+			routerDetail
 		},
 		onShow() {
 			this.getRouterList();
         },
         methods: {
-			//删除路线
-			deleteRouter(id) {
-				var that = this;
-				uni.showModal({
-					content: '确定删除此路线吗？',
-					confirmColor: "#FF0000",
-					success: function(res) {
-						if (res.confirm) {
-							deleteRouter({
-								method: "delete",
-								ids: id
-							}).then(({
-								data
-							}) => {
-								if (data.status == 0) {
-									uni.showToast({
-										title: '删除成功',
-										duration: 2000
-									});
-									that.getRouterList();
-								}
-							})
-						} else if (res.cancel) {
-							console.log('用户点击取消');
-						}
-					}
-				});
-
-			},
-			//展示途经点
-			placePoint() {
-				this.show = !this.show
-			},
-			//获取所有的路线列表
+			//获取我的所有的路线列表
 			getRouterList() {
 				queryRouterDetail({mine:''}).then(({
 					data
 				}) => {
 					this.RouterList = data.msg;
 				})
-			},
-			//页面跳转
-			target(url) {
-				uni.navigateTo({
-					url
-				});
 			},
 		},
 }
@@ -285,5 +179,5 @@ export default {
 			}
 
 		}
-	}
+}
 </style>

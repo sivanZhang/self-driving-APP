@@ -13,33 +13,39 @@
 				<button class="top-item-month" size="mini" @tap="lookrank_month">月榜</button>
 			</view>
 		</view>
-		<view class="main">
-			<view class="main-item-data">
-				<view v-for="(item,index) of List2" :key="index">
-					<view class="main-item-second" v-if="index==1">
-						<view class="main-item-data-username">{{item.user_name}}</view>
-						<image class="second-avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
-						<view class="main-item-data-strokes">{{item.distance}}</view>
-						<view class="main-item-data-unit">km</view>
-					</view>
-					<view class="main-item-first" v-if="index==0">
-						<view class="main-item-data-username">{{item.user_name}}</view>
-						<image class="first-avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
-						<view class="main-item-data-strokes">{{item.distance}}</view>
-						<view class="main-item-data-unit">km</view>
-					</view>
-					<view class="main-item-third" v-if="index==2">
-						<view class="main-item-data-username">{{item.user_name}}</view>
-						<image class="third-avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
-						<view class="main-item-data-strokes">{{item.distance}}</view>
-						<view class="main-item-data-unit">km</view>
+		<view class="middle">
+			<view class="gift" @tap="showpopup">
+				<image src="/static/image/face.jpg"></image>
+				<view class="gift-text">{{hit?"本年度礼品":"本月度礼品"}}</view>
+			</view>
+			<view class="main">
+				<view class="main-item-data">
+					<view v-for="(item,index) of List2" :key="index">
+						<view class="main-item-second" v-if="index==1">
+							<view class="main-item-data-username">{{item.user_name}}</view>
+							<image class="second-avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
+							<view class="main-item-data-strokes">{{item.distance}}</view>
+							<view class="main-item-data-unit">km</view>
+						</view>
+						<view class="main-item-first" v-if="index==0">
+							<view class="main-item-data-username">{{item.user_name}}</view>
+							<image class="first-avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
+							<view class="main-item-data-strokes">{{item.distance}}</view>
+							<view class="main-item-data-unit">km</view>
+						</view>
+						<view class="main-item-third" v-if="index==2">
+							<view class="main-item-data-username">{{item.user_name}}</view>
+							<image class="third-avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
+							<view class="main-item-data-strokes">{{item.distance}}</view>
+							<view class="main-item-data-unit">km</view>
+						</view>
 					</view>
 				</view>
-			</view>
-			<view class="main-item-grade">
-				<image class="grade-second" src="/static/icons/second.png"></image>
-				<image class="grade-first" src="/static/icons/first.png"></image>
-				<image class="grade-third" src="/static/icons/third.png"></image>
+				<view class="main-item-grade">
+					<image class="grade-second" src="/static/icons/second.png"></image>
+					<image class="grade-first" src="/static/icons/first.png"></image>
+					<image class="grade-third" src="/static/icons/third.png"></image>
+				</view>
 			</view>
 		</view>
 		<view class="card">
@@ -72,20 +78,39 @@
 				<button size="mini" class="bottom-item-share" @click="shareInfo">和好友比一比</button>
 			</view>
 		</view>
+		<!--查看第一至第三名礼品的弹出层-->
+		<uni-popup ref="popup" type="right" :custom="true" :show="true">
+			<view class="uni-logout">
+				<image src="/static/image/face.jpg"></image>
+				<view @tap="target1('/pages/user-center/giftcenter/giftDetail?id=79')">第一名礼品</view>
+			</view>
+			<view class="uni-logout">
+				<image src="/static/image/face.jpg"></image>
+				<view @tap="target1('/pages/user-center/giftcenter/giftDetail?id=79')">第二名礼品</view>
+			</view>
+			<view class="uni-logout">
+				<image src="/static/image/face.jpg"></image>
+				<view @tap="target1('/pages/user-center/giftcenter/giftDetail?id=79')">第三名礼品</view>
+			</view>
+		</uni-popup>
+		<!--查看第一至第三名礼品的弹出层-->
 	</view>
 </template>
 <script>
+	import dayjs from "dayjs"
 	import share from "@/common/share.js";
 	import uniCard from "@/components/uni-card/uni-card"
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import {
 		Track_Rank,
 	} from '@/api/track.js'
 	import {
-		give_Gift
+		get_GiftRank
 	} from '@/api/giftcenter.js'
 	export default {
 		components: {
-			uniCard
+			uniCard,
+			uniPopup
 		},
 		data() {
 			return {
@@ -99,14 +124,17 @@
 				rank:'',
 				username:'',
 				info:'',
-				image:''
+				image:'',
+				hit:true,
 			};
 		},
 		computed: {
 			
 		},
 		methods: {
+			//年度榜
 			lookrank_total(){
+				this.hit = true;
 				let data = {
 					year:''
 				}
@@ -118,19 +146,17 @@
 						this.color = 'white';
 						this.List = [...data.msg];
 					    this.List2 = this.List.slice(0,3)
-						// console.log(data)
-						// this.thumbnail_portait = "0"
 						this.info = data.user_rank;
 						this.rank = this.info.rank;
 						this.username = this.info.user_name;
 						this.distance = this.info.mileage;
 						this.image = this.info.user__thumbnail_portait;
-						// console.log(this.image)
 					}
-					// console.log(data)
 				})
 			},
+			//月榜
 			lookrank_month(){
+				this.hit = false;
 				let data = {
 					month:''
 				}
@@ -151,6 +177,7 @@
 					// console.log(data)
 				})
 			},
+			//分享排名
 			shareInfo() {
 				let shareInfo = {
 					href: "https://uniapp.dcloud.io",
@@ -249,11 +276,49 @@
 					this.shareObj.shareMenu.show();
 				})
 			},
+			//查看前三名的礼品
+			getGift(){
+				function dateFormat(date) {
+				    if (date) {
+				        return dayjs(date).format("YYYY/MM/DD")
+				    } else {
+				        return ''
+				    }
+				}
+			    let timestamp = new Date().getTime();
+			    let date = dateFormat(timestamp);
+			    let data ={
+					date:date,
+					type:0
+			    }
+			    get_GiftRank(data).then(({
+						data
+					}) => {
+						if(data.status === 0){
+
+						var list = [...data.msg];
+							console.log(list)
+					}
+					console.log(data)
+			    }) 
+			},
+			target(url) {
+				uni.navigateTo({
+					url
+				});
+			},
+			target1(url) {
+				this.target(url);
+				this.$refs.popup.close();
+			},
+			showpopup(){
+				this.$refs.popup.open()
+			}
 
 		},
 		onLoad() {
 			this.lookrank_total();
-			this.showGift();
+			this.getGift();
 		},
 		onShow(){
 			
@@ -261,7 +326,6 @@
 	};
 	
 </script>
-
 <style lang="scss">
 	#rank{
 		overflow-x: hidden;
@@ -312,81 +376,97 @@
 				}
 			}
 		}
-	    .main{
-			// position: absolute;
-			margin-left:20upx;
-			color:white;
-			.main-item-data{
-				display:flex;
-				flex-wrap: nowrap;
-				flex-direction: row;
-				// justify-content:space-between;
-				// display: -webkit-flex; /* Safari */
-				font-size:32upx;
+		.middle{
+			.gift{
+				z-index:9;
+				position:fixed;
+				margin-top:100upx;
+				margin-left:600upx;
 				image{
-					width: 120upx;
-					height: 120upx;
-					border-radius: 50%;
-					margin-left:30upx;
-					z-index:9;
-					// position:absolute;
+					height:60upx;
+					width:60upx;
+					margin-left:45upx;
+				},
+				.gift-text{
+					color:#FFB400;
 				}
-					.main-item-data-username{
-						// padding-left:30upx;
-						margin-top:120upx;
-						text-align: center;
-					}
-					.main-item-data-strokes{
-						// padding-left:30upx;
-						margin-top:170upx;
-						text-align: center;
-					}
-					.main-item-data-unit{
-						// margin-left:60upx;
-						text-align: center;
-					}
-					.main-item-first{
-						text-align: center;
-			            margin-left:290upx; 
-						margin-top:10upx;
-						.first-avatar{
-							margin-left:-30upx;
-						}
-					}
-					.main-item-second{
-						margin-top:170upx;
-						margin-left:-780upx;
-						.second-avatar{
-							margin-left:325upx;
-						}
-					}
-					.main-item-third{
-						text-align: center;
-						margin-top:200upx;
-						margin-left:100upx;
-						.third-avatar{
-							margin-left:20upx;
-						}
-					}
 			}
-			.main-item-grade{
-				position: absolute;
-				display:flex;
-				flex-wrap: nowrap;
-				image{
-					width:170upx;
-					height:180upx;
+			.main{
+				// position: absolute;
+				margin-left:20upx;
+				color:white;
+				.main-item-data{
+					display:flex;
+					flex-wrap: nowrap;
+					flex-direction: row;
+					// justify-content:space-between;
+					// display: -webkit-flex; /* Safari */
+					font-size:32upx;
+					image{
+						width: 120upx;
+						height: 120upx;
+						border-radius: 50%;
+						margin-left:30upx;
+						z-index:9;
+						// position:absolute;
+					}
+						.main-item-data-username{
+							// padding-left:30upx;
+							margin-top:120upx;
+							text-align: center;
+						}
+						.main-item-data-strokes{
+							// padding-left:30upx;
+							margin-top:170upx;
+							text-align: center;
+						}
+						.main-item-data-unit{
+							// margin-left:60upx;
+							text-align: center;
+						}
+						.main-item-first{
+							text-align: center;
+							margin-left:290upx; 
+							margin-top:10upx;
+							.first-avatar{
+								margin-left:-30upx;
+							}
+						}
+						.main-item-second{
+							margin-top:170upx;
+							margin-left:-780upx;
+							.second-avatar{
+								margin-left:325upx;
+							}
+						}
+						.main-item-third{
+							text-align: center;
+							margin-top:200upx;
+							margin-left:100upx;
+							.third-avatar{
+								margin-left:20upx;
+							}
+						}
 				}
-				.grade-first{
-					margin-top:-380upx;
-					margin-left:110upx;
-				}
-				.grade-second{
-					margin-top:-330upx;
-				}
-				.grade-third{
-					margin-top:-300upx;
-					margin-left:110upx;
+				.main-item-grade{
+					position: absolute;
+					display:flex;
+					flex-wrap: nowrap;
+					image{
+						width:170upx;
+						height:180upx;
+					}
+					.grade-first{
+						margin-top:-380upx;
+						margin-left:110upx;
+					}
+					.grade-second{
+						margin-top:-330upx;
+					}
+					.grade-third{
+						margin-top:-300upx;
+						margin-left:110upx;
+					}
 				}
 			}
 		}
@@ -497,6 +577,36 @@
 					height: 70upx;
 					background:linear-gradient(to right, #C80808,#E56D00);
 				}
+			}
+		}
+		.uni-popup {
+			top:180upx;
+			position: absolute;
+			width: 100%;
+			display: flex;
+			justify-content: flex-end;
+			z-index: 10;
+			overflow: hidden;
+		}
+		.uni-logout {
+			background:rgba(64,64,64,0.7);
+			color: #C9D3FB;
+			display: flex;
+			width: 100%;
+		    image{
+				height:60upx;
+				width:60upx;
+				// margin-left:10upx;
+				// margin-top:10upx;
+			}
+			&>view {
+				padding: 0upx 30upx 0upx 10upx;
+				height:60upx;
+				border-bottom: 2.083upx solid #c8c8cc;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 32upx;
 			}
 		}
 	}

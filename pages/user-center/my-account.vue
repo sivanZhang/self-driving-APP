@@ -119,7 +119,7 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
-			<view class="section">
+			<view class="section" @tap="target('/pages/user-center/myCollect/myclooect')">
 				<view>
 					<image class="icon" src="/static/icons/save.png"></image>
 					我的收藏
@@ -152,6 +152,15 @@
 					<image class="icon" src="../../static/image/journey/gift.png"></image>
 					礼品中心
 
+				</view>
+				<view>
+					<uni-icon type="arrowright"></uni-icon>
+				</view>
+			</view>
+			<view class="section" @tap="target('/pages/user-center/currency/currency')">
+				<view>
+					<image class="icon" src="../../static/icons/xunibi.png"></image>
+					虚拟币
 				</view>
 				<view>
 					<uni-icon type="arrowright"></uni-icon>
