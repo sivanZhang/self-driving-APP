@@ -119,7 +119,7 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
-			<view class="section">
+			<view class="section" @tap="target('/pages/user-center/myCollect/myclooect')">
 				<view>
 					<image class="icon" src="/static/icons/save.png"></image>
 					我的收藏
