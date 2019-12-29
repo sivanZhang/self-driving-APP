@@ -28,13 +28,12 @@
 				queryRouterDetail({not_partner:''}).then(({
 					data
 				}) => {
-					console.log(data)
 					this.RouterList = data.msg;
 				})
 			},
 		},
 		onNavigationBarButtonTap(val) {
-			console.log(val.index);
+			// console.log(val.index);
 			if (val.index == 0) {
 				console.log("第一个按钮");
 			};

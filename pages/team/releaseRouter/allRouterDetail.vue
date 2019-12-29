@@ -61,7 +61,7 @@
 			},
 		},
 		onNavigationBarButtonTap(val) {
-			console.log(val.index);
+			// console.log(val.index);
 			if (val.index == 0) {
 				console.log("第一个按钮");
 				this.$refs.popup.open()
