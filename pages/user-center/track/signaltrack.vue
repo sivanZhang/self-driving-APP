@@ -1,11 +1,11 @@
 <template>
 	<!-- 单个车迹详情页 -->
 	<view id="signaltrack">
-			<map style="width: 100%; height:449px;" :polyline='polylines' :latitude="latitude" :longitude="longitude"
-			 :markers="markers" show-location="true" scale="17">
-				<cover-view class="rank">排名{{rank}}</cover-view>
-			</map>
-		<view class="instruct">
+		<map style="width: 100%; height:400px;" :polyline='polylines' :latitude="latitude" :longitude="longitude" :markers="markers"
+		 show-location="true" scale="17">
+			<cover-view class="rank">排名{{rank}}</cover-view>
+		</map>
+		<view class="instruct" :style="{height:height+'px',width:width+'px'}">
 			<view class="time">
 				{{ create_date | dateFormat }}
 			</view>
@@ -16,7 +16,7 @@
 				<view class="part">里程(km)</view>
 			</view>
 		</view>
-		<view class="footer">
+		<view class="footer" :style="{height:Height+'px',width:width+'px'}">
 			<image class="footer-top" v-show="first" src="/static/image/journey/xin.png" @tap="collect()"></image>
 			<image class="footer-top" v-show="!first" src="/static/image/journey/xin2.png" @tap="second()"></image>
 			<view class="footer-center">收藏</view>
@@ -46,20 +46,31 @@
 				rank: 0,
 				first: true,
 				height: 0,
-				
+				Height: 0,
+				width: 0,
 			}
 		},
 		onLoad(option) {
 			this.id = option.id;
 			console.log(this.id)
 			this.searchTrackList();
+			uni.getSystemInfo({
+				success: (res) => {
+					this.width = res.windowWidth
+					this.height = (res.windowHeight - 400) * 0.8
+					this.Height = (res.windowHeight - 400) * 0.179
+					console.log(res)
+				}
+			})
 		},
 		onBackPress() {
 			//监听back键，关闭弹出菜单
-			if (this.shareObj.shareMenu.isVisible()) {
-				this.shareObj.shareMenu.hide();
-				this.shareObj.alphaBg.hide();
-				return true
+			if (this.shareObj) {
+				if (this.shareObj.shareMenu.isVisible()) {
+					this.shareObj.shareMenu.hide();
+					this.shareObj.alphaBg.hide();
+					return true
+				}
 			}
 		},
 		methods: {
@@ -174,7 +185,7 @@
 				}).then(({
 					data
 				}) => {
-					console.log(data)
+					// console.log(data)
 					var track = data.msg[0].record;
 					if (track.length != 0) {
 						var new_track = JSON.parse(track);
@@ -213,10 +224,10 @@
 
 <style lang="scss">
 	#signaltrack {
-        
+     overflow: hidden;
 		.rank {
 			top: 10%;
-			left: 78%;
+			left: 80%;
 			position: absolute;
 			font-size: 45upx;
 			background-color: #DF5000;
@@ -227,87 +238,89 @@
 		}
 
 		.instruct {
-			bottom:6.5%;
+			margin-top: 0.85%;
 			position: fixed;
-			padding: 2% 3% 3% 3%;
+			padding-left: 3%;
+			// display: flex;
+			// align-items: center;
 			background-color: #DF5000;
-			width: 100%;
-			border-bottom: 0.01upx solid #F0F0F0;
 			color: #fff;
-		}
 
-		.time {
-			font-size: 16px;
-			padding-bottom: 2%;
-			position: relative;
-		}
+			.time {
+				font-size: 16px;
+				padding-bottom: 2%; 
+				position: relative;
+			}
 
-		.middle {
-			position: relative;
-			display: flex;
-			flex-wrap: wrap;
-			flex-direction: column;
-			padding-bottom: 2%;
-		}
-
-		.distance {
-			position: relative;
-			display: flex;
-			flex-wrap: wrap;
-			font-size: 25px;
-
-			.part {
+			.middle {
+				position: relative;
 				display: flex;
 				flex-wrap: wrap;
-				font-size: 13px;
-				padding-top: 2%;
-				left: 2%;
+				flex-direction: column;
+				padding-bottom: 2%;
+			}
+
+			.distance {
 				position: relative;
+				display: flex;
+				flex-wrap: wrap;
+				font-size: 25px;
+
+				.part {
+					display: flex;
+					flex-wrap: wrap;
+					font-size: 13px;
+					padding-top: 2%;
+					left: 2%;
+					position: relative;
+				}
 			}
 		}
 
 		.footer {
+			
 			position: fixed;
 			bottom: 0rpx;
-			height:6.5%;
-			width: 100%;
 			background-color: #DF5000;
 			display: flex;
 			flex-wrap: wrap;
-			padding: 2%;
+			align-items: center;
+			padding: 1%;
 			color: #fff;
 
 			.footer-top {
-				width: 50upx;
-				height: 50upx;
+				width: 40upx;
+				height: 40upx;
 				position: relative;
 				left: 20%;
+
 			}
 
 			.footer-center {
 				position: relative;
-				padding-left: 2%;
-				left: 20%;
-				top: 0.3rem;
-
+				// padding-left: 2%;
+				left: 21%;
+				// top: 0.3rem;
+				display: flex;
+				align-items: center;
 			}
 
 			.footer-left {
-				width: 50upx;
-				height: 50upx;
-				left: 46%;
+				width: 40upx;
+				height: 40upx;
+				left: 55%;
 				position: relative;
 
 			}
 
 			.footer-right {
 				position: relative;
-				padding-left: 2%;
-				left: 46%;
-				top: 0.3rem;
-
+				// padding-left: 2%;
+				left: 56%;
+				// top: 0.3rem;
+				display: flex;
+				align-items: center;
 			}
 		}
-
 	}
 </style>

@@ -495,7 +495,7 @@
 				// console.log(this.speed)
 				if (this.speed < 5) {
                     this.SI = setInterval(() => {
-                    	this.doGetLocation();
+                    	this.doGetLocation(); 
                     	this.longitude = this.locationinfo.longitude;
                     	this.latitude = this.locationinfo.latitude;
                     	this.speed = this.locationinfo.speed;
@@ -552,7 +552,7 @@
                     			}).then(({
                     				data
                     			}) => {
-                    				console.log(data)
+                    				// console.log(data)
                     				var track = data.msg[0].record;
                     				console.log("2:从后端接收的");
                     				console.log(track)
@@ -691,9 +691,9 @@
 			locate() {
 
 				var watchId = plus.geolocation.watchPosition(function(p) {
-					console.log("监听位置变化信息:");
+					// console.log("监听位置变化信息:");
 					// console.log( JSON.stringify(p) );  
-					var f = JSON.stringify(p);
+					var f = JSON.stringify(p); 
 
 					try {
 						var time = new Date();
@@ -707,7 +707,7 @@
 						// error
 					}
 				}, function(e) {
-					console.log("监听位置变化信息失败：" + e.message);
+					// console.log("监听位置变化信息失败：" + e.message);
 					var g = e.message;
 
 					try {
@@ -770,7 +770,7 @@
 					icon: "none",
 				})
 			}, 1000);
-			// this.locate();
+			this.locate();
 			this.getLocationTest();
 			this.lookrank_total();
 		},
