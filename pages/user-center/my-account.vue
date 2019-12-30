@@ -155,7 +155,7 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
-			<view class="section" @tap="target('/pages/user-center/currency/currency')">
+			<view class="section" @tap="target('/pages/user-center/currency/lookCurrency')">
 				<view>
 					<image class="icon" src="../../static/icons/xunibi.png"></image>
 					虚拟币
@@ -319,10 +319,10 @@
 						this.speed = res.speed
 						this.address = res.address
 						this.name = res.address.poiName
-						console.log(this.locationinfo)
+						// console.log(this.locationinfo)
 					},
 					fail: (err) => {
-						console.log(err)
+						// console.log(err)
 						try {
 							var time = new Date();
 							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
@@ -337,7 +337,7 @@
 						}
 					},
 					complete: (a) => {
-						console.log(a)
+						// console.log(a)
 						try {
 							var time = new Date();
 							var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
@@ -715,7 +715,7 @@
 						// error
 					}
 				}, function(e) {
-					console.log("监听位置变化信息失败：" + e.message);
+					// console.log("监听位置变化信息失败：" + e.message);
 					var g = e.message;
 
 					try {

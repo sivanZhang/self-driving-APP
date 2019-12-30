@@ -8,9 +8,13 @@
 			<!-- #endif -->
 		<view class="top">
 			<view class="top-item">
-				<button class="top-item-total" :style="{background:background,
+				<view class="top-item-type" v-for="(item,index) of buttonList" :key="index"
+					:class="{colorChange:index==dynamic}" @click="getType(index)">
+					{{item}}
+				</view>
+				<!-- <button class="top-item-total" :style="{background:background,
 					color:color}" size="mini" @tap="lookrank_total">总榜</button>
-				<button class="top-item-month" size="mini" @tap="lookrank_month">月榜</button>
+				<button class="top-item-month" size="mini" @tap="lookrank_month">月榜</button> -->
 			</view>
 		</view>
 		<view class="middle">
@@ -20,22 +24,22 @@
 			</view>
 			<view class="main">
 				<view class="main-item-data">
-					<view v-for="(item,index) of List2" :key="index">
+					<view v-for="(item,index) of topThreeList" :key="index">
 						<view class="main-item-second" v-if="index==1">
 							<view class="main-item-data-username">{{item.user_name}}</view>
-							<image class="second-avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
+							<image class="second-avatar" :src="$store.state.BaseUrl+'/'+item.user__thumbnail_portait"></image>
 							<view class="main-item-data-strokes">{{item.distance}}</view>
 							<view class="main-item-data-unit">km</view>
 						</view>
 						<view class="main-item-first" v-if="index==0">
 							<view class="main-item-data-username">{{item.user_name}}</view>
-							<image class="first-avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
+							<image class="first-avatar" :src="$store.state.BaseUrl+'/'+item.user__thumbnail_portait"></image>
 							<view class="main-item-data-strokes">{{item.distance}}</view>
 							<view class="main-item-data-unit">km</view>
 						</view>
 						<view class="main-item-third" v-if="index==2">
 							<view class="main-item-data-username">{{item.user_name}}</view>
-							<image class="third-avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
+							<image class="third-avatar" :src="$store.state.BaseUrl+'/'+item.user__thumbnail_portait"></image>
 							<view class="main-item-data-strokes">{{item.distance}}</view>
 							<view class="main-item-data-unit">km</view>
 						</view>
@@ -49,13 +53,13 @@
 			</view>
 		</view>
 		<view class="card">
-			<view v-for="(item,index) of List" :key="index">
+			<view v-for="(item,index) of totalList" :key="index">
 				<view class="card-item" v-if="index > 2">
 					<view class="card-item-serial">
 						{{index+1}}
 					</view>
 					<view class="card-item-avatar">
-						<image class="avatar" :src="'https://tl.chidict.com'+'/'+item.user__thumbnail_portait"></image>
+						<image class="avatar" :src="$store.state.BaseUrl+item.user__thumbnail_portait"></image>
 					</view>
 					<view class="card-item-username">
 						{{item.user_name}}
@@ -69,7 +73,7 @@
 			<view class="bottom-item">
 				<view class="bottom-item-rank">{{rank}}</view>
 				<view class="bottom-item-avatar">
-					<image class="avatar" :src="'https://tl.chidict.com'+'/'+image"></image>
+					<image class="avatar" :src="$store.state.BaseUrl+'/'+image"></image>
 				</view>
 				<view class="bottom-item-user">
 					<view class="bottom-item-username">{{username}}</view>
@@ -118,14 +122,16 @@
 			    color:'white',
 				thumbnail_portait:'',
 				imageURL: '/static/image/background2.jpg',
-				List:[],
-				List2:[],
+				totalList:[],
+				topThreeList:[],
 				distance:'',
 				rank:'',
 				username:'',
 				info:'',
 				image:'',
 				hit:true,
+				buttonList:["年度榜","月度榜"],
+				dynamic:0
 			};
 		},
 		computed: {
@@ -144,8 +150,8 @@
 					if(data.status === 0){
 						this.background = '#262d37';
 						this.color = 'white';
-						this.List = [...data.msg];
-					    this.List2 = this.List.slice(0,3)
+						this.totalList = [...data.msg];
+					    this.topThreeList = this.totalList.slice(0,3)
 						this.info = data.user_rank;
 						this.rank = this.info.rank;
 						this.username = this.info.user_name;
@@ -154,7 +160,7 @@
 					}
 				})
 			},
-			//月榜
+			//月度榜
 			lookrank_month(){
 				this.hit = false;
 				let data = {
@@ -166,8 +172,8 @@
 					if(data.status === 0){
 						this.background = '#1d1e23'
 						this.color = '#4a4b50'
-						this.List = [...data.msg];
-					    this.List2 = this.List.slice(0,3)
+						this.totalList = [...data.msg];
+					    this.topThreeList = this.totalList.slice(0,3)
 				        this.info = data.user_rank;
 				        this.rank = this.info.rank;
 				        this.username = this.info.user_name;
@@ -176,6 +182,14 @@
 					}
 					// console.log(data)
 				})
+			},
+			getType(index){
+				this.dynamic = index;
+				if (index == 0){
+					this.lookrank_total()
+				}else{
+					this.lookrank_month()
+				}
 			},
 			//分享排名
 			shareInfo() {
@@ -297,9 +311,7 @@
 						if(data.status === 0){
 
 						var list = [...data.msg];
-							console.log(list)
 					}
-					console.log(data)
 			    }) 
 			},
 			target(url) {
@@ -313,7 +325,7 @@
 			},
 			showpopup(){
 				this.$refs.popup.open()
-			}
+			},
 
 		},
 		onLoad() {
@@ -364,15 +376,18 @@
 			    border-radius: 20upx;
 				margin-left:40upx;
 				margin-top:10upx;
-				button{
+				.top-item-type{
+					height:60upx;
+					padding-top:5upx;
+					border-radius: 10upx;
 					background-color:#1d1e23;
 					width:50%;
 					text-align: center;
 					color:#4a4b50;
 				}
-				button:hover{
+				.colorChange{
 					background:#262d37;
-					color:white;
+				    color:white;
 				}
 			}
 		}
