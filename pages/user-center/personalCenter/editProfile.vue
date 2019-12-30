@@ -6,7 +6,7 @@
 			<!-- <image @tap="target('/pages/user-center/personalCenter/portrait')"   class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image> -->
 			<!-- <image @tap="target('/pages/user-center/personalCenter/portrait?image='+encodeURIComponent(JSON.stringify(this.thumbnail_portait)))"
 			 class="i" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image> -->
-			<image class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
+			<image class="img" :src="url+thumbnail_portait"></image>
 		</view>
 
 		<view class="body">
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+	import store from '@/store'
 	import {
 		search_users,
 		update_users
@@ -80,6 +81,7 @@
 				plateNo: '',
 				plateShow: false,
                 id:'',
+				url:null,
 			};
 		},
 		components: {
@@ -100,7 +102,7 @@
 		},
 		onShow() {
 			this.search();
-
+            this.url = this.$store.state.BaseUrl + '/'
 		},
 		methods: {
 			onKeyInput: function(event) {

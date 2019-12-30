@@ -5,7 +5,7 @@
 			<view class="settingList" @tap="target('/pages/user-center/personalCenter/portrait?image='+encodeURIComponent(JSON.stringify(this.thumbnail_portait)))">
 				<view>头像</view>
 				<image 
-				 class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
+				 class="img" :src="url+thumbnail_portait"></image>
 				<view>
 					<uni-icon class="ico" type="arrowright"></uni-icon>
 				</view>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+	import store from '@/store'
 	import {
 		search_users,
 	} from '@/api/usercenter';
@@ -58,7 +59,7 @@
 			return {
 			
 				thumbnail_portait: '',
-				
+				url:null,
 			};
 		},
 		computed: {
@@ -69,7 +70,7 @@
 		},
 		onShow() {
 			this.search();
-		
+		    this.url = this.$store.state.BaseUrl + '/'
 		},
 		components: {
 			uniIcon,

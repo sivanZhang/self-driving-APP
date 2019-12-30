@@ -8,6 +8,7 @@
 </template>
 
 <script>
+	import store from '@/store'
 	import {
 		search_users
 	} from '@/api/usercenter'
@@ -28,14 +29,14 @@
 		},
 		onLoad(option) {
 			const item = JSON.parse(decodeURIComponent(option.image));
-			this.imageurl = 'https://tl.chidict.com' + '/' + item
+			this.imageurl = this.$store.state.BaseUrl + '/' + item
 		},
 		methods: {
 			myUpload(rsp) {
 				const self = this;
 				self.imageurl = rsp.path; //更新头像方式一	
 				uni.uploadFile({
-					url: 'https://tl.chidict.com/users/portrait_backimage/',
+					url: this.$store.state.BaseUrl+'/users/portrait_backimage/',
 					filePath: rsp.path,
 					name: 'portrait_file',
 					header: {

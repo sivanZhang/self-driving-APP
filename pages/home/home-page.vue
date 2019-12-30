@@ -35,7 +35,7 @@
 	</view>-->
 	<view id="page-body">
 		<view class="header">
-			<image  class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" ></image>
+			<image  class="img" :src="url+thumbnail_portait" ></image>
 			<span class="header-right">{{username||'用户'+UserInfo.phone}}</span>
 			<view class="header-right">
 				<view class="header-top-center" v-if="followClick" @tap="follow">
@@ -88,7 +88,7 @@
 
       <view class="uni-padding-wrap" >
 		  <view class="header-right">
-      	<image  class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" ></image>
+      	<image  class="img" :src="url+thumbnail_portait" ></image>
 	         <image class="share"
 	             src="../../static/image/journey/s.png" @click="shareInfo">
 	         	</image> 
@@ -162,7 +162,7 @@
 	// 
 	// 		}
 	// 	}
-	
+	import store from '@/store'
 	import share from "@/common/share.js";
 	var util = require('../../common/util.js');
 	var formatLocation = util.formatLocation;
@@ -198,7 +198,8 @@
 				sizeTypeIndex: 2,
 				sizeType: ['压缩', '原图', '压缩或原图'],
 				countIndex: 8,
-				count: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+				count: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+				url:null,
 			}
 		},
 		onBackPress() {
@@ -224,6 +225,7 @@
 	   },
 	   onShow(){
 		   this.search();
+		   this.url = this.$store.state.BaseUrl + '/'
 	   },
 	   computed: {
 	   	UserInfo() {

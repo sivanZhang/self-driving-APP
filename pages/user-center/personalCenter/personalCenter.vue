@@ -2,7 +2,7 @@
 	<view id="personCenter">
 		<!-- 个人中心 -->
 		<view class="header">
-			<image  class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait"></image>
+			<image  class="img" :src="url+thumbnail_portait"></image>
 			<view class="header-top">
 				<span >{{username||'用户'+UserInfo.phone}}</span>
 				<view v-if="sex == '女'">
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+	import store from '@/store'
 	import {
 		search_users
 	} from '@/api/usercenter'
@@ -51,6 +52,7 @@
 				username:'',
 				sex:'',
 				id:'',
+				url:null,
 			};
 		},
 		computed: {
@@ -63,6 +65,7 @@
 		},
 		onShow() {
 			this.searchUser();
+			this.url = this.$store.state.BaseUrl + '/'
 		},
 		onLoad(){
             this.search();

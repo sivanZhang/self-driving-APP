@@ -27,7 +27,7 @@
 			</view>
 
 			<view class="wall-top">
-				<image v-if="isLogin" class="img" :src="'https://tl.chidict.com'+'/'+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
+				<image v-if="isLogin" class="img" :src="url+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
 				<image v-else class="img" src="/static/icons/zhuce.png"></image>
 				<view class="top">
 					<view class="information">
@@ -57,10 +57,8 @@
 							<!-- #endif -->
 							<!-- #ifdef APP-PLUS -->
 							<view v-if="hasLocation === true">
-								{{address.province?address.province:""}}
 								{{address.city?address.city:""}}
 								{{address.district?address.district:""}}
-								{{address.street?address.street:""}}
 							</view>
 							<!-- #endif -->
 						</view>
@@ -198,6 +196,7 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
+	import store from '@/store'
 	// var wv;
 	import {
 		search_users
@@ -258,7 +257,8 @@
 				distance: '',
 				index: '',
 				new_record: [],
-				list:''
+				list:'',
+				url:null,
 				// location:[]
 			};
 		},
@@ -788,6 +788,7 @@
 			this.doGetLocation();
 			this.search();
 			this.lookrank_total();
+			this.url = this.$store.state.BaseUrl + '/'
 		},
 	};
 </script>
