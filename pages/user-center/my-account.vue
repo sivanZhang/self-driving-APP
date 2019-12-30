@@ -715,7 +715,7 @@
 						// error
 					}
 				}, function(e) {
-					console.log("监听位置变化信息失败：" + e.message);
+					// console.log("监听位置变化信息失败：" + e.message);
 					var g = e.message;
 
 					try {
