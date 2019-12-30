@@ -17,6 +17,15 @@ export function dateTimeFormat(date) {
         return ''
     }
 }
+//时间戳格式化为 YYYY年MM月DD日 HH:mm:ss
+export function TimeFormat(date) {
+    if (date) {
+        date *= 1000
+        return dayjs(date).format("YYYY年MM月DD日 HH:mm:ss")
+    } else {
+        return ''
+    }
+}
 //时间格式化 HH:mm
 export function dateHMSFormat(date) {
     if (date) {

@@ -83,10 +83,26 @@
 			}
 		},
 		{
-			"path": "pages/user-center/currency/currency",
+			"path": "pages/user-center/currency/lookCurrency",
 			"style": {
-				"navigationBarTitleText": "虚拟币"
+				"navigationBarTitleText": "虚拟币",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue708",
+							"fontSrc": "/static/fonts/iconfont.ttf",
+							"fontSize": "22px",
+							"float": "right"
+						}]
+					}
+				}
 				
+			}
+		},
+		{
+			"path": "pages/user-center/currency/expensesRecord",
+			"style": {
+				"navigationBarTitleText": "消费记录"
 			}
 		},
 		{
