@@ -65,7 +65,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> 
 		<!-- <view style="padding-top: 45upx;">
 			<button type="primary" @tap="target1()">日志查看位置</button>
 		</view> -->
