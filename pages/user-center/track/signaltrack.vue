@@ -15,13 +15,17 @@
 			<view class="distance">{{distance}}
 				<view class="part">里程(km)</view>
 			</view>
-		</view>
-		<view class="footer" :style="{height:Height+'px',width:width+'px'}">
-			<image class="footer-top" v-show="first" src="/static/image/journey/xin.png" @tap="collect()"></image>
-			<image class="footer-top" v-show="!first" src="/static/image/journey/xin2.png" @tap="second()"></image>
-			<view class="footer-center">收藏</view>
-			<image class="footer-left" src="/static/image/journey/shar.png" @tap="shareInfo()"></image>
-			<view class="footer-right">分享</view>
+		</view>	
+		<view class="footer">
+			<view class="left">
+				<image v-if="first" class="footer-top"  src="/static/image/journey/xin.png" @tap="collect()"></image>
+				<image v-else  class="footer-top-else"  src="/static/image/journey/xin2.png" @tap="second()"></image>
+				<view class="footer-center">收藏</view>
+			</view>
+			<view class="right">
+				<image class="footer-left" src="/static/image/journey/shar.png" @tap="shareInfo()"></image>
+				<view class="footer-right">分享</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -57,9 +61,8 @@
 			uni.getSystemInfo({
 				success: (res) => {
 					this.width = res.windowWidth
-					this.height = (res.windowHeight - 400) * 0.8
-					this.Height = (res.windowHeight - 400) * 0.179
-					console.log(res)
+					this.height = (res.windowHeight - 400)*0.99
+					// console.log(res)
 				}
 			})
 		},
@@ -240,19 +243,21 @@
 		.instruct {
 			margin-top: 0.85%;
 			position: fixed;
-			padding-left: 3%;
+			bottom:0rpx;
 			// display: flex;
 			// align-items: center;
 			background-color: #DF5000;
 			color: #fff;
 
 			.time {
+				padding-left: 3%;
 				font-size: 16px;
 				padding-bottom: 2%; 
 				position: relative;
 			}
 
 			.middle {
+				padding-left: 3%;
 				position: relative;
 				display: flex;
 				flex-wrap: wrap;
@@ -261,6 +266,7 @@
 			}
 
 			.distance {
+				padding-left: 3%;
 				position: relative;
 				display: flex;
 				flex-wrap: wrap;
@@ -270,57 +276,73 @@
 					display: flex;
 					flex-wrap: wrap;
 					font-size: 13px;
-					padding-top: 2%;
+					padding-top: 3%;
 					left: 2%;
 					position: relative;
 				}
 			}
 		}
-
-		.footer {
-			
-			position: fixed;
-			bottom: 0rpx;
-			background-color: #DF5000;
-			display: flex;
-			flex-wrap: wrap;
-			align-items: center;
-			padding: 1%;
-			color: #fff;
-
-			.footer-top {
-				width: 40upx;
-				height: 40upx;
-				position: relative;
-				left: 20%;
-
-			}
-
-			.footer-center {
-				position: relative;
-				// padding-left: 2%;
-				left: 21%;
-				// top: 0.3rem;
+			.footer {
+				background-color: #DF5000;
+				width:100%;
+				bottom:0rpx;
+				height:5%;
+				position:fixed;
+				padding:1.5%;
 				display: flex;
+				flex-wrap: wrap;
 				align-items: center;
+				color: #fff;
+			    border-top:0.000001upx solid #F0F0F0;
+				.left{
+					position:relative;
+					width:50%;
+					display: flex;
+					flex-wrap: wrap;
+					left:18%;
+					.footer-top {
+						
+						width: 45upx;
+						height: 45upx;
+						position: relative;
+						display:flex;
+						align-items: center;
+					}
+					.footer-top-else{
+						width: 45upx;
+						height: 45upx;
+						position: relative;
+						display:flex;
+						align-items: center;
+					}			
+					.footer-center {
+					    left:2%;
+						position: relative;
+						display: flex;
+						align-items: center;
+					}
+				}
+				.right{
+					position:relative;
+					width:50%;
+					display: flex;
+					flex-wrap: wrap;
+					left:18%;
+					.footer-left {
+						width: 45upx;
+						height: 45upx;
+						display: flex;
+						position: relative;
+						align-items: center;	
+					}
+								
+					.footer-right {
+						left:2%;
+						position: relative;
+						display: flex;
+						align-items: center;
+					}
+				}
 			}
-
-			.footer-left {
-				width: 40upx;
-				height: 40upx;
-				left: 55%;
-				position: relative;
-
-			}
-
-			.footer-right {
-				position: relative;
-				// padding-left: 2%;
-				left: 56%;
-				// top: 0.3rem;
-				display: flex;
-				align-items: center;
-			}
-		}
 	}
 </style>
