@@ -28,6 +28,14 @@
 			}			
 		},
 		{
+			"path": "pages/user-center/track/signaltrack",
+			"style": {
+				"navigationBarTitleText": "车迹展示"
+				
+			}
+		},
+		
+		{
 			"path": "pages/user-center/my-account",
 			"style": {
 				"navigationStyle": "custom",
@@ -103,13 +111,6 @@
 			"path": "pages/user-center/currency/expensesRecord",
 			"style": {
 				"navigationBarTitleText": "消费记录"
-			}
-		},
-		{
-			"path": "pages/user-center/track/signaltrack",
-			"style": {
-				"navigationBarTitleText": "车迹展示"
-				
 			}
 		},
 	   {

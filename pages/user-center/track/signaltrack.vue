@@ -13,7 +13,6 @@
 				{{create_point}}-{{over_point}}
 			</view>
 			<view class="distance">{{distance}}
-				<view class="part">里程(km)</view>
 			</view>
 		</view>	
 		<view class="footer">
@@ -56,7 +55,7 @@
 		},
 		onLoad(option) {
 			this.id = option.id;
-			console.log(this.id)
+			// console.log(this.id)
 			this.searchTrackList();
 			uni.getSystemInfo({
 				success: (res) => {
@@ -242,44 +241,38 @@
 
 		.instruct {
 			margin-top: 0.85%;
-			position: fixed;
+			position: relative;
+			padding-left:2%;
 			bottom:0rpx;
+			display: -webkit-flex;
 			// display: flex;
-			// align-items: center;
+			align-items: center;
 			background-color: #DF5000;
 			color: #fff;
 
 			.time {
-				padding-left: 3%;
-				font-size: 16px;
-				padding-bottom: 2%; 
+				top:-15%;
+				left:11%;
+				font-size: 18px;
 				position: relative;
 			}
 
 			.middle {
-				padding-left: 3%;
-				position: relative;
+		        left:2%;
+				width:350px;
+				font-size:16px;
+				position: absolute;
 				display: flex;
 				flex-wrap: wrap;
 				flex-direction: column;
-				padding-bottom: 2%;
 			}
 
 			.distance {
-				padding-left: 3%;
-				position: relative;
+				left:80%;
+				position: absolute;
 				display: flex;
 				flex-wrap: wrap;
 				font-size: 25px;
-
-				.part {
-					display: flex;
-					flex-wrap: wrap;
-					font-size: 13px;
-					padding-top: 3%;
-					left: 2%;
-					position: relative;
-				}
 			}
 		}
 			.footer {
