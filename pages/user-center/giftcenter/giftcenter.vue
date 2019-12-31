@@ -44,7 +44,7 @@
 					<swiper :indicator-dots="true" :autoplay="true" :interval="5000" :duration="150" class="tui-banner-swiper"
 					 :circular="true" indicator-color="rgba(255, 255, 255, 0.8)" indicator-active-color="#fff">
 						<swiper-item v-for="(item,index) in GiftList" :key="index" @tap.stop="detail(item.id)">
-							<image :src="'https://tl.chidict.com' + '/'+item.picture" class="tui-slide-image" mode="scaleToFill" />
+							<image :src="imageUrl + item.picture" class="tui-slide-image" mode="scaleToFill" />
 						</swiper-item>
 					</swiper>
 				</view>
@@ -75,7 +75,7 @@
 						<view class="tui-new-price">
 							<text class="tui-new-present">￥{{item.specifications[0].price}}</text>
 						</view>
-					<image :src="'https://tl.chidict.com' + '/'+item.picture" class="tui-new-img"></image>
+					<image :src="imageUrl + item.picture" class="tui-new-img"></image>
 					</view>
 					
 				</view>
@@ -112,11 +112,6 @@
 					text: "我的",
 					size: 24
 				}],
-				hotSearch: [
-					"休闲零食",
-					"自热火锅",
-					"小冰箱迷你"
-				],
 				banner: [
 					"1.jpg",
 					"2.jpg",
@@ -127,22 +122,20 @@
 				GiftList:[],
 				pageIndex: 1,
 				loadding: false,
-				pullUpOn: true
+				pullUpOn: true,
+				imageUrl:''
 			}
-		},
-		onLoad() {
-		    this.getGiftList();
-			
 		},
 		methods: {
 			//获取礼品列表
 			getGiftList(){
 			  look_GiftDetail().then(({ data }) =>{
 				 
-				  if(data.status == 0){
-					  this.GiftList = [...data.msg];
+				    if(data.status == 0){
+					    this.GiftList = [...data.msg];
+					    this.imageUrl = this.$store.state.BaseUrl
 					  
-				  }
+				    }
 			  })
 			},
 			
@@ -194,6 +187,9 @@
 					url: '../news-search/news-search'
 				})
 			}
+		},
+		onLoad() {
+		    this.getGiftList();
 		},
 		computed: {
 			UserInfo() {

@@ -27,7 +27,7 @@
 			</view>
 
 			<view class="wall-top">
-				<image v-if="isLogin" class="img" :src="url+thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
+				<image v-if="isLogin" class="img" :src="imageUrl + thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
 				<image v-else class="img" src="/static/icons/zhuce.png"></image>
 				<view class="top">
 					<view class="information">
@@ -258,7 +258,7 @@
 				index: '',
 				new_record: [],
 				list:'',
-				url:null,
+				imageUrl:''
 				// location:[]
 			};
 		},
@@ -285,12 +285,7 @@
 						this.list = data.user_rank;
 						this.index = this.list.rank;
 						this.distance = this.list.mileage;
-						// [...data.msg].map((item,index) =>{
-						// 	if (item.user_name == this.username){
-						// 		this.index = index + 1;
-						// 		this.distance = item.distance;
-						// 	}
-						// });
+						this.imageUrl = this.$store.state.BaseUrl
             		}
             	})
             },

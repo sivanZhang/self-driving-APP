@@ -12,9 +12,6 @@
 					:class="{colorChange:index==dynamic}" @click="getType(index)">
 					{{item}}
 				</view>
-				<!-- <button class="top-item-total" :style="{background:background,
-					color:color}" size="mini" @tap="lookrank_total">总榜</button>
-				<button class="top-item-month" size="mini" @tap="lookrank_month">月榜</button> -->
 			</view>
 		</view>
 		<view class="middle">
@@ -27,19 +24,19 @@
 					<view v-for="(item,index) of topThreeList" :key="index">
 						<view class="main-item-second" v-if="index==1">
 							<view class="main-item-data-username">{{item.user_name}}</view>
-							<image class="second-avatar" :src="$store.state.BaseUrl+'/'+item.user__thumbnail_portait"></image>
+							<image class="second-avatar" :src="url+item.user__thumbnail_portait"></image>
 							<view class="main-item-data-strokes">{{item.distance}}</view>
 							<view class="main-item-data-unit">km</view>
 						</view>
 						<view class="main-item-first" v-if="index==0">
 							<view class="main-item-data-username">{{item.user_name}}</view>
-							<image class="first-avatar" :src="$store.state.BaseUrl+'/'+item.user__thumbnail_portait"></image>
+							<image class="first-avatar" :src="url+item.user__thumbnail_portait"></image>
 							<view class="main-item-data-strokes">{{item.distance}}</view>
 							<view class="main-item-data-unit">km</view>
 						</view>
 						<view class="main-item-third" v-if="index==2">
 							<view class="main-item-data-username">{{item.user_name}}</view>
-							<image class="third-avatar" :src="$store.state.BaseUrl+'/'+item.user__thumbnail_portait"></image>
+							<image class="third-avatar" :src="url+item.user__thumbnail_portait"></image>
 							<view class="main-item-data-strokes">{{item.distance}}</view>
 							<view class="main-item-data-unit">km</view>
 						</view>
@@ -59,7 +56,7 @@
 						{{index+1}}
 					</view>
 					<view class="card-item-avatar">
-						<image class="avatar" :src="$store.state.BaseUrl+item.user__thumbnail_portait"></image>
+						<image class="avatar" :src="url+item.user__thumbnail_portait"></image>
 					</view>
 					<view class="card-item-username">
 						{{item.user_name}}
@@ -73,13 +70,13 @@
 			<view class="bottom-item">
 				<view class="bottom-item-rank">{{rank}}</view>
 				<view class="bottom-item-avatar">
-					<image class="avatar" :src="$store.state.BaseUrl+'/'+image"></image>
+					<image class="avatar" :src="url+image"></image>
 				</view>
 				<view class="bottom-item-user">
 					<view class="bottom-item-username">{{username}}</view>
 					<view class="bottom-item-kilometers">{{distance}}km</view>
 				</view>
-				<button size="mini" class="bottom-item-share" @click="shareInfo">和好友比一比</button>
+				<!-- <button size="mini" class="bottom-item-share" @click="shareInfo">和好友比一比</button> -->
 			</view>
 		</view>
 		<!--查看第一至第三名礼品的弹出层-->
@@ -103,7 +100,6 @@
 <script>
 	import dayjs from "dayjs"
 	import share from "@/common/share.js";
-	import uniCard from "@/components/uni-card/uni-card"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import {
 		Track_Rank,
@@ -113,14 +109,10 @@
 	} from '@/api/giftcenter.js'
 	export default {
 		components: {
-			uniCard,
 			uniPopup
 		},
 		data() {
 			return {
-				background:'#262d37',
-			    color:'white',
-				thumbnail_portait:'',
 				imageURL: '/static/image/background2.jpg',
 				totalList:[],
 				topThreeList:[],
@@ -129,9 +121,12 @@
 				username:'',
 				info:'',
 				image:'',
-				hit:true,
 				buttonList:["年度榜","月度榜"],
-				dynamic:0
+				dynamic:0,
+				BaseUrl:'',
+				hit:true,
+				totalImage:'',
+				url:''
 			};
 		},
 		computed: {
@@ -140,7 +135,6 @@
 		methods: {
 			//年度榜
 			lookrank_total(){
-				this.hit = true;
 				let data = {
 					year:''
 				}
@@ -148,21 +142,19 @@
 					data
 				}) => {
 					if(data.status === 0){
-						this.background = '#262d37';
-						this.color = 'white';
 						this.totalList = [...data.msg];
-					    this.topThreeList = this.totalList.slice(0,3)
+					    this.topThreeList = this.totalList.slice(0,3);
 						this.info = data.user_rank;
 						this.rank = this.info.rank;
 						this.username = this.info.user_name;
 						this.distance = this.info.mileage;
 						this.image = this.info.user__thumbnail_portait;
+						this.url = this.$store.state.BaseUrl
 					}
 				})
 			},
 			//月度榜
 			lookrank_month(){
-				this.hit = false;
 				let data = {
 					month:''
 				}
@@ -170,24 +162,22 @@
 					data
 				}) => {
 					if(data.status === 0){
-						this.background = '#1d1e23'
-						this.color = '#4a4b50'
 						this.totalList = [...data.msg];
 					    this.topThreeList = this.totalList.slice(0,3)
 				        this.info = data.user_rank;
 				        this.rank = this.info.rank;
 				        this.username = this.info.user_name;
 				        this.distance = this.info.mileage;
-				        // console.log(this.info)
 					}
-					// console.log(data)
 				})
 			},
 			getType(index){
 				this.dynamic = index;
 				if (index == 0){
+					this.hit = true;
 					this.lookrank_total()
 				}else{
+					this.hit = false;
 					this.lookrank_month()
 				}
 			},

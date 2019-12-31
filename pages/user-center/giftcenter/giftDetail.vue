@@ -6,7 +6,7 @@
 			<swiper :autoplay="true" :interval="5000" :duration="150" :circular="true" :style="{height:scrollH + 'px'}" @change="bannerChange">
 				<block v-for="(item,index) in turns" :key="index">
 					<swiper-item :data-index="index" @tap.stop="previewImage">
-						<image :src="'https://tl.chidict.com' + '/'+item" class="tui-slide-image" :style="{height:scrollH+'px'}" />
+						<image :src="imageUrl + item" class="tui-slide-image" :style="{height:scrollH+'px'}" />
 					</swiper-item>
 				</block>
 			</swiper>
@@ -32,10 +32,6 @@
 						<view class="tui-bold tui-cell-title">已选</view>
 						<view class="tui-selected-box">{{!click?item.title:name}}【{{!click?item.title:content}}】,{{value}}个，可选服务</view>
 						<tui-icon name="more-fill" :size="20" class="tui-right" color="#666" @tap="showPopup"></tui-icon>
-					</view>
-					<view class="tui-list-cell">
-						<view class="tui-bold tui-cell-title">运费</view>
-						<view class="tui-selected-box">在线支付免运费</view>
 					</view>
 					<view class="tui-list-cell tui-last">
 						<view class="tui-bold tui-cell-title">说明</view>
@@ -64,7 +60,7 @@
 		<tui-bottom-popup :show="popupShow" @close="hidePopup">
 			<view class="tui-popup-box">
 				<view class="tui-product-box tui-padding">
-					<image :src="'https://tl.chidict.com' + '/'+picture" class="tui-popup-img"></image>
+					<image :src="imageUrl + picture" class="tui-popup-img"></image>
 					<view class="tui-popup-price" v-for="(item,index) in Specifications" :key="index">
 						<view v-if = "index == dynamic">
 							<view class="tui-amount tui-bold">￥{{item.price}}</view>
@@ -155,7 +151,8 @@
 				name :'',
 				content:'',
 				turns:[],
-				Image:[]
+				Image:[],
+				imageUrl:''
 			}
 		},
 		onLoad: function(options) {
@@ -198,6 +195,7 @@
 								this.Image.push(image)
 							})	
 						});
+						this.imageUrl = this.$store.state.BaseUrl
 				    }  
 			    })
 			},
