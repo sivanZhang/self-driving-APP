@@ -251,8 +251,8 @@
 			color: #fff;
 
 			.time {
-				top:-15%;
-				left:11%;
+				top:-18%;
+				// left:2%;
 				font-size: 18px;
 				position: relative;
 			}
