@@ -64,10 +64,17 @@
 			"path": "pages/user-center/giftcenter/giftDetail",
 			"style": {
 				"navigationBarTitleText": "礼品详情",
-				"navigationBarBackgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"backgroundColorTop": "#fcfcfc",
-				"backgroundColorBottom": "#fcfcfc",
+				"disableScroll": true,
+				"app-plus": {
+					"bounce": "none"
+					// "titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/user-center/giftcenter/submit",
+			"style": {
+				"navigationBarTitleText": "兑换礼品",
 				"disableScroll": true,
 				"app-plus": {
 					"bounce": "none"
@@ -79,10 +86,28 @@
 			"path": "pages/user-center/giftcenter/giftCategory",
 			"style": {
 				"navigationBarTitleText": "礼品分类",
-				"navigationBarBackgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"backgroundColorTop": "#fcfcfc",
-				"backgroundColorBottom": "#fcfcfc",
+				"disableScroll": true,
+				"app-plus": {
+					"bounce": "none"
+					// "titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/user-center/giftcenter/address",
+			"style": {
+				"navigationBarTitleText": "我的收货地址",
+				"disableScroll": true,
+				"app-plus": {
+					"bounce": "none"
+					// "titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/user-center/giftcenter/editAddress",
+			"style": {
+				"navigationBarTitleText": "新建地址",
 				"disableScroll": true,
 				"app-plus": {
 					"bounce": "none"

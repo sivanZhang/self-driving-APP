@@ -48,7 +48,7 @@
 			</view>
 			<view class="tui-operation-right tui-right-flex tui-col-7 tui-btnbox-4">
 				<view class="tui-flex-1">
-					<tui-button type="danger" shape="circle" size="mini" @click="showPopup">兑换礼品</tui-button>
+					<tui-button type="danger" shape="circle" size="mini" @click="submit">兑换礼品</tui-button>
 				</view>
 				<view class="tui-flex-1">
 					<tui-button type="warning" shape="circle" size="mini" @click="submit">购买礼品</tui-button>
@@ -244,9 +244,12 @@
 			change: function(e) {
 				this.value = e.value
 			},
-			collecting: function() {
-				this.collected = !this.collected
-			}
+			submit(){
+				this.popupShow = false
+				uni.navigateTo({
+					url: '../giftcenter/submit',
+				})
+			},
 		},
 		onPageScroll(e) {
 			let scroll = e.scrollTop <= 0 ? 0 : e.scrollTop;
@@ -279,10 +282,6 @@
 		border-radius: 40rpx;
 		border: 1rpx solid #e41f19;
 	}
-	.tui-icon-ml {
-		margin-left: 20rpx;
-	}
-
 	.tui-icon {
 		border-radius: 16px;
 	}
@@ -318,83 +317,6 @@
 		display: block;
 	}
 
-	/*顶部菜单*/
-
-	.tui-menu-box {
-		box-sizing: border-box;
-	}
-
-	.tui-menu-header {
-		font-size: 34rpx;
-		color: #fff;
-		height: 32px;
-		display: flex;
-		align-items: center;
-	}
-
-	.tui-top-dropdown {
-		z-index: 9999 !important;
-	}
-
-	.tui-menu-itembox {
-		color: #fff;
-		padding: 40rpx 10rpx 0 10rpx;
-		box-sizing: border-box;
-		display: flex;
-		flex-wrap: wrap;
-		font-size: 26rpx;
-	}
-
-	.tui-menu-item {
-		width: 22%;
-		height: 160rpx;
-		border-radius: 24rpx;
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-		justify-content: center;
-		background: rgba(0, 0, 0, 0.4);
-		margin-right: 4%;
-		margin-bottom: 4%;
-	}
-
-	.tui-menu-item:nth-of-type(4n) {
-		margin-right: 0;
-	}
-
-	.tui-badge-box {
-		position: relative;
-	}
-
-	.tui-badge-box .tui-badge-class {
-		position: absolute;
-		top: -8px;
-		right: -8px;
-	}
-
-	.tui-msg-badge {
-		top: -10px;
-	}
-
-	.tui-icon-up {
-		position: relative;
-		display: inline-block;
-		left: 50%;
-		transform: translateX(-50%);
-	}
-
-	.tui-menu-text {
-		padding-top: 12rpx;
-	}
-
-	.tui-opcity .tui-menu-text,
-	.tui-opcity .tui-badge-box {
-		opacity: 0.5;
-		transition: opacity 0.2s ease-in-out;
-	}
-
-	/*顶部菜单*/
-
 	/*内容 部分*/
 
 	.tui-padding {
@@ -402,24 +324,9 @@
 		box-sizing: border-box;
 	}
 
-	/* #ifdef H5 */
-	.tui-ptop {
-		padding-top: 44px;
-	}
-
-	/* #endif */
-
 	.tui-size {
 		font-size: 24rpx;
 		line-height: 24rpx;
-	}
-
-	.tui-gray {
-		color: #999;
-	}
-
-	.tui-icon-red {
-		color: #ff201f;
 	}
 
 	.tui-border-radius {
@@ -475,39 +382,6 @@
 		font-size: 58rpx;
 	}
 
-	.tui-original-price {
-		font-size: 26rpx;
-		line-height: 26rpx;
-		padding: 10rpx 30rpx;
-		box-sizing: border-box;
-	}
-
-	.tui-line-through {
-		text-decoration: line-through;
-	}
-
-	.tui-collection {
-		color: #333;
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-		justify-content: center;
-		height: 44rpx;
-	}
-
-	.tui-scale {
-		transform: scale(0.7);
-		transform-origin: center center;
-		line-height: 24rpx;
-		font-weight: normal;
-	}
-
-	.tui-icon-collection {
-		line-height: 20px !important;
-		margin-bottom: 0 !important;
-
-	}
-
 	.tui-pro-titbox {
 		font-size: 32rpx;
 		font-weight: 500;
@@ -521,42 +395,8 @@
 		display:flex;
 	}
 
-	.tui-share-btn {
-		display: block;
-		background: none;
-		margin: 0;
-		padding: 0;
-		border-radius: 0;
-	}
-
-	.tui-tag-share {
-		display: flex;
-		align-items: center;
-	}
-
-	.tui-share-position {
-		position: absolute;
-		right: 0;
-		top: 30rpx;
-	}
-
-	.tui-share-text {
-		padding-left: 8rpx;
-	}
-
 	.tui-sub-title {
 		padding: 20rpx 0;
-	}
-
-	.tui-sale-info {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding-top: 30rpx;
-	}
-
-	.tui-discount-box {
-		background: #fff;
 	}
 
 	.tui-list-cell {
@@ -573,10 +413,6 @@
 		position: absolute;
 		right: 30rpx;
 		top: 30rpx;
-	}
-
-	.tui-top40 {
-		top: 40rpx !important;
 	}
 
 	.tui-bold {
@@ -598,139 +434,14 @@
 		border-bottom: 0 !important;
 	}
 
-	.tui-tag-coupon-box {
-		display: flex;
-		align-items: center;
-	}
-
-	.tui-tag-coupon-box .tui-tag-class {
-		margin-right: 20rpx;
-	}
-
-
 	.tui-cell-title {
 		width: 100rpx;
 		padding-right: 30rpx;
 		flex-shrink: 0;
 	}
 
-	.tui-promotion-box {
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		padding: 10rpx 0;
-		width: 74%;
-	}
-
-	.tui-promotion-box .tui-tag-class {
-		display: inline-block !important;
-		transform: scale(0.8);
-		transform-origin: 0 center;
-	}
-
-	/* .tui-inline-block {
-		display: inline-block !important;
-		transform: scale(0.8);
-		transform-origin: 0 center;
-	} */
-
 	.tui-basic-info {
 		background: #fff;
-	}
-
-	.tui-addr-box {
-		width: 76%;
-	}
-
-	.tui-addr-item {
-		padding: 10rpx;
-		line-height: 34rpx;
-	}
-
-	.tui-guarantee {
-		background: #fdfdfd;
-		display: flex;
-		flex-wrap: wrap;
-		padding: 20rpx 30rpx 30rpx 30rpx;
-		font-size: 24rpx;
-	}
-
-	.tui-guarantee-item {
-		color: #999;
-		padding-right: 30rpx;
-		padding-top: 10rpx;
-	}
-
-	.tui-pl {
-		padding-left: 4rpx;
-	}
-
-	.tui-cmt-box {
-		background: #fff;
-	}
-
-	.tui-between {
-		justify-content: space-between !important;
-	}
-
-	.tui-cmt-all {
-		color: #ff201f;
-		padding-right: 8rpx;
-	}
-
-	.tui-cmt-content {
-		font-size: 26rpx;
-	}
-
-	.tui-cmt-user {
-		display: flex;
-		align-items: center;
-	}
-
-	.tui-acatar {
-		width: 60rpx;
-		height: 60rpx;
-		border-radius: 30rpx;
-		display: block;
-		margin-right: 16rpx;
-	}
-
-	.tui-cmt {
-		padding: 14rpx 0;
-	}
-
-	.tui-attr {
-		font-size: 24rpx;
-		color: #999;
-		padding: 6rpx 0;
-	}
-
-	.tui-cmt-btn {
-		padding: 50rpx 0 30rpx 0;
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.tui-tag-cmt {
-		min-width: 130rpx;
-		padding: 20rpx 52rpx !important;
-		font-size: 26rpx !important;
-		display: inline-block;
-	}
-
-	.tui-nomore-box {
-		padding-top: 10rpx;
-	}
-
-	.tui-product-img {
-		transform: translateZ(0);
-	}
-
-	.tui-product-img image {
-		width: 100%;
-		display: block;
 	}
 
 	/*底部操作栏*/
@@ -758,11 +469,6 @@
 		padding-bottom: env(safe-area-inset-bottom);
 	}
 
-	.tui-safearea-bottom {
-		width: 100%;
-		height: env(safe-area-inset-bottom);
-	}
-
 	.tui-operation::before {
 		content: '';
 		position: absolute;
@@ -779,29 +485,6 @@
 		align-items: center;
 		margin-top:13upx;
 		margin-left:20upx;
-	}
-
-	.tui-operation-item {
-		flex: 1;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-direction: column;
-		position: relative;
-	}
-
-	.tui-operation-text {
-		font-size: 22rpx;
-		color: #333;
-	}
-
-	.tui-opacity {
-		opacity: 0.5;
-	}
-
-	.tui-scale-small {
-		transform: scale(0.9);
-		transform-origin: center center;
 	}
 
 	.tui-operation-right {
@@ -837,12 +520,6 @@
 	/*底部操作栏*/
 
 	/*底部选择弹层*/
-
-	.tui-popup-class {
-		border-top-left-radius: 24rpx;
-		border-top-right-radius: 24rpx;
-		padding-bottom: env(safe-area-inset-bottom);
-	}
 
 	.tui-popup-box {
 		position: relative;
@@ -934,24 +611,6 @@
 		margin-right: 20rpx;
 		margin-bottom: 20rpx;
 		font-size: 26rpx;
-	}
-
-	.tui-attr-active {
-		background: #fcedea !important;
-		color: #e41f19;
-		font-weight: bold;
-		position: relative;
-	}
-
-	.tui-attr-active::after {
-		content: "";
-		position: absolute;
-		border: 1rpx solid #e41f19;
-		width: 100%;
-		height: 100%;
-		border-radius: 40rpx;
-		left: 0;
-		top: 0;
 	}
 
 	.tui-number-box {
