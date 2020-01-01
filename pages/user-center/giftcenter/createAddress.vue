@@ -24,9 +24,6 @@
 			<view class="tui-addr-save">
 				<tui-button type="danger" height="88rpx" @tap="createAddress">保存收货地址</tui-button>
 			</view>
-			<view class="tui-del-save">
-				<tui-button type="danger" height="88rpx" @tap="deleteAddress">删除收货地址</tui-button>
-			</view>
 		</form>
 	</view>
 </template>
@@ -35,7 +32,7 @@
 	import tuiButton from "@/components/gift/button"
 	import tuiListCell from "@/components/gift/list-cell"
 	import tuiListView from "@/components/gift/list-view"
-	import { Put_Address,Delete_Address,Look_Address} from "@/api/receiptAddress"
+	import { Create_Address} from "@/api/receiptAddress"
 	export default {
 		components: {
 			tuiButton,
@@ -59,7 +56,7 @@
 				Create_Address(data).then(({ data }) =>{
 					if(data.status == 0){
 						uni.showToast({
-							title: '地址修改成功',
+							title: '地址添加成功',
 							duration: 2000
 						});
 						uni.navigateTo({
@@ -161,11 +158,18 @@
 
 	/* #endif */
 
-	.tui-addr-save,.tui-del-save {
+	/* #ifdef H5 */
+	>>>uni-switch .uni-switch-input {
+		margin-right: 0 !important;
+	}
+
+	/* #endif */
+
+	.tui-addr-save {
 		padding: 24rpx;
 		margin-top: 100rpx;
 	}
-    
+
 	.tui-del {
 		padding: 24rpx;
 	}

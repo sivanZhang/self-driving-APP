@@ -104,7 +104,7 @@
 			}
 		},
 		{
-			"path": "pages/user-center/giftcenter/editAddress",
+			"path": "pages/user-center/giftcenter/createAddress",
 			"style": {
 				"navigationBarTitleText": "新建地址",
 				"disableScroll": true,
@@ -115,18 +115,23 @@
 			}
 		},
 		{
-			"path": "pages/user-center/currency/lookCurrency",
+			"path": "pages/user-center/giftcenter/createAddress",
 			"style": {
-				"navigationBarTitleText": "虚拟币",
+				"navigationBarTitleText": "新建地址",
+				"disableScroll": true,
 				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"text": "\ue708",
-							"fontSrc": "/static/fonts/iconfont.ttf",
-							"fontSize": "22px",
-							"float": "right"
-						}]
-					}
+					"bounce": "none"
+					// "titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/user-center/giftcenter/editAddress",
+			"style": {
+				"navigationBarTitleText": "修改地址",
+				"disableScroll": true,
+				"app-plus": {
+					"bounce": "none"
 				}
 				
 			}

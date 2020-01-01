@@ -5,7 +5,7 @@ export function look_Notice(params) {
 }
 //修改通知
 export function update_Notice(payload) {
-	return Ajax.post('/notice/notice/?put', payload)
+	return Ajax.post('/notice/notice/', payload)
 }
 //添加通知
 export function add_Notice(payload) {

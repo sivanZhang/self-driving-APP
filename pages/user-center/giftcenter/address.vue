@@ -17,13 +17,13 @@
 							<image class="tui-address-img" src="/static/images/mall/my/icon_addr_edit.png" />
 						</view>
 					</view>
-					<view class="tui-address-item">|编辑</view>
+					<view class="tui-address-item" @tap = "editAddress">|编辑</view>
 				</tui-list-cell>
 			</block>
 		</view>
 		<!-- 新增地址 -->
 		<view class="tui-address-new">
-			<tui-button type="danger" height="88rpx" @click="editAddr">+ 新增收货地址</tui-button>
+			<tui-button type="danger" height="88rpx" @tap="createAddr">+ 新增收货地址</tui-button>
 		</view>
 	</view>
 </template>
@@ -48,13 +48,12 @@
 		},
 		onShow: function() {},
 		methods: {
-			editAddr(index, addressType) {
+			createAddr() {
 				uni.navigateTo({
-					url: "../giftcenter/editAddress"
+					url: "../giftcenter/createAddress"
 				})
 			},
 			lookAddress(){
-				console.log('-------')
 				Look_Address().then(({ data }) =>{
 					if(data.status == 0){
 						this.addressList = [...data.msg]
@@ -62,6 +61,11 @@
 							this.name = item.user.name;
 						})
 					}
+				})
+			},
+			editAddress(){
+				uni.navigateTo({
+					url: "../giftcenter/editAddress"
 				})
 			}
 		}
