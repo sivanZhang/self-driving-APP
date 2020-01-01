@@ -15,3 +15,7 @@ export function Close_CarTrack(payload) {
 export function Show_CarTrack(params) {
     return Ajax.get('/car/track/', {params})
 };
+//删除车迹
+export function Delete_CarTrack(payload) {
+    return Ajax.post('/car/track/?delete', payload)
+};
