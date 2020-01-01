@@ -20,7 +20,12 @@
 				<h4>通知</h4>
 				<p>我不知道</p>
 			</view>
-			<span class="aui-news-item-fr">11月12日</span>
+			<view class="aui-news-item-fr">
+                <view >昨天</view>
+				<view v-if="noticeCount!=0">
+                  <uni-badge :text="String(noticeCount)" type="error" size="small"></uni-badge>
+				</view>
+			</view>
 		</view>
 		<view class="aui-news-item" @tap="target('/pages/user-center/message/remind')">
 			<view class="aui-news-item-hd">
@@ -88,23 +93,34 @@
 	import {
 		searchFollow
 	} from '@/api/followsFans'
+	import {look_Notice} from '@/api/notice'
+	import uniBadge from "@/components/uni-badge/uni-badge.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
 		components: {
-			uniPopup
+			uniPopup,
+			uniBadge
 		},
 		data() {
 			return {
 				user_name: '',
 				followlist: [],
 				groupList: [],
+				noticeCount:'',
 			};
 		},
 		onLoad() {
 			this.search();
 			this.searchGroupList();
+			this.look_Notice();
 		},
 		methods: {
+			//查看路线通知
+			look_Notice(){
+				look_Notice({read:0}).then(({data})=>{
+					this.noticeCount =data.unread_count;
+				})
+			},
 			//长按事件
 			longtap(e) {
 				let id = e
