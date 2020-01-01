@@ -15,14 +15,14 @@
 				</view>
 			</tui-list-cell>
 			<tui-list-cell :hover="false" padding="0">
-				<view class="tui-line-cell">
+				<view class="tui-line-cell-address">
 					<view class="tui-title">收货地址</view>
 					<input  type="text" v-model="address" placeholder-class="tui-phcolor" class="tui-input" name="address" placeholder="请输入详细的收货地址" maxlength="50" />
 				</view>
 			</tui-list-cell>
 			<!-- 保存地址 -->
 			<view class="tui-addr-save">
-				<tui-button type="danger" height="88rpx" @tap="createAddress">保存收货地址</tui-button>
+				<tui-button type="danger" height="88rpx" @tap="putAddress">保存收货地址</tui-button>
 			</view>
 			<view class="tui-del-save">
 				<tui-button type="danger" height="88rpx" @tap="deleteAddress">删除收货地址</tui-button>
@@ -46,17 +46,36 @@
 			return {
 				name:'',
 				mobile:'',
-				address:''
+				address:'',
+				id:'',
+				userInfo:[]
 			}
 		},
 		methods: {
-			createAddress(){
+			lookAddress(){
 				let data = {
-					address:this.address,
-					phone:this.mobile,
-					receiver:this.name
+					id:this.id
 				}
-				Create_Address(data).then(({ data }) =>{
+				Look_Address(data).then(({ data }) =>{
+					if(data.status == 0){
+						this.userInfo = [...data.msg]
+						this.userInfo.map((item,index)=>{
+							this.name = item.user.name,
+							this.mobile = item.phone,
+							this.address = item.address
+						})
+					}  
+				})
+			},
+			putAddress(){
+				let data = {
+					method:"put",
+					id:this.id,
+					address:this.address,
+					receiver:this.name,
+					phone:this.mobile
+				}
+				Put_Address(data).then(({ data }) =>{
 					if(data.status == 0){
 						uni.showToast({
 							title: '地址修改成功',
@@ -68,7 +87,30 @@
 						
 					}  
 				})
-			}
+			},
+			deleteAddress(){
+				let data = {
+					method:"delete",
+					id:this.id
+				}
+				Delete_Address(data).then(({ data }) =>{
+					console.log('-----')
+					if(data.status == 0){
+						uni.showToast({
+							title: '地址删除成功',
+							duration: 2000
+						});
+						uni.navigateTo({
+							url: '../giftcenter/address'
+						})
+					}  
+				})
+			},
+		},
+		onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数
+		    console.log(option.id); //打印出上个页面传递的id。
+			this.id = option.id;
+			this.lookAddress()
 		}
 	}
 </script>
@@ -78,14 +120,16 @@
 		padding: 20rpx 0;
 	}
 
-	.tui-line-cell {
+	.tui-line-cell ,.tui-line-cell-address{
 		width: 100%;
 		padding: 24rpx 30rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 	}
-
+    .tui-line-cell-address{
+		height: 80rpx;
+	}
 	.tui-title {
 		width: 180rpx;
 		font-size: 28rpx;
@@ -93,9 +137,9 @@
 
 	.tui-title-city-text {
 		width: 180rpx;
-		height: 40rpx;
 		display: block;
 		line-height: 46rpx;
+		white-space: pre-line;
 	}
 
 	.tui-input {

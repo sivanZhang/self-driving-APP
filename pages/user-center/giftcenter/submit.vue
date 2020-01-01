@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="tui-box">
-			<tui-list-cell :arrow="true" :last="true" :radius="true" @click="chooseAddr">
+			<tui-list-cell :arrow="true" :last="true" :radius="true" @tap="chooseAddr">
 				<view class="tui-address">
 					<view v-if="true">
 						<view class="tui-userinfo">

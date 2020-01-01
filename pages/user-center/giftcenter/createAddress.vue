@@ -158,19 +158,8 @@
 
 	/* #endif */
 
-	/* #ifdef H5 */
-	>>>uni-switch .uni-switch-input {
-		margin-right: 0 !important;
-	}
-
-	/* #endif */
-
 	.tui-addr-save {
 		padding: 24rpx;
 		margin-top: 100rpx;
-	}
-
-	.tui-del {
-		padding: 24rpx;
 	}
 </style>

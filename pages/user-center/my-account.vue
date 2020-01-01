@@ -766,6 +766,7 @@
 
 		onShow: function() {
 			this.doGetLocation();
+			this.showUserInfo();
 			this.search();
 		},
 	};

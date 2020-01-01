@@ -3,7 +3,7 @@
 		<view class="tui-address">
 			<block v-for="(item,index) in addressList" :key="index">
 				<tui-list-cell class="tui-address-container" padding="0">
-					<view class="tui-address-flex">
+					<view class="tui-address-flex" @tap = "confirm">
 						<view class="tui-address-left">
 							<view class="tui-address-main">
 								<view class="tui-address-name tui-ellipsis">{{name}}</view>
@@ -12,9 +12,6 @@
 							<view class="tui-address-detail">
 								<text>{{item.address}}</text>
 							</view>
-						</view>
-						<view class="tui-address-imgbox">
-							<image class="tui-address-img" src="/static/images/mall/my/icon_addr_edit.png" />
 						</view>
 					</view>
 					<view class="tui-address-item" @tap = "editAddress">|编辑</view>
@@ -40,7 +37,8 @@
 		data() {
 			return {
 				addressList: [],
-				name:''
+				name:'',
+				id:''
 			}
 		},
 		onLoad: function() {
@@ -57,16 +55,22 @@
 				Look_Address().then(({ data }) =>{
 					if(data.status == 0){
 						this.addressList = [...data.msg]
+						console.log(data)
 						this.addressList.map((item,index)=>{
 							this.name = item.user.name;
+							this.id = item.id;
 						})
 					}
 				})
 			},
 			editAddress(){
+				console.log("修改地址")
 				uni.navigateTo({
-					url: "../giftcenter/editAddress"
+					url: "../giftcenter/editAddress?id="+this.id
 				})
+			},
+			confirm(){
+				console.log("这是确认页面")
 			}
 		}
 	}
@@ -86,10 +90,11 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		width:86%;
+		width:82%;
 		white-space: pre-line;
 	}
     .tui-address-item{
+		padding-left:20upx;
 		font-size:28upx;
 		color: #bfbfbf;
 	}
@@ -135,16 +140,6 @@
 		transform: scale(0.8);
 		transform-origin: center center;
 		margin-right: 6rpx;
-	}
-
-	.tui-address-imgbox {
-		width: 80rpx;
-		height: 100rpx;
-		position: absolute;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		right: 10rpx;
 	}
 
 	.tui-address-img {
