@@ -1,9 +1,10 @@
 <template>
+	<!--收货地址-->
 	<view class="tui-safe-area">
 		<view class="tui-address">
 			<block v-for="(item,index) in addressList" :key="index">
 				<tui-list-cell class="tui-address-container" padding="0">
-					<view class="tui-address-flex" @tap = "confirm">
+					<view class="tui-address-flex" @tap = "confirm(item.id)">
 						<view>
 							<view class="tui-address-main">
 								<view class="tui-address-name tui-ellipsis">{{name}}</view>
@@ -20,18 +21,16 @@
 		</view>
 		<!-- 新增地址 -->
 		<view class="tui-address-new">
-			<tui-button type="danger" height="88rpx" @tap="createAddr">+ 新增收货地址</tui-button>
+			<view height="88rpx" @tap="createAddr">+ 新增收货地址</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import tuiButton from "@/components/gift/button"
 	import tuiListCell from "@/components/gift/list-cell"
 	import { Look_Address} from "@/api/receiptAddress"
 	export default {
 		components: {
-			tuiButton,
 			tuiListCell
 		},
 		data() {
@@ -54,6 +53,7 @@
 			lookAddress(){
 				Look_Address().then(({ data }) =>{
 					if(data.status == 0){
+						console.log(data)
 						this.addressList = [...data.msg]
 						this.addressList.map((item,index)=>{
 							this.name = item.user.name;
@@ -67,8 +67,10 @@
 					url: "../giftcenter/editAddress?id="+id
 				})
 			},
-			confirm(){
-				console.log("这是确认页面")
+			confirm(id){
+				uni.navigateTo({
+					url: "../giftcenter/submit?id="+id
+				})
 			}
 		}
 	}
@@ -146,14 +148,18 @@
 	}
 
 	.tui-address-new {
-		width: 100%;
+		width: 90%;
 		position: fixed;
-		left: 0;
-		bottom: 0;
-		z-index: 999;
-		padding: 20rpx 25rpx 30rpx;
+		bottom: 10upx;
+		z-index: 9;
 		box-sizing: border-box;
-		background: #fafafa;
+		text-align: center;
+		padding: 24upx;
+		border-radius: 20upx;
+		color:#FFFFFF;
+		font-weight: bold;
+		margin-left:33upx;
+		background-color:#DF5000;
 	}
 
 	.tui-safe-area {

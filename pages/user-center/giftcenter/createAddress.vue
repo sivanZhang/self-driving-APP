@@ -1,4 +1,5 @@
 <template>
+	<!--新建收货地址-->
 	<view class="tui-addr-box">
 		<form :report-submit="true">
 			<tui-list-cell :hover="false" padding="0">
@@ -22,20 +23,18 @@
 			</tui-list-cell>
 			<!-- 保存地址 -->
 			<view class="tui-addr-save">
-				<tui-button type="danger" height="88rpx" @tap="createAddress">保存收货地址</tui-button>
+				<view type="danger" height="88rpx" @tap="createAddress">保存收货地址</view>
 			</view>
 		</form>
 	</view>
 </template>
 
 <script>
-	import tuiButton from "@/components/gift/button"
 	import tuiListCell from "@/components/gift/list-cell"
 	import tuiListView from "@/components/gift/list-view"
 	import { Create_Address} from "@/api/receiptAddress"
 	export default {
 		components: {
-			tuiButton,
 			tuiListView,
 			tuiListCell
 		},
@@ -159,7 +158,17 @@
 	/* #endif */
 
 	.tui-addr-save {
-		padding: 24rpx;
-		margin-top: 100rpx;
+		padding: 24upx;
+		margin-top: 150upx;
+		width: 90%;
+		bottom: 10upx;
+		z-index: 9;
+		box-sizing: border-box;
+		text-align: center;
+		border-radius: 20upx;
+		color:#FFFFFF;
+		font-weight: bold;
+		margin-left:33upx;
+		background-color:#DF5000;
 	}
 </style>

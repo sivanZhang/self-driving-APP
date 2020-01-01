@@ -1,4 +1,5 @@
 <template>
+	<!--修改收货地址-->
 	<view class="tui-addr-box">
 		<form :report-submit="true">
 			<tui-list-cell :hover="false" padding="0">
@@ -34,13 +35,11 @@
 </template>
 
 <script>
-	import tuiButton from "@/components/gift/button"
 	import tuiListCell from "@/components/gift/list-cell"
 	import tuiListView from "@/components/gift/list-view"
 	import { Put_Address,Delete_Address,Look_Address} from "@/api/receiptAddress"
 	export default {
 		components: {
-			tuiButton,
 			tuiListView,
 			tuiListCell
 		},

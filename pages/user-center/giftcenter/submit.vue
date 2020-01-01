@@ -1,15 +1,15 @@
 <template>
+	<!--兑换礼品-->
 	<view class="container">
 		<view class="tui-box">
 			<tui-list-cell :arrow="true" :last="true" :radius="true" @tap="chooseAddr">
 				<view class="tui-address">
 					<view v-if="true">
 						<view class="tui-userinfo">
-							<text class="tui-name">{{UserInfo.username}}  {{UserInfo.phone}}</text> 
+							<text class="tui-name">{{name}}  {{mobile}}</text> 
 						</view>
 						<view class="tui-addr">
-							<view class="tui-addr-tag">学校</view>
-							<text>广东省深圳市南山区高新科技园中区一路</text>
+							<text>{{address}}</text>
 						</view>
 					</view>
 					<view class="tui-none-addr" v-else>
@@ -78,6 +78,7 @@
 	import tuiButton from "@/components/gift/button"
 	import tuiListCell from "@/components/gift/list-cell"
 	import tuiBottomPopup from "@/components/gift/bottom-popup"
+	import {Look_Address} from "@/api/receiptAddress"
 	export default {
 		components: {
 			tuiButton,
@@ -87,7 +88,12 @@
 		data() {
 			return {
 				hasCoupon: true,
-				insufficient: false
+				insufficient: false,
+				name:'',
+				mobile:'',
+				address:'',
+				id:'',
+				userInfo:[]
 			}
 		},
 		computed: {
@@ -105,7 +111,27 @@
 				uni.navigateTo({
 					url: "../giftcenter/success"
 				})
+			},
+			lookAddress(){
+				let data = {
+					id:this.id
+				}
+				Look_Address(data).then(({ data }) =>{
+					if(data.status == 0){
+						this.userInfo = [...data.msg]
+						this.userInfo.map((item,index)=>{
+							this.name = item.user.name,
+							this.mobile = item.phone,
+							this.address = item.address
+						})
+					}  
+				})
 			}
+		},
+		onLoad: function (options) { //option为object类型，会序列化上个页面传递的参数
+			console.log(options.id);//打印出上个页面传递的id。
+			this.id = options.id;
+			this.lookAddress();
 		}
 	}
 </script>
