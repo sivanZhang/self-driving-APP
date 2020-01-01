@@ -217,9 +217,6 @@
 	import permision from "@/common/permission.js"
 	// #endif
 	import util from "@/common/util.js"
-	import {
-		Track_Rank,
-	} from '@/api/track.js'
 	var formatLocation = util.formatLocation;
 	export default {
 		components: {
@@ -259,7 +256,6 @@
 				new_record: [],
 				list:'',
 				imageUrl:''
-				// location:[]
 			};
 		},
 		computed: {
@@ -274,21 +270,6 @@
 			}
 		},
 		methods: {
-            lookrank_total(){
-            	let data = {
-            		year:''
-            	}
-            	Track_Rank(data).then(({
-            		data
-            	}) => {
-            		if(data.status === 0){
-						this.list = data.user_rank;
-						this.index = this.list.rank;
-						this.distance = this.list.mileage;
-						this.imageUrl = this.$store.state.BaseUrl
-            		}
-            	})
-            },
 			async getLocation() {
 				// #ifdef APP-PLUS
 				let status = await this.checkPermission();
@@ -546,20 +527,15 @@
                     		}).then(({
                     			data
                     		}) => {
-                    			// uni.showToast({
-                    			// 	title: data.msg,
-                    			// 	icon: "none",
-                    			// })
-                    			// console.log(data)
                     			Show_CarTrack({
-                    				id: this.id
+                    				id: this.id,
                     			}).then(({
                     				data
                     			}) => {
-                    				// console.log(data)
+                    				console.log(data)
                     				var track = data.msg[0].record;
-                    				console.log("2:从后端接收的");
-                    				console.log(track)
+                    				// console.log("2:从后端接收的");
+                    				// console.log(track)
                     				if (track.length != 0) {
                     					var track1 = JSON.parse(track);
                     					var points = []
@@ -748,6 +724,16 @@
 					})
 					console.log(data)
 				})
+			},
+			showUserInfo(){
+				Show_CarTrack({count:''}).then(({
+					data
+				}) => {
+					this.list = data.msg;
+					this.index = this.list.rank;
+					this.distance = this.list.mileage;
+				})
+				this.imageUrl = this.$store.state.BaseUrl
 			}
 		},
 
@@ -775,15 +761,13 @@
 			}, 1000);
 			this.locate(); 
 			this.getLocationTest();
-			this.lookrank_total();
+			this.showUserInfo();
 		},
 
 
 		onShow: function() {
 			this.doGetLocation();
 			this.search();
-			this.lookrank_total();
-			this.url = this.$store.state.BaseUrl + '/'
 		},
 	};
 </script>

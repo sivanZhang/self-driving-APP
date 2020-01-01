@@ -391,7 +391,7 @@
 					height:60upx;
 					width:60upx;
 					margin-left:45upx;
-				},
+				}
 				.gift-text{
 					color:#FFB400;
 				}
