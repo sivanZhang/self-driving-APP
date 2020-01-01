@@ -15,17 +15,19 @@
 				</view>
 			</tui-list-cell>
 			<tui-list-cell :hover="false" padding="0">
-				<view class="tui-line-cell-address">
+				<view class="tui-line-cell">
 					<view class="tui-title">收货地址</view>
 					<input  type="text" v-model="address" placeholder-class="tui-phcolor" class="tui-input" name="address" placeholder="请输入详细的收货地址" maxlength="50" />
 				</view>
 			</tui-list-cell>
-			<!-- 保存地址 -->
-			<view class="tui-addr-save">
-				<tui-button type="danger" height="88rpx" @tap="putAddress">保存收货地址</tui-button>
-			</view>
-			<view class="tui-del-save">
-				<tui-button type="danger" height="88rpx" @tap="deleteAddress">删除收货地址</tui-button>
+			<!-- 保存和删除地址 -->
+			<view class="tui-save">
+				<view class="tui-addr-save" height="88rpx" @tap="putAddress">
+					保存收货地址
+				</view>
+				<view class="tui-del-save" height="88rpx" @tap="deleteAddress">
+					删除收货地址
+				</view>
 			</view>
 		</form>
 	</view>
@@ -91,10 +93,9 @@
 			deleteAddress(){
 				let data = {
 					method:"delete",
-					id:this.id
+					ids:this.id
 				}
 				Delete_Address(data).then(({ data }) =>{
-					console.log('-----')
 					if(data.status == 0){
 						uni.showToast({
 							title: '地址删除成功',
@@ -103,14 +104,14 @@
 						uni.navigateTo({
 							url: '../giftcenter/address'
 						})
-					}  
+					}
 				})
 			},
 		},
-		onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数
-		    console.log(option.id); //打印出上个页面传递的id。
-			this.id = option.id;
-			this.lookAddress()
+		onLoad: function (options) { //option为object类型，会序列化上个页面传递的参数
+			console.log(options.id);//打印出上个页面传递的id。
+			this.id = options.id;
+			this.lookAddress();
 		}
 	}
 </script>
@@ -120,15 +121,12 @@
 		padding: 20rpx 0;
 	}
 
-	.tui-line-cell ,.tui-line-cell-address{
+	.tui-line-cell{
 		width: 100%;
 		padding: 24rpx 30rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
-	}
-    .tui-line-cell-address{
-		height: 80rpx;
 	}
 	.tui-title {
 		width: 180rpx;
@@ -204,13 +202,19 @@
 	}
 
 	/* #endif */
-
-	.tui-addr-save,.tui-del-save {
-		padding: 24rpx;
-		margin-top: 100rpx;
+    .tui-save{
+		display:flex;
+		margin-top: 120upx;
+		
 	}
-    
-	.tui-del {
-		padding: 24rpx;
+	.tui-addr-save,.tui-del-save {
+		text-align: center;
+		width:45%;
+		padding: 24upx;
+        border-radius: 20upx;
+		color:#FFFFFF;
+		font-weight: bold;
+        margin-left:25upx;
+		background-color:#DF5000;
 	}
 </style>

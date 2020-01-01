@@ -191,7 +191,7 @@
 							this.picture = item.picture;
 							this.turns = item.turns;
 							this.turns.map((tip,index)=>{
-								let image = 'https://tl.chidict.com' + '/'+ tip;
+								let image = this.$store.state.BaseUrl + tip;
 								this.Image.push(image)
 							})	
 						});

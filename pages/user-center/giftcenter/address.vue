@@ -4,7 +4,7 @@
 			<block v-for="(item,index) in addressList" :key="index">
 				<tui-list-cell class="tui-address-container" padding="0">
 					<view class="tui-address-flex" @tap = "confirm">
-						<view class="tui-address-left">
+						<view>
 							<view class="tui-address-main">
 								<view class="tui-address-name tui-ellipsis">{{name}}</view>
 								<view class="tui-address-tel">{{item.phone}}</view>
@@ -14,7 +14,7 @@
 							</view>
 						</view>
 					</view>
-					<view class="tui-address-item" @tap = "editAddress">|编辑</view>
+					<view class="tui-address-item" @tap = "editAddress(item.id)">|编辑</view>
 				</tui-list-cell>
 			</block>
 		</view>
@@ -55,7 +55,6 @@
 				Look_Address().then(({ data }) =>{
 					if(data.status == 0){
 						this.addressList = [...data.msg]
-						console.log(data)
 						this.addressList.map((item,index)=>{
 							this.name = item.user.name;
 							this.id = item.id;
@@ -63,10 +62,9 @@
 					}
 				})
 			},
-			editAddress(){
-				console.log("修改地址")
+			editAddress(id){
 				uni.navigateTo({
-					url: "../giftcenter/editAddress?id="+this.id
+					url: "../giftcenter/editAddress?id="+id
 				})
 			},
 			confirm(){
@@ -90,7 +88,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		width:82%;
+		width:86%;
 		white-space: pre-line;
 	}
     .tui-address-item{
@@ -123,7 +121,7 @@
 		word-break: break-all;
 		padding-bottom: 25rpx;
 		padding-left: 25rpx;
-		padding-right: 120rpx;
+		padding-right: 20rpx;
 	}
 
 	.tui-address-label {
