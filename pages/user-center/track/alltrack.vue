@@ -1,7 +1,6 @@
 <template>
 
 	<view id="track">
-		
 		<view class="top">
 			<view>想要开始记录今天的车迹吗？</view>
 			<image class="add" src="/static/image/journey/add1.png" @tap="target('/pages/user-center/my-account')"></image>
@@ -11,28 +10,32 @@
 				<view v-for="(item,index) of TrackList" :key="index">
 					<view class="content">
 						<view class="content-top" @tap="targe('/pages/user-center/track/signaltrack?id='+item.id)"></view>
-						<view class="content-middle">
-							<view class="uni-content-image" @tap="targe('/pages/user-center/track/signaltrack?id='+item.id)">
-								<image src="/static/icons/zuji.png" />
-							</view>
-							<view class="date" @tap="targe('/pages/user-center/track/signaltrack?id='+item.id)">
-								{{ item.start_date | dateFormat }}
-							</view>
-							<image class="del" src="/static/icons/delete.png" @tap="delete_cartrack(item.id)"></image>
-							<view class="start_date" @tap="targe('/pages/user-center/track/signaltrack?id='+item.id)">
-								{{item.start_date | datehmsFormat}}
-								<view class="point">{{item.start_point}}</view>
-							</view>
-							<view class="end_date" @tap="targe('/pages/user-center/track/signaltrack?id='+item.id)">
-								{{item.end_date | datehmsFormat}}
-								<view class="point">{{item.end_point}}</view>
-							</view>
-							<view class="totaltime" @tap="targe('/pages/user-center/track/signaltrack?id='+item.id)">
-								<image class="clock" src="/static/image/journey/clock.png"></image>
-								{{item.dif_time}}
-								<text class="mileage">{{item.mileage}}</text>
-							</view>
-						</view>
+						<uni-swipe-action>
+							<uni-swipe-action-item :options="options" @click="delete_cartrack(item.id)">
+								<view class="content-middle">
+									<view class="uni-content-image" @tap="targe('/pages/user-center/track/signaltrack?id='+item.id)">
+										<image src="/static/icons/zuji.png" />
+									</view>
+									<view class="date" @tap="targe('/pages/user-center/track/signaltrack?id='+item.id)">
+										{{ item.start_date | dateFormat }}
+									</view>
+									<!-- <image class="del" src="/static/icons/delete.png" @tap="delete_cartrack(item.id)"></image> -->
+									<view class="start_date" @tap="targe('/pages/user-center/track/signaltrack?id='+item.id)">
+										{{item.start_date | datehmsFormat}}
+										<view class="point">{{item.start_point}}</view>
+									</view>
+									<view class="end_date" @tap="targe('/pages/user-center/track/signaltrack?id='+item.id)">
+										{{item.end_date | datehmsFormat}}
+										<view class="point">{{item.end_point}}</view>
+									</view>
+									<view class="totaltime" @tap="targe('/pages/user-center/track/signaltrack?id='+item.id)">
+										<image class="clock" src="/static/image/journey/clock.png"></image>
+										{{item.dif_time}}
+										<text class="mileage">{{item.mileage}}</text>
+									</view>
+								</view>
+							</uni-swipe-action-item>
+						</uni-swipe-action>
 					</view>
 				</view>
 			</view>
@@ -41,21 +44,30 @@
 </template>
 <script>
 	import MescrollUni from "@/components/mescroll-uni/mescroll-uni.vue";
+	import uniSwipeAction from '@/components/swipe/uni-swipe-action.vue'
+	import uniSwipeActionItem from '@/components/swipe/uni-swipe-action-item.vue'
 	import {
-		Show_CarTrack,Delete_CarTrack
+		Show_CarTrack,
+		Delete_CarTrack
 	} from '@/api/cartrack.js'
 
 	export default {
 		components: {
 			MescrollUni,
+			uniSwipeAction,
+			uniSwipeActionItem
 		},
 		data() {
 			return {
-				
 				TrackList: [],
 				Tracklist: [],
 				mescroll: null, //mescroll实例对象
-
+				options: [{
+					text: '删除',
+					style: {
+						backgroundColor: '#DF5000'
+					}
+				}],
 			}
 		},
 		onNavigationBarButtonTap(val) {
@@ -66,11 +78,11 @@
 			}
 		},
 		onLoad(option) {
-			
+
 
 		},
 		onShow() {
-			
+
 		},
 
 		methods: {
@@ -84,7 +96,7 @@
 					url
 				})
 			},
-			
+
 			// mescroll组件初始化的回调,可获取到mescroll对象
 			mescrollInit(mescroll) {
 				this.mescroll = mescroll;
@@ -133,7 +145,7 @@
 						Show_CarTrack().then(({
 							data
 						}) => {
-                            // console.log(data)
+							// console.log(data)
 							this.Tracklist = data.msg;
 							var Data = this.Tracklist;
 							//模拟分页数据
@@ -151,15 +163,15 @@
 					}
 				}, 1000)
 			},
-			delete_cartrack(e){
+			delete_cartrack(e) {
 				var that = this;
 				uni.showModal({
-				    content: '删除的车迹，无法恢复，是否确认删除？',
-				    success: function (res) {
-				        if (res.confirm) {
-				            console.log('用户点击确定');
+					content: '删除的车迹，无法恢复，是否确认删除？',
+					success: function(res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
 							Delete_CarTrack({
-								ids:e,
+								ids: e,
 								method: 'delete',
 							}).then(({
 								data
@@ -170,10 +182,10 @@
 								})
 								that.mescroll.resetUpScroll()
 							})
-				        } else if (res.cancel) {
-				            console.log('用户点击取消');
-				        }
-				    }
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
 				});
 			},
 		},
@@ -213,6 +225,7 @@
 
 	#track .container .content {
 		position: relative;
+		margin-bottom: -3%;
 	}
 
 	#track .container .content-top {
@@ -228,16 +241,12 @@
 	}
 
 	#track .container .content-middle {
-		border-radius: 5px;
+		flex:1;
 		background-color: #fff;
 		position: relative;
-		margin-bottom: -1rem;
-		border-right: 2px solid #fff;
-		/*  display: flex;
-				 flex-wrap: wrap; */
 		padding-top: 3%;
 		padding-left: 4%;
-		box-shadow: 2px 2px 2px #848689;
+		/* box-shadow: 2px 2px 2px #848689; */
 	}
 
 	#track .container .content-middle .uni-content-image {
@@ -266,16 +275,17 @@
 		flex-direction: column;
 		/*  align-items: center; */
 	}
-    #track .container .content-middle .del {
+
+	/* #track .container .content-middle .del {
 		left: 84%;
-		width:35upx;
-		height:35upx;
+		width: 35upx;
+		height: 35upx;
 		bottom: 3rem;
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		/*  align-items: center; */
-	}
+	} */
+
 	#track .container .content-middle .start_date,
 	#track .container .content-middle .end_date {
 		display: flex;

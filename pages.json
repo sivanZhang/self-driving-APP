@@ -13,6 +13,7 @@
 			"path": "pages/user-center/track/alltrack",
 			"style": {
 				"navigationBarTitleText": "车迹"	,
+				"disableScroll":true,
 				"app-plus": {
 					"titleNView": {
 						"buttons": [ {
@@ -21,7 +22,6 @@
 							"fontSize": "22px",
 							"float": "right"
 						}]
-				
 					},
 					"bounce":"none"
 				}					
