@@ -516,11 +516,11 @@
                     	console.log(this.count)
                     
                     	// if((this.speed == 0 && this.count == 1) || (this.speed != 0 && record2.length > 9))
-                    	console.log('[' + this.new_record + ']')
+                    	// console.log('[' + this.new_record + ']')
                     
-                    	if (((this.speed == null || 0) && this.count == 1) || ((this.speed != null || 0) && (this.new_record).length > 9)) {
-                    		Record_CarTrack({
-                    			track_id: this.id,
+						 if (((this.speed == 0 || 'null') && this.count == 1) || ((this.speed != 0 && this.speed != null) && (this.new_record).length > 9)) {	
+                    		Record_CarTrack({    
+                    			track_id: this.id, 
                     			method: 'put',
                     			record: '[' + this.new_record + ']',
                     			test: '[' + this.newtest + ']',
@@ -532,9 +532,9 @@
                     			}).then(({
                     				data
                     			}) => {
-                    				console.log(data)
+                    				console.log('[' + this.new_record + ']')	
                     				var track = data.msg[0].record;
-                    				// console.log("2:从后端接收的");
+                    				console.log("2:从后端接收的");
                     				// console.log(track)
                     				if (track.length != 0) {
                     					var track1 = JSON.parse(track);
@@ -609,7 +609,7 @@
 						// if((this.speed == 0 && this.count == 1) || (this.speed != 0 && record2.length > 9))
 						console.log('[' + this.new_record + ']')
 					
-						if (((this.speed == null || 0) && this.count == 1) || ((this.speed != null || 0) && (this.new_record).length > 9)) {
+						 if (((this.speed == 0 || 'null') && this.count == 1) || ((this.speed != 0 && this.speed != null) && (this.new_record).length > 9)) {	
 							Record_CarTrack({
 								track_id: this.id,
 								method: 'put',
@@ -670,8 +670,8 @@
 			},
 			locate() {
 				var watchId = plus.geolocation.watchPosition(function(p) {
-					console.log("监听位置变化信息:");
-					console.log( JSON.stringify(p) );   
+					// console.log("监听位置变化信息:");
+					// console.log( JSON.stringify(p) );   
 					var f = JSON.stringify(p); 
 
 					try {
