@@ -187,12 +187,10 @@
 				}).then(({
 					data
 				}) => {
-					// console.log(data)
+					console.log(data)
 					var track = data.msg[0].record;
-					if (track.length != 0) {
-						var new_track = JSON.parse(track);
 						var points = []
-						new_track.forEach((item, index) => {
+						track.forEach((item, index) => {
 							points.splice(index, 0, {
 								latitude: item[1],
 								longitude: item[0]
@@ -212,7 +210,7 @@
 							latitude: points[0].latitude,
 							longitude: points[0].longitude,
 						}, ];
-					}
+					
 					this.create_date = data.msg[0].start_date;
 					this.distance = data.msg[0].mileage;
 					this.create_point = data.msg[0].start_point;

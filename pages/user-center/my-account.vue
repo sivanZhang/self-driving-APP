@@ -65,7 +65,7 @@
 					</view>
 				</view>
 			</view>
-		</view> 
+		</view>
 		<!-- <view style="padding-top: 45upx;">
 			<button type="primary" @tap="target1()">日志查看位置</button>
 		</view> -->
@@ -254,8 +254,11 @@
 				distance: '',
 				index: '',
 				new_record: [],
-				list:'',
-				imageUrl:''
+				newtrack: [],
+				list: '',
+				imageUrl: '',
+				startnum: 0,
+				endnum: 9,
 			};
 		},
 		computed: {
@@ -475,101 +478,13 @@
 			},
 
 			recordtrack() {
+				this.startnum = 0;
+				this.endnum = 9;
+				this.polylines = []
 				this.doGetLocation();
 				this.speed = this.locationinfo.speed;
 				// console.log(this.speed)
 				if (this.speed < 5) {
-                    this.SI = setInterval(() => {
-                    	this.doGetLocation(); 
-                    	this.longitude = this.locationinfo.longitude;
-                    	this.latitude = this.locationinfo.latitude;
-                    	this.speed = this.locationinfo.speed;
-                    	this.record = [this.longitude, this.latitude];
-                    	this.test = JSON.stringify(this.locationinfo);
-                    	var time = new Date();
-                    	var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
-                    		':' + time.getMinutes() + ':' + time.getSeconds();
-                    	this.record1 = time1 + '--' + this.record + '--' + this.speed;
-                    	this.newtest = this.newtest.concat(this.test);
-                    	// console.log(this.newtest)
-                    	this.new_record = this.new_record.concat('[' + this.record + ']');
-                    	// console.log('['+ record2 + ']')
-                    	this.newrecord = this.newrecord.concat('[' +
-                    		this.record1 + ']');
-                    	// console.log("1:前端记录发给后端的");
-                    	// console.log('[' + this.newrecord + ']')	
-                    	//同步获取位置信息
-                    	try {
-                    		//    var old = uni.getStorageSync('log_geo' );
-                    		// console.log(old);
-                    		uni.setStorageSync('log_geo', this.newrecord);
-                    
-                    	} catch (e) {
-                    		// error
-                    	}
-                    
-                    	if (this.speed == 0 || 'null') {
-                    		this.count += 1;
-                    
-                    	}
-                    	console.log(this.speed)
-                    	console.log(this.count)
-                    
-                    	// if((this.speed == 0 && this.count == 1) || (this.speed != 0 && record2.length > 9))
-                    	// console.log('[' + this.new_record + ']')
-                    
-						 if (((this.speed == 0 || 'null') && this.count == 1) || ((this.speed != 0 && this.speed != null) && (this.new_record).length > 9)) {	
-                    		Record_CarTrack({    
-                    			track_id: this.id, 
-                    			method: 'put',
-                    			record: '[' + this.new_record + ']',
-                    			test: '[' + this.newtest + ']',
-                    		}).then(({
-                    			data
-                    		}) => {
-                    			Show_CarTrack({
-                    				id: this.id,
-                    			}).then(({
-                    				data
-                    			}) => {
-                    				console.log('[' + this.new_record + ']')	
-                    				var track = data.msg[0].record;
-                    				console.log("2:从后端接收的");
-                    				// console.log(track)
-                    				if (track.length != 0) {
-                    					var track1 = JSON.parse(track);
-                    					var points = []
-                    					track1.forEach((item, index) => {
-                    						points.splice(index, 0, {
-                    							latitude: item[1],
-                    							longitude: item[0]
-                    						})
-                    					})
-                    
-                    					this.latitude = points[0].latitude;
-                    					this.longitude = points[0].longitude;
-                    					this.polylines = [{
-                    						points,
-                    						color: "#0A98D5", //线的颜色
-                    						width: 8, //线的宽度
-                    						arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
-                    					}];
-                    					this.markers = [{
-                    						iconPath: 'https://webapi.amap.com/images/car.png',
-                    						latitude: points[0].latitude,
-                    						longitude: points[0].longitude,
-                    					}, ];
-                    				}
-                    
-                    			}).catch(function(err) {
-                    
-                    			})
-                    		})
-                    		this.new_record = []
-                    		this.newtest = []
-                    	}
-                    }, 1000)
-				}else{
 					this.SI = setInterval(() => {
 						this.doGetLocation();
 						this.longitude = this.locationinfo.longitude;
@@ -594,22 +509,81 @@
 							//    var old = uni.getStorageSync('log_geo' );
 							// console.log(old);
 							uni.setStorageSync('log_geo', this.newrecord);
-					
+
 						} catch (e) {
 							// error
 						}
-					
+
 						if (this.speed == 0 || 'null') {
 							this.count += 1;
-					
+
 						}
-						console.log(this.speed)
-						console.log(this.count)
-					
+						// console.log(this.speed)
+						// console.log(this.count)
+
 						// if((this.speed == 0 && this.count == 1) || (this.speed != 0 && record2.length > 9))
-						console.log('[' + this.new_record + ']')
-					
-						 if (((this.speed == 0 || 'null') && this.count == 1) || ((this.speed != 0 && this.speed != null) && (this.new_record).length > 9)) {	
+						// console.log('[' + this.new_record + ']')
+						if (((this.speed == 0 || 'null') && this.count == 1) || ((this.speed != 0 && this.speed != null)  && (this.new_record).length > 9)) {
+							Record_CarTrack({
+								track_id: this.id, 
+								method: 'put',
+								record: '[' + this.new_record + ']',
+								test: '[' + this.newtest + ']',
+							}).then(({
+								data
+							}) => {
+
+								console.log(data)
+                                
+							})
+							console.log('[' + this.new_record + ']');
+							this.showtrack();
+							this.new_record = []
+							this.newtest = []
+						}
+					}, 1000)
+
+				} else {
+					this.SI = setInterval(() => {
+						this.doGetLocation();
+						this.longitude = this.locationinfo.longitude;
+						this.latitude = this.locationinfo.latitude;
+						this.speed = this.locationinfo.speed;
+						this.record = [this.longitude, this.latitude];
+						this.test = JSON.stringify(this.locationinfo);
+						var time = new Date();
+						var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
+							':' + time.getMinutes() + ':' + time.getSeconds();
+						this.record1 = time1 + '--' + this.record + '--' + this.speed;
+						this.newtest = this.newtest.concat(this.test);
+						// console.log(this.newtest)
+						this.new_record = this.new_record.concat('[' + this.record + ']');
+						// console.log('['+ record2 + ']')
+						this.newrecord = this.newrecord.concat('[' +
+							this.record1 + ']');
+						// console.log("1:前端记录发给后端的");
+						// console.log('[' + this.newrecord + ']')	
+						//同步获取位置信息
+						try {
+							//    var old = uni.getStorageSync('log_geo' );
+							// console.log(old);
+							uni.setStorageSync('log_geo', this.newrecord);
+
+						} catch (e) {
+							// error
+						}
+
+						if (this.speed == 0 || 'null') {
+							this.count += 1;
+
+						}
+						// console.log(this.speed)
+						// console.log(this.count)
+
+						// if((this.speed == 0 && this.count == 1) || (this.speed != 0 && record2.length > 9))
+						// console.log('[' + this.new_record + ']')
+
+						if (((this.speed == 0 || 'null') && this.count == 1) || ((this.speed != 0 && this.speed != null) && (this.new_record).length > 9)) {
 							Record_CarTrack({
 								track_id: this.id,
 								method: 'put',
@@ -618,61 +592,100 @@
 							}).then(({
 								data
 							}) => {
-								// uni.showToast({
-								// 	title: data.msg,
-								// 	icon: "none",
-								// })
-								// console.log(data)
-								Show_CarTrack({
-									id: this.id
-								}).then(({
-									data
-								}) => {
-									console.log(data)
-									var track = data.msg[0].record;
-									console.log("2:从后端接收的");
-									console.log(track)
-									if (track.length != 0) {
-										var track1 = JSON.parse(track);
-										var points = []
-										track1.forEach((item, index) => {
-											points.splice(index, 0, {
-												latitude: item[1],
-												longitude: item[0]
-											})
-										})
-					
-										this.latitude = points[0].latitude;
-										this.longitude = points[0].longitude;
-										this.polylines = [{
-											points,
-											color: "#0A98D5", //线的颜色
-											width: 8, //线的宽度
-											arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
-										}];
-										this.markers = [{
-											iconPath: 'https://webapi.amap.com/images/car.png',
-											latitude: points[0].latitude,
-											longitude: points[0].longitude,
-										}, ];
-									}
-					
-								}).catch(function(err) {
-					
-								})
+
+								console.log(data)
+
 							})
+							console.log('[' + this.new_record + ']');
+							this.showtrack();
 							this.new_record = []
 							this.newtest = []
 						}
 					}, 100)
 				}
-				
+
+			},
+			showtrack() {
+				setTimeout(() => {
+					console.log(this.startnum);
+					console.log(this.endnum);
+					console.log(this.id)
+					Show_CarTrack({
+						start_num: this.startnum,
+						end_num: this.endnum,
+						id: this.id,
+					}).then(({
+						data
+					}) => {
+						console.log(data)
+						var track = data.msg[0].record;
+						console.log("2:从后端接收的");
+						console.log(track)
+
+						// if (track.length >= 0) {
+						// var track1 = JSON.parse(track);
+						// console.log(track1)
+						// console.log(11111)
+						var points = []
+						track.forEach((item, index) => {
+							points.splice(index, 0, {
+								latitude: item[1],
+								longitude: item[0]
+							})
+						})
+
+						this.latitude = points[0].latitude;
+						this.longitude = points[0].longitude;
+						if (points.length == 1){
+							this.polylines = [{
+								points,
+								color: "#0A98D5", //线的颜色
+								width: 8, //线的宽度
+								arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
+							}];
+						}
+						try {
+							var oldline = uni.setStorageSync('log_polyline', this.polylines);
+						} catch (e) {
+							// error
+						}
+						try {
+							var newline = uni.getStorageSync('log_polyline')
+						} catch (e) {
+							// error
+						}
+                        this.polylines = [{
+                        	points,
+                        	color: "#0A98D5", //线的颜色
+                        	width: 8, //线的宽度
+                        	arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
+                        }];
+                        this.polylines = newline.concat(this.polylines);
+						console.log(this.polylines)
+						this.markers = [{
+							iconPath: 'https://webapi.amap.com/images/car.png',
+							latitude: points[0].latitude,
+							longitude: points[0].longitude,
+						}, ];
+						//}
+						console.log(track.length)
+						if(track.length != 10){
+							this.endnum = this.endnum + 10;
+							this.startnum = this.endnum - 19;
+						}else{
+							this.endnum = this.endnum + 9;
+							this.startnum = this.startnum + 9;
+						}
+					}).catch(function(err) {
+
+					})
+				}, 2000);
 			},
 			locate() {
 				var watchId = plus.geolocation.watchPosition(function(p) {
-					// console.log("监听位置变化信息:");
-					// console.log( JSON.stringify(p) );   
-					var f = JSON.stringify(p); 
+					console.log("监听位置变化信息:");
+					console.log( JSON.stringify(p) );   
+					var f = JSON.stringify(p);
 
 					try {
 						var time = new Date();
@@ -686,7 +699,7 @@
 						// error
 					}
 				}, function(e) {
-					// console.log("监听位置变化信息失败：" + e.message);
+					console.log("监听位置变化信息失败：" + e.message);
 					var g = e.message;
 					try {
 						var time = new Date();
@@ -722,10 +735,17 @@
 						icon: "none",
 					})
 					console.log(data)
+					try {
+					    uni.clearStorageSync();
+					} catch (e) {
+					    // error
+					}
 				})
 			},
-			showUserInfo(){
-				Show_CarTrack({count:''}).then(({
+			showUserInfo() {
+				Show_CarTrack({
+					count: ''
+				}).then(({
 					data
 				}) => {
 					this.list = data.msg;
@@ -735,7 +755,7 @@
 				this.imageUrl = this.$store.state.BaseUrl
 			}
 		},
- 
+
 		onLoad() {
 			//     // #ifdef APP-PLUS
 			//      wv = plus.webview.create("","custom-webview",{
@@ -758,7 +778,7 @@
 					icon: "none",
 				})
 			}, 1000);
-			this.locate(); 
+			this.locate();
 			this.getLocationTest();
 			this.showUserInfo();
 		},
@@ -775,21 +795,25 @@
 <style lang="scss">
 	#MyAccount {
 		overflow-x: hidden;
+
 		.wall {
 			height: 360rpx;
 			position: relative;
 			background: #fff;
+
 			.record {
 				margin-top: 80upx;
 				margin-left: 20upx;
 				font-size: 35upx;
 				position: relative;
 			}
+
 			.header {
 				padding-left: 30upx;
 				padding-top: 50upx;
 				display: flex;
 				flex-wrap: wrap;
+
 				// flex-direction: column;
 				// align-items: center;
 				// justify-content: center;
@@ -803,6 +827,7 @@
 				.top-left {
 					padding-top: 36upx;
 					padding-left: 14upx;
+
 					// display:flex;
 					// flex-direction: column;
 					.milage {
@@ -811,15 +836,18 @@
 						border-bottom: 10upx solid #DF5000;
 						width: 130upx;
 					}
+
 					.total {
 						display: flex;
 						// flex-wrap: wrap;
 						padding-top: -8upx;
+
 						.number {
 							font-size: 84upx;
 							// width:230upx;
 							letter-spacing: -10upx;
 						}
+
 						.kilometers {
 							font-size: 30upx;
 							padding-left: 8upx;
@@ -827,12 +855,14 @@
 						}
 					}
 				}
+
 				.top-right {
 					position: absolute;
 					padding-top: 91upx;
 					padding-left: 426upx;
 					display: flex;
 					flex-wrap: wrap;
+
 					.showrank {
 						padding: 0 10upx;
 						padding-top: 8upx;
@@ -841,11 +871,13 @@
 						width: 100upx;
 						color: #FFFFFF;
 						text-align: center;
+
 						.num {
 							padding-top: 7upx;
 							font-weight: bold;
 						}
 					}
+
 					.look {
 						padding-top: 8upx;
 						display: flex;
@@ -853,11 +885,13 @@
 						background-color: #DF5000;
 						height: 100upx;
 						width: 150upx;
+
 						image {
 							width: 98upx;
 							height: 45upx;
 							padding-left: 52upx;
 						}
+
 						.lookrank {
 							color: #FFFFFF;
 							padding-top: 2upx;
@@ -867,6 +901,7 @@
 					}
 				}
 			}
+
 			.wall-top {
 				display: flex;
 				position: absolute;
@@ -874,6 +909,7 @@
 				left: 25upx;
 				top: 290upx;
 				font-size: 32upx;
+
 				.img {
 					position: relative;
 					left: 3%;
@@ -883,25 +919,30 @@
 					box-shadow: 1px 1px 2px #F2F2F2;
 					border: 1.5px solid #F2F2F2;
 				}
+
 				.top {
 					padding-top: 12upx;
 					padding-left: 10upx;
 					color: #848689;
 					width: 480upx;
+
 					.information {
 						display: flex;
+
 						image {
 							width: 62upx;
 							height: 28upx;
 							padding-left: 34upx;
 							z-index: 2;
 						}
+
 						.username {
 							position: relative;
 							padding-top: 6upx;
 							left: 0.3rem;
 						}
 					}
+
 					.position {
 						padding-top: 6upx;
 						display: flex;
@@ -913,6 +954,7 @@
 							padding-left: 30upx;
 							z-index: 2;
 						}
+
 						.address {
 							padding-top: 15upx;
 							position: relative;
@@ -924,8 +966,10 @@
 				}
 			}
 		}
+
 		.main {
 			height: 220upx;
+
 			.uni-content {
 				display: flex;
 				flex-wrap: wrap;
@@ -933,6 +977,7 @@
 				padding-top: 120upx;
 				padding-right: 5upx;
 			}
+
 			.uni-content-box {
 				display: flex;
 				flex-direction: column;
@@ -940,24 +985,29 @@
 				width: 20%;
 				box-sizing: border-box;
 			}
+
 			.uni-content-image {
 				display: flex;
 				justify-content: center;
 				align-items: center;
+
 				.img {
 					width: 80upx;
 					height: 80upx;
 				}
+
 				.img2 {
 					margin-top: -10upx;
 					width: 90upx;
 					height: 100upx;
 				}
+
 				image {
 					width: 70upx;
 					height: 70upx;
 				}
 			}
+
 			.uni-content-text {
 				font-size: 26upx;
 				color: #333;
@@ -965,13 +1015,16 @@
 				padding-bottom: 10px;
 			}
 		}
+
 		.badge {
 			background-color: #e60000 !important;
 			font-size: 25upx !important;
 		}
+
 		.content {
 			position: relative;
 			top: -2.5rpx;
+
 			.section {
 				padding: 0 41.666upx;
 				// height: 125upx;
@@ -979,8 +1032,10 @@
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
+
 				// border-bottom: 2.083upx solid #c8c8cc;
 				&>view:nth-child(1) {
+
 					// font-weight: bold;
 					.icon {
 						width: 62.5upx;
@@ -989,17 +1044,20 @@
 						margin-right: 37.5upx;
 					}
 				}
+
 				&>view:nth-child(2) {
 					color: #c8c8cc;
 					display: flex;
 					align-items: center;
 				}
 			}
+
 			.profile {
 				padding: 0 31.25rpx;
 				width: 100%;
 				display: flex;
 				align-items: flex-end;
+
 				image {
 					width: 125rpx;
 					height: 125rpx;
@@ -1007,6 +1065,7 @@
 				}
 			}
 		}
+
 		.foot {
 			padding-top: 40upx;
 			opacity: 0.5;
