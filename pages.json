@@ -302,7 +302,7 @@
 				}
 			}
 		}, {
-			"path": "pages/team/from-team",
+			"path": "pages/team/createTeam/allTeamList",
 			"style": {
 				"navigationBarTitleText": "搭伴",
 				"app-plus": {
@@ -322,6 +322,11 @@
 				}
 			}
 		}, {
+			"path": "pages/team/createTeam/myTeamList",
+			"style": {
+				"navigationBarTitleText": "我创建的搭伴"
+			}
+			}, {
 			"path": "pages/team/releaseRouter/allRouterDetail",
 			"style": {
 				"navigationBarTitleText": "路线",
@@ -667,22 +672,22 @@
 				"navigationBarTitleText": "通知"
 			}
 		},
-		{
-			"path": "pages/team/createTeam/index",
-			"style": {
-				"navigationBarTitleText": "创建搭伴",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"float": "right",
-							"text": "发布",
-							"width": "auto",
-							"fontSize": "38upx"
-						}]
-					}
-				}
-			}
-		},
+		// {
+		// 	"path": "pages/team/createTeam/index",
+		// 	"style": {
+		// 		"navigationBarTitleText": "创建搭伴"
+		// 		// "app-plus": {
+		// 		// 	"titleNView": {
+		// 		// 		"buttons": [{
+		// 		// 			"float": "right",
+		// 		// 			"text": "发布",
+		// 		// 			"width": "auto",
+		// 		// 			"fontSize": "38upx"
+		// 		// 		}]
+		// 		// 	}
+		// 		// }
+		// 	}
+		// },
 		{
 			"path": "pages/activity/activity",
 			"style": {
