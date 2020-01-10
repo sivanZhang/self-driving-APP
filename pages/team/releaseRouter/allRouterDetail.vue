@@ -16,6 +16,12 @@
 			<view class="uni-logout">
 				<view @tap="target1('/pages/team/releaseRouter/myAllRouter')">我创建的路线</view>
 			</view>
+			<!-- <view class="uni-logout">
+				<view @tap="target1('/pages/team/createTeam/from-team')">我的搭伴</view>
+			</view> -->
+			<view class="uni-logout">
+				<view @tap="target1('/pages/team/createTeam/allTeamList')">所有的搭伴路线</view>
+			</view>
 		</uni-popup>
 	</view>
 </template>
