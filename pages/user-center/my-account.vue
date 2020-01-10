@@ -736,7 +736,7 @@
 					})
 					console.log(data)
 					try {
-					    uni.clearStorageSync();
+					    uni.removeStorageSync('log_polyline');
 					} catch (e) {
 					    // error
 					}
