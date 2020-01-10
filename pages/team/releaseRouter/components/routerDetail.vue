@@ -20,6 +20,11 @@
 									<view>已关注</view>
 								</view>
 							</view>
+							<view class="content-right" v-else>
+								<view @tap="deleteRouter(item.id)">
+								  <image style="height:50upx;width: 50upx;" src="../../../static/icons/more.png"></image>
+							    </view>
+							</view>
 						</view>
 						<view class="place-list">
 							<view class="place" v-for="(row,index) of item.via_list" :key="index">
@@ -57,8 +62,9 @@
 					</view>
 				</view>
                 <view class="footer" v-if="UserInfo.id == item.creator_id">
-					<view class="footer-left" @tap="target('/pages/team/releaseRouter/signalRouterChange?id='+item.id)">修改</view>
-					<view class="footer-right" @tap="deleteRouter(item.id)">删除</view>
+					<view class="footer-left" @tap="target('/pages/team/createTeam/index?id='+item.id)">创建搭伴</view>
+					<view class="footer-right" @tap="target('/pages/team/releaseRouter/signalRouterChange?id='+item.id)">修改</view>
+					<!-- <view class="footer-right" @tap="deleteRouter(item.id)">删除</view> -->
 				</view>
 				<view class="footer" v-else>
                     <view class="footer-left" v-if="item.partner_id!=null">
