@@ -117,7 +117,8 @@
 				content:"",
 				isLoading: false,
 				// 状态
-				status:''
+				status:'',
+				cityid:''
 
 			}
 		},
