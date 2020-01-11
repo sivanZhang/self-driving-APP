@@ -34,6 +34,9 @@
 	import {
 		Show_CarTrack
 	} from '@/api/cartrack.js'
+	import {
+		addCollect
+	} from '@/api/likeCollect'
 	export default {
 		data() {
 			return {
