@@ -523,7 +523,7 @@
 
 						// if((this.speed == 0 && this.count == 1) || (this.speed != 0 && record2.length > 9))
 						// console.log('[' + this.new_record + ']')
-						if (((this.speed == 0 || 'null') && this.count == 1) || ((this.speed != 0 && this.speed != null)  && (this.new_record).length > 9)) {
+						if (((this.speed == 0 || 'null') && this.count == 1) || ((this.speed != null)  && (this.new_record).length > 9)) {
 							Record_CarTrack({
 								track_id: this.id, 
 								method: 'put',
@@ -633,7 +633,6 @@
 								longitude: item[0]
 							})
 						})
-
 						this.latitude = points[0].latitude;
 						this.longitude = points[0].longitude;
 						if (points.length == 1){
@@ -643,6 +642,11 @@
 								width: 8, //线的宽度
 								arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
 							}];
+							this.markers = [{
+								iconPath: 'https://webapi.amap.com/images/car.png',
+								latitude: points[0].latitude,
+								longitude: points[0].longitude,
+							}, ];
 						}
 						try {
 							var oldline = uni.setStorageSync('log_polyline', this.polylines);
@@ -654,19 +658,24 @@
 						} catch (e) {
 							// error
 						}
-                        this.polylines = [{
-                        	points,
-                        	color: "#0A98D5", //线的颜色
-                        	width: 8, //线的宽度
-                        	arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
-                        }];
-                        this.polylines = newline.concat(this.polylines);
-						console.log(this.polylines)
-						this.markers = [{
-							iconPath: 'https://webapi.amap.com/images/car.png',
-							latitude: points[0].latitude,
-							longitude: points[0].longitude,
-						}, ];
+						if(points.length > 1){
+							this.polylines = [{
+								points,
+								color: "#0A98D5", //线的颜色
+								width: 8, //线的宽度
+								arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
+							}];
+							this.polylines = newline.concat(this.polylines);
+							console.log(track.length)
+							var endpoint = track.length - 1
+							console.log(endpoint)
+							this.markers = [{
+								iconPath: 'https://webapi.amap.com/images/car.png',
+								latitude: points[endpoint].latitude,
+								longitude: points[endpoint].longitude,
+							}, ];
+							console.log(this.markers)
+						}
 						//}
 						console.log(track.length)
 						if(track.length != 10){
@@ -674,7 +683,7 @@
 							this.startnum = this.endnum - 19;
 						}else{
 							this.endnum = this.endnum + 9;
-							this.startnum = this.startnum + 9;
+							this.startnum = this.endnum - 9;
 						}
 					}).catch(function(err) {
 
@@ -683,8 +692,8 @@
 			},
 			locate() {
 				var watchId = plus.geolocation.watchPosition(function(p) {
-					console.log("监听位置变化信息:");
-					console.log( JSON.stringify(p) );   
+					// console.log("监听位置变化信息:");
+					// console.log( JSON.stringify(p) );   
 					var f = JSON.stringify(p);
 
 					try {
@@ -699,7 +708,7 @@
 						// error
 					}
 				}, function(e) {
-					console.log("监听位置变化信息失败：" + e.message);
+					// console.log("监听位置变化信息失败：" + e.message);
 					var g = e.message;
 					try {
 						var time = new Date();
@@ -735,11 +744,11 @@
 						icon: "none",
 					})
 					console.log(data)
-					try {
-					    uni.removeStorageSync('log_polyline');
-					} catch (e) {
-					    // error
-					}
+					// try {
+					//     uni.removeStorageSync('log_polyline');
+					// } catch (e) {
+					//     // error
+					// }
 				})
 			},
 			showUserInfo() {
