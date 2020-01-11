@@ -523,7 +523,7 @@
 
 						// if((this.speed == 0 && this.count == 1) || (this.speed != 0 && record2.length > 9))
 						// console.log('[' + this.new_record + ']')
-						if (((this.speed == 0 || 'null') && this.count == 1) || ((this.speed != null)  && (this.new_record).length > 9)) {
+						if (((this.speed == 0 || 'null') && this.count == 1) || ((this.speed != 0 && this.speed != null)  && (this.new_record).length > 9)) {
 							Record_CarTrack({
 								track_id: this.id, 
 								method: 'put',
@@ -692,8 +692,8 @@
 			},
 			locate() {
 				var watchId = plus.geolocation.watchPosition(function(p) {
-					// console.log("监听位置变化信息:");
-					// console.log( JSON.stringify(p) );   
+					console.log("监听位置变化信息:");
+					console.log( JSON.stringify(p) );   
 					var f = JSON.stringify(p);
 
 					try {
@@ -708,7 +708,7 @@
 						// error
 					}
 				}, function(e) {
-					// console.log("监听位置变化信息失败：" + e.message);
+					console.log("监听位置变化信息失败：" + e.message);
 					var g = e.message;
 					try {
 						var time = new Date();
