@@ -21,13 +21,16 @@
 					<input  type="text" v-model="address" placeholder-class="tui-phcolor" class="tui-input" name="address" placeholder="请输入详细的收货地址" maxlength="50" />
 				</view>
 			</tui-list-cell>
+			<tui-list-cell :hover="false" padding="0">
+				<view class="tui-swipe-cell">
+					<view class="tui-title">设为默认地址</view>
+					<switch color="#30CC67" class="tui-switch-small" @change="switchChange"/>
+				</view>
+			</tui-list-cell>
 			<!-- 保存和删除地址 -->
 			<view class="tui-save">
 				<view class="tui-addr-save" height="88rpx" @tap="putAddress">
 					保存收货地址
-				</view>
-				<view class="tui-del-save" height="88rpx" @tap="deleteAddress">
-					删除收货地址
 				</view>
 			</view>
 		</form>
@@ -48,6 +51,7 @@
 				name:'',
 				mobile:'',
 				address:'',
+				default:'',
 				id:'',
 				userInfo:[]
 			}
@@ -61,6 +65,7 @@
 					if(data.status == 0){
 						this.userInfo = [...data.msg]
 						this.userInfo.map((item,index)=>{
+							this.default = item.default,
 							this.name = item.user.name,
 							this.mobile = item.phone,
 							this.address = item.address
@@ -68,13 +73,21 @@
 					}  
 				})
 			},
+			switchChange(e){
+				if(e.target.value == true){
+					this.default = 1;
+				} else{
+					this.default = 0;
+				}
+			},
 			putAddress(){
 				let data = {
 					method:"put",
 					id:this.id,
 					address:this.address,
 					receiver:this.name,
-					phone:this.mobile
+					phone:this.mobile,
+					default:this.default
 				}
 				Put_Address(data).then(({ data }) =>{
 					if(data.status == 0){
@@ -86,7 +99,12 @@
 							url: '../giftcenter/address'
 						})
 						
-					}  
+					} else{
+						uni.showToast({
+							title: data.msg,
+							duration: 2000
+						});
+					}
 				})
 			},
 			deleteAddress(){
@@ -197,7 +215,8 @@
 
 	/* #ifndef H5 */
 	.tui-switch-small .wx-switch-input {
-		margin: 0 !important;
+		margin: 10upx;
+		margin-left:20upx;
 	}
 
 	/* #endif */
@@ -206,10 +225,10 @@
 		margin-top: 120upx;
 		
 	}
-	.tui-addr-save,.tui-del-save {
+	.tui-addr-save {
 		text-align: center;
-		width:45%;
-		padding: 24upx;
+		width:93%;
+		padding: 30upx;
         border-radius: 20upx;
 		color:#FFFFFF;
 		font-weight: bold;

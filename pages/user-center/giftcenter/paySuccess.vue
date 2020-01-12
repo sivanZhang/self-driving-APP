@@ -1,28 +1,23 @@
 <template>
+	<!--支付成功-->
 	<view class="container">
 		<view class="tui-bg"></view>
 		<view class="tui-content">
 			<view class="tui-form">
 				<image src="/static/images/mall/img_recharge_success.png" class="tui-icon"></image>
 				<view class="tui-title">订单已支付成功</view>
-				<view class="tui-sub-title">非常感谢您购买我们的产品</view>
+				<view class="tui-sub-title">非常感谢您兑换我们的礼品</view>
 				<view class="tui-btn-box">
-					<tui-button type="danger" width="240rpx" height="70rpx" :size="28" :plain="true" shape="circle" @click="go(1)">返回首页</tui-button>
-					<tui-button type="danger" :shadow="true" width="240rpx" height="70rpx" :size="28" shape="circle" @click="go(2)">查看订单</tui-button>
+					<tui-button type="danger" size="mini" :plain="true" shape="circle" @click="go(1)">返回首页</tui-button>
+					<tui-button type="danger" :shadow="true" size="mini" shape="circle" @click="go(2)">查看订单</tui-button>
 				</view>
-			</view>
-		</view>
-		<view class="tui-tips">
-			<view class="tui-grey">温馨提示:</view>
-			<view class="tui-light-grey">
-				付款成功后，ThorUI不会以付款异常、卡单、系统升级为由联系您。请勿泄露银行卡号、手机验证码，否则会造成钱款损失！谨防电话诈骗！
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import tuiButton from "@/components/extend/button/button"
+	import tuiButton from "@/components/gift/button"
 	export default {
 		components: {
 			tuiButton
@@ -33,12 +28,12 @@
 		methods: {
 			go(page) {
 				if (page == 1) {
-					uni.switchTab({
-						url: "/pages/index/index"
+					uni.navigateTo({
+						url: "../giftcenter/giftcenter"
 					})
 				} else {
 					uni.navigateTo({
-						url: '../myOrder/myOrder'
+						url: '../giftcenter/my/myOrder'
 					})
 				}
 			}
@@ -96,23 +91,7 @@
 		width: 580rpx;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: space-around;
 		padding-top: 88rpx;
-	}
-
-	.tui-tips {
-		font-size: 26rpx;
-		padding: 48rpx 90rpx;
-		box-sizing: border-box;
-		text-align: justify;
-		line-height: 48rpx;
-	}
-
-	.tui-grey {
-		color: #666;
-	}
-
-	.tui-light-grey {
-		color: #888;
 	}
 </style>

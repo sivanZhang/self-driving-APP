@@ -144,23 +144,16 @@
 				this.current = index;
 				if (index != 0) {
 					if (index == 1) {
-						this.classify();
-					} else if (index == 2) {
 						uni.navigateTo({
-							url: '../mall-extend/shopcart/shopcart'
+							url: './my/my'
 						})
-					} else {
-						uni.navigateTo({
-							url: '../mall-extend/my/my'
-						})
-					}
+					} 
 				}
 			},
 			detail: function(e) {	
 				uni.navigateTo({
 					url: '../giftcenter/giftDetail?id=' + e
-				})	
-				console.log(e)	
+				})		
 			},
 			classify: function() {
 				uni.navigateTo({

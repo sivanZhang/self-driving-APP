@@ -23,7 +23,7 @@
 			</tui-list-cell>
 			<!-- 保存地址 -->
 			<view class="tui-addr-save">
-				<view type="danger" height="88rpx" @tap="createAddress">保存收货地址</view>
+				<view height="88rpx" @tap="createAddress">保存收货地址</view>
 			</view>
 		</form>
 	</view>

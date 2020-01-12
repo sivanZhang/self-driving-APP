@@ -1,19 +1,18 @@
 <template>
-	<!--兑换礼品-->
+	<!--确认订单-->
 	<view class="container">
 		<view class="tui-box">
 			<tui-list-cell :arrow="true" :last="true" :radius="true" @tap="chooseAddr">
 				<view class="tui-address">
-					<view v-if="true">
+					<view v-if="show">
 						<view class="tui-userinfo">
-							<text class="tui-name">{{name}}  {{mobile}}</text> 
+							<text class="tui-name">{{(username!='')?username:defaultName}}  {{(mobile!='')?mobile:defaultMobile}}</text> 
 						</view>
 						<view class="tui-addr">
-							<text>{{address}}</text>
+							<text>{{(address!='')?address:defaultAddress}}</text>
 						</view>
 					</view>
 					<view class="tui-none-addr" v-else>
-						<image src="/static/images/index/map.png" class="tui-addr-img" mode="widthFix"></image>
 						<text>选择收货地址</text>
 					</view>
 				</view>
@@ -25,17 +24,17 @@
 						商品信息
 					</view>
 				</tui-list-cell>
-				<block v-for="(item,index) in 2" :key="index">
+				<block>
 					<tui-list-cell :hover="false" padding="0">
 						<view class="tui-goods-item">
-							<image :src="`/static/images/mall/product/${index+3}.jpg`" class="tui-goods-img"></image>
+							<image :src="imageUrl + picture" class="tui-goods-img"></image>
 							<view class="tui-goods-center">
-								<view class="tui-goods-name">欧莱雅（LOREAL）奇焕光彩粉嫩透亮修颜霜 30ml（欧莱雅彩妆 BB霜 粉BB 遮瑕疵 隔离）</view>
-								<view class="tui-goods-attr">黑色，50ml</view>
+								<view class="tui-goods-name">{{giftname}}</view>
+								<view class="tui-goods-attr">{{content}}</view>
 							</view>
 							<view class="tui-price-right">
-								<view>￥298.00</view>
-								<view>x2</view>
+								<view>￥{{price}}</view>
+								<!-- <view>x2</view> -->
 							</view>
 						</view>
 					</tui-list-cell>
@@ -43,7 +42,7 @@
 				<tui-list-cell :hover="false">
 					<view class="tui-padding tui-flex">
 						<view>商品总额</view>
-						<view>￥1192.00</view>
+						<view>￥{{price}}</view>
 					</view>
 				</tui-list-cell>
 				<tui-list-cell :hover="false" :last="true">
@@ -51,8 +50,7 @@
 						<view class="tui-flex-end tui-color-red">
 							<view class="tui-black">合计： </view>
 							<view class="tui-size-26">￥</view>
-							<view class="tui-price-large">1192</view>
-							<view class="tui-size-26">.00</view>
+							<view class="tui-price-large">{{price}}</view>
 						</view>
 					</view>
 				</tui-list-cell>
@@ -61,13 +59,12 @@
 		<view class="tui-safe-area"></view>
 		<view class="tui-tabbar">
 			<view class="tui-flex-end tui-color-red tui-pr-20">
-				<view class="tui-black">实付金额: </view>
+				<view class="tui-black">实付虚拟币: </view>
 				<view class="tui-size-26">￥</view>
-				<view class="tui-price-large">1192</view>
-				<view class="tui-size-26">.00</view>
+				<view class="tui-price-large">{{price}}</view>
 			</view>
-			<view class="tui-pr25">
-				<tui-button width="200rpx" height="70rpx" type="danger" shape="circle" @click="btnPay">确认支付</tui-button>
+			<view class="tui-pay">
+				<view class="tui-btnpay" @click="btnPay">确认支付</view>
 			</view>
 		</view>
 
@@ -79,6 +76,8 @@
 	import tuiListCell from "@/components/gift/list-cell"
 	import tuiBottomPopup from "@/components/gift/bottom-popup"
 	import {Look_Address} from "@/api/receiptAddress"
+	import {Create_Pay} from "@/api/pay"
+	import {Create_Order} from "@/api/giftcenter"
 	export default {
 		components: {
 			tuiButton,
@@ -89,11 +88,25 @@
 			return {
 				hasCoupon: true,
 				insufficient: false,
-				name:'',
+				username:'',
 				mobile:'',
 				address:'',
+				defaultName:'',
+				defaultMobile:'',
+				defaultAddress:'',
 				id:'',
-				userInfo:[]
+				show:false,
+				userInfo:[],
+				price:'',
+				giftname:'',
+				content:'',
+				picture:'',
+				imageUrl:'',
+				addressId:'',
+				adrId:'',
+				way:2,
+				number:1,
+				giftList:''
 			}
 		},
 		computed: {
@@ -108,30 +121,90 @@
 				})
 			},
 			btnPay() {
-				uni.navigateTo({
-					url: "../giftcenter/success"
+				let data = {
+					instance:4,
+					entity:5,
+					type:1,
+					way:2,
+					money:10,
+					inner_order:12111212,
+					outer_order:12121221
+				}
+				Create_Pay(data).then(({data}) =>{
+					if(data.status == 0){
+						console.log(data)
+						uni.showToast({
+							title: '支付成功',
+							duration: 2000
+						});
+						uni.navigateTo({
+							url: "../giftcenter/paySuccess"
+						})
+					}
 				})
 			},
 			lookAddress(){
-				let data = {
-					id:this.id
-				}
-				Look_Address(data).then(({ data }) =>{
+				Look_Address().then(({ data }) =>{
 					if(data.status == 0){
-						this.userInfo = [...data.msg]
-						this.userInfo.map((item,index)=>{
-							this.name = item.user.name,
-							this.mobile = item.phone,
-							this.address = item.address
+						[...data.msg].map((item,index)=>{
+							if(item.default == 1){
+								this.show = true,
+								this.defaultName = item.user.name,
+								this.defaultMobile = item.phone,
+								this.defaultAddress = item.address,
+								this.addressId = item.id
+							}	
 						})
 					}  
 				})
+			},
+			CreateOrder(){
+				let data = {
+					specifications_id:this.id,
+					number:this.number,
+					money:this.price,
+					way:this.way,
+					address_id:this.addressId,
+					order_number:12345678
+				}
+				Create_Order(data).then(({ data }) =>{
+					console.log(data.msg)
+					if(data.status == 0){
+						console.log("订单创建成功")
+					} else {
+						console.log(data.msg)
+					}
+				})
+			},
+			giftInfo(giftList){
+				console.log(giftList);
+				this.id = giftList.id;
+				this.price = giftList.price;
+				this.content = giftList.content;
+				this.picture = giftList.picture;
+				this.giftname = giftList.name;
+				this.imageUrl = this.$store.state.BaseUrl;
+				//同步存储已选礼品信息
+				try {
+				    uni.setStorageSync('storage_key',giftList);
+				} catch (e) {
+				}
+			},
+			user(options){
+				this.adrId = options.id;
+				this.username = options.username;
+				this.address = options.address;
+				this.mobile = options.mobile;
 			}
 		},
 		onLoad: function (options) { //option为object类型，会序列化上个页面传递的参数
-			console.log(options.id);//打印出上个页面传递的id。
-			this.id = options.id;
+			console.log(options);//打印出上个页面传递的id。
+			this.giftInfo(options);
 			this.lookAddress();
+			this.user(options);
+		},
+		onShow(){
+			this.gift();
 		}
 	}
 </script>
@@ -280,29 +353,9 @@
 		padding-right: 30rpx;
 	}
 
-	.tui-balance {
-		font-size: 28rpx;
-		font-weight: 500;
-	}
-
 	.tui-black {
 		color: #222;
 		line-height: 30rpx;
-	}
-
-	.tui-gray {
-		color: #888888;
-		font-weight: 400;
-	}
-
-	.tui-light-dark {
-		color: #666;
-	}
-
-	.tui-goods-price {
-		display: flex;
-		align-items: center;
-		padding-top: 20rpx;
 	}
 
 	.tui-size-26 {
@@ -322,45 +375,6 @@
 		padding-right: 0;
 	}
 
-	.tui-phcolor {
-		color: #B3B3B3;
-		font-size: 26rpx;
-	}
-
-	/* #ifndef H5 */
-	.tui-remark-box {
-		padding: 22rpx 30rpx;
-	}
-
-	/* #endif */
-	/* #ifdef H5 */
-	.tui-remark-box {
-		padding: 26rpx 30rpx;
-	}
-
-	/* #endif */
-
-	.tui-remark {
-		flex: 1;
-		font-size: 26rpx;
-		padding-left: 64rpx;
-	}
-
-	.tui-scale-small {
-		transform: scale(0.8);
-		transform-origin: 100% center;
-	}
-
-	.tui-scale-small .wx-switch-input {
-		margin: 0 !important;
-	}
-
-	/* #ifdef H5 */
-	>>>uni-switch .uni-switch-input {
-		margin-right: 0 !important;
-	}
-
-	/* #endif */
 	.tui-tabbar {
 		width: 100%;
 		height: 98rpx;
@@ -376,11 +390,7 @@
 		padding-bottom: env(safe-area-inset-bottom);
 		z-index: 999;
 	}
-
-	.tui-pr-30 {
-		padding-right: 30rpx;
-	}
-
+	
 	.tui-pr-20 {
 		padding-right: 20rpx;
 	}
@@ -392,18 +402,24 @@
 		align-items: center;
 	}
 
-	.tui-addr-img {
-		width: 36rpx;
-		height: 46rpx;
-		display: block;
-		margin-right: 15rpx;
-	}
-
-
-	.tui-pr25 {
+	.tui-pay {
 		padding-right: 25rpx;
 	}
-
+   
+    .tui-btnpay {
+    	width: 180upx;
+    	bottom: 10upx;
+    	z-index: 9;
+		padding-top:20upx;
+    	box-sizing: border-box;
+    	text-align: center;
+    	border-radius: 30upx;
+		height:80upx;
+    	color:#FFFFFF;
+		font-size:30upx;
+    	background-color:#DF5000;
+    }
+	
 	.tui-safe-area {
 		height: 1rpx;
 		padding-bottom: env(safe-area-inset-bottom);
