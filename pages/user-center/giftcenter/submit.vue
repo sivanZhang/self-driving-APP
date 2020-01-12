@@ -106,7 +106,8 @@
 				adrId:'',
 				way:2,
 				number:1,
-				giftList:''
+				giftList:'',
+				storedGiftInfo:''
 			}
 		},
 		computed: {
@@ -121,25 +122,35 @@
 				})
 			},
 			btnPay() {
-				let data = {
-					instance:4,
-					entity:5,
-					type:1,
-					way:2,
-					money:10,
-					inner_order:12111212,
-					outer_order:12121221
-				}
-				Create_Pay(data).then(({data}) =>{
-					if(data.status == 0){
-						console.log(data)
-						uni.showToast({
-							title: '支付成功',
-							duration: 2000
-						});
-						uni.navigateTo({
-							url: "../giftcenter/paySuccess"
-						})
+				uni.showModal({
+					content: '确认是否支付？',
+					confirmColor: "#FF0000",
+					success: function(res) {
+						if (res.confirm) {
+							let data = {
+								instance:this.id,
+								entity:5,
+								type:1,
+								way:2,
+								money:this.price,
+								inner_order:12111212,
+								outer_order:12121221
+							}
+							Create_Pay(data).then(({data}) =>{
+								if(data.status == 0){
+									console.log(data)
+									uni.showToast({
+										title: '支付成功',
+										duration: 2000
+									});
+									uni.navigateTo({
+										url: "../giftcenter/paySuccess"
+									})
+								}
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
 					}
 				})
 			},
@@ -176,17 +187,11 @@
 					}
 				})
 			},
-			giftInfo(giftList){
-				console.log(giftList);
-				this.id = giftList.id;
-				this.price = giftList.price;
-				this.content = giftList.content;
-				this.picture = giftList.picture;
-				this.giftname = giftList.name;
-				this.imageUrl = this.$store.state.BaseUrl;
-				//同步存储已选礼品信息
+			giftInfo(e){
+				this.giftList = e;
+				//跳转到收货地址页面来获取收货地址的时候，将礼品详情页传递给该页面的礼品信息存储起来
 				try {
-				    uni.setStorageSync('storage_key',giftList);
+				    uni.setStorageSync('key',this.giftList);
 				} catch (e) {
 				}
 			},
@@ -199,12 +204,25 @@
 		},
 		onLoad: function (options) { //option为object类型，会序列化上个页面传递的参数
 			console.log(options);//打印出上个页面传递的id。
-			this.giftInfo(options);
+			if(options.hasOwnProperty('price')==true ){
+				this.giftInfo(options);
+			} else {
+				this.user(options);
+			}
 			this.lookAddress();
-			this.user(options);
+			this.imageUrl = this.$store.state.BaseUrl;
 		},
 		onShow(){
-			this.gift();
+			try {
+			    this.storedGiftInfo = uni.getStorageSync('key');
+			} catch (e) {
+			    // error
+			}
+			this.id = this.storedGiftInfo.id;
+			this.price = this.storedGiftInfo.price;
+			this.content = this.storedGiftInfo.content;
+			this.picture = this.storedGiftInfo.picture;
+			this.giftname = this.storedGiftInfo.name;
 		}
 	}
 </script>
