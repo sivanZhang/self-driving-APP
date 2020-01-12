@@ -53,6 +53,13 @@
 			}
 		},
 		{
+			"path": "pages/user-center/giftcenter/my/my",
+			"style": {
+				"navigationBarTitleText": "我的礼品"
+				
+			}
+		},
+		{
 			"path": "pages/user-center/giftcenter/coupon",
 			"style": {
 				"navigationBarTitleText": "领券中心"
@@ -73,11 +80,41 @@
 		{
 			"path": "pages/user-center/giftcenter/submit",
 			"style": {
-				"navigationBarTitleText": "兑换礼品",
+				"navigationBarTitleText": "确认订单",
 				"disableScroll": true,
 				"app-plus": {
 					"bounce": "none"
 					// "titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/user-center/giftcenter/paySuccess",
+			"style": {
+				"navigationBarTitleText": "支付成功",
+				"disableScroll": true,
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		{
+			"path": "pages/user-center/giftcenter/my/myOrder",
+			"style": {
+				"navigationBarTitleText": "我的订单",
+				"disableScroll": true,
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		{
+			"path": "pages/user-center/giftcenter/my/orderDetail",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"disableScroll": true,
+				"app-plus": {
+					"bounce": "none"
 				}
 			}
 		},

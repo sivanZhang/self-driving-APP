@@ -693,7 +693,6 @@
 					console.log("监听位置变化信息:");
 					console.log(JSON.stringify(p));
 					var f = JSON.stringify(p);
-
 					try {
 						var time = new Date();
 						var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
