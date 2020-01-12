@@ -523,9 +523,9 @@
 
 						// if((this.speed == 0 && this.count == 1) || (this.speed != 0 && record2.length > 9))
 						// console.log('[' + this.new_record + ']')
-						if (((this.speed == 0 || 'null') && this.count == 1) || ((this.speed != 0 && this.speed != null)  && (this.new_record).length > 9)) {
+						if (((this.speed == 0 || 'null') && this.count == 1) || ((this.speed != 0 && this.speed != null) && (this.new_record).length > 9)) {
 							Record_CarTrack({
-								track_id: this.id, 
+								track_id: this.id,
 								method: 'put',
 								record: '[' + this.new_record + ']',
 								test: '[' + this.newtest + ']',
@@ -534,7 +534,7 @@
 							}) => {
 
 								console.log(data)
-                                
+
 							})
 							console.log('[' + this.new_record + ']');
 							this.showtrack();
@@ -635,7 +635,7 @@
 						})
 						this.latitude = points[0].latitude;
 						this.longitude = points[0].longitude;
-						if (points.length == 1){
+						if (points.length == 1) {
 							this.polylines = [{
 								points,
 								color: "#0A98D5", //线的颜色
@@ -658,7 +658,7 @@
 						} catch (e) {
 							// error
 						}
-						if(points.length > 1){
+						if (points.length > 1) {
 							this.polylines = [{
 								points,
 								color: "#0A98D5", //线的颜色
@@ -666,9 +666,7 @@
 								arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
 							}];
 							this.polylines = newline.concat(this.polylines);
-							console.log(track.length)
 							var endpoint = track.length - 1
-							console.log(endpoint)
 							this.markers = [{
 								iconPath: 'https://webapi.amap.com/images/car.png',
 								latitude: points[endpoint].latitude,
@@ -678,10 +676,10 @@
 						}
 						//}
 						console.log(track.length)
-						if(track.length != 10){
+						if (track.length != 10) {
 							this.endnum = this.endnum + 10;
 							this.startnum = this.endnum - 19;
-						}else{
+						} else {
 							this.endnum = this.endnum + 9;
 							this.startnum = this.endnum - 9;
 						}
@@ -693,7 +691,7 @@
 			locate() {
 				var watchId = plus.geolocation.watchPosition(function(p) {
 					console.log("监听位置变化信息:");
-					console.log( JSON.stringify(p) );   
+					console.log(JSON.stringify(p));
 					var f = JSON.stringify(p);
 
 					try {
@@ -725,7 +723,17 @@
 					'enableHighAccuracy': true,
 					'geocode': false
 				});
-
+				var g_wakelock = null;
+				//允许程序后台运行，以持续获取GPS位置  
+				function wakeLock() {
+					//Android  
+					var main = plus.android.runtimeMainActivity();
+					var Context = plus.android.importClass("android.content.Context");
+					var PowerManager = plus.android.importClass("android.os.PowerManager");
+					var pm = main.getSystemService(Context.POWER_SERVICE);
+					g_wakelock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ANY_NAME");
+					g_wakelock.acquire();
+				}
 			},
 			closetrack() {
 				clearInterval(this.SI)
