@@ -12,29 +12,29 @@
 					</view>
 				</tui-list-cell>
 				<block>
-					<tui-list-cell padding="0" @click="detail">
+					<tui-list-cell padding="0" @tap="detail(item.id)">
 						<view class="tui-goods-item">
-							<image :src="`/static/images/mall/product/${index+3}.jpg`" class="tui-goods-img"></image>
+							<image :src = "imageUrl + item.product.picture" class="tui-goods-img"></image>
 							<view class="tui-goods-center">
 								<view class="tui-goods-name">{{item.product.specifications}}</view>
-								<view class="tui-goods-attr">黑色，50ml</view>
+								<view class="tui-goods-attr">{{item.product.content}}</view>
 							</view>
 							<view class="tui-price-right">
-								<view>￥{{item.money}}</view>
+								<view>￥{{item.money}}{{(item.way==2)?'币':'元'}}</view>
 							</view>
 						</view>
 					</tui-list-cell>
 				</block>
 				<tui-list-cell :hover="false" :last="true">
 					<view class="tui-goods-price">
-						<view>共{{index+1}}件商品 合计：</view>
+						<view>共{{item.number}}件商品 合计：</view>
 						<view class="tui-size-24">￥</view>
-						<view class="tui-price-large">{{item.money}}</view>
+						<view class="tui-price-large">{{item.money}}{{(item.way==2)?'币':'元'}}</view>
 					</view>
 				</tui-list-cell>
 				<view class="tui-order-btn">
 					<view class="tui-btn-ml">
-						<tui-button type="danger" :plain="true" width="148rpx" height="56rpx" size="mini" shape="circle">再次购买</tui-button>
+						<tui-button type="danger" :plain="true" size="mini" shape="circle" @tap="deleteOrder(item.id)">删除订单</tui-button>
 					</view>
 				</view>
 			</view>
@@ -82,32 +82,31 @@
 				loadding: false,
 				pullUpOn: true,
 				scrollTop: 0,
-				orderList:''
+				orderList:'',
+				imageUrl:'',
+				content:'',
 			}
 		},
 		methods: {
 			change(e) {
 				this.currentTab = e.index
 			},
-			detail() {
+			detail(id) {
 				uni.navigateTo({
-					url: './orderDetail'
+					url: './orderDetail?id='+id
 				})
 			},
 			lookOrder(){
 				Look_Order().then(({data}) =>{
 					if(data.status == 0){
-						console.log(data)
-						this.orderList=[...data.msg]
-						console.log(this.orderList)
+						this.orderList = [...data.msg]
 					}
 				})
+			},
+			deleteOrder(id){
+				console.log(id)
+				console.log("删除订单")
 			}
-		},
-		onPullDownRefresh() {
-			setTimeout(() => {
-				uni.stopPullDownRefresh()
-			}, 200);
 		},
 		onReachBottom() {
 			this.loadding = true
@@ -121,6 +120,7 @@
 			this.scrollTop = e.scrollTop;
 		},
 		onLoad() { 
+			this.imageUrl = this.$store.state.BaseUrl
 			this.lookOrder();
 		},
 	}
@@ -136,6 +136,8 @@
 	}
 
 	.tui-order-item {
+		border: 2upx solid #ececec;
+		border-radius: 30upx;
 		margin-top: 20rpx;
 		border-radius: 10rpx;
 		overflow: hidden;
@@ -172,6 +174,7 @@
 	.tui-goods-center {
 		flex: 1;
 		padding: 20rpx 8rpx;
+		margin-left:10rpx;
 		box-sizing: border-box;
 	}
 

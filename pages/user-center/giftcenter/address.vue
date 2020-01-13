@@ -154,10 +154,12 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		width:86%;
+		width:100%;
 		white-space: pre-line;
+		right:0;
 	}
     .tui-address-item{
+		right:0;
 		padding-left:20upx;
 		font-size:28upx;
 		color: #bfbfbf;

@@ -133,8 +133,6 @@
 				height: 64, //header高度
 				top: 0, //标题图标距离顶部距离
 				scrollH: 0, //滚动总高度
-				opcity: 0,
-				iconOpcity: 0.5,
 				turnsIndex: 0,
 				popupShow: false,
 				value: 1,
@@ -163,15 +161,6 @@
 		},
 		onLoad: function(options) {
 			let obj = {};
-			// #ifdef MP-WEIXIN
-			obj = wx.getMenuButtonBoundingClientRect();
-			// #endif
-			// #ifdef MP-BAIDU
-			obj = swan.getMenuButtonBoundingClientRect();
-			// #endif
-			// #ifdef MP-ALIPAY
-			my.hideAddToDesktopMenu();
-			// #endif
 			this.id = options.id ;
 			setTimeout(() => {
 				uni.getSystemInfo({
@@ -271,15 +260,6 @@
 				}
 			},
 		},
-		onPageScroll(e) {
-			let scroll = e.scrollTop <= 0 ? 0 : e.scrollTop;
-			let opcity = scroll / this.scrollH;
-			if (this.opcity >= 1 && opcity >= 1) {
-				return;
-			}
-			this.opcity = opcity;
-			this.iconOpcity = 0.5 * (1 - opcity < 0 ? 0 : 1 - opcity)
-		}
 	}
 </script>
 

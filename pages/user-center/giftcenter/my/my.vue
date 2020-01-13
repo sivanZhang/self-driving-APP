@@ -3,9 +3,6 @@
 	<view>
 		<!--header-->
 		<view class="tui-header-box" :style="{height:height+'px',background:'rgba(255,255,255,'+opcity+')'}">
-			<view class="tui-header" :style="{paddingTop:top+'px', opacity:opcity}">
-				我的
-			</view>
 		</view>
 		<!--header-->
 		<view class="tui-mybg-box">
@@ -15,49 +12,48 @@
 				<view class="tui-info">
 					<view class="tui-nickname">{{username||UserInfo.phone}}<image src="/static/image/mall/my/icon_vip_3x.png" class="tui-img-vip"></image>
 					</view>
-					<view class="tui-explain">这家伙很懒…</view>
 				</view>
 			</view>
 		</view>
 		<view class="tui-content-box">
 			<view class="tui-box">
-				<tui-list-cell :arrow="true" padding="0" :lineLeft="false" @click="lookOrder">
+				<tui-list-cell :arrow="true" padding="0" :lineLeft="false" @tap="lookOrder">
 					<view class="tui-cell-header">
 						<view class="tui-cell-title">我的订单</view>
 						<view class="tui-cell-sub">查看全部订单</view>
 					</view>
 				</tui-list-cell>
 				<view class="tui-order-list">
-					<view class="tui-order-item" @tap="href(4)">
+					<view class="tui-order-item" @tap="lookOrder">
 						<view class="tui-icon-box">
-							<image src="/static/images/mall/my/icon_daifukuan_3x.png" class="tui-order-icon"></image>
+							<image src="/static/image/mall/my/icon_daifukuan.png" class="tui-order-icon"></image>
 							<view class="tui-badge tui-badge-red">1</view>
 						</view>
 						<view class="tui-order-text">待付款</view>
 					</view>
-					<view class="tui-order-item" @tap="href(4)">
+					<view class="tui-order-item" @tap="lookOrder">
 						<view class="tui-icon-box">
-							<image src="/static/images/mall/my/icon_daifahuo_3x.png" class="tui-order-icon"></image>
+							<image src="/static/image/mall/my/icon_daifahuo.png" class="tui-order-icon"></image>
 							<view class="tui-badge tui-badge-red">1</view>
 						</view>
 						<view class="tui-order-text">待发货</view>
 					</view>
-					<view class="tui-order-item" @tap="href(4)">
+					<view class="tui-order-item" @tap="lookOrder">
 						<view class="tui-icon-box">
-							<image src="/static/images/mall/my/icon_daishouhuo_3x.png" class="tui-order-icon"></image>
+							<image src="/static/image/mall/my/icon_daishouhuo.png" class="tui-order-icon"></image>
 						</view>
 						<view class="tui-order-text">待收货</view>
 					</view>
-					<view class="tui-order-item" @tap="href(4)">
+					<view class="tui-order-item" @tap="lookOrder">
 						<view class="tui-icon-box">
-							<image src="/static/images/mall/my/icon_pingjia_3x.png" class="tui-order-icon"></image>
+							<image src="/static/image/mall/my/icon_pingjia.png" class="tui-order-icon"></image>
 							<view class="tui-badge tui-badge-red" v-if="false">12</view>
 						</view>
 						<view class="tui-order-text">评价</view>
 					</view>
-					<view class="tui-order-item" @tap="href(4)">
+					<view class="tui-order-item" @tap="lookOrder">
 						<view class="tui-icon-box">
-							<image src="/static/images/mall/my/icon_tuikuan_3x.png" class="tui-order-icon"></image>
+							<image src="/static/image/mall/my/icon_tuikuan.png" class="tui-order-icon"></image>
 							<view class="tui-badge tui-badge-red">2</view>
 						</view>
 						<view class="tui-order-text">退款/售后</view>
@@ -88,17 +84,13 @@
 
 <script>
 	import tuiIcon from "@/components/gift/icon"
-	import tuiButton from "@/components/gift/button"
 	import tuiListCell from "@/components/gift/list-cell"
-	import tuiDivider from "@/components/gift/divider"
 	import tuiLoadmore from "@/components/gift/loadmore"
 	import {search_users} from '@/api/usercenter'
 	export default {
 		components: {
 			tuiIcon,
-			tuiButton,
 			tuiListCell,
-			tuiDivider,
 			tuiLoadmore
 		},
 		data() {
@@ -107,7 +99,6 @@
 				top: 0, //标题图标距离顶部距离
 				scrollH: 0, //滚动总高度
 				opcity: 0,
-				iconOpcity: 0.5,
 				pageIndex: 1,
 				loadding: false,
 				pullUpOn: true,
@@ -132,7 +123,7 @@
 			},
 			PayRecord(){
 				uni.navigateTo({
-					url: '../my/payOrder'
+					url: '../my/payRecord'
 				})
 			},
 			lookAddress(){
@@ -140,29 +131,6 @@
 					url: '../address'
 				})
 			},
-			// href(page) {
-			// 	let url = "";
-			// 	switch (page) {
-			// 		case 1:
-			// 			break;
-			// 		case 2:
-			// 			url = "../set/set"
-			// 			break;
-			// 		case 3:
-			// 			url = "../userInfo/userInfo"
-			// 			break;
-			// 		case 4:
-			// 			url = "../my/myOrder"
-			// 			break;
-			// 		default:
-			// 			break;
-			// 	}
-			// 	if(url){
-			// 		uni.navigateTo({
-			// 			url: url
-			// 		})
-			// 	}
-			// },
 			search() {
 				if (this.isLogin) {
 					this.user_id = this.$store.state.UserInfo.id;
@@ -198,15 +166,7 @@
 			this.imageUrl = this.$store.state.BaseUrl
 			this.search();
 		},
-		onPageScroll(e) {
-			let scroll = e.scrollTop <= 0 ? 0 : e.scrollTop;
-			let opcity = scroll / this.scrollH;
-			if (this.opcity >= 1 && opcity >= 1) {
-				return;
-			}
-			this.opcity = opcity;
-			this.iconOpcity = 0.5 * (1 - opcity < 0 ? 0 : 1 - opcity)
-		},
+		//下拉刷新
 		onPullDownRefresh() {
 			setTimeout(() => {
 				uni.stopPullDownRefresh()

@@ -17,84 +17,81 @@
 		<tui-list-cell :last="true" :hover="false">
 			<view class="tui-flex-box">
 				<image :src="webURL+'img_order_address3x.png'" class="tui-icon-img"></image>
-				<view class="tui-addr">
-					<view class="tui-addr-userinfo">张一<text class="tui-addr-tel">17788849992</text></view>
-					<view class="tui-addr-text">广东省广州市海珠区阅江西路222号鲜卑路16巷吉安花园 2栋106</view>
+				<view class="tui-addr" v-for="(item,index) in orderInfo" :key="index">
+					<view class="tui-addr-userinfo">{{item.address.receiver}}<text class="tui-addr-tel">{{item.address.phone}}</text></view>
+					<view class="tui-addr-text">{{item.address.address}}</view>
 				</view>
 			</view>
 		</tui-list-cell>
-
 		<view class="tui-order-item">
 			<tui-list-cell :hover="false" :lineLeft="false">
 				<view class="tui-goods-title">
 					商品信息
 				</view>
 			</tui-list-cell>
-			<block v-for="(item,index) in 1" :key="index">
+			<block v-for="(item,index) in orderInfo" :key="index">
 				<tui-list-cell padding="0">
 					<view class="tui-goods-item">
-						<image :src="`/static/images/mall/product/${index+3}.jpg`" class="tui-goods-img"></image>
+						<image :src="imageUrl + item.product.picture" class="tui-goods-img"></image>
 						<view class="tui-goods-center">
-							<view class="tui-goods-name">欧莱雅（LOREAL）奇焕光彩粉嫩透亮修颜霜 30ml（欧莱雅彩妆 BB霜 粉BB 遮瑕疵 隔离）</view>
-							<view class="tui-goods-attr">黑色，50ml</view>
+							<view class="tui-goods-name">{{item.product.specifications}}</view>
+							<view class="tui-goods-attr">{{item.product.content}}</view>
 						</view>
 						<view class="tui-price-right">
-							<view>￥298.00</view>
-							<view>x2</view>
+							<view>￥{{item.money}}{{(item.way==2)?'币':'元'}}</view>
+							<view>x{{item.number}}</view>
 						</view>
 					</view>
 				</tui-list-cell>
 			</block>
-			<view class="tui-goods-info">
+			<view class="tui-goods-info" v-for="(item,index) in orderInfo" :key="index">
 				<view class="tui-price-flex tui-size24">
 					<view>商品总额</view>
-					<view>￥1192.00</view>
+					<view>￥{{item.money}}{{(item.way==2)?'币':'元'}}</view>
 				</view>
 				<view class="tui-price-flex tui-size32 tui-pbtm20">
 					<view class="tui-flex-shrink">合计</view>
 					<view class="tui-goods-price">
 						<view class="tui-size-24">￥</view>
-						<view class="tui-price-large">1192</view>
-						<view class="tui-size-24">.00</view>
+						<view class="tui-price-large">{{item.money}}{{(item.way==2)?'币':'元'}}</view>
 					</view>
 				</view>
 				<view class="tui-price-flex tui-size32">
 					<view class="tui-flex-shrink">实付款</view>
 					<view class="tui-goods-price tui-primary-color">
 						<view class="tui-size-24">￥</view>
-						<view class="tui-price-large">1192</view>
-						<view class="tui-size-24">.00</view>
+						<view class="tui-price-large">{{item.money}}{{(item.way==2)?'币':'元'}}</view>
 					</view>
 				</view>
 			</view>
 		</view>
 
-		<view class="tui-order-info">
+		<view class="tui-order-info" >
 			<tui-list-cell :hover="false">
 				<view class="tui-order-title">
 					订单信息
 				</view>
 			</tui-list-cell>
-			<view class="tui-order-content">
+			<view class="tui-order-content" v-for="(item,index) in orderInfo" :key="index">
 				<view class="tui-order-flex">
 					<view class="tui-item-title">订单号:</view>
-					<view class="tui-item-content">48690010100035</view>
+					<view class="tui-item-content">{{item.order_number}}</view>
 				</view>
 				<view class="tui-order-flex">
 					<view class="tui-item-title">物流单号:</view>
-					<view class="tui-item-content">33655511251265578556</view>
+					<view class="tui-item-content">{{item.order_number}}</view>
 				</view>
 				<view class="tui-order-flex">
 					<view class="tui-item-title">创建时间:</view>
-					<view class="tui-item-content">2019-05-26 10:36</view>
+					<view class="tui-item-content">{{item.create_date| dateTimeFormat}}</view>
 				</view>
 				<view class="tui-order-flex">
 					<view class="tui-item-title">付款时间:</view>
-					<view class="tui-item-content">2019-05-26 10:44</view>
+					<view class="tui-item-content">{{item.create_date| dateTimeFormat}}</view>
 				</view>
 				<view class="tui-order-flex">
 					<view class="tui-item-title">发货时间:</view>
-					<view class="tui-item-content">2019-05-27 10:20</view>
+					<view class="tui-item-content">{{item.create_date| dateTimeFormat}}</view>
 				</view>
 			</view>
 		</view>
@@ -103,14 +100,15 @@
 			<view class="tui-btn-mr">
 				<tui-button type="danger" :plain="true" width="148rpx" height="30rpx" size="mini" shape="circle">删除订单</tui-button>
 			</view>
-			<view class="tui-btn-mr">
+			<!-- <view class="tui-btn-mr">
 				<tui-button type="danger" :plain="true" width="148rpx" height="30rpx" size="mini" shape="circle">立即支付</tui-button>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>
 
 <script>
+	import dayjs from "dayjs"
 	import tuiIcon from '@/components/gift/icon'
 	import tuiButton from "@/components/gift/button"
 	import tuiCountdown from "@/components/gift/countdown"
@@ -128,16 +126,19 @@
 				webURL: "https://www.thorui.cn/wx/static/images/mall/order/",
 				//1-待付款 2-付款成功 3-待收货 4-订单已完成 5-交易关闭
 				status: 1,
-				orderList:''
+				imageUrl:'',
+				orderInfo:'',
+				id:''
 			}
 		},
 		methods: {
 			//查看订单详情
 			orderDetail(){
-				Look_Order().then(({data})=>{
+				Look_Order({id:this.id}).then(({data})=>{
 					if(data.status == 0){
-						this.orderList=[...data.msg]
+						this.orderInfo = [...data.msg]
 					}
+					this.imageUrl = this.$store.state.BaseUrl
 				}
 				)
 			},
@@ -153,7 +154,8 @@
 				return ["剩余时间", "等待卖家发货", "还剩X天XX小时自动确认", "", "超时未付款，订单自动取消"][status - 1]
 			}
 		},
-		onLoad: function() {
+		onLoad: function(options) {
+			this.id = options.id
 		    this.orderDetail();
 		},
 	}

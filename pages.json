@@ -81,7 +81,7 @@
 			}
 		},
 		{
-			"path": "pages/user-center/giftcenter/my/payOrder",
+			"path": "pages/user-center/giftcenter/my/payRecord",
 			"style": {
 				"navigationBarTitleText": "支付记录",
 				"disableScroll": true
