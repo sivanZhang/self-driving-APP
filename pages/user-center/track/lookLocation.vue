@@ -37,7 +37,7 @@
 					if (this.newrecord) {
 						console.log("数据缓存")
 					   this.newrecord = this.newrecord.toString()
-					   console.log(this.newrecord )
+					   // console.log(this.newrecord )
 				    }
 				} catch (e) {
 				    // error

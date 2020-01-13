@@ -53,9 +53,9 @@
 			}
 		},
 		{
-			"path": "pages/user-center/giftcenter/coupon",
+			"path": "pages/user-center/giftcenter/my/my",
 			"style": {
-				"navigationBarTitleText": "领券中心"
+				"navigationBarTitleText": "我的礼品"
 				
 			}
 		},
@@ -63,65 +63,70 @@
 			"path": "pages/user-center/giftcenter/giftDetail",
 			"style": {
 				"navigationBarTitleText": "礼品详情",
-				"disableScroll": true,
-				"app-plus": {
-					"bounce": "none"
-					// "titleNView": false
-				}
+				"disableScroll": true
 			}
 		},
 		{
 			"path": "pages/user-center/giftcenter/submit",
 			"style": {
-				"navigationBarTitleText": "兑换礼品",
-				"disableScroll": true,
-				"app-plus": {
-					"bounce": "none"
-					// "titleNView": false
-				}
+				"navigationBarTitleText": "确认订单",
+				"disableScroll": true
+			}
+		},
+		{
+			"path": "pages/user-center/giftcenter/paySuccess",
+			"style": {
+				"navigationBarTitleText": "支付成功",
+				"disableScroll": true
+			}
+		},
+		{
+			"path": "pages/user-center/giftcenter/my/payOrder",
+			"style": {
+				"navigationBarTitleText": "支付记录",
+				"disableScroll": true
+			}
+		},
+		{
+			"path": "pages/user-center/giftcenter/my/myOrder",
+			"style": {
+				"navigationBarTitleText": "我的订单",
+				"disableScroll": true
+			}
+		},
+		{
+			"path": "pages/user-center/giftcenter/my/orderDetail",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"disableScroll": true
 			}
 		},
 		{
 			"path": "pages/user-center/giftcenter/giftCategory",
 			"style": {
 				"navigationBarTitleText": "礼品分类",
-				"disableScroll": true,
-				"app-plus": {
-					"bounce": "none"
-					// "titleNView": false
-				}
+				"disableScroll": true
 			}
 		},
 		{
 			"path": "pages/user-center/giftcenter/address",
 			"style": {
 				"navigationBarTitleText": "我的收货地址",
-				"disableScroll": true,
-				"app-plus": {
-					"bounce": "none"
-					// "titleNView": false
-				}
+				"disableScroll": true
 			}
 		},
 		{
 			"path": "pages/user-center/giftcenter/createAddress",
 			"style": {
 				"navigationBarTitleText": "新建地址",
-				"disableScroll": true,
-				"app-plus": {
-					"bounce": "none"
-					// "titleNView": false
-				}
+				"disableScroll": true
 			}
 		},
 		{
 			"path": "pages/user-center/giftcenter/editAddress",
 			"style": {
 				"navigationBarTitleText": "修改地址",
-				"disableScroll": true,
-				"app-plus": {
-					"bounce": "none"
-				}
+				"disableScroll": true
 				
 			}
 		},

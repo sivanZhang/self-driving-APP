@@ -17,20 +17,20 @@
 				<view class="tui-product-title tui-border-radius">
 					<view class="tui-pro-pricebox tui-padding">
 						<view class="tui-pro-price" >
-							￥<text class="tui-price">{{!click?item.specifications[0].price:price}}</text>
+							￥<text class="tui-price">{{!click?defaultPrice:price}}</text>
 							<!-- <tui-tag class="tui-btn" size="small" :plain="true" type="high-green" shape="circle">新品</tui-tag> -->
 						</view>
 					</view>
 					<view class="tui-pro-titbox">
-						<view class="tui-pro-title">虚拟币价格：{{!click?item.specifications[0].coin:coin}}</view>
+						<view class="tui-pro-title">虚拟币价格：{{!click?defaultCoin:coin}}</view>
 						<view class="tui-pro-title">所属分类：{{item.category}}</view>
-						<view class="tui-pro-title">剩余库存：{{!click?item.specifications[0].num:num}}</view>
+						<view class="tui-pro-title">剩余库存：{{!click?defaultNum:num}}</view>
 					</view>
 				</view>
 				<view class="tui-basic-info tui-mtop tui-radius-all">
 					<view class="tui-list-cell">
 						<view class="tui-bold tui-cell-title">已选</view>
-						<view class="tui-selected-box">{{!click?item.title:name}}【{{!click?item.title:content}}】,{{value}}个，可选服务</view>
+						<view class="tui-selected-box">{{!click?defaultName:name}}【{{!click?defaultContent:content}}】</view>
 						<tui-icon name="more-fill" :size="20" class="tui-right" color="#666" @tap="showPopup"></tui-icon>
 					</view>
 					<view class="tui-list-cell tui-last">
@@ -46,16 +46,16 @@
 			<view class="tui-operation-left tui-col-5 tui-btnbox-6">
 				<tui-button type="warning" shape="circle" size="mini" @click="showPopup">查看更多规格</tui-button>
 			</view>
-			<view class="tui-operation-right tui-right-flex tui-col-7 tui-btnbox-4">
+			<view class="tui-operation-right tui-right-flex tui-col-7 tui-btnbox-4" >
 				<view class="tui-flex-1">
-					<tui-button type="danger" shape="circle" size="mini" @click="submit">兑换礼品</tui-button>
+					<tui-button type="danger" shape="circle" size="mini" @click="submit(giftId)">兑换礼品</tui-button>
 				</view>
 				<view class="tui-flex-1">
 					<tui-button type="warning" shape="circle" size="mini" @click="submit">购买礼品</tui-button>
 				</view>
 			</view>
 		</view>
-        <!--底部操作栏-->
+		 <!--底部操作栏-->
 		<!--底部选择层-->
 		<tui-bottom-popup :show="popupShow" @close="hidePopup">
 			<view class="tui-popup-box">
@@ -85,10 +85,10 @@
 								</view>
 							</view>
 						</view>
-						<view class="tui-number-box tui-bold tui-attr-title">
+						<!-- <view class="tui-number-box tui-bold tui-attr-title">
 							<view class="tui-attr-title">数量</view>
 							<tui-numberbox :max="10" :min="1" :value="value" @change="change"></tui-numberbox>
-						</view>
+						</view> -->
 					</view>
 				</scroll-view>
 				<view class="tui-operation tui-operation-right tui-right-flex tui-popup-btn">
@@ -141,6 +141,7 @@
 				collected: false,
 				click:false,
 				id:'',
+			    giftId:[],
 				dynamic:0,
 				GiftList:[],
 				Specifications:[],
@@ -152,7 +153,12 @@
 				content:'',
 				turns:[],
 				Image:[],
-				imageUrl:''
+				imageUrl:'',
+				defaultPrice:'',
+				defaultNum:'',
+				defaultCoin:'',
+				defaultName:'',
+				defaultContent:'',
 			}
 		},
 		onLoad: function(options) {
@@ -190,8 +196,8 @@
 						this.GiftList.map((item,index) =>{
 							this.picture = item.picture;
 							this.turns = item.turns;
-							this.turns.map((tip,index)=>{
-								let image = this.$store.state.BaseUrl + tip;
+							this.turns.map((imageItem,index)=>{
+								let image = this.$store.state.BaseUrl + imageItem;
 								this.Image.push(image)
 							})	
 						});
@@ -203,8 +209,14 @@
 			getGiftSpecifications(){
 				look_GiftSpecifications({product_id:this.id}).then(({ data }) =>{				 
 					if(data.status == 0){
-						this.Specifications = [...data.msg];
 						console.log(data)
+						this.Specifications = [...data.msg];
+						this.giftId = this.Specifications[0].id;
+						this.defaultPrice = this.Specifications[0].price;
+						this.defaultNum = this.Specifications[0].num;
+						this.defaultCoin = this.Specifications[0].coin;
+						this.defaultName = this.Specifications[0].name;
+						this.defaultContent = this.Specifications[0].content;
 					}
 				})
 			},
@@ -214,12 +226,12 @@
 				// console.log(item);
 				this.click = true;
 				this.dynamic = index;
+				this.giftId = item.id;
 				this.price = item.price;
 				this.coin = item.coin;
 				this.num = item.num;
 				this.name = item.name;
 				this.content = item.content;
-				console.log(this.click)
 			},
 			//轮播图切换
 			bannerChange: function(e) {
@@ -244,11 +256,19 @@
 			change: function(e) {
 				this.value = e.value
 			},
-			submit(){
+			submit(id){
 				this.popupShow = false
-				uni.navigateTo({
-					url: '../giftcenter/submit',
-				})
+				if(this.click == true){
+					uni.navigateTo({
+						url: "../giftcenter/submit?id="+id+"&price="+this.price+"&name="+this.name+
+							"&content="+this.content+"&picture="+this.picture
+					})
+				} else {
+					uni.navigateTo({
+						url: "../giftcenter/submit?id="+id+"&price="+this.defaultPrice+"&name="+this.defaultName+
+						    "&content="+this.defaultContent+"&picture="+this.picture
+					})
+				}
 			},
 		},
 		onPageScroll(e) {

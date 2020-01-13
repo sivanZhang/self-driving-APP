@@ -1,5 +1,5 @@
 <template>
-	<!-- 消费记录 -->
+	<!-- 支付记录 -->
 	<view id="expensesRecord">
 		<block v-for="(item,index) of recordList" :key="index" style="margin-top:20upx">
 			<view class="recordTime">{{item.modify_date| dateTimeFormat}}</view>
@@ -30,6 +30,7 @@
 <script>
 import dayjs from "dayjs"
 import { Look_Coin } from '@/api/currency.js'
+import { Pay_List } from '@/api/pay.js'
 export default{
 	data(){
 		return{
@@ -40,7 +41,7 @@ export default{
 	},
 	methods:{
 		lookCoin(){
-			Look_Coin({detail:''}).then(({ data }) =>{
+			look_Coin({detail:''}).then(({ data }) =>{
 			    if(data.status == 0){
 				    this.recordList = [...data.msg]
 					this.recordList.forEach((item,index)=>{
@@ -128,3 +129,4 @@ export default{
 		}
 	}
 </style>
+

@@ -24,7 +24,7 @@
 </template>
     
 <script>
-import { look_Coin } from '@/api/currency.js'
+import { Look_Coin } from '@/api/currency.js'
 import uniPopup from '@/components/uni-popup/uni-popup.vue'
 export default{
 	data(){
@@ -43,7 +43,7 @@ export default{
 			console.log(index)
 		},
 		lookCoin(){
-			look_Coin({mine:''}).then(({ data }) =>{
+			Look_Coin({mine:''}).then(({ data }) =>{
 			    if(data.status == 0){
 				    this.coinNumber = data.msg
 			   }
