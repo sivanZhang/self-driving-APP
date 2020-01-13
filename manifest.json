@@ -1,5 +1,5 @@
 {
-    "name" : "self-driving-app",
+    "name" : "嗨自驾，让自驾更嗨",
     "appid" : "__UNI__1B259BD",
     "description" : "自驾游app",
     "transformPx" : false,
@@ -10,7 +10,7 @@
         }
     ],
     "versionName" : "1.0.0",
-    "versionCode" : 103,
+    "versionCode" : 112,
     "app-plus" : {
         "usingComponents" : true,
         "safearea" : {
@@ -31,7 +31,7 @@
                 "maps" : {
                     "amap" : {
                         "appkey_ios" : "46ba7e56995de2f94c4d335ac668876d",
-                        "appkey_android" : "73a370aaba25622bfebc9c6139567930"
+                        "appkey_android" : "20df2b8298c0fb0f92bf1a20841f507c"
                     }
                 }
             },
