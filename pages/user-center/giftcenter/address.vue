@@ -6,10 +6,10 @@
 				<tui-list-cell class="tui-address-container" padding="0">
 					<uni-swipe-action>
 						<uni-swipe-action-item :options="options" @click="onClick($event,item.id)" @change="change" :show="show">
-						<view class="tui-address-flex" @tap = "confirm(item.id,item.user.name,item.phone,item.address)">
+						<view class="tui-address-flex" @tap = "confirm(item.id,item.receiver,item.phone,item.address)">
 							<view>
 								<view class="tui-address-main">
-									<view class="tui-address-name tui-ellipsis">{{name}}</view>
+									<view class="tui-address-name tui-ellipsis">{{item.receiver}}</view>
 									<view class="tui-address-tel">{{item.phone}}</view>
 								</view>
 								<view class="tui-address-detail">
@@ -45,10 +45,6 @@
 		data() {
 			return {
 				addressList: [],
-				name:'',
-				id:'',
-				address:'',
-				phone:'',
 				show:false,
 				options:[
 					{
@@ -70,9 +66,6 @@
 				  ]
 			}
 		},
-		onLoad: function() {
-            this.lookAddress();
-		},
 		onShow: function() {},
 		methods: {
 			createAddr() {
@@ -84,12 +77,6 @@
 				Look_Address().then(({ data }) =>{
 					if(data.status == 0){
 						this.addressList = [...data.msg]
-						this.addressList.map((item,index)=>{
-							this.name = item.user.name;
-							this.id = item.id;
-							this.phone = item.phone;
-							this.address = item.address
-						})
 					}
 				})
 			},
@@ -141,12 +128,15 @@
 			change(open){
 			    console.log('当前开启状态：'+ open)
 			},
-			confirm(id,name,phone,address){
+			confirm(id,receiver,phone,address){
 				uni.navigateTo({
-					url: "../giftcenter/submit?id="+id+"&username="+name+"&mobile="+phone+"&address="+address
+					url: "../giftcenter/submit?id="+id+"&username="+receiver+"&mobile="+phone+"&address="+address
 				})
 			},
-		}
+		},
+		onLoad: function() {
+		    this.lookAddress();
+		},
 	}
 </script>
 

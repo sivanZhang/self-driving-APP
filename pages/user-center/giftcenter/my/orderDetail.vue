@@ -1,4 +1,5 @@
 <template>
+	<!--订单详情-->
 	<view class="container">
 		<view class="tui-order-header">
 			<image :src="webURL+'img_detail_bg.png'" mode="widthFix" class="tui-img-bg"></image>
@@ -114,6 +115,7 @@
 	import tuiButton from "@/components/gift/button"
 	import tuiCountdown from "@/components/gift/countdown"
 	import tuiListCell from "@/components/gift/list-cell"
+	import { Look_Order} from "@/api/giftcenter"
 	export default {
 		components: {
 			tuiIcon,
@@ -125,10 +127,20 @@
 			return {
 				webURL: "https://www.thorui.cn/wx/static/images/mall/order/",
 				//1-待付款 2-付款成功 3-待收货 4-订单已完成 5-交易关闭
-				status: 1
+				status: 1,
+				orderList:''
 			}
 		},
 		methods: {
+			//查看订单详情
+			orderDetail(){
+				Look_Order().then(({data})=>{
+					if(data.status == 0){
+						this.orderList=[...data.msg]
+					}
+				}
+				)
+			},
 			getImg: function(status) {
 				return this.webURL + ["img_order_payment3x.png", "img_order_send3x.png", "img_order_received3x.png",
 					"img_order_signed3x.png", "img_order_closed3x.png"
@@ -140,7 +152,10 @@
 			getReason: function(status) {
 				return ["剩余时间", "等待卖家发货", "还剩X天XX小时自动确认", "", "超时未付款，订单自动取消"][status - 1]
 			}
-		}
+		},
+		onLoad: function() {
+		    this.orderDetail();
+		},
 	}
 </script>
 

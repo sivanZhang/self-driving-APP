@@ -64,7 +64,7 @@
 				<view class="tui-price-large">{{price}}</view>
 			</view>
 			<view class="tui-pay">
-				<view class="tui-btnpay" @click="btnPay">确认支付</view>
+				<view class="tui-btnpay" @click="CreateOrder">确认支付</view>
 			</view>
 		</view>
 
@@ -78,6 +78,7 @@
 	import {Look_Address} from "@/api/receiptAddress"
 	import {Create_Pay} from "@/api/pay"
 	import {Create_Order} from "@/api/giftcenter"
+	import {Add_Coin} from "@/api/currency"
 	export default {
 		components: {
 			tuiButton,
@@ -94,7 +95,7 @@
 				defaultName:'',
 				defaultMobile:'',
 				defaultAddress:'',
-				id:'',
+				giftId:'',
 				show:false,
 				userInfo:[],
 				price:'',
@@ -102,12 +103,15 @@
 				content:'',
 				picture:'',
 				imageUrl:'',
-				addressId:'',
-				adrId:'',
+				defaultAddrId:'',
+				addrId:'',
 				way:2,
+				type:1,
 				number:1,
 				giftList:'',
-				storedGiftInfo:''
+				storedGiftInfo:'',
+				orderId:'',
+				orderAddressId:''
 			}
 		},
 		computed: {
@@ -116,35 +120,78 @@
 			}
 		},
 		methods: {
+			//选择收货地址
 			chooseAddr() {
 				uni.navigateTo({
 					url: "../giftcenter/address"
 				})
 			},
+			//显示默认地址
+			lookDefaultAddress(){
+				Look_Address().then(({ data }) =>{
+					if(data.status == 0){
+						[...data.msg].map((item,index)=>{
+							if(item.default == 1){
+								this.show = true,
+								this.defaultName = item.receiver,
+								this.defaultMobile = item.phone,
+								this.defaultAddress = item.address,
+								this.defaultAddrId = item.id
+							}	
+						})
+					}  
+				})
+			},
+			//添加订单
+			CreateOrder(){
+				if(this.address!=''){
+					this.orderAddressId = this.addrId
+				} else {
+					this.orderAddressId = this.defaultAddrId
+				}
+				let data = {
+					specifications_id:this.giftId,
+					number:this.number,
+					money:this.price,
+					way:this.way,
+					address_id:this.orderAddressId,
+					order_number:12345678
+				}
+				Create_Order(data).then(({ data }) =>{
+					if(data.status == 0){
+						this.orderId = data.bill_id
+						// this.btnPay();
+					} else {
+						console.log(data.msg)
+					}
+				})
+			},
+			//礼品支付
 			btnPay() {
+				let that = this
 				uni.showModal({
 					content: '确认是否支付？',
 					confirmColor: "#FF0000",
 					success: function(res) {
 						if (res.confirm) {
 							let data = {
-								instance:this.id,
-								entity:5,
-								type:1,
-								way:2,
-								money:this.price,
+								instance:that.giftId,
+								entity:7,
+								type:that.type,
+								way:that.way,
+								money:that.price,
 								inner_order:12111212,
 								outer_order:12121221
 							}
 							Create_Pay(data).then(({data}) =>{
 								if(data.status == 0){
-									console.log(data)
+									this.reduceCoin()
 									uni.showToast({
 										title: '支付成功',
 										duration: 2000
 									});
 									uni.navigateTo({
-										url: "../giftcenter/paySuccess"
+										url: "../giftcenter/paySuccess?id="+this.orderId
 									})
 								}
 							})
@@ -154,40 +201,24 @@
 					}
 				})
 			},
-			lookAddress(){
-				Look_Address().then(({ data }) =>{
+			//确认支付，用户账户减少相应虚拟币
+			reduceCoin(){
+				let action = '-'+ this.price
+				let reason = '购买'+this.giftname+'物品花费'+this.price+'元'
+				let data = {
+					entity:5,
+					instance:this.giftId,
+					action:action,
+					reason:reason
+				}
+				Add_Coin(data).then(({ data }) =>{
 					if(data.status == 0){
-						[...data.msg].map((item,index)=>{
-							if(item.default == 1){
-								this.show = true,
-								this.defaultName = item.user.name,
-								this.defaultMobile = item.phone,
-								this.defaultAddress = item.address,
-								this.addressId = item.id
-							}	
-						})
+						
 					}  
 				})
 			},
-			CreateOrder(){
-				let data = {
-					specifications_id:this.id,
-					number:this.number,
-					money:this.price,
-					way:this.way,
-					address_id:this.addressId,
-					order_number:12345678
-				}
-				Create_Order(data).then(({ data }) =>{
-					console.log(data.msg)
-					if(data.status == 0){
-						console.log("订单创建成功")
-					} else {
-						console.log(data.msg)
-					}
-				})
-			},
-			giftInfo(e){
+			//接收礼品详情页面传递的礼品信息
+			getGiftInfo(e){
 				this.giftList = e;
 				//跳转到收货地址页面来获取收货地址的时候，将礼品详情页传递给该页面的礼品信息存储起来
 				try {
@@ -195,34 +226,40 @@
 				} catch (e) {
 				}
 			},
-			user(options){
-				this.adrId = options.id;
-				this.username = options.username;
-				this.address = options.address;
-				this.mobile = options.mobile;
+			//接收收货地址页面传递的收货地址信息
+			AddressInfo(e){
+				this.addrId = e.id;
+				this.username = e.username;
+				this.address = e.address;
+				this.mobile = e.mobile;
+			},
+			//获取存储的礼品信息
+			getStoredGiftInfo(){
+				//取出之前存储的礼品信息将其展示出来
+				try {
+				    this.storedGiftInfo = uni.getStorageSync('key');
+				} catch (e) {
+				    // error
+				}
+				this.giftId = this.storedGiftInfo.id;
+				this.price = this.storedGiftInfo.price;
+				this.content = this.storedGiftInfo.content;
+				this.picture = this.storedGiftInfo.picture;
+				this.giftname = this.storedGiftInfo.name;
 			}
 		},
 		onLoad: function (options) { //option为object类型，会序列化上个页面传递的参数
 			console.log(options);//打印出上个页面传递的id。
 			if(options.hasOwnProperty('price')==true ){
-				this.giftInfo(options);
+				this.getGiftInfo(options);
 			} else {
-				this.user(options);
+				this.AddressInfo(options);
 			}
-			this.lookAddress();
+			this.lookDefaultAddress();
 			this.imageUrl = this.$store.state.BaseUrl;
 		},
 		onShow(){
-			try {
-			    this.storedGiftInfo = uni.getStorageSync('key');
-			} catch (e) {
-			    // error
-			}
-			this.id = this.storedGiftInfo.id;
-			this.price = this.storedGiftInfo.price;
-			this.content = this.storedGiftInfo.content;
-			this.picture = this.storedGiftInfo.picture;
-			this.giftname = this.storedGiftInfo.name;
+			this.getStoredGiftInfo();
 		}
 	}
 </script>

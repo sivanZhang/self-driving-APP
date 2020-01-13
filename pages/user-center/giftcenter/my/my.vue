@@ -1,5 +1,5 @@
 <template>
-	<!--我的礼品-->
+	<!--礼品中心“我的”页面-->
 	<view>
 		<!--header-->
 		<view class="tui-header-box" :style="{height:height+'px',background:'rgba(255,255,255,'+opcity+')'}">
@@ -18,28 +18,10 @@
 					<view class="tui-explain">这家伙很懒…</view>
 				</view>
 			</view>
-			<view class="tui-header-btm" @tap="href(5)">
-				<view class="tui-btm-item" >
-					<view class="tui-btm-num">25</view>
-					<view class="tui-btm-text">收藏夹</view>
-				</view>
-				<view class="tui-btm-item">
-					<view class="tui-btm-num">22</view>
-					<view class="tui-btm-text">店铺关注</view>
-				</view>
-				<view class="tui-btm-item">
-					<view class="tui-btm-num">3</view>
-					<view class="tui-btm-text">喜欢的内容</view>
-				</view>
-				<view class="tui-btm-item">
-					<view class="tui-btm-num">44</view>
-					<view class="tui-btm-text">足迹</view>
-				</view>
-			</view>
 		</view>
 		<view class="tui-content-box">
-			<view class="tui-box tui-order-box">
-				<tui-list-cell :arrow="true" padding="0" :lineLeft="false" @click="href(4)">
+			<view class="tui-box">
+				<tui-list-cell :arrow="true" padding="0" :lineLeft="false" @click="lookOrder">
 					<view class="tui-cell-header">
 						<view class="tui-cell-title">我的订单</view>
 						<view class="tui-cell-sub">查看全部订单</view>
@@ -81,6 +63,22 @@
 						<view class="tui-order-text">退款/售后</view>
 					</view>
 				</view>
+			</view>
+			<view class="tui-box">
+				<tui-list-cell :arrow="true" padding="0" :lineLeft="false" @click="PayRecord">
+					<view class="tui-cell-header">
+						<view class="tui-cell-title">我的消费记录</view>
+						<view class="tui-cell-sub">查看全部消费记录</view>
+					</view>
+				</tui-list-cell>
+			</view>
+			<view class="tui-box">
+				<tui-list-cell :arrow="true" padding="0" :lineLeft="false" @click="lookAddress">
+					<view class="tui-cell-header">
+						<view class="tui-cell-title">我的收货地址</view>
+						<view class="tui-cell-sub">查看全部地址</view>
+					</view>
+				</tui-list-cell>
 			</view>
 			<!--加载loadding-->
 			<tui-loadmore :visible="loadding" :index="3" type="red"></tui-loadmore>
@@ -127,34 +125,44 @@
 			}
 		},
 		methods: {
-			href(page) {
-				let url = "";
-				switch (page) {
-					case 1:
-						break;
-					case 2:
-						url = "../set/set"
-						break;
-					case 3:
-						url = "../userInfo/userInfo"
-						break;
-					case 4:
-						url = "../my/myOrder"
-						break;
-					default:
-						break;
-				}
-				if(url){
-					uni.navigateTo({
-						url: url
-					})
-				}
-			},
-			detail: function() {
+			lookOrder(){
 				uni.navigateTo({
-					url: '../../productDetail/productDetail'
+					url: '../my/myOrder'
 				})
 			},
+			PayRecord(){
+				uni.navigateTo({
+					url: '../my/payOrder'
+				})
+			},
+			lookAddress(){
+				uni.navigateTo({
+					url: '../address'
+				})
+			},
+			// href(page) {
+			// 	let url = "";
+			// 	switch (page) {
+			// 		case 1:
+			// 			break;
+			// 		case 2:
+			// 			url = "../set/set"
+			// 			break;
+			// 		case 3:
+			// 			url = "../userInfo/userInfo"
+			// 			break;
+			// 		case 4:
+			// 			url = "../my/myOrder"
+			// 			break;
+			// 		default:
+			// 			break;
+			// 	}
+			// 	if(url){
+			// 		uni.navigateTo({
+			// 			url: url
+			// 		})
+			// 	}
+			// },
 			search() {
 				if (this.isLogin) {
 					this.user_id = this.$store.state.UserInfo.id;
@@ -419,6 +427,7 @@
 		position: relative;
 		top: -72rpx;
 		z-index: 10;
+		margin-top: 20rpx;
 	}
 
 	.tui-box {
@@ -429,13 +438,9 @@
 		overflow: hidden;
 	}
 
-	.tui-order-box {
-		height: 208rpx;
-	}
-
 	.tui-cell-header {
 		width: 100%;
-		height: 74rpx;
+		height: 100rpx;
 		padding: 0 26rpx;
 		box-sizing: border-box;
 		display: flex;

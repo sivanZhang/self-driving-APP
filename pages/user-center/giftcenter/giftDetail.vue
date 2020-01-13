@@ -209,6 +209,7 @@
 			getGiftSpecifications(){
 				look_GiftSpecifications({product_id:this.id}).then(({ data }) =>{				 
 					if(data.status == 0){
+						console.log(data)
 						this.Specifications = [...data.msg];
 						this.giftId = this.Specifications[0].id;
 						this.defaultPrice = this.Specifications[0].price;

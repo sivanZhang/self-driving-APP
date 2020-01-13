@@ -4,86 +4,40 @@
 		<tui-tabs :tabs="tabs" :isFixed="scrollTop>=0" :currentTab="currentTab" selectedColor="#E41F19" sliderBgColor="#E41F19"
 		 @change="change"></tui-tabs>
 		<view :class="{'tui-order-list':scrollTop>=0}">
-			<view class="tui-order-item" v-for="(model,orderIndex) in 1" :key="orderIndex">
+			<view class="tui-order-item" v-for="(item,index) in orderList" :key="index">
 				<tui-list-cell :hover="false" :lineLeft="false">
 					<view class="tui-goods-title">
-						<view>订单号：T201910000</view>
+						<view>订单号：{{item.order_number}}</view>
 						<view class="tui-order-status">已完成</view>
 					</view>
 				</tui-list-cell>
-				<block v-for="(item,index) in 1" :key="index">
+				<block>
 					<tui-list-cell padding="0" @click="detail">
 						<view class="tui-goods-item">
 							<image :src="`/static/images/mall/product/${index+3}.jpg`" class="tui-goods-img"></image>
 							<view class="tui-goods-center">
-								<view class="tui-goods-name">欧莱雅（LOREAL）奇焕光彩粉嫩透亮修颜霜 30ml（欧莱雅彩妆 BB霜 粉BB 遮瑕疵 隔离）</view>
+								<view class="tui-goods-name">{{item.product.specifications}}</view>
 								<view class="tui-goods-attr">黑色，50ml</view>
 							</view>
 							<view class="tui-price-right">
-								<view>￥298.00</view>
-								<view>x2</view>
+								<view>￥{{item.money}}</view>
 							</view>
 						</view>
 					</tui-list-cell>
 				</block>
 				<tui-list-cell :hover="false" :last="true">
 					<view class="tui-goods-price">
-						<view>共4件商品 合计：</view>
+						<view>共{{index+1}}件商品 合计：</view>
 						<view class="tui-size-24">￥</view>
-						<view class="tui-price-large">1192</view>
-						<view class="tui-size-24">.00</view>
+						<view class="tui-price-large">{{item.money}}</view>
 					</view>
 				</tui-list-cell>
 				<view class="tui-order-btn">
-					<view class="tui-btn-ml">
-						<tui-button type="danger" :plain="true" width="148rpx" height="56rpx" size="mini" shape="circle">评价晒单</tui-button>
-					</view>
 					<view class="tui-btn-ml">
 						<tui-button type="danger" :plain="true" width="148rpx" height="56rpx" size="mini" shape="circle">再次购买</tui-button>
 					</view>
 				</view>
 			</view>
-
-			<view class="tui-order-item">
-				<tui-list-cell :hover="false" :lineLeft="false">
-					<view class="tui-goods-title">
-						<view>订单号：T201910000</view>
-						<view class="tui-order-status">已取消</view>
-					</view>
-				</tui-list-cell>
-				<block v-for="(item,index) in 1" :key="index">
-					<tui-list-cell padding="0" @click="detail">
-						<view class="tui-goods-item">
-							<image :src="`/static/images/mall/product/${index+3}.jpg`" class="tui-goods-img"></image>
-							<view class="tui-goods-center">
-								<view class="tui-goods-name">欧莱雅（LOREAL）奇焕光彩粉嫩透亮修颜霜 30ml（欧莱雅彩妆 BB霜 粉BB 遮瑕疵 隔离）</view>
-								<view class="tui-goods-attr">黑色，50ml</view>
-							</view>
-							<view class="tui-price-right">
-								<view>￥298.00</view>
-								<view>x2</view>
-							</view>
-						</view>
-					</tui-list-cell>
-				</block>
-				<tui-list-cell :hover="false" :last="true">
-					<view class="tui-goods-price">
-						<view>共4件商品 合计：</view>
-						<view class="tui-size-24">￥</view>
-						<view class="tui-price-large">596</view>
-						<view class="tui-size-24">.00</view>
-					</view>
-				</tui-list-cell>
-				<view class="tui-order-btn">
-					<view class="tui-btn-ml">
-						<tui-button type="danger" :plain="true" width="148rpx" height="56rpx" size="mini" shape="circle">删除订单</tui-button>
-					</view>
-					<view class="tui-btn-ml">
-						<tui-button type="danger" :plain="true" width="148rpx" height="56rpx" size="mini" shape="circle">再次购买</tui-button>
-					</view>
-				</view>
-			</view>
-
 		</view>
 		<!--加载loadding-->
 		<tui-loadmore :visible="loadding" :index="3" type="red"></tui-loadmore>
@@ -127,7 +81,8 @@
 				pageIndex: 1,
 				loadding: false,
 				pullUpOn: true,
-				scrollTop: 0
+				scrollTop: 0,
+				orderList:''
 			}
 		},
 		methods: {
@@ -143,6 +98,8 @@
 				Look_Order().then(({data}) =>{
 					if(data.status == 0){
 						console.log(data)
+						this.orderList=[...data.msg]
+						console.log(this.orderList)
 					}
 				})
 			}
