@@ -52,7 +52,7 @@
 				username:'',
 				sex:'',
 				id:'',
-				url:null,
+				url:'',
 			};
 		},
 		computed: {
@@ -65,7 +65,6 @@
 		},
 		onShow() {
 			this.searchUser();
-			this.url = this.$store.state.BaseUrl + '/'
 		},
 		onLoad(){
             this.search();
@@ -95,6 +94,7 @@
 							this.thumbnail_portait = data.msg[0].thumbnail_portait;
 							this.sex = data.msg[0].sex;
 							this.username = data.msg[0].username;
+							this.url = this.$store.state.BaseUrl + '/'
 						})
 				}
 			},

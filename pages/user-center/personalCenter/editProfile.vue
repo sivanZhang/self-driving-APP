@@ -81,7 +81,7 @@
 				plateNo: '',
 				plateShow: false,
                 id:'',
-				url:null,
+				url:'',
 			};
 		},
 		components: {
@@ -102,7 +102,6 @@
 		},
 		onShow() {
 			this.search();
-            this.url = this.$store.state.BaseUrl + '/'
 		},
 		methods: {
 			onKeyInput: function(event) {
@@ -110,7 +109,6 @@
 				this.name = event.target.value;
 			},
 			change() {
-
 				uni.showToast({
 					title: '昵称只可以修改一次哦',
 					icon: "none",
@@ -138,6 +136,7 @@
 							this.thumbnail_portait = data.msg[0].thumbnail_portait;
 							this.plateNo = data.msg[0].car_number;
 							this.signature = data.msg[0].signature;
+							this.url = this.$store.state.BaseUrl + '/'
 							this.sex = data.msg[0].sex;
 							if (this.sex == '男') {
 								this.checked = true;

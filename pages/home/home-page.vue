@@ -199,7 +199,7 @@
 				sizeType: ['压缩', '原图', '压缩或原图'],
 				countIndex: 8,
 				count: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-				url:null,
+				url:'',
 			}
 		},
 		onBackPress() {
@@ -225,7 +225,6 @@
 	   },
 	   onShow(){
 		   this.search();
-		   this.url = this.$store.state.BaseUrl + '/'
 	   },
 	   computed: {
 	   	UserInfo() {
@@ -240,7 +239,6 @@
 				this.followClick = !this.followClick;
 			},
 			search() {
-				
 				if( this.isLogin ){
 					this.id = this.$store.state.UserInfo.id;  				
 						let data = '';
@@ -251,7 +249,8 @@
 							data
 						}) => {
 							this.thumbnail_portait = data.msg[0].thumbnail_portait;
-							this.username = data.msg[0].username;								
+							this.username = data.msg[0].username;
+							this.url = this.$store.state.BaseUrl + '/'								
 						})
 				}				
 			},

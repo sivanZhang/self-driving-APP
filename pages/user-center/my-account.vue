@@ -767,8 +767,8 @@
 					this.list = data.msg;
 					this.index = this.list.rank;
 					this.distance = this.list.mileage;
+					this.imageUrl = this.$store.state.BaseUrl;
 				})
-				this.imageUrl = this.$store.state.BaseUrl
 			}
 		},
 

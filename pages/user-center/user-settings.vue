@@ -55,22 +55,18 @@
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
 	export default {
 		data() {
-			
 			return {
-			
 				thumbnail_portait: '',
-				url:null,
+				url:'',
 			};
 		},
 		computed: {
-			
 			UserInfo() {
 				return this.$store.state.UserInfo
 			}
 		},
 		onShow() {
 			this.search();
-		    this.url = this.$store.state.BaseUrl + '/'
 		},
 		components: {
 			uniIcon,
@@ -86,7 +82,7 @@
 					data
 				}) => {
 					this.thumbnail_portait = data.msg[0].thumbnail_portait;
-			       
+			        this.url = this.$store.state.BaseUrl + '/'
 				})
 			},
 			target(url) {
