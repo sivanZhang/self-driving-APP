@@ -422,7 +422,7 @@
 						this.thumbnail_portait = data.msg[0].thumbnail_portait;
 						this.username = data.msg[0].username;
 						this.sex = data.msg[0].sex;
-
+                        this.imageUrl = this.$store.state.BaseUrl;
 					}).catch(function(err) {
 						// console.log(err);
 					})
@@ -767,7 +767,6 @@
 					this.list = data.msg;
 					this.index = this.list.rank;
 					this.distance = this.list.mileage;
-					this.imageUrl = this.$store.state.BaseUrl;
 				})
 			}
 		},
