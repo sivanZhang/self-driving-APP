@@ -1,6 +1,6 @@
 <template>
 	<view>
-		嗨圈
+		车迹
 	</view>
 </template>
 

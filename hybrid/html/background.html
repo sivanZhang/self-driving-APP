@@ -41,25 +41,26 @@
     </div>
 </div>
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4f59b5834fb366bde9c97903d0963626"></script>
-<script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.0.1.52.js"></script>
+<script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js"></script>
 <script type="text/javascript">
+   
    document.addEventListener('UniAppJSBridgeReady', function() {  
        uni.getEnv(function(res) {  
            console.log('当前环境：' + JSON.stringify(res));  
        });  
    });
-   console.log(getQuery('data'));  //获取 uni-app 传来的值
-   
    function getQuery(name) {
-       // 正则：[找寻'&' + 'url参数名字' = '值' + '&']（'&'可以不存在）
-       let reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-       let r = window.location.search.substr(1).match(reg);
-       if(r != null) {
-           // 对参数值进行解码
-           return unescape(r[2]);
-       }
-       return null;
+   				 
+   	// 正则：[找寻'&' + 'url参数名字' = '值' + '&']（'&'可以不存在）
+   	let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+   	let r = decodeURIComponent(window.location.search.substr(1)).match(reg);
+   	if (r != null) {
+   		// 对参数值进行解码
+   	      return unescape(r[2]);
+   	}
+   		return null;
    }
+    console.log(getQuery('data'));  //获取 uni-app 传来的值
     var marker, lineArr = [[108.99695334013998, 34.26134201624083], [108.99685477938361, 34.261748350547414], [108.99680134843297, 34.261909784203276], [108.99671377705343, 34.26187437860341], [108.99680434044049, 34.26147895795421], [108.99681855573074, 34.26142566754822], [108.99682211632935, 34.261412382198806], [108.99682308001334, 34.26140884766763], [108.99688435812278, 34.26119769177206], [108.99735589431602, 34.2613877110072], [108.99760402439321, 34.26148765642578], [108.99767431419454, 34.26151674394284], [108.99768943113452, 34.26152302675434], [108.99769138312467, 34.26152385916115], [108.99768955819145, 34.261523131300684], [108.99724277706062, 34.26125057697777], [108.99700190094046, 34.261191625120695], [108.9969147127867, 34.26132600244644], [108.99685685378236, 34.26141678887047], [108.9968181853887, 34.2614774732527], [108.99679250746794, 34.26151778360822], [108.99676333070327, 34.26156733936455], [108.99676741784441, 34.261424746856385], [108.99691953695732, 34.261173889854646], [108.99691953695732, 34.261173889854646], [108.99691655273772, 34.26123374007689], [108.99691457484327, 34.26126055863954], [108.99691346515306, 34.26127081208837], [108.9969195048208, 34.26133414598866]];
     var map = new AMap.Map("container", {
         resizeEnable: true,

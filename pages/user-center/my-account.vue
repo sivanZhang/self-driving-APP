@@ -4,6 +4,7 @@
 		<view class="wall">
 			<!-- <view class="record" >{{longitude}}--{{latitude}}--{{speed}}</view> -->
 			<view class="header" @tap="isLogin?target('/pages/user-center/track/alltrack?id='+this.id):toLogin()">
+
 				<view class="top-left">
 					<view class="milage">
 						总里程数
@@ -27,7 +28,7 @@
 			</view>
 
 			<view class="wall-top">
-				<image v-if="isLogin" class="img" :src="imageUrl + thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
+				<image v-if="isLogin"  class="img" :src="imageUrl + thumbnail_portait" @tap="target('/pages/user-center/personalCenter/personalCenter')"></image>
 				<image v-else class="img" src="/static/icons/zhuce.png"></image>
 				<view class="top">
 					<view class="information">
@@ -189,7 +190,7 @@
 		<uni-popup ref="popup" type="bottom">
 			<map style="width: 100%; height: 300px;" :polyline='polylines' :latitude="latitude" :longitude="longitude" :markers="markers"
 			 show-location="true" scale="17">
-			</map>
+			</map> 
 		</uni-popup>
 	</view>
 </template>
@@ -208,7 +209,8 @@
 		CarTrack_Share,
 		Record_CarTrack,
 		Close_CarTrack,
-		Show_CarTrack
+		Show_CarTrack,
+		Show_Unclosetrack
 	} from '@/api/cartrack.js'
 	// import uniBadge from "@/components/uni-badge/uni-badge.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
@@ -240,6 +242,7 @@
 				open: '',
 				close: '',
 				id: '',
+				unclose_id: '',
 				user_id: '',
 				longitude: '',
 				latitude: '',
@@ -249,12 +252,16 @@
 				locationinfo: '',
 				test: [],
 				newtest: [],
+				oldtime:0,
+				correct_test: [],
 				SI: '',
 				count: 0,
+				add: 0,
 				distance: '',
 				index: '',
 				new_record: [],
 				newtrack: [],
+				Track:[],
 				list: '',
 				imageUrl: '',
 				startnum: 0,
@@ -284,7 +291,7 @@
 				this.doGetLocation();
 				// this.chooseLocation()
 			},
-			doGetLocation() {
+			doGetLocation() { 
 				uni.getLocation({
 					type: 'gcj02',
 					geocode: true,
@@ -428,6 +435,40 @@
 					})
 				}
 			},
+			unclose(){
+				Show_Unclosetrack().then(({ data }) => {
+					// console.log(data.mark)
+					if(data.mark==0){
+						var that = this;
+						uni.showModal({
+							content: '您记录的车迹尚未结束,是否确认继续记录？',
+							success: function(res) {
+								if (res.confirm) {
+									console.log('用户点击确定');
+									
+								} else if (res.cancel) {
+									console.log('用户点击取消');
+									that.unclose_id = data.car;
+									that.close = 0;
+									Close_CarTrack({
+										track_id: that.unclose_id,
+										tag: that.close,
+										method: 'put'
+									}).then(({
+										data
+									}) => {
+										uni.showToast({
+											title: data.msg,
+											icon: "none",
+										})
+										console.log(data)
+									})
+								}
+							}
+						});
+					}
+				});
+			},
 			target(url) {
 				if (this.isLogin) {
 					uni.navigateTo({
@@ -450,34 +491,84 @@
 				})
 			},
 			track() {
-				this.doGetLocation();
-				if (this.hasLocation === true) {
-					this.$refs.popup.open();
-					this.open = 1;
-					CarTrack_Share({
-						tag: this.open
-					}).then(({
-						data
-					}) => {
-						if (data.status === 0) {
-							this.stop = false
-							this.id = data.car_track_id
-							uni.showToast({
-								title: data.msg,
-								icon: "none",
-							})
-							this.recordtrack();
-						}
-					})
-				} else {
-					uni.showToast({
-						title: "请开启定位服务",
-						icon: "none",
-					})
-				}
-			},
+							this.doGetLocation();
+							if (this.hasLocation === true) {
+								this.$refs.popup.open();
+								this.open = 1;
+								CarTrack_Share({
+									tag: this.open
+								}).then(({
+									data
+								}) => {
+									if (data.status === 0) {
+										this.stop = false
+										this.id = data.car_track_id
+										uni.showToast({
+											title: data.msg,
+											icon: "none",
+										})
+										this.recordtrack();
+									}
+								})
+							} else {
+								uni.showToast({
+									title: "请开启定位服务",
+									icon: "none",
+								})
+							}
+						},
+			// track() {
+			// 	this.doGetLocation();
+			// 	if (this.hasLocation === true) {
+			// 		this.$refs.popup.open();
+			// 		let that = this;
+			// 		uni.showActionSheet({
+			// 			itemList: ['开始记录车迹'],
+			// 			success: function(res) {
+			// 				// #ifdef APP-PLUS
+			// 				var styles = {};
+			// 				if (!plus.webview.defaultHardwareAccelerated() && parseInt(plus.os.version) >= 5) {
+			// 					styles.hardwareAccelerated = true;
+			// 				}
+			// 				wv = plus.webview.create("", "custom-webview", {
+			// 					plusrequire: "none", //禁止远程网页使用plus的API，有些使用mui制作的网页可能会监听plus.key，造成关闭页面混乱，可以通过这种方式禁止
+			// 					'uni-app': 'none', //不加载uni-app渲染层框架，避免样式冲突
+			// 					top: uni.getSystemInfoSync().statusBarHeight + 300, //放置在titleNView下方。如果还想在webview上方加个地址栏的什么的，可以继续降低TOP值
+			// 					height: 500,
+			// 					render: 'onscreen',
+			// 				})
+			// 				wv.loadURL("/hybrid/html/background.html?data=this.Track")
+			// 				var currentWebview = that.$mp.page.$getAppWebview() //获取当前页面的webview对象
+			// 				currentWebview.append(wv); //一定要append到当前的页面里！！！才能跟随当前页面一起做动画，一起关闭
+			// 				// #endif
+			// 				CarTrack_Share({
+			// 					tag: that.open
+			// 				}).then(({
+			// 					data
+			// 				}) => {
+			// 					if (data.status === 0) {
+			// 						that.stop = false
+			// 						that.id = data.car_track_id
+			// 						uni.showToast({
+			// 							title: data.msg,
+			// 							icon: "none",
+			// 						})
+			// 						that.recordtrack();
+			// 					}
+			// 				})
+			// 			}
+			// 		});
+			// 		this.open = 1;
+			// 	} else {
+			// 		uni.showToast({
+			// 			title: "请开启定位服务",
+			// 			icon: "none",
+			// 		})
+			// 	}
+			// },
 
 			recordtrack() {
+				this.add = 0;
 				this.startnum = 0;
 				this.endnum = 9;
 				this.polylines = []
@@ -504,6 +595,42 @@
 							this.record1 + ']');
 						// console.log("1:前端记录发给后端的");
 						// console.log('[' + this.newrecord + ']')	
+						if (this.add == 0) {
+							    this.add = this.add + 1;
+								// console.log(this.add)
+								this.oldtime = parseInt(time.getTime() / 1000);
+								if(this.oldtime >0){
+									var oldtest = {
+										x: this.longitude.toFixed(6)*1,
+										y: this.latitude.toFixed(6)*1,
+										sp: this.speed,
+										ag: 0,
+										tm: this.oldtime
+									}
+									}
+								var oldtast = JSON.stringify(oldtest);
+								this.correct_test = this.correct_test.concat(oldtast);
+								
+							}
+						   console.log(this.new_record.length)
+						    if(this.new_record.length > 1){
+								if (this.add != 0) {
+									// console.log(this.oldtime)
+								    	var newtime = parseInt(time.getTime() / 1000) - this.oldtime;
+										// console.log(newtime)
+								    	if(newtime >0){
+								    	var	 oldtest = {
+								    			x: this.longitude.toFixed(6)*1,
+								    			y: this.latitude.toFixed(6)*1,
+								    			sp: this.speed,
+								    			ag: 0,
+								    			tm: newtime
+								    		}  
+								    	}
+								    	var oldtast = JSON.stringify(oldtest);
+								    	this.correct_test = this.correct_test.concat(oldtast);
+								}
+							}
 						//同步获取位置信息
 						try {
 							//    var old = uni.getStorageSync('log_geo' );
@@ -522,17 +649,17 @@
 						// console.log(this.count)
 
 						// if((this.speed == 0 && this.count == 1) || (this.speed != 0 && record2.length > 9))
-						// console.log('[' + this.new_record + ']')
 						if (((this.speed == 0 || 'null') && this.count == 1) || ((this.speed != 0 && this.speed != null) && (this.new_record).length > 9)) {
 							Record_CarTrack({
 								track_id: this.id,
 								method: 'put',
 								record: '[' + this.new_record + ']',
 								test: '[' + this.newtest + ']',
+								correct_test:'[' + this.correct_test + ']',
 							}).then(({
 								data
 							}) => {
-
+                                console.log('[' + this.correct_test + ']')
 								console.log(data)
 
 							})
@@ -540,6 +667,8 @@
 							this.showtrack();
 							this.new_record = []
 							this.newtest = []
+							this.add = 0;
+							this.correct_test = []
 						}
 					}, 1000)
 
@@ -550,6 +679,7 @@
 						this.latitude = this.locationinfo.latitude;
 						this.speed = this.locationinfo.speed;
 						this.record = [this.longitude, this.latitude];
+
 						this.test = JSON.stringify(this.locationinfo);
 						var time = new Date();
 						var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
@@ -563,6 +693,43 @@
 							this.record1 + ']');
 						// console.log("1:前端记录发给后端的");
 						// console.log('[' + this.newrecord + ']')	
+						if (this.add == 0) {
+							    this.add = this.add + 1;
+								// console.log(this.add)
+								this.oldtime = parseInt(time.getTime() / 1000);
+								if(this.oldtime >0){
+									var oldtest = {
+										x: this.longitude.toFixed(6)*1,
+										y: this.latitude.toFixed(6)*1,
+										sp: this.speed,
+										ag: 0,
+										tm: this.oldtime
+									}
+									}
+								var oldtast = JSON.stringify(oldtest);
+								this.correct_test = this.correct_test.concat(oldtast);
+								// console.log(this.correct_test)
+							}
+						
+						    if(this.new_record.length > 1){
+								if (this.add != 0) {
+									// console.log(this.oldtime)
+								    	var newtime = parseInt(time.getTime() / 1000) - this.oldtime;
+										// console.log(newtime)
+								    	if(newtime >0){
+								    	var	 oldtest = {
+								    			x: this.longitude.toFixed(6)*1,
+								    			y: this.latitude.toFixed(6)*1,
+								    			sp: this.speed,
+								    			ag: 0,
+								    			tm: newtime
+								    		}  
+								    	}
+								    	var oldtast = JSON.stringify(oldtest);
+								    	this.correct_test = this.correct_test.concat(oldtast);
+								    	// console.log(this.correct_test)
+								}
+							}
 						//同步获取位置信息
 						try {
 							//    var old = uni.getStorageSync('log_geo' );
@@ -589,6 +756,7 @@
 								method: 'put',
 								record: '[' + this.new_record + ']',
 								test: '[' + this.newtest + ']',
+								correct_test:'[' + this.correct_test + ']',
 							}).then(({
 								data
 							}) => {
@@ -600,6 +768,8 @@
 							this.showtrack();
 							this.new_record = []
 							this.newtest = []
+							this.add = 0;
+							this.correct_test = []
 						}
 					}, 100)
 				}
@@ -618,16 +788,15 @@
 						data
 					}) => {
 						console.log(data)
-						var track = data.msg[0].record;
+						this.Track = data.msg[0].record;
 						console.log("2:从后端接收的");
-						console.log(track)
-
+						console.log(this.Track)
 						// if (track.length >= 0) {
 						// var track1 = JSON.parse(track);
 						// console.log(track1)
 						// console.log(11111)
 						var points = []
-						track.forEach((item, index) => {
+						this.Track.forEach((item, index) => {
 							points.splice(index, 0, {
 								latitude: item[1],
 								longitude: item[0]
@@ -666,7 +835,7 @@
 								arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
 							}];
 							this.polylines = newline.concat(this.polylines);
-							var endpoint = track.length - 1
+							var endpoint = Track.length - 1
 							this.markers = [{
 								iconPath: 'https://webapi.amap.com/images/car.png',
 								latitude: points[endpoint].latitude,
@@ -675,8 +844,8 @@
 							console.log(this.markers)
 						}
 						//}
-						console.log(track.length)
-						if (track.length != 10) {
+						console.log(this.Track.length)
+						if (this.Track.length != 10) {
 							this.endnum = this.endnum + 10;
 							this.startnum = this.endnum - 19;
 						} else {
@@ -737,26 +906,35 @@
 			closetrack() {
 				clearInterval(this.SI)
 				this.new_record = []
+				this.correct_test = []
 				this.close = 0;
-				Close_CarTrack({
-					track_id: this.id,
-					tag: this.close,
-					method: 'put'
-				}).then(({
-					data
-				}) => {
-					this.stop = true
-					uni.showToast({
-						title: data.msg,
-						icon: "none",
-					})
-					console.log(data)
-					// try {
-					//     uni.removeStorageSync('log_polyline');
-					// } catch (e) {
-					//     // error
-					// }
-				})
+				var that = this;
+				uni.showModal({
+					content: '是否确认放弃记录轨迹？',
+					success: function(res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
+							Close_CarTrack({
+								track_id: that.id,
+								tag: that.close,
+								method: 'put'
+							}).then(({
+								data
+							}) => {
+								that.stop = true;
+								uni.showToast({
+									title: data.msg,
+									icon: "none",
+								})
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
+				// #ifdef APP-PLUS
+				plus.webview.close("custom-webview");
+				// #endif
 			},
 			showUserInfo() {
 				Show_CarTrack({
@@ -768,25 +946,11 @@
 					this.index = this.list.rank;
 					this.distance = this.list.mileage;
 				})
+					
 			}
 		},
 
 		onLoad() {
-			//     // #ifdef APP-PLUS
-			//      wv = plus.webview.create("","custom-webview",{
-			//          plusrequire:"none", //禁止远程网页使用plus的API，有些使用mui制作的网页可能会监听plus.key，造成关闭页面混乱，可以通过这种方式禁止
-			//           'uni-app': 'none', //不加载uni-app渲染层框架，避免样式冲突
-			//          top:uni.getSystemInfoSync().statusBarHeight,//放置在titleNView下方。如果还想在webview上方加个地址栏的什么的，可以继续降低TOP值
-			// height:100,
-			//      })
-			//      wv.loadURL("/hybrid/html/background.html")
-			//      var currentWebview = this.$mp.page.$getAppWebview() //获取当前页面的webview对象
-			//      currentWebview.append(wv);//一定要append到当前的页面里！！！才能跟随当前页面一起做动画，一起关闭
-			//      setTimeout(function() {
-			//          console.log(wv.getStyle())
-			//      }, 1000);//如果是首页的onload调用时需要延时一下，二级页面无需延时，可直接获取
-			//      // #endif
-
 			setTimeout(function() {
 				uni.showToast({
 					title: "点击中间的按钮可以开始记录车迹哦",
@@ -803,6 +967,7 @@
 			this.doGetLocation();
 			this.showUserInfo();
 			this.search();
+			this.unclose();
 		},
 	};
 </script>
@@ -1091,3 +1256,5 @@
 		}
 	}
 </style>
+
+
