@@ -935,15 +935,14 @@
 				// #endif
 			},
 			showUserInfo() {
-				let rank = ''
 				Show_CarTrack({
 					count: ''
 				}).then(({
 					data
 				}) => {
+					console.log('111111')
+					console.log(data)
 					this.list = data.msg;
-					this.index = this.list.rank;
-					this.distance = this.list.mileage;
 					this.index = this.list.year_rank;
 					this.distance = this.list.year_distance;
 					this.imageUrl = this.$store.state.BaseUrl;
