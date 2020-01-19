@@ -424,8 +424,11 @@
 			}
 		},{
 			"path": "pages/circle/hi-circle",
-			"style": {}
-		}, {
+			"style": {
+				"navigationBarTitleText": "记录车迹"
+			}
+		},
+		{
 			"path": "pages/offer-reward/offer-reward",
 			"style": {
 				"navigationBarTitleText": "悬赏",

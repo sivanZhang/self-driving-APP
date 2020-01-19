@@ -835,7 +835,7 @@
 								arrowLine: true, //带箭头的线 开发者工具暂不支持该属性					   		
 							}];
 							this.polylines = newline.concat(this.polylines);
-							var endpoint = Track.length - 1
+							var endpoint = this.Track.length - 1
 							this.markers = [{
 								iconPath: 'https://webapi.amap.com/images/car.png',
 								latitude: points[endpoint].latitude,
@@ -932,9 +932,6 @@
 						}
 					}
 				});
-				// #ifdef APP-PLUS
-				plus.webview.close("custom-webview");
-				// #endif
 			},
 			showUserInfo() {
 				Show_CarTrack({
