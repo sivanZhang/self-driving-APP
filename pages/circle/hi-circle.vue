@@ -413,8 +413,8 @@
 		},
 		locate() {
 			var watchId = plus.geolocation.watchPosition(function(p) {
-				// console.log("监听位置变化信息:");
-				// console.log(JSON.stringify(p));
+				console.log("监听位置变化信息:");
+				console.log(JSON.stringify(p));
 				var f = JSON.stringify(p);
 				try {
 					var time = new Date();
@@ -428,7 +428,7 @@
 					// error
 				}
 			}, function(e) {
-				// console.log("监听位置变化信息失败：" + e.message);
+				console.log("监听位置变化信息失败：" + e.message);
 				var g = e.message;
 				try {
 					var time = new Date();
