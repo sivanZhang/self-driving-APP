@@ -296,7 +296,6 @@
 					type: 'gcj02',
 					geocode: true,
 					altitude: true,
-
 					success: (res) => {
 						// console.log(res)
 						this.locationinfo = res
@@ -304,7 +303,6 @@
 						this.location = formatLocation(res.longitude, res.latitude);
 						this.speed = res.speed
 						this.address = res.address
-						this.name = res.address.poiName
 						// console.log(this.locationinfo)
 					},
 					fail: (err) => {
@@ -859,8 +857,8 @@
 			},
 			locate() {
 				var watchId = plus.geolocation.watchPosition(function(p) {
-					console.log("监听位置变化信息:");
-					console.log(JSON.stringify(p));
+					// console.log("监听位置变化信息:");
+					// console.log(JSON.stringify(p));
 					var f = JSON.stringify(p);
 					try {
 						var time = new Date();
@@ -939,9 +937,12 @@
 				}).then(({
 					data
 				}) => {
+					console.log('111111')
+					console.log(data)
 					this.list = data.msg;
-					this.index = this.list.rank;
-					this.distance = this.list.mileage;
+					this.index = this.list.year_rank;
+					this.distance = this.list.year_distance;
+					this.imageUrl = this.$store.state.BaseUrl;
 				})
 					
 			}

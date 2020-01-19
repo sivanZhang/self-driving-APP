@@ -68,13 +68,13 @@
 		<view class="bottom">
 			<!-- <view class="bottom-background"></view> -->
 			<view class="bottom-item">
-				<view class="bottom-item-rank">{{rank}}</view>
+				<view class="bottom-item-rank">{{userRank}}</view>
 				<view class="bottom-item-avatar">
-					<image class="avatar" :src="url+image"></image>
+					<image class="avatar" :src="url+userImage"></image>
 				</view>
 				<view class="bottom-item-user">
-					<view class="bottom-item-username">{{username}}</view>
-					<view class="bottom-item-kilometers">{{distance}}km</view>
+					<view class="bottom-item-username">{{userName}}</view>
+					<view class="bottom-item-kilometers">{{userDistance}}km</view>
 				</view>
 				<!-- <button size="mini" class="bottom-item-share" @click="shareInfo">和好友比一比</button> -->
 			</view>
@@ -105,6 +105,9 @@
 		Track_Rank,
 	} from '@/api/track.js'
 	import {
+		Show_CarTrack
+	} from '@/api/cartrack.js'
+	import {
 		get_GiftRank
 	} from '@/api/giftcenter.js'
 	export default {
@@ -116,17 +119,20 @@
 				imageURL: '/static/image/background2.jpg',
 				totalList:[],
 				topThreeList:[],
-				distance:'',
-				rank:'',
-				username:'',
-				info:'',
-				image:'',
 				buttonList:["年度榜","月度榜"],
 				dynamic:0,
 				BaseUrl:'',
 				hit:true,
 				totalImage:'',
-				url:''
+				url:'',
+				userDistance:'',
+				userName:'',
+				userImage:'',
+				userRank:'',
+				userYearDistance:'',
+				userYearRank:'',
+				userMonthDistance:'',
+				userMonthRank:''
 			};
 		},
 		computed: {
@@ -134,7 +140,7 @@
 		},
 		methods: {
 			//年度榜
-			lookrank_total(){
+			lookrank_year(){
 				let data = {
 					year:''
 				}
@@ -144,11 +150,6 @@
 					if(data.status === 0){
 						this.totalList = [...data.msg];
 					    this.topThreeList = this.totalList.slice(0,3);
-						this.info = data.user_rank;
-						this.rank = this.info.rank;
-						this.username = this.info.user_name;
-						this.distance = this.info.mileage;
-						this.image = this.info.user__thumbnail_portait;
 						this.url = this.$store.state.BaseUrl
 					}
 				})
@@ -164,10 +165,6 @@
 					if(data.status === 0){
 						this.totalList = [...data.msg];
 					    this.topThreeList = this.totalList.slice(0,3)
-				        this.info = data.user_rank;
-				        this.rank = this.info.rank;
-				        this.username = this.info.user_name;
-				        this.distance = this.info.mileage;
 					}
 				})
 			},
@@ -175,11 +172,42 @@
 				this.dynamic = index;
 				if (index == 0){
 					this.hit = true;
-					this.lookrank_total()
+					this.lookrank_year();
+					this.userYearInfo()
 				}else{
 					this.hit = false;
-					this.lookrank_month()
+					this.lookrank_month();
+					this.userMonthInfo()
 				}
+			},
+			//当前用户年排行
+			userYearInfo() {
+				let rank=''
+				Show_CarTrack({
+					count: ''
+				}).then(({
+					data
+				}) => {
+					this.list = data.msg;
+					this.userImage = this.list.user__thumbnail_portait;
+					this.userName = this.list.user_name;
+					this.userDistance = this.list.year_distance;
+					this.userRank = this.list.year_rank;
+					this.userMonthDistance = this.list.month_distance;
+					this.userMonthRank = this.list.month_rank;
+				})
+			},
+			//当前用户周排行
+			userMonthInfo(){
+				let rank=''
+				Show_CarTrack({
+					count: ''
+				}).then(({
+					data
+				}) => {
+					this.userDistance = this.list.month_distance;
+					this.userRank = this.list.month_rank;
+				})
 			},
 			//分享排名
 			shareInfo() {
@@ -319,8 +347,9 @@
 
 		},
 		onLoad() {
-			this.lookrank_total();
+			this.lookrank_year();
 			this.getGift();
+			this.userYearInfo()
 		},
 		onShow(){
 			

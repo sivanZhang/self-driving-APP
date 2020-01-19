@@ -149,6 +149,7 @@
 				} else {
 					this.orderAddressId = this.defaultAddrId
 				}
+				console.log(this.giftId)
 				let data = {
 					specifications_id:this.giftId,
 					number:this.number,
@@ -160,7 +161,7 @@
 				Create_Order(data).then(({ data }) =>{
 					if(data.status == 0){
 						this.orderId = data.bill_id
-						// this.btnPay();
+						this.btnPay();
 					} else {
 						console.log(data.msg)
 					}
@@ -185,14 +186,9 @@
 							}
 							Create_Pay(data).then(({data}) =>{
 								if(data.status == 0){
-									this.reduceCoin()
-									uni.showToast({
-										title: '支付成功',
-										duration: 2000
-									});
-									uni.navigateTo({
-										url: "../giftcenter/paySuccess?id="+this.orderId
-									})
+									that.reduceCoin()
+								}else{
+									console.log(222)
 								}
 							})
 						} else if (res.cancel) {
@@ -213,7 +209,13 @@
 				}
 				Add_Coin(data).then(({ data }) =>{
 					if(data.status == 0){
-						
+						uni.showToast({
+							title: '支付成功',
+							duration: 2000
+						});
+						uni.navigateTo({
+							url: "../giftcenter/paySuccess?id="+this.orderId
+						})
 					}  
 				})
 			},

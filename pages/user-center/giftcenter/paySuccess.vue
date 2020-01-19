@@ -23,7 +23,13 @@
 			tuiButton
 		},
 		data() {
-			return {}
+			return {
+				id:''
+			}
+		},
+		onLoad: function(options) {
+			this.id = options.id ;
+			console.log(options)
 		},
 		methods: {
 			go(page) {
@@ -33,7 +39,7 @@
 					})
 				} else {
 					uni.navigateTo({
-						url: '../giftcenter/my/myOrder'
+						url: '../giftcenter/my/myOrder?id='+this.id
 					})
 				}
 			}
