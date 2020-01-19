@@ -433,19 +433,19 @@
 					})
 				}
 			},
-			unclose(){
-				Show_Unclosetrack().then(({ data }) => {
+			unclose() {
+				Show_Unclosetrack().then(({
+					data
+				}) => {
 					// console.log(data.mark)
-					if(data.mark==0){
+					if (data.mark == 0) {
 						var that = this;
 						uni.showModal({
-							content: '您记录的车迹尚未结束,是否确认继续记录？',
+							content: '您记录的车迹尚未结束,是否结束记录？',
+							cancelText: '继续记录',
+							confirmText: '结束记录',
 							success: function(res) {
 								if (res.confirm) {
-									console.log('用户点击确定');
-									
-								} else if (res.cancel) {
-									console.log('用户点击取消');
 									that.unclose_id = data.car;
 									that.close = 0;
 									Close_CarTrack({
@@ -459,8 +459,11 @@
 											title: data.msg,
 											icon: "none",
 										})
-										console.log(data)
+										// console.log(data)
 									})
+			
+								} else if (res.cancel) {
+									console.log("用户点击继续")
 								}
 							}
 						});
@@ -857,8 +860,8 @@
 			},
 			locate() {
 				var watchId = plus.geolocation.watchPosition(function(p) {
-					console.log("监听位置变化信息:");
-					console.log(JSON.stringify(p));
+					// console.log("监听位置变化信息:");
+					// console.log(JSON.stringify(p));
 					var f = JSON.stringify(p);
 					try {
 						var time = new Date();
@@ -872,7 +875,7 @@
 						// error
 					}
 				}, function(e) {
-					console.log("监听位置变化信息失败：" + e.message);
+					// console.log("监听位置变化信息失败：" + e.message);
 					var g = e.message;
 					try {
 						var time = new Date();

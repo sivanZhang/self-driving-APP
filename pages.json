@@ -10,6 +10,14 @@
 			}
 		}, 
 		{
+			"path": "pages/circle/hi-circle",
+			"style": {
+				"navigationBarTitleText": "记录车迹",
+				"navigationBarBackgroundColor": "#DF5000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
 			"path": "pages/user-center/track/alltrack",
 			"style": {
 				"navigationBarTitleText": "车迹"	,
@@ -421,11 +429,6 @@
 				
 				// 	}
 			 //    }
-			}
-		},{
-			"path": "pages/circle/hi-circle",
-			"style": {
-				"navigationBarTitleText": "记录车迹"
 			}
 		},
 		{
