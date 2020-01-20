@@ -60,6 +60,7 @@
 		onShow: function() {
 			this.doGetLocation();
 			// this.unclose();
+			this.locate();
 		},
 		computed: {
 			isLogin() {
@@ -67,7 +68,6 @@
 			},
 		},
 		onLoad() {
-			this.locate();
 			this.getLocationTest();
 			uni.getSystemInfo({
 				success: (res) => {
