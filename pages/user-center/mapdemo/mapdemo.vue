@@ -62,7 +62,6 @@ export default {
 					width: 4,
 				};
 				this.polylines.splice(0, 1, polyline);
-				let flag = true
 				this.lineInterval = setInterval(() => {
 					uni.getLocation({
 						type: 'gcj02'
@@ -76,28 +75,13 @@ export default {
 						this.mapContext.moveToLocation()
 						// this.carMarkers.longitude = result[1].longitude;
 						// this.carMarkers.latitude = result[1].latitude;
-						if(flag){
-							// this.mapContext.translateMarker({
-							// 	markerId: 110,
-							// 	destination: position,
-							// 	duration:3000,
-							// 	autoRotate:true
-							// })
-							points.push(position);
-							flag = false
-						}else{
-							if(result.speed>0){
-								this.mapContext.translateMarker({
-									markerId: 110,
-									destination: position,
-									duration:3000,
-									autoRotate:true
-								})
-								points.push(position);
-							}else{
-								points.splice((points.length-1),1,position)
-							}
-						}
+						this.mapContext.translateMarker({
+							markerId: 110,
+							destination: position,
+							duration:3000,
+							autoRotate:true
+						})
+						points.push(position);
 					});
 				}, 3000);
 			}
