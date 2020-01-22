@@ -75,12 +75,12 @@ export default {
 						this.mapContext.moveToLocation()
 						// this.carMarkers.longitude = result[1].longitude;
 						// this.carMarkers.latitude = result[1].latitude;
-						this.mapContext.translateMarker({
-							markerId: 110,
-							destination: position,
-							duration:3000,
-							autoRotate:true
-						})
+						// this.mapContext.translateMarker({
+						// 	markerId: 110,
+						// 	destination: position,
+						// 	duration:3000,
+						// 	autoRotate:true
+						// })
 						points.push(position);
 					});
 				}, 3000);
