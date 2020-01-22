@@ -1,0 +1,134 @@
+<template>
+	<view>
+		<!-- 可以注册事件触发 -->
+		<map
+			id="mapContainer"
+			ref="mapContainer"
+			:longitude="mapCenter.longitude"
+			:latitude="mapCenter.latitude"
+			:polyline="polylines"
+			@controltap="getCurrentPosition"
+			:controls="controls"
+			show-location
+			:markers="[carMarkers]"
+		>
+			<!-- cover-view相对于地图的位置 -->
+			<!-- <cover-view style="position: absolute;bottom: 0;left: 500rpx;"><button type="text" @click="getCurrentPosition()">定位</button></cover-view> -->
+		</map>
+	</view>
+</template>
+
+<script>
+import { pathParam, pathParam2 } from './positions.js';
+export default {
+	data() {
+		return {
+			lineInterval: null,
+			mapContext: null,
+			mapCenter: {
+				longitude: null,
+				latitude: null
+			},
+			polylines: [],
+			carMarkers: {
+				id: 110,
+				iconPath: '../../../static/car.png',
+				width: 20,
+				height: 20
+			},
+			controls: [
+				{
+					clickable: true,
+					id: 1,
+					position: {
+						left: 5,
+						top: 5,
+						width: 30,
+						height: 30
+					},
+					iconPath: '../../../static/image/position.png'
+				}
+			]
+		};
+	},
+	methods: {
+		getCurrentPosition(e) {
+			if (e.controlId === 1) {
+				const points = [];
+				const polyline = {
+					color: '#DC143C',
+					arrowLine: true,
+					points,
+					width: 4,
+				};
+				this.polylines.splice(0, 1, polyline);
+				this.lineInterval = setInterval(() => {
+					uni.getLocation({
+						type: 'wgs84'
+					}).then(result => {
+						this.mapCenter.longitude = result[1].longitude;
+						this.mapCenter.latitude = result[1].latitude;
+						// this.mapContext.moveToLocation()
+						// this.carMarkers.longitude = result[1].longitude;
+						// this.carMarkers.latitude = result[1].latitude;
+						this.mapContext.translateMarker({
+							markerId: 110,
+							destination: {
+								longitude: result[1].longitude,
+								latitude: result[1].latitude
+							},
+							duration:3000,
+							autoRotate:true
+						});
+						points.push({
+							longitude: result[1].longitude,
+							latitude: result[1].latitude
+						});
+					});
+				}, 10000);
+			}
+		},
+		handleControlClick(e) {
+			if (e.controlId === 1) {
+				const points = [];
+				const polyline = {
+					color: '#DC143C',
+					arrowLine: true,
+					points,
+					width: 4
+				};
+				this.polylines.splice(0, 1, polyline);
+				let count = 1;
+				let lineInterval = setInterval(() => {
+					points.push({
+						longitude: pathParam[count - 1].x,
+						latitude: pathParam[count - 1].y
+					});
+					count++;
+					if (count === pathParam.length) {
+						clearInterval(lineInterval);
+					}
+				}, 300);
+			}
+		},
+		handleMapReady() {
+			this.mapContext = uni.createMapContext('mapContainer');
+			this.mapCenter = {
+				longitude: pathParam[0].x,
+				latitude: pathParam[0].y
+			};
+		}
+	},
+	onReady() {
+		this.handleMapReady()
+	}
+};
+</script>
+
+<style>
+#mapContainer {
+	position: relative;
+	width: 750rpx;
+	height: 1000rpx;
+}
+</style>
