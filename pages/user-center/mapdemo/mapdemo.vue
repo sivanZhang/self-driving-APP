@@ -33,8 +33,8 @@ export default {
 			carMarkers: {
 				id: 110,
 				iconPath: '../../../static/car.png',
-				width: 20,
-				height: 20
+				width: 30,
+				height: 30
 			},
 			controls: [
 				{
@@ -43,10 +43,10 @@ export default {
 					position: {
 						left: 5,
 						top: 5,
-						width: 30,
-						height: 30
+						width: 36,
+						height: 36
 					},
-					iconPath: '../../../static/image/position.png'
+					iconPath: '../../../static/end.png'
 				}
 			]
 		};
@@ -62,30 +62,44 @@ export default {
 					width: 4,
 				};
 				this.polylines.splice(0, 1, polyline);
+				let flag = true
 				this.lineInterval = setInterval(() => {
 					uni.getLocation({
-						type: 'wgs84'
+						type: 'gcj02'
 					}).then(result => {
-						this.mapCenter.longitude = result[1].longitude;
-						this.mapCenter.latitude = result[1].latitude;
-						// this.mapContext.moveToLocation()
+						// this.mapCenter.longitude = result[1].longitude;
+						// this.mapCenter.latitude = result[1].latitude;
+						let position = {
+									longitude: result[1].longitude,
+									latitude: result[1].latitude
+								}
+						this.mapContext.moveToLocation()
 						// this.carMarkers.longitude = result[1].longitude;
 						// this.carMarkers.latitude = result[1].latitude;
-						this.mapContext.translateMarker({
-							markerId: 110,
-							destination: {
-								longitude: result[1].longitude,
-								latitude: result[1].latitude
-							},
-							duration:3000,
-							autoRotate:true
-						});
-						points.push({
-							longitude: result[1].longitude,
-							latitude: result[1].latitude
-						});
+						if(flag){
+							// this.mapContext.translateMarker({
+							// 	markerId: 110,
+							// 	destination: position,
+							// 	duration:3000,
+							// 	autoRotate:true
+							// })
+							points.push(position);
+							flag = false
+						}else{
+							if(result.speed>0){
+								this.mapContext.translateMarker({
+									markerId: 110,
+									destination: position,
+									duration:3000,
+									autoRotate:true
+								})
+								points.push(position);
+							}else{
+								points.splice((points.length-1),1,position)
+							}
+						}
 					});
-				}, 10000);
+				}, 3000);
 			}
 		},
 		handleControlClick(e) {

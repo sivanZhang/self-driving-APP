@@ -822,10 +822,6 @@
 				}
 			}
 		}
-        ,{
-            "path" : "pages/user-center/demo/demo",
-            "style" : {}
-        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
