@@ -52,6 +52,46 @@ export default {
 		};
 	},
 	methods: {
+		testBackend(){
+			var watchId = plus.geolocation.watchPosition(function(p) {
+					// console.log("监听位置变化信息:");
+					// console.log(JSON.stringify(p));
+					var f = JSON.stringify(p);
+					console.log("in watch position")
+					//console.log(f)
+					try {
+						var time = new Date();
+						var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
+							':' + time.getMinutes() + ':' + time.getSeconds();
+						var lo = '这是监听位置变化信息的内容' + ':' + time1 + '--' + f
+						var old = uni.getStorageSync('log_g');
+						uni.setStorageSync('log_g', lo.concat(old));
+
+					} catch (e) {
+						console.log("catch watch2 error:")
+						console.log(e.message)
+					}
+				}, function(e) {
+					console.log("监听位置变化信息失败：" + e.message);
+					var g = e.message;
+					try {
+						var time = new Date();
+						var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
+							':' + time.getMinutes() + ':' + time.getSeconds();
+						var lo = '这是监听位置变化信息的内容' + ':' + time1 + '--' + g
+						var old = uni.getStorageSync('log_g');
+						uni.setStorageSync('log_g', lo.concat(old));
+
+					} catch (e) {
+						// error
+						console.log("catch watch1 error:")
+						console.log(e.message)
+					}
+				}, {
+					'enableHighAccuracy': true,
+					'geocode': false
+				});
+		},
 		getCurrentPosition(e) {
 			if (e.controlId === 1) {
 				const points = [];
@@ -62,12 +102,33 @@ export default {
 					width: 4,
 				};
 				this.polylines.splice(0, 1, polyline);
+				var watchId = plus.geolocation.watchPosition(function(p) {
+					var f = JSON.stringify(p);
+					 
+						console.log(p["coords"]["latitude"])
+						console.log(p["coords"]["longitude"])
+					    let position = {
+									longitude: p["coords"]["longitude"],
+									latitude: p["coords"]["latitude"]
+								} 
+						this.mapContext.moveToLocation()
+						points.push(position); 
+					}, function(e) {
+						console.log("监听位置变化信息失败：" + e.message);
+						var g = e.message; 
+					}, {
+						'enableHighAccuracy': true,
+						'geocode': false
+					});
+                
 				this.lineInterval = setInterval(() => {
+					 
+					/* 
 					uni.getLocation({
 						type: 'gcj02'
 					}).then(result => {
-						// this.mapCenter.longitude = result[1].longitude;
-						// this.mapCenter.latitude = result[1].latitude;
+						this.mapCenter.longitude = result[1].longitude;
+						this.mapCenter.latitude = result[1].latitude;
 						let position = {
 									longitude: result[1].longitude,
 									latitude: result[1].latitude
@@ -83,8 +144,11 @@ export default {
 						// })
 						points.push(position);
 					});
+				*/
 				}, 3000);
+				 
 			}
+			 
 		},
 		handleControlClick(e) {
 			if (e.controlId === 1) {
@@ -97,6 +161,7 @@ export default {
 				};
 				this.polylines.splice(0, 1, polyline);
 				let count = 1;
+				/*
 				let lineInterval = setInterval(() => {
 					points.push({
 						longitude: pathParam[count - 1].x,
@@ -107,6 +172,7 @@ export default {
 						clearInterval(lineInterval);
 					}
 				}, 300);
+				*/
 			}
 		},
 		handleMapReady() {
@@ -119,7 +185,13 @@ export default {
 	},
 	onReady() {
 		this.handleMapReady()
-	}
+	},
+	onLoad() {
+			 
+			//this.testBackend(); 
+	 
+	
+	},
 };
 </script>
 
