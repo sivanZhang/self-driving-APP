@@ -13,5 +13,6 @@ export default {
 			name: 'customer',
 			img: 'static/image/p10.jpg'
 		}
-	}
+	},
+	isAppShow:false
 }

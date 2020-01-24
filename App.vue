@@ -8,10 +8,14 @@
 			// #endif
 		},
 		onShow: function() {
-			console.log('App Show')
+			// #ifdef APP-PLUS
+				this.$store.commit('setIsAppShow',true)
+			// #endif
 		},
 		onHide: function() {
-			console.log('App Hide')
+			// #ifdef APP-PLUS
+				this.$store.commit('setIsAppShow',false)
+			// #endif
 		}
 	}
 </script>

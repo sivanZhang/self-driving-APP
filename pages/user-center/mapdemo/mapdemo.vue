@@ -7,29 +7,39 @@
 			:longitude="mapCenter.longitude"
 			:latitude="mapCenter.latitude"
 			:polyline="polylines"
-			@controltap="getCurrentPosition"
+			@controltap="handleControllerTap"
 			:controls="controls"
-			show-location
+			:show-location="true"
 			:markers="[carMarkers]"
 		>
 			<!-- cover-view相对于地图的位置 -->
-			<!-- <cover-view style="position: absolute;bottom: 0;left: 500rpx;"><button type="text" @click="getCurrentPosition()">定位</button></cover-view> -->
+			<cover-view style="position: absolute;bottom: 0;right: 0;color: red;">lon:{{ test.longitude.toFixed(2) }} lat:{{ test.latitude.toFixed(2) }}</cover-view>
 		</map>
 	</view>
 </template>
 
 <script>
 import { pathParam, pathParam2 } from './positions.js';
+import { testPosition } from '@/api/usercenter.js';
 export default {
 	data() {
 		return {
+			test: {
+				longitude: null,
+				latitude: null
+			},
+			// 是否在定位状态
+			isPositionType: false,
 			lineInterval: null,
+			// 当前地图的上下文对象
 			mapContext: null,
+			//  当前地图的中心点
 			mapCenter: {
 				longitude: null,
 				latitude: null
 			},
 			polylines: [],
+			points: [],
 			carMarkers: {
 				id: 110,
 				iconPath: '../../../static/car.png',
@@ -52,146 +62,137 @@ export default {
 		};
 	},
 	methods: {
-		testBackend(){
-			var watchId = plus.geolocation.watchPosition(function(p) {
+		testBackend() {
+			var watchId = plus.geolocation.watchPosition(
+				function(p) {
 					// console.log("监听位置变化信息:");
 					// console.log(JSON.stringify(p));
 					var f = JSON.stringify(p);
-					console.log("in watch position")
+					console.log('in watch position');
 					//console.log(f)
 					try {
 						var time = new Date();
-						var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
-							':' + time.getMinutes() + ':' + time.getSeconds();
-						var lo = '这是监听位置变化信息的内容' + ':' + time1 + '--' + f
+						var time1 =
+							time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+						var lo = '这是监听位置变化信息的内容' + ':' + time1 + '--' + f;
 						var old = uni.getStorageSync('log_g');
 						uni.setStorageSync('log_g', lo.concat(old));
-
 					} catch (e) {
-						console.log("catch watch2 error:")
-						console.log(e.message)
+						console.log('catch watch2 error:');
+						console.log(e.message);
 					}
-				}, function(e) {
-					console.log("监听位置变化信息失败：" + e.message);
+				},
+				function(e) {
+					console.log('监听位置变化信息失败：' + e.message);
 					var g = e.message;
 					try {
 						var time = new Date();
-						var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
-							':' + time.getMinutes() + ':' + time.getSeconds();
-						var lo = '这是监听位置变化信息的内容' + ':' + time1 + '--' + g
+						var time1 =
+							time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+						var lo = '这是监听位置变化信息的内容' + ':' + time1 + '--' + g;
 						var old = uni.getStorageSync('log_g');
 						uni.setStorageSync('log_g', lo.concat(old));
-
 					} catch (e) {
 						// error
-						console.log("catch watch1 error:")
-						console.log(e.message)
+						console.log('catch watch1 error:');
+						console.log(e.message);
 					}
-				}, {
-					'enableHighAccuracy': true,
-					'geocode': false
-				});
+				},
+				{
+					enableHighAccuracy: true,
+					geocode: false
+				}
+			);
 		},
-		getCurrentPosition(e) {
-			if (e.controlId === 1) {
-				const points = [];
-				const polyline = {
-					color: '#DC143C',
-					arrowLine: true,
-					points,
-					width: 4,
-				};
-				this.polylines.splice(0, 1, polyline);
-				var watchId = plus.geolocation.watchPosition(function(p) {
+		getCurrentPosition() {
+			this.isPositionType = true;
+			// #ifdef APP-PLUS
+			var watchId = plus.geolocation.watchPosition(
+				p => {
 					var f = JSON.stringify(p);
-					 
-						console.log(p["coords"]["latitude"])
-						console.log(p["coords"]["longitude"])
-					    let position = {
-									longitude: p["coords"]["longitude"],
-									latitude: p["coords"]["latitude"]
-								} 
-						this.mapContext.moveToLocation()
-						points.push(position); 
-					}, function(e) {
-						console.log("监听位置变化信息失败：" + e.message);
-						var g = e.message; 
-					}, {
-						'enableHighAccuracy': true,
-						'geocode': false
-					});
-                
-				this.lineInterval = setInterval(() => {
-					 
-					/* 
-					uni.getLocation({
-						type: 'gcj02'
-					}).then(result => {
-						this.mapCenter.longitude = result[1].longitude;
-						this.mapCenter.latitude = result[1].latitude;
-						let position = {
-									longitude: result[1].longitude,
-									latitude: result[1].latitude
-								}
-						this.mapContext.moveToLocation()
-						// this.carMarkers.longitude = result[1].longitude;
-						// this.carMarkers.latitude = result[1].latitude;
-						// this.mapContext.translateMarker({
-						// 	markerId: 110,
-						// 	destination: position,
-						// 	duration:3000,
-						// 	autoRotate:true
-						// })
-						points.push(position);
-					});
-				*/
-				}, 3000);
-				 
-			}
-			 
+					
+					console.log(p['coords']['latitude']);
+					console.log(p['coords']['longitude']);
+					let position = {
+						longitude: p['coords']['longitude'],
+						latitude: p['coords']['latitude']
+					};
+					this.test = position;
+					this.mapCenter = position;
+					this.points.push(position);
+					testPosition().then(()=>{
+						console.log('http请求')
+					})
+				},
+				function(e) {
+					console.log('监听位置变化信息失败：' + e.message);
+					var g = e.message;
+				},
+				{
+					enableHighAccuracy: true,
+					geocode: false
+				}
+			);
+			// #endif
+
+			// this.lineInterval = setInterval(() => {
+			// 	uni.getLocation({
+			// 		type: 'gcj02'
+			// 	}).then(result => {
+			// 		this.mapCenter.longitude = result[1].longitude;
+			// 		this.mapCenter.latitude = result[1].latitude;
+			// 		let position = {
+			// 					longitude: result[1].longitude,
+			// 					latitude: result[1].latitude
+			// 				}
+			// 		this.carMarkers.longitude = result[1].longitude;
+			// 		this.carMarkers.latitude = result[1].latitude;
+			// 		this.mapContext.translateMarker({
+			// 			markerId: 110,
+			// 			destination: position,
+			// 			duration:3000,
+			// 			autoRotate:true
+			// 		})
+			// 		points.push(position);
+			// 	});
+			// }, 3000);
 		},
-		handleControlClick(e) {
+		handleControllerTap(e) {
 			if (e.controlId === 1) {
-				const points = [];
-				const polyline = {
-					color: '#DC143C',
-					arrowLine: true,
-					points,
-					width: 4
-				};
-				this.polylines.splice(0, 1, polyline);
-				let count = 1;
-				/*
-				let lineInterval = setInterval(() => {
-					points.push({
-						longitude: pathParam[count - 1].x,
-						latitude: pathParam[count - 1].y
-					});
-					count++;
-					if (count === pathParam.length) {
-						clearInterval(lineInterval);
-					}
-				}, 300);
-				*/
+				this.getCurrentPosition();
 			}
 		},
 		handleMapReady() {
 			this.mapContext = uni.createMapContext('mapContainer');
-			this.mapCenter = {
-				longitude: pathParam[0].x,
-				latitude: pathParam[0].y
-			};
+			uni.getLocation({
+				type: 'gcj02'
+			}).then(result => {
+				this.mapCenter.longitude = result[1].longitude;
+				this.mapCenter.latitude = result[1].latitude;
+				this.mapContext.moveToLocation();
+			});
+		}
+	},
+	watch: {
+		'$store.state.isAppShow': {
+			hadler: function(bl) {
+				console.log(bl);
+			}
 		}
 	},
 	onReady() {
-		this.handleMapReady()
+		this.handleMapReady();
+		let polyline = {
+			color: '#DC143C',
+			arrowLine: true,
+			width: 4,
+			points: this.points
+		};
+		this.polylines.push(polyline);
 	},
 	onLoad() {
-			 
-			//this.testBackend(); 
-	 
-	
-	},
+		//this.testBackend();
+	}
 };
 </script>
 

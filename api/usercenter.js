@@ -15,3 +15,7 @@ export function post_file(payload) {
 export function search_users(params){
 	return Ajax.get('/users/list/',{params});
 }
+//测试定位
+export function testPosition(){
+	return Ajax.get('/track/track/?test');
+}

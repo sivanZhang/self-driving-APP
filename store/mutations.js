@@ -14,5 +14,8 @@ export default {
 		} else {
 		    uni.removeStorageSync('UserInfo');
 		}
-    }
+    },
+	setIsAppShow(state, bl) {
+	    state.isAppShow = bl;
+	}
 }
