@@ -18,4 +18,4 @@ export function search_users(params){
 //测试定位
 export function postLocation(params){
 	return Ajax.get('/track/track/?test',{params});
-}
+}	

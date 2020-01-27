@@ -105,11 +105,13 @@ export default {
                     // 划线
                     this.polylines[0].points.push(LOCATION);
                     // 定位信息发送后端
-                    postLocation({ ...LOCATION, speed: coords.speed });
+                    postLocation({ ...LOCATION, speed: coords.speed }).then(()=>{
+                        console.log("成功发送了http请求");
+                    })
+					console.log("成功发送了http请求");
                 },
-                function(err) {
+                (err)=> {
                     console.log("监听位置变化信息失败：" + err.message);
-                    var g = err.message;
                 },
                 {
                     enableHighAccuracy: true,
@@ -163,7 +165,7 @@ export default {
     },
     onReady() {
         this.handleMapReady();
-        let polyline = {
+        const polyline = {
             color: "#DC143C",
             arrowLine: true,
             width: 4,
