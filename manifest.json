@@ -10,13 +10,13 @@
         }
     ],
     "versionName" : "1.0.0",
-    "versionCode" : 114,
-	"networkTimeout": {  
-	    "request": 60000,  
-	    "connectSocket": 60000,  
-	    "uploadFile": 60000,  
-	    "downloadFile": 60000  
-	},
+    "versionCode" : 133,
+    "networkTimeout" : {
+        "request" : 60000,
+        "connectSocket" : 60000,
+        "uploadFile" : 60000,
+        "downloadFile" : 60000
+    },
     "app-plus" : {
         "usingComponents" : true,
         "safearea" : {

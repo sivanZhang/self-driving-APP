@@ -195,7 +195,7 @@ export default {
 }
 .location-message {
     position: absolute;
-    bottom: 0;
+    bottom: 30rpx;
     right: 0;
     color: red;
 }
