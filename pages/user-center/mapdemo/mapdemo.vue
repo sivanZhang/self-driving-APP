@@ -145,7 +145,7 @@ export default {
             });
 		},
 		stopGetPosition(){
-			plus.geolocation.clearWatch(this.watchId);
+			plus.geolocation.clearWatch(this.watchId)
 		}
     },
     onReady() {

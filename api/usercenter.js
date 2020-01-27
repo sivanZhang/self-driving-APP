@@ -16,6 +16,6 @@ export function search_users(params){
 	return Ajax.get('/users/list/',{params});
 }
 //测试定位
-export function testPosition(){
-	return Ajax.get('/track/track/?test');
+export function testPosition(params){
+	return Ajax.get('/track/track/?test',{params});
 }
