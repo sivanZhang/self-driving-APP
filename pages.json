@@ -1,10 +1,6 @@
 {
 	"pages": [
 		{
-		    "path" : "pages/user-center/mapdemo/mapdemo",
-		    "style" : {}
-		},
-		{
 			"path": "pages/home/home-page",
 			"style": {
 				"navigationStyle": "custom",
@@ -538,6 +534,12 @@
 			"style": {
 				"navigationBarTitleText": "绑定新手机"
 			}
+		},
+		{
+		    "path" : "pages/user-center/mapdemo/mapdemo",
+		    "style": {
+		    	"navigationBarTitleText": "车迹"
+		    }
 		},
 		{
 			"path": "pages/user-center/account/changePassword",

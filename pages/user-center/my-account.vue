@@ -137,6 +137,15 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
+			<view class="section" @tap="target('/pages/user-center/mapdemo/mapdemo')">
+				<view>
+					<image class="icon" src="/static/car.png"></image>
+					车迹测试
+				</view>
+				<view>
+					<uni-icon type="arrowright"></uni-icon>
+				</view>
+			</view>
 			<!-- <view class="section">
 				<view>
 					<image class="icon" src="/static/icons/invited.png"></image>
