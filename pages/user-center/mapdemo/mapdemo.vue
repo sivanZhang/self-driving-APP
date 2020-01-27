@@ -12,7 +12,6 @@
 			:show-location="true"
 			:markers="[carMarkers]"
 		>
-			<!-- cover-view相对于地图的位置 -->
 			<cover-view style="position: absolute;bottom: 0;right: 0;color: red;">lon:{{ test.longitude.toFixed(2) }} lat:{{ test.latitude.toFixed(2) }}</cover-view>
 		</map>
 	</view>
@@ -110,7 +109,7 @@ export default {
 			var watchId = plus.geolocation.watchPosition(
 				p => {
 					var f = JSON.stringify(p);
-					
+
 					console.log(p['coords']['latitude']);
 					console.log(p['coords']['longitude']);
 					let position = {
@@ -120,9 +119,9 @@ export default {
 					this.test = position;
 					this.mapCenter = position;
 					this.points.push(position);
-					testPosition().then(()=>{
-						console.log('http请求')
-					})
+					testPosition(position).then(() => {
+						console.log('http请求');
+					});
 				},
 				function(e) {
 					console.log('监听位置变化信息失败：' + e.message);
