@@ -20,13 +20,13 @@
 <script>
 // 模拟数据
 import { pathParam, pathParam2 } from './positions.js';
+// 发送给后端位置信息的接口
 import { testPosition } from '@/api/usercenter.js';
 export default {
 	data() {
 		return {
+            // 监听设备位置变化信息返回的ID ，用于后期注销监听
 			watchId: null,
-			// 是否在定位状态
-			isPositionType: false,
 			lineInterval: null,
 			// 当前地图的上下文对象
 			mapContext: null,
@@ -34,15 +34,18 @@ export default {
 			mapCenter: {
 				longitude: null,
 				latitude: null
-			},
+            },
+            // 地图划线
 			polylines: [],
 			points: [],
+			// “轿车”图标
 			carMarkers: {
 				id: 110,
 				iconPath: '../../../static/car.png',
 				width: 30,
 				height: 30
 			},
+			// 地图的control组件 （按钮）
 			controls: [
 				{
 					clickable: true,
@@ -60,7 +63,6 @@ export default {
 	},
 	methods: {
 		getCurrentPosition() {
-			this.isPositionType = true;
 			// 系统检测判断
 			if (uni.getSystemInfoSync().platform === 'android') {
 				var g_wakelock = null;
@@ -75,18 +77,19 @@ export default {
 					g_wakelock.acquire();
 				}
 			}
+			// plus监听设备位置变化信息
 			this.watchId = plus.geolocation.watchPosition(
-				result => {
-					var f = JSON.stringify(result);
+				({coords}) => {
 					let position = {
-						longitude: result['coords']['longitude'],
-						latitude: result['coords']['latitude']
-					};
-					this.mapCenter = position;
-					this.points.push(position);
-					testPosition({ ...position, speed: result.speed }).then(() => {
-						console.log('发送http请求');
-					});
+						longitude: coords.longitude,
+						latitude: coords.latitude
+                    };
+                    
+                    this.mapCenter = position;
+                    // polyline 中的points数组（用于划线）
+                    this.polylines[0].points.push(position);
+                    // 定位信息发送后端
+					testPosition({ ...position, speed: coords.speed })
 				},
 				function(err) {
 					console.log('监听位置变化信息失败：' + err.message);
@@ -136,6 +139,7 @@ export default {
 			});
 		},
 		stopGetPosition() {
+			// 注销监听设备位置变化信息
 			plus.geolocation.clearWatch(this.watchId);
 		}
 	},
@@ -145,7 +149,7 @@ export default {
 			color: '#DC143C',
 			arrowLine: true,
 			width: 4,
-			points: this.points
+			points: []
 		};
 		this.polylines.push(polyline);
 	}
