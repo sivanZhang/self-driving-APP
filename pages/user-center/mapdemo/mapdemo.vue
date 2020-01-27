@@ -105,7 +105,7 @@ export default {
                     // 划线
                     this.polylines[0].points.push(LOCATION);
                     // 定位信息发送后端
-                    postLocation({ ...LOCATION, speed: coords.speed }).then(()=>{
+                    postLocation({ ...LOCATION, speed: coords.speed||0 }).then(()=>{
                         console.log("成功发送了http请求");
                     })
 					console.log("成功发送了http请求");
