@@ -13,6 +13,7 @@
 			:markers="[carMarkers]"
 		>
 			<cover-view class="map-btn" @click="stopGetPosition">停止</cover-view>
+            <cover-view style="position: absolute;bottom: 0;right: 0;color: red;">lon:{{ showLocation.longitude.toFixed(2) }} lat:{{ showLocation.latitude.toFixed(2) }}</cover-view>
 		</map>
 	</view>
 </template>
@@ -25,6 +26,11 @@ import { testPosition } from '@/api/usercenter.js';
 export default {
 	data() {
 		return {
+            // 地图组件上面显示经纬度数值
+            showLocation: {
+				longitude: null,
+				latitude: null
+			},
             // 监听设备位置变化信息返回的ID ，用于后期注销监听
 			watchId: null,
 			lineInterval: null,
@@ -80,16 +86,17 @@ export default {
 			// plus监听设备位置变化信息
 			this.watchId = plus.geolocation.watchPosition(
 				({coords}) => {
-					let position = {
+					const LOCATION = {
 						longitude: coords.longitude,
 						latitude: coords.latitude
                     };
                     
-                    this.mapCenter = position;
+                    this.mapCenter = LOCATION;
+                    this.showLocation = LOCATION
                     // polyline 中的points数组（用于划线）
-                    this.polylines[0].points.push(position);
+                    this.polylines[0].points.push(LOCATION);
                     // 定位信息发送后端
-					testPosition({ ...position, speed: coords.speed })
+					testPosition({ ...LOCATION, speed: coords.speed })
 				},
 				function(err) {
 					console.log('监听位置变化信息失败：' + err.message);
