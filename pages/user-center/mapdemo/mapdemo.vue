@@ -108,7 +108,7 @@ export default {
                     postLocation({ ...LOCATION, speed: coords.speed||0 }).then(()=>{
                         console.log("成功发送了http请求");
                     })
-					console.log("成功发送了http请求");
+					console.log("走");
                 },
                 (err)=> {
                     console.log("监听位置变化信息失败：" + err.message);
