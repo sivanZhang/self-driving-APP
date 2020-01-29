@@ -39,8 +39,6 @@ export default {
 			},
 			// 监听设备位置变化信息返回的ID ，用于后期注销监听
 			watchId: null,
-			// setInterval返回的ID信息，用于后期注销
-			lineInterval: null,
 			// 当前地图的上下文对象
 			mapContext: null,
 			//  当前地图的中心点
