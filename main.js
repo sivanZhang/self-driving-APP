@@ -5,10 +5,8 @@ import * as filters from './filters' // global filters
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key])
 })
-Vue.prototype.$store = store
 Vue.config.productionTip = false
 App.mpType = 'app'
-
 const app = new Vue({
     store,
     ...App
