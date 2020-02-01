@@ -13,25 +13,23 @@
 		>
 			<!-- cover-view中添加子元素有些平台可能会导致定位失效？？？ -->
 			<cover-view class="map-btn" @click="stopGetLocation">停止</cover-view>
-			<cover-view class="location-message">lon:{{ showLocation.longitude.toFixed(2) }} lat:{{ showLocation.latitude.toFixed(2) }}</cover-view>
+			<cover-view class="location-message1">result:{{ showLocation.longitude.toFixed(2) }},{{ showLocation.latitude.toFixed(2)}},{{showLocation.heading}}</cover-view>
+			<cover-view class="location-message2">error:{{errorMessage}}</cover-view>
 		</map>
 	</view>
 </template>
 
 <script>
+	import dayjs from 'dayjs'
 // 模拟数据
 import { pathParam, pathParam2 } from './positions.js';
 // 发送给后端位置信息的接口
 import { postLocation } from '@/api/usercenter.js';
 export default {
 	data() {
-		const polyline = {
-			color: '#DC143C',
-			arrowLine: true,
-			width: 4,
-			points: []
-		};
+		
 		return {
+			errorMessage:'无',
 			// 地图组件上面显示经纬度数值
 			showLocation: {
 				longitude: null,
@@ -47,7 +45,7 @@ export default {
 				latitude: null
 			},
 			// 地图划线
-			polylines: [polyline],
+			polylines: [],
 			// “轿车”图标
 			carMarkers: {
 				id: 110,
@@ -88,26 +86,47 @@ export default {
 				}
 			}
 			// plus监听设备位置变化信息
+			let count = 0
 			this.watchId = plus.geolocation.watchPosition(
 				({ coords }) => {
 					const LOCATION = {
 						longitude: coords.longitude,
 						latitude: coords.latitude
 					};
-
+					
 					this.mapCenter = LOCATION;
 					this.mapContext.moveToLocation();
-					this.showLocation = LOCATION;
 					// 划线
-					this.polylines[0].points.push(LOCATION);
+					if (count === 0){
+						this.polylines.splice(0,0,{
+							color: '#DC143C',
+							arrowLine: true,
+							width: 4,
+							points: []
+						})
+					}
+					if(this.polylines[count].length<99){
+						this.polylines[count].points.push(LOCATION);
+					}else{
+						count++
+						this.polylines.splice(count,0,{
+							color: '#DC143C',
+							arrowLine: true,
+							width: 4,
+							points: []
+						})
+						// 接上一根线最后一点
+						this.polylines[count].points.push(this.polylines[count-1].points[98]);
+						this.polylines[count].points.push(LOCATION);
+					}
+					
 					// 定位信息发送后端
 					postLocation({ ...LOCATION, speed: coords.speed || 0 }).then(() => {
-						console.log('成功发送了http请求');
+						this.showLocation = { ...LOCATION, speed: coords.speed || 0 };
 					});
-					console.log('走');
 				},
 				err => {
-					console.log('监听位置变化信息失败：' + err.message);
+					this.errorMessage =  `${err.code}:${err.message} 时间：${dayjs(new Date()).format("HH:mm")}`
 				},
 				{
 					enableHighAccuracy: true,
@@ -160,10 +179,16 @@ export default {
 	border: 2rpx solid red;
 	background-color: #ffffff;
 }
-.location-message {
+.location-message1 {
+	position: absolute;
+	top: 50rpx;
+	right: 0;
+	color: red;
+}
+.location-message2 {
 	position: absolute;
 	bottom: 20rpx;
 	right: 0;
-	color: red;
+	color: #ff007f;
 }
 </style>
