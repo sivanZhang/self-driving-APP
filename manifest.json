@@ -10,7 +10,7 @@
         }
     ],
     "versionName" : "1.0.0",
-    "versionCode" : 133,
+    "versionCode" : 134,
     "networkTimeout" : {
         "request" : 60000,
         "connectSocket" : 60000,
