@@ -1,10 +1,6 @@
 <template>
 	<view>
-		<view style="width: 95%;">
-			{{newrecord}}
-			
-		</view>
-		
+		<view  v-html="newrecord">  </view>
 	</view>
 </template>
 
@@ -33,12 +29,8 @@
 				//     // error
 				// }
 				try {
-					this.newrecord = uni.getStorageSync('log_geo'); 
-					if (this.newrecord) {
-						console.log("数据缓存")
-					   this.newrecord = this.newrecord.toString()
-					   // console.log(this.newrecord )
-				    }
+					this.newrecord = uni.getStorageSync('log'); 
+					 
 				} catch (e) {
 				    // error
 				}
