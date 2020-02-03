@@ -55,7 +55,7 @@ export default {
 			// 地图划线
 			polylines: [
 				{
-					color: '#DC143C',
+					color: '#00aa00',
 					arrowLine: true,
 					width: 4,
 					points: []
@@ -88,7 +88,7 @@ export default {
 		getlog(){
 
 		},
-		getCurrentPosition() {
+		handleLocationChange() {
 			uni.setStorageSync('log', "" )
 			// 系统检测判断
 			if (uni.getSystemInfoSync().platform === 'android') {
@@ -159,7 +159,7 @@ export default {
 							} else {
 								count++;
 								this.polylines.splice(count, 0, {
-									color: '#DC143C',
+									color: '#00aa00',
 									arrowLine: true,
 									width: 4,
 									points: [this.polylines[count - 1].points[POINTS - 1]]
@@ -230,8 +230,9 @@ export default {
 			 
 		},
 		handleControllerTap(e) {
+			// 控件ID=1 
 			if (e.controlId === 1) {
-				this.getCurrentPosition();
+				this.handleLocationChange();
 			}
 		},
 		handleMapReady() {
@@ -249,32 +250,32 @@ export default {
 			 );
 			console.log('ready')
 			// 获取地理位置并设置为地图中心
-			// uni.getLocation().then(result => {
-			// 	this.mapCenter = {
-			// 		longitude: result[1].longitude,
-			// 		latitude: result[1].latitude
-			// 	};
-			// 	this.mapContext.moveToLocation();
-			// });
+			uni.getLocation().then(result => {
+				this.mapCenter = {
+					longitude: result[1].longitude,
+					latitude: result[1].latitude
+				};
+				this.mapContext.moveToLocation();
+			});
 
-			plus.geolocation.getCurrentPosition(
-				({ coords }) => {
-					const LOCATION = {
-						longitude: coords.longitude,
-						latitude: coords.latitude
-					};
+			// plus.geolocation.getCurrentPosition(
+			// 	({ coords }) => {
+			// 		const LOCATION = {
+			// 			longitude: coords.longitude,
+			// 			latitude: coords.latitude
+			// 		};
 
-					this.mapCenter = LOCATION;
-					this.mapContext.moveToLocation();
-				},
-				err => {
-					this.errorMessage = `${err.code}:${err.message}`;
-				},
-				{
-					enableHighAccuracy: true,
-					geocode: false
-				}
-			);
+			// 		this.mapCenter = LOCATION;
+			// 		this.mapContext.moveToLocation();
+			// 	},
+			// 	err => {
+			// 		this.errorMessage = `${err.code}:${err.message}`;
+			// 	},
+			// 	{
+			// 		enableHighAccuracy: true,
+			// 		geocode: false
+			// 	}
+			// );
 		},
 		stopGetLocation() {
 			// 注销监听设备位置变化信息
