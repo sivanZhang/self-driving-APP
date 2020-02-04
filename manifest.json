@@ -9,8 +9,8 @@
             "src" : "图片路径"
         }
     ],
-    "versionName" : "1.0.0",
-    "versionCode" : 135,
+    "versionName" : "1.0.1",
+    "versionCode" : 114,
     "networkTimeout" : {
         "request" : 60000,
         "connectSocket" : 60000,
@@ -36,7 +36,7 @@
                 },
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "46ba7e56995de2f94c4d335ac668876d",
+                        "appkey_ios" : "4b6d1f1409fe6859f2f61472f5385451",
                         "appkey_android" : "20df2b8298c0fb0f92bf1a20841f507c"
                     }
                 }
@@ -71,8 +71,7 @@
                         "settings@3x" : "unpackage/res/icons/87x87.png",
                         "spotlight@2x" : "unpackage/res/icons/80x80.png",
                         "spotlight@3x" : "unpackage/res/icons/120x120.png"
-                    },
-                    "UIBackgroundModes" : [ "location" ]
+                    }
                 }
             },
             "ios" : {

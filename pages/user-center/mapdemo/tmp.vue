@@ -14,7 +14,7 @@
 			<!-- cover-view中添加子元素有些平台可能会导致定位失效？？？ -->
 			<cover-view class="map-btn" @click="stopGetLocation">停止</cover-view>
 			<cover-view class="location-message1">{{ showLocation.longitude  }} {{ showLocation.latitude }} {{ showLocation.speed  }} </cover-view>
-		    <cover-view class="location-message2">{{ errorMessage }}</cover-view>
+		
 		</map>
 	</view>
 </template>
@@ -28,7 +28,13 @@ export default {
 	data() {
 		return {
 			// 错误信息
-			errorMessage: '',
+			errorMessage: {
+				"points_length":'', //点长度
+				"last_point":null, //最后一个记录点经纬度以及速度
+				"watchid":null, 
+				"polyline_length":null, //折线长度
+				"count":''
+			},
 			log:'', //日志信息
 			// 地图组件上面显示经纬度数值
 			showLocation: {
@@ -45,11 +51,10 @@ export default {
 				longitude: null,
 				latitude: null
 			},
-			
 			// 地图划线
 			polylines: [
 				{
-					color: '#DC143C',
+					color: '#00aa00',
 					arrowLine: true,
 					width: 4,
 					points: []
@@ -84,7 +89,6 @@ export default {
 		},
 		handleLocationChange() {
 			uni.setStorageSync('log', "" )
-			var _this = this;
 			// 系统检测判断
 			if (uni.getSystemInfoSync().platform === 'android') {
 				var g_wakelock = null;
@@ -114,31 +118,33 @@ export default {
 								longitude: coords.longitude,
 								latitude: coords.latitude
 							};
-							
-							if (_this.polylines[count].points.length <= POINTS) {
-								_this.polylines[count].points.push(LOCATION);
+							// 划线
+							/*
+							if (this.polylines[count].points.length <= POINTS) {
+								this.polylines[count].points.push(LOCATION);
 							} else {
 								count++;
-								_this.polylines.splice(count, 0, {
-									color: '#DC143C',
+								this.polylines.splice(count, 0, {
+									color: '#00aa00',
 									arrowLine: true,
 									width: 4,
-									points: [_this.polylines[count - 1].points[POINTS - 1]]
+									points: [this.polylines[count - 1].points[POINTS - 1]]
 								});
-								// 接上一根线最后一点7
-								_this.polylines[count].points.push(LOCATION);
+								// 接上一根线最后一点
+								//this.polylines[count].points.push(this.polylines[count - 1].points[99]);
+								this.polylines[count].points.push(LOCATION);
 							}
-                            
-							_this.mapCenter = LOCATION;
-							// 以下代码可能造成屏幕闪动
-							//_this.mapContext.moveToLocation();
+                            */
+							this.mapCenter = LOCATION;
+							this.mapContext.moveToLocation();
 							
 							
 							// 定位信息发送后端
 							postLocation({ ...LOCATION, speed: coords.speed || 0 }).then((data) => {
-								_this.showLocation = { ...LOCATION, speed: coords.speed || 0 };
+								this.showLocation = { ...LOCATION, speed: coords.speed || 0 };
 								
 							}); 
+
 
 
 							/*
@@ -201,27 +207,37 @@ export default {
 			if (watchid){
 				plus.geolocation.clearWatch(watchid);
 				console.log('clear pre watchid :' + watchid)
-			} 
+			}
+			
+			console.log('ready')
 			// 获取地理位置并设置为地图中心
-			 
-			plus.geolocation.getCurrentPosition(
-				({ coords }) => {
-					const LOCATION = {
-						longitude: coords.longitude,
-						latitude: coords.latitude
-					};
+			/*
+			uni.getLocation().then(result => {
+				this.mapCenter = {
+					longitude: result[1].longitude,
+					latitude: result[1].latitude
+				};
+				this.mapContext.moveToLocation();
+			});
+*/
+			// plus.geolocation.getCurrentPosition(
+			// 	({ coords }) => {
+			// 		const LOCATION = {
+			// 			longitude: coords.longitude,
+			// 			latitude: coords.latitude
+			// 		};
 
-					this.mapCenter = LOCATION;
-					this.mapContext.moveToLocation();
-				},
-				err => {
-					this.errorMessage = `${err.code}:${err.message}`;
-				},
-				{
-					enableHighAccuracy: true,
-					geocode: false
-				}
-			);
+			// 		this.mapCenter = LOCATION;
+			// 		this.mapContext.moveToLocation();
+			// 	},
+			// 	err => {
+			// 		this.errorMessage = `${err.code}:${err.message}`;
+			// 	},
+			// 	{
+			// 		enableHighAccuracy: true,
+			// 		geocode: false
+			// 	}
+			// );
 		},
 		stopGetLocation() {
 			// 注销监听设备位置变化信息

@@ -14,7 +14,8 @@
 			<!-- cover-view中添加子元素有些平台可能会导致定位失效？？？ -->
 			<cover-view class="map-btn" @click="stopGetLocation">停止</cover-view>
 			<cover-view class="location-message1">{{ showLocation.longitude  }} {{ showLocation.latitude }} {{ showLocation.speed  }} </cover-view>
-		    <cover-view class="location-message2">{{ errorMessage }}</cover-view>
+			<cover-view class="location-message2">{{ errorMessage }}</cover-view>
+			<cover-view class="location-message-log">{{ log }}</cover-view>
 		</map>
 	</view>
 </template>
@@ -28,7 +29,13 @@ export default {
 	data() {
 		return {
 			// 错误信息
-			errorMessage: '',
+			errorMessage: {
+				"points_length":'', //点长度
+				"last_point":null, //最后一个记录点经纬度以及速度
+				"watchid":null, 
+				"polyline_length":null, //折线长度
+				"count":''
+			},
 			log:'', //日志信息
 			// 地图组件上面显示经纬度数值
 			showLocation: {
@@ -45,13 +52,12 @@ export default {
 				longitude: null,
 				latitude: null
 			},
-			
 			// 地图划线
 			polylines: [
 				{
 					color: '#DC143C',
 					arrowLine: true,
-					width: 4,
+					width: 6,
 					points: []
 				}
 			],
@@ -82,9 +88,8 @@ export default {
 		getlog(){
 
 		},
-		handleLocationChange() {
+		getCurrentPosition() {
 			uni.setStorageSync('log', "" )
-			var _this = this;
 			// 系统检测判断
 			if (uni.getSystemInfoSync().platform === 'android') {
 				var g_wakelock = null;
@@ -99,48 +104,103 @@ export default {
 					g_wakelock.acquire();
 				}
 			}
-			
+			 
 
 			// plus监听设备位置变化信息
 			let count = 0;
 			const POINTS = 100;
 			 
-			 try {
+			 
+			// try {
 				
 				this.watchId = plus.geolocation.watchPosition(
 					({ coords }) => {
+                       /*
+						var time = new Date(); 
+						var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' 
+						     + time.getDate() + ' ' + time.getHours() +
+							':' + time.getMinutes() + ':' + time.getSeconds();
+						var lo = "<h4>v1.1 "+time1 +"</h4>" + '  ' + JSON.stringify(coords) ;
+						lo = lo + " count:" + count  + " point length:" 
+							 + (count*POINTS + this.polylines[count].points.length); 
+						uni.setStorageSync('log', lo + uni.getStorageSync('log') + "<br/>")
+
+                        */
 						//try{
-							let LOCATION = {
+						let	position = {
 								longitude: coords.longitude,
 								latitude: coords.latitude
 							};
-							
-							if (_this.polylines[count].points.length <= POINTS) {
-								_this.polylines[count].points.push(LOCATION);
+                            /*
+							time = new Date(); 
+							time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' 
+								+ time.getDate() + ' ' + time.getHours() +
+								':' + time.getMinutes() + ':' + time.getSeconds();
+							var lo = "<h4>2 "+time1 +"</h4>" + '  ' + "get points :" + JSON.stringify(position); 
+							uni.setStorageSync('log', lo + uni.getStorageSync('log') + "<br/>")
+ 
+                            */
+							this.mapCenter = position;
+							this.mapContext.moveToLocation();
+
+                            /*
+							time = new Date(); 
+							time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' 
+								+ time.getDate() + ' ' + time.getHours() +
+								':' + time.getMinutes() + ':' + time.getSeconds();
+							var lo = "<h4>3 "+time1 +"</h4>" + '  ' + "moveToLocation done . watchid:"  + this.watchId.toString(); 
+							uni.setStorageSync('log', lo + uni.getStorageSync('log') + "<br/>")
+                             */
+							// 划线
+							/*
+							if (this.polylines[count].points.length <= POINTS) {
+								this.polylines[count].points.push(position);
 							} else {
 								count++;
-								_this.polylines.splice(count, 0, {
+								this.polylines.splice(count, 0, {
 									color: '#DC143C',
 									arrowLine: true,
 									width: 4,
-									points: [_this.polylines[count - 1].points[POINTS - 1]]
+									points: [this.polylines[count - 1].points[POINTS - 1]]
 								});
-								// 接上一根线最后一点7
-								_this.polylines[count].points.push(LOCATION);
+								// 接上一根线最后一点
+								//this.polylines[count].points.push(this.polylines[count - 1].points[99]);
+								this.polylines[count].points.push(position);
 							}
-                            
-							_this.mapCenter = LOCATION;
-							// 以下代码可能造成屏幕闪动
-							//_this.mapContext.moveToLocation();
-							
-							
+
+                            */
+							this.polylines[0].points.push(position);
+							/*
+							time = new Date(); 
+							time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' 
+								+ time.getDate() + ' ' + time.getHours() +
+								':' + time.getMinutes() + ':' + time.getSeconds();
+							var lo = "<h4>4 "+time1 +"</h4>" + '  ' + "points pushed done ." ; 
+							uni.setStorageSync('log', lo + uni.getStorageSync('log') + "<br/>")
+							*/
+							/*
+
 							// 定位信息发送后端
-							postLocation({ ...LOCATION, speed: coords.speed || 0 }).then((data) => {
-								_this.showLocation = { ...LOCATION, speed: coords.speed || 0 };
-								
+							postLocation({ ...position, speed: coords.speed || 0 }).then((data) => {
+								this.showLocation = { ...position, speed: coords.speed || 0 };
+								time = new Date(); 
+								time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' 
+									+ time.getDate() + ' ' + time.getHours() +
+									':' + time.getMinutes() + ':' + time.getSeconds();
+								var lo = "<h4>5 "+time1 +"</h4>" + '  ' + "send to server, returned:"  + JSON.stringify( data); 
+								uni.setStorageSync('log', lo + uni.getStorageSync('log') + "<br/>")
 							}); 
+							
 
 
+							time = new Date(); 
+							time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' 
+								+ time.getDate() + ' ' + time.getHours() +
+								':' + time.getMinutes() + ':' + time.getSeconds();
+							var lo = "<h4>6 "+time1 +"</h4>" + '  ' + "single point finished "; 
+							uni.setStorageSync('log', lo + uni.getStorageSync('log') + "<br/>")
+
+                           */
 							/*
 						}
 						catch(e){
@@ -160,24 +220,10 @@ export default {
 						geocode: false
 					}
 				);
-				let old_watchid = uni.getStorageSync('watchid');
-				if (old_watchid){
-					plus.geolocation.clearWatch(old_watchid);
-					var time = new Date(); 
-						var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' 
-						     + time.getDate() + ' ' + time.getHours() +
-							':' + time.getMinutes() + ':' + time.getSeconds();
-						var lo = "<h4>v1.1 "+time1 +"</h4>" + 'get old watchid ' ;
-						 
-						uni.setStorageSync('log', lo + uni.getStorageSync('log') + "<br/>")
-				}
-				else{
-					uni.setStorageSync( 
-					'watchid',  this.watchId
-			    	);
-				}
-				
-				
+				uni.setStorageSync( 
+					'watchid', this.watchId
+				);
+			/*
 			 }
 			 catch(e){
 				console.log(e);
@@ -185,12 +231,11 @@ export default {
 				let emsg =  JSON.stringify(e)
 				this.errorMessage =  `outer:${emsg}:${e.message} ${coods}`;
 			 }
-			 
+			 */
 		},
 		handleControllerTap(e) {
-			// 控件ID=1 
 			if (e.controlId === 1) {
-				this.handleLocationChange();
+				this.getCurrentPosition();
 			}
 		},
 		handleMapReady() {
@@ -201,18 +246,36 @@ export default {
 			if (watchid){
 				plus.geolocation.clearWatch(watchid);
 				console.log('clear pre watchid :' + watchid)
-			} 
+			}
+			
+			uni.setStorageSync( 
+					'watchid',''
+			 );
 			// 获取地理位置并设置为地图中心
-			 
+			// uni.getLocation().then(result => {
+			// 	this.mapCenter = {
+			// 		longitude: result[1].longitude,
+			// 		latitude: result[1].latitude
+			// 	};
+			// 	this.mapContext.moveToLocation();
+			// });
+
 			plus.geolocation.getCurrentPosition(
 				({ coords }) => {
-					const LOCATION = {
+					const position = {
 						longitude: coords.longitude,
 						latitude: coords.latitude
 					};
 
-					this.mapCenter = LOCATION;
+					this.mapCenter = position;
 					this.mapContext.moveToLocation();
+					let time = new Date(); 
+					let		time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' 
+								+ time.getDate() + ' ' + time.getHours() +
+								':' + time.getMinutes() + ':' + time.getSeconds();
+							var lo = "<h4>3.1 "+time1 +"</h4>" + '  ' + "moveToLocation done ." ; 
+							uni.setStorageSync('log', lo + uni.getStorageSync('log') + "<br/>")
+
 				},
 				err => {
 					this.errorMessage = `${err.code}:${err.message}`;
@@ -235,10 +298,7 @@ export default {
 		this.handleMapReady();
 		// 开启一直保持程序唤醒状态  
 		//plus.device.setWakelock( true ); 
-		//this.errorMessage = uni.getStorageSync('watchid')
-		uni.setStorageSync( 
-					'watchid',''
-			 );
+		this.errorMessage = uni.getStorageSync('watchid')
 	}
 };
 </script>

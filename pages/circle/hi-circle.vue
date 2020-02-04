@@ -412,50 +412,51 @@
 			that.open = 0;
 		},
 		locate() {
-			var watchId = plus.geolocation.watchPosition(function(p) {
-				console.log("监听位置变化信息:");
-				console.log(JSON.stringify(p));
-				var f = JSON.stringify(p);
-				try {
-					var time = new Date();
-					var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
-						':' + time.getMinutes() + ':' + time.getSeconds();
-					var lo = '这是监听位置变化信息的内容' + ':' + time1 + '--' + f
-					var old = uni.getStorageSync('log_g');
-					uni.setStorageSync('log_g', lo.concat(old));
 
-				} catch (e) {
-					// error
-				}
-			}, function(e) {
-				console.log("监听位置变化信息失败：" + e.message);
-				var g = e.message;
-				try {
-					var time = new Date();
-					var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
-						':' + time.getMinutes() + ':' + time.getSeconds();
-					var lo = '这是监听位置变化信息的内容' + ':' + time1 + '--' + g
-					var old = uni.getStorageSync('log_g');
-					uni.setStorageSync('log_g', lo.concat(old));
+			// var watchId = plus.geolocation.watchPosition(function(p) {
+			// 	console.log("监听位置变化信息:");
+			// 	console.log(JSON.stringify(p));
+			// 	var f = JSON.stringify(p);
+			// 	try {
+			// 		var time = new Date();
+			// 		var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
+			// 			':' + time.getMinutes() + ':' + time.getSeconds();
+			// 		var lo = '这是监听位置变化信息的内容' + ':' + time1 + '--' + f
+			// 		var old = uni.getStorageSync('log_g');
+			// 		uni.setStorageSync('log_g', lo.concat(old));
 
-				} catch (e) {
-					// error
-				}
-			}, {
-				'enableHighAccuracy': true,
-				'geocode': false
-			});
-			var g_wakelock = null;
-			//允许程序后台运行，以持续获取GPS位置  
-			function wakeLock() {
-				//Android  
-				var main = plus.android.runtimeMainActivity();
-				var Context = plus.android.importClass("android.content.Context");
-				var PowerManager = plus.android.importClass("android.os.PowerManager");
-				var pm = main.getSystemService(Context.POWER_SERVICE);
-				g_wakelock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ANY_NAME");
-				g_wakelock.acquire();
-			}
+			// 	} catch (e) {
+			// 		// error
+			// 	}
+			// }, function(e) {
+			// 	console.log("监听位置变化信息失败：" + e.message);
+			// 	var g = e.message;
+			// 	try {
+			// 		var time = new Date();
+			// 		var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate() + ' ' + time.getHours() +
+			// 			':' + time.getMinutes() + ':' + time.getSeconds();
+			// 		var lo = '这是监听位置变化信息的内容' + ':' + time1 + '--' + g
+			// 		var old = uni.getStorageSync('log_g');
+			// 		uni.setStorageSync('log_g', lo.concat(old));
+
+			// 	} catch (e) {
+			// 		// error
+			// 	}
+			// }, {
+			// 	'enableHighAccuracy': true,
+			// 	'geocode': false
+			// });
+			// var g_wakelock = null;
+			// //允许程序后台运行，以持续获取GPS位置  
+			// function wakeLock() {
+			// 	//Android  
+			// 	var main = plus.android.runtimeMainActivity();
+			// 	var Context = plus.android.importClass("android.content.Context");
+			// 	var PowerManager = plus.android.importClass("android.os.PowerManager");
+			// 	var pm = main.getSystemService(Context.POWER_SERVICE);
+			// 	g_wakelock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ANY_NAME");
+			// 	g_wakelock.acquire();
+			// }
 		},
 	},
 	}
