@@ -164,12 +164,12 @@ export default {
 				if (old_watchid){
 					plus.geolocation.clearWatch(old_watchid);
 					var time = new Date(); 
-						var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' 
-						     + time.getDate() + ' ' + time.getHours() +
-							':' + time.getMinutes() + ':' + time.getSeconds();
-						var lo = "<h4>v1.1 "+time1 +"</h4>" + 'get old watchid ' ;
-						 
-						uni.setStorageSync('log', lo + uni.getStorageSync('log') + "<br/>")
+					var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' 
+							+ time.getDate() + ' ' + time.getHours() +
+						':' + time.getMinutes() + ':' + time.getSeconds();
+					var lo = "<h4>v1.1 "+time1 +"</h4>" + 'get old watchid ' ;
+						
+					uni.setStorageSync('log', lo + uni.getStorageSync('log') + "<br/>")
 				}
 				else{
 					uni.setStorageSync( 
@@ -181,7 +181,8 @@ export default {
 			 }
 			 catch(e){
 				console.log(e);
-				let coods =  JSON.stringify(coords)
+				let coods =  JSON.
+				stringify(coords)
 				let emsg =  JSON.stringify(e)
 				this.errorMessage =  `outer:${emsg}:${e.message} ${coods}`;
 			 }
@@ -239,7 +240,35 @@ export default {
 		uni.setStorageSync( 
 					'watchid',''
 			 );
-	}
+	},
+	onBackPress(){
+		console.log("press back");
+	},
+	beforeDestroy() {
+            console.group('beforeDestroy 组件销毁之前状态===============》');
+    },  
+	destroyed() {
+		console.group('destroyed 组件销毁完毕状态===============》');
+	}, 
+	onError: function(err) {  
+            // 这里只能捕获方法内的异常，不能捕获生命周期中的逻辑异常  
+            console.log('方法内异常');  
+            var json = JSON.stringify(err);  
+            var arr = json.split("\\n");   
+            var log = {  
+                message : arr[1],  
+                stack: err  
+            }    
+			this.$throw(log)  
+
+			var time = new Date(); 
+			var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' 
+					+ time.getDate() + ' ' + time.getHours() +
+				':' + time.getMinutes() + ':' + time.getSeconds();
+			var lo = "<h4>onError "+time1 +"</h4>" + json ;
+				
+			uni.setStorageSync('log', lo + uni.getStorageSync('log') + "<br/>")
+    }
 };
 </script>
 

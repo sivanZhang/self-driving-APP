@@ -16,7 +16,33 @@
 			// #ifdef APP-PLUS
 				this.$store.commit('setIsAppShow',false)
 			// #endif
+		}, 
+		onError: function(err) {  
+				// 这里只能捕获方法内的异常，不能捕获生命周期中的逻辑异常  
+				console.log('方法内异常');  
+				var json = JSON.stringify(err);  
+
+				var time = new Date(); 
+				var time1 = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' 
+						+ time.getDate() + ' ' + time.getHours() +
+					':' + time.getMinutes() + ':' + time.getSeconds();
+				var lo = "<h4>APP onError "+time1 +"</h4>" + json ;
+					
+				uni.setStorageSync('log', lo + uni.getStorageSync('log') + "<br/>")
+
+
+				
+				var arr = json.split("\\n");   
+				var log = {  
+					message : arr[1],  
+					stack: err  
+				}    
+				this.$throw(log)  
+
+				
 		}
+
+
 	}
 </script>
 
