@@ -242,8 +242,15 @@
 				// }
 			}
 		},
-		
-		
+		{
+			"path": "pages/logs/syslog",
+			"style": {
+				"navigationBarTitleText": "系统日志",
+				 "app-plus": {
+					"bounce":"none"
+				 }
+			}
+		}, 
 		{
 			"path": "pages/login/login-page",
 			"style": {

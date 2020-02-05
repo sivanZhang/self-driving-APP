@@ -73,7 +73,7 @@
 
 		<view class="main">
 			<view class="uni-content">
-				<view class="uni-content-box" @tap="target('/pages/foot/my-foot')">
+				<view class="uni-content-box" @tap="target('/pages/user-center/mapdemo/mapdemo')">
 					<view class="uni-content-image">
 						<image src="/static/icons/zuji.png" />
 					</view>
@@ -136,16 +136,7 @@
 				<view>
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
-			</view>
-			<view class="section" @tap="target('/pages/user-center/mapdemo/mapdemo')">
-				<view>
-					<image class="icon" src="/static/car.png"></image>
-					车迹测试
-				</view>
-				<view>
-					<uni-icon type="arrowright"></uni-icon>
-				</view>
-			</view>
+			</view> 
 			<!-- <view class="section">
 				<view>
 					<image class="icon" src="/static/icons/invited.png"></image>
@@ -183,7 +174,7 @@
 					<uni-icon type="arrowright"></uni-icon>
 				</view>
 			</view>
-			<view class="section">
+			<view class="section" @tap="target('/pages/logs/syslog')">
 				<view>
 					<image class="icon" src="/static/icons/fankui.png"></image>
 					意见反馈

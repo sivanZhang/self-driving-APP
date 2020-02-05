@@ -235,17 +235,19 @@ export default {
 	onReady() {
 		this.handleMapReady();
 		// 开启一直保持程序唤醒状态  
-		//plus.device.setWakelock( true ); 
+		plus.device.setWakelock( true ); 
 		//this.errorMessage = uni.getStorageSync('watchid')
 		uni.setStorageSync( 
 					'watchid',''
 			 );
 	},
 	onBackPress(){
+		plus.device.setWakelock( false );
 		console.log("press back");
 	},
 	beforeDestroy() {
-            console.group('beforeDestroy 组件销毁之前状态===============》');
+		plus.device.setWakelock( false );
+		console.group('beforeDestroy 组件销毁之前状态===============》');
     },  
 	destroyed() {
 		console.group('destroyed 组件销毁完毕状态===============》');
